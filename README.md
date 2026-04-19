@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# AI Dynamics v2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A cutting-edge AI consulting company website built with React, TypeScript, and Tailwind CSS. Features 2025 web design trends including neomorphism, micro-interactions, 3D elements, and an interactive AI chatbot demo.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 2025 Design Trends Implemented
 
-## React Compiler
+- **Neomorphism (Soft UI)** - Tactile, soft-shadow design elements throughout
+- **Micro-interactions** - Hover effects, button animations, scroll-triggered reveals
+- **3D Elements** - CSS 3D transforms with floating cards and perspective
+- **AI Chatbot Demo** - Interactive chat widget showcasing AI capabilities
+- **Dark Mode Dominance** - Sleek dark theme with gradient accents
+- **Video Backgrounds** - Immersive motion backgrounds
+- **Glassmorphism** - Modern translucent UI elements
+- **Neural Network Animation** - Canvas-based particle system
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Sections
 
-## Expanding the ESLint configuration
+1. **Hero** - Video background with 3D floating elements, AI chatbot demo
+2. **Stats** - Animated counters with intersection observer
+3. **Services** - 6 AI service cards with neomorphic design
+4. **AI Visualization** - Neural network canvas animation + integration process
+5. **Case Studies** - 4 industry success stories with video overlays
+6. **Testimonials** - Client reviews with star ratings
+7. **Contact** - Interactive form with validation
+8. **Footer** - Comprehensive links and social media
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠️ Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **React 19** - Latest React with StrictMode
+- **TypeScript** - Full type safety
+- **Tailwind CSS v4** - Modern utility-first CSS
+- **Framer Motion** - Smooth animations and gestures
+- **Lucide React** - Beautiful icons
+- **Vite** - Fast development and building
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📦 Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔨 Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
 ```
+
+## 🌐 Deployment
+
+The `dist` folder contains the static build ready for deployment on:
+- Vercel
+- Netlify
+- GitHub Pages
+- Railway
+- Any static hosting
+
+## 📄 License
+
+© 2026 AI Dynamics. All rights reserved.
