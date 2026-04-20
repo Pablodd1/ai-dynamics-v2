@@ -39,26 +39,26 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: Mail,
-      label: t('contact.email'),
+      label: t('contact.email') as string,
       value: 'jasmelacosta@gmail.com',
       href: 'mailto:jasmelacosta@gmail.com',
     },
     {
       icon: Phone,
-      label: t('contact.phone'),
+      label: t('contact.phone') as string,
       value: '+1 (786) 643-2099',
       href: 'tel:+17866432099',
     },
     {
       icon: MapPin,
-      label: t('contact.location'),
+      label: t('contact.location') as string,
       value: 'Miami, FL',
       href: '#',
     },
     {
       icon: Clock,
-      label: t('contact.availability'),
-      value: t('contact.availabilityValue'),
+      label: t('contact.availability') as string,
+      value: t('contact.availabilityValue') as string,
       href: '#',
     },
   ]
@@ -91,14 +91,14 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
-            {t('contact.badge')}
+            {t('contact.badge') as string}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-white">{t('contact.title1')}</span>{' '}
-            <span className="gradient-text">{t('contact.title2')}</span>
+            <span className="text-white">{t('contact.title1') as string}</span>{' '}
+            <span className="gradient-text">{t('contact.title2') as string}</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            {t('contact.subtitle')}
+            {t('contact.subtitle') as string}
           </p>
         </motion.div>
 
@@ -109,7 +109,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-bold text-white mb-8">{t('contact.infoTitle')}</h3>
+            <h3 className="text-2xl font-bold text-white mb-8">{t('contact.infoTitle') as string}</h3>
             
             <div className="space-y-6 mb-12">
               {contactInfo.map((item, index) => (
@@ -141,10 +141,10 @@ const Contact = () => {
                   <div className="w-3 h-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-500 animate-ping" />
                 </div>
-                <span className="text-green-400 font-medium">{t('contact.responseTime')}</span>
+                <span className="text-green-400 font-medium">{t('contact.responseTime') as string}</span>
               </div>
               <p className="text-sm text-gray-400">
-                {t('contact.responseText')}
+                {t('contact.responseText') as string}
               </p>
             </div>
           </motion.div>
@@ -165,9 +165,9 @@ const Contact = () => {
                   <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                     <CheckCircle className="w-8 h-8 text-green-500" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">{t('contact.successTitle')}</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">{t('contact.successTitle') as string}</h3>
                   <p className="text-gray-400">
-                    {t('contact.successMessage')}
+                    {t('contact.successMessage') as string}
                   </p>
                 </motion.div>
               ) : (
@@ -175,7 +175,7 @@ const Contact = () => {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
-                        {t('contact.name')} *
+                        {t('contact.name') as string} *
                       </label>
                       <input
                         type="text"
@@ -188,7 +188,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
-                        {t('contact.emailLabel')} *
+                        {t('contact.emailLabel') as string} *
                       </label>
                       <input
                         type="email"
@@ -203,7 +203,7 @@ const Contact = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      {t('contact.company')}
+                      {t('contact.company') as string}
                     </label>
                     <input
                       type="text"
@@ -216,7 +216,7 @@ const Contact = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      {t('contact.message')} *
+                      {t('contact.message') as string} *
                     </label>
                     <textarea
                       required
@@ -236,11 +236,11 @@ const Contact = () => {
                     {isSubmitting ? (
                       <>
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        {t('contact.sending')}
+                        {t('contact.sending') as string}
                       </>
                     ) : (
                       <>
-                        {t('contact.send')}
+                        {t('contact.send') as string}
                         <Send className="w-5 h-5" />
                       </>
                     )}

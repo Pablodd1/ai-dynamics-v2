@@ -1,4 +1,4 @@
-import { Sparkles, Mail, Phone, MapPin, Globe, MessageCircle, Code, Linkedin, Twitter } from 'lucide-react'
+import { Sparkles, Mail, Phone, MapPin, Code } from 'lucide-react'
 import { useI18n } from '../i18n/I18nContext'
 
 const Footer = () => {
@@ -6,12 +6,12 @@ const Footer = () => {
 
   const footerLinks = {
     services: [
-      { label: t('services.service1.title'), href: '#services' },
-      { label: t('services.service2.title'), href: '#services' },
-      { label: t('services.service3.title'), href: '#services' },
-      { label: t('services.service4.title'), href: '#services' },
-      { label: t('services.service5.title'), href: '#services' },
-      { label: t('services.service6.title'), href: '#services' },
+      { label: t('services.service1.title') as string, href: '#services' },
+      { label: t('services.service2.title') as string, href: '#services' },
+      { label: t('services.service3.title') as string, href: '#services' },
+      { label: t('services.service4.title') as string, href: '#services' },
+      { label: t('services.service5.title') as string, href: '#services' },
+      { label: t('services.service6.title') as string, href: '#services' },
     ],
     company: [
       { label: 'About Us', href: '#about' },
@@ -29,8 +29,6 @@ const Footer = () => {
   }
 
   const socialLinks = [
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
     { icon: Code, href: 'https://github.com', label: 'GitHub' },
   ]
 
@@ -57,7 +55,7 @@ const Footer = () => {
               </span>
             </a>
             <p className="text-gray-400 mb-6 max-w-sm">
-              {t('footer.description')}
+              {t('footer.description') as string}
             </p>
             
             {/* Contact Info */}
@@ -79,12 +77,12 @@ const Footer = () => {
 
           {/* Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">{t('footer.services')}</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.services') as string}</h4>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
-                <li key={link.label as string}>
+                <li key={link.label}>
                   <a href={link.href} className="text-gray-400 hover:text-white transition-colors text-sm">
-                    {link.label as string}
+                    {link.label}
                   </a>
                 </li>
               ))}
@@ -92,7 +90,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">{t('footer.company')}</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.company') as string}</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
@@ -105,7 +103,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">{t('footer.resources')}</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.resources') as string}</h4>
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
@@ -121,7 +119,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="py-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} AI Dynamics. {t('footer.rights')}
+            © {new Date().getFullYear()} AI Dynamics. {t('footer.rights') as string}
           </p>
 
           {/* Social Links */}
