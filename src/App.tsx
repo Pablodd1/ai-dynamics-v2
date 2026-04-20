@@ -1,7 +1,9 @@
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
-import Services from './components/Services'
 import Stats from './components/Stats'
+import TrustSignals from './components/TrustSignals'
+import DetailedServices from './components/DetailedServices'
+import Process from './components/Process'
 import CaseStudies from './components/CaseStudies'
 import Testimonials from './components/Testimonials'
 import Contact from './components/Contact'
@@ -14,7 +16,9 @@ function App() {
       <main>
         <Hero />
         <Stats />
-        <Services />
+        <TrustSignals />
+        <DetailedServices />
+        <Process />
         <CaseStudies />
         <Testimonials />
         <Contact />
