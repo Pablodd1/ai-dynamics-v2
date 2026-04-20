@@ -9,8 +9,10 @@ import {
   CheckCircle
 } from 'lucide-react'
 import { useState } from 'react'
+import { useI18n } from '../i18n/I18nContext'
 
 const Contact = () => {
+  const { t } = useI18n()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,26 +39,26 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: Mail,
-      label: 'Email',
+      label: t('contact.email'),
       value: 'jasmelacosta@gmail.com',
       href: 'mailto:jasmelacosta@gmail.com',
     },
     {
       icon: Phone,
-      label: 'Phone',
+      label: t('contact.phone'),
       value: '+1 (786) 643-2099',
       href: 'tel:+17866432099',
     },
     {
       icon: MapPin,
-      label: 'Location',
+      label: t('contact.location'),
       value: 'Miami, FL',
       href: '#',
     },
     {
       icon: Clock,
-      label: 'Availability',
-      value: '24/7 Support',
+      label: t('contact.availability'),
+      value: t('contact.availabilityValue'),
       href: '#',
     },
   ]
@@ -89,15 +91,14 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
-            Get In Touch
+            {t('contact.badge')}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-white">Ready to Transform</span>{' '}
-            <span className="gradient-text">Your Business?</span>
+            <span className="text-white">{t('contact.title1')}</span>{' '}
+            <span className="gradient-text">{t('contact.title2')}</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Let's discuss how AI Dynamics can help you achieve your goals. 
-            Book a free consultation with our AI experts.
+            {t('contact.subtitle')}
           </p>
         </motion.div>
 
@@ -108,12 +109,12 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-2xl font-bold text-white mb-8">Contact Information</h3>
+            <h3 className="text-2xl font-bold text-white mb-8">{t('contact.infoTitle')}</h3>
             
             <div className="space-y-6 mb-12">
               {contactInfo.map((item, index) => (
                 <motion.a
-                  key={item.label}
+                  key={item.label as string}
                   href={item.href}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -140,10 +141,10 @@ const Contact = () => {
                   <div className="w-3 h-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-500 animate-ping" />
                 </div>
-                <span className="text-green-400 font-medium">Typically replies in 2 hours</span>
+                <span className="text-green-400 font-medium">{t('contact.responseTime')}</span>
               </div>
               <p className="text-sm text-gray-400">
-                Our team is ready to discuss your AI project and provide a free consultation.
+                {t('contact.responseText')}
               </p>
             </div>
           </motion.div>
@@ -164,9 +165,9 @@ const Contact = () => {
                   <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                     <CheckCircle className="w-8 h-8 text-green-500" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Message Sent!</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">{t('contact.successTitle')}</h3>
                   <p className="text-gray-400">
-                    Thank you for reaching out. We'll get back to you within 2 hours.
+                    {t('contact.successMessage')}
                   </p>
                 </motion.div>
               ) : (
@@ -174,7 +175,7 @@ const Contact = () => {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Name *
+                        {t('contact.name')} *
                       </label>
                       <input
                         type="text"
@@ -182,12 +183,12 @@ const Contact = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors"
-                        placeholder="John Doe"
+                        placeholder={t('contact.namePlaceholder') as string}
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">
-                        Email *
+                        {t('contact.emailLabel')} *
                       </label>
                       <input
                         type="email"
@@ -195,27 +196,27 @@ const Contact = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors"
-                        placeholder="john@company.com"
+                        placeholder={t('contact.emailPlaceholder') as string}
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Company
+                      {t('contact.company')}
                     </label>
                     <input
                       type="text"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors"
-                      placeholder="Your Company"
+                      placeholder={t('contact.companyPlaceholder') as string}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Message *
+                      {t('contact.message')} *
                     </label>
                     <textarea
                       required
@@ -223,7 +224,7 @@ const Contact = () => {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-primary-500 transition-colors resize-none"
-                      placeholder="Tell us about your AI project..."
+                      placeholder={t('contact.messagePlaceholder') as string}
                     />
                   </div>
 
@@ -235,11 +236,11 @@ const Contact = () => {
                     {isSubmitting ? (
                       <>
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Sending...
+                        {t('contact.sending')}
                       </>
                     ) : (
                       <>
-                        Send Message
+                        {t('contact.send')}
                         <Send className="w-5 h-5" />
                       </>
                     )}

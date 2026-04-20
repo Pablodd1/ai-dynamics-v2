@@ -1,16 +1,20 @@
-import { Sparkles, Mail, Phone, MapPin, Globe, MessageCircle, Code } from 'lucide-react'
+import { Sparkles, Mail, Phone, MapPin, Globe, MessageCircle, Code, Linkedin, Twitter } from 'lucide-react'
+import { useI18n } from '../i18n/I18nContext'
 
 const Footer = () => {
+  const { t } = useI18n()
+
   const footerLinks = {
     services: [
-      { label: 'Custom AI Integration', href: '#services' },
-      { label: 'AGI & LLM Solutions', href: '#services' },
-      { label: 'AI-Driven Automation', href: '#services' },
-      { label: 'Predictive Analytics', href: '#services' },
-      { label: 'Conversational AI', href: '#services' },
+      { label: t('services.service1.title'), href: '#services' },
+      { label: t('services.service2.title'), href: '#services' },
+      { label: t('services.service3.title'), href: '#services' },
+      { label: t('services.service4.title'), href: '#services' },
+      { label: t('services.service5.title'), href: '#services' },
+      { label: t('services.service6.title'), href: '#services' },
     ],
     company: [
-      { label: 'About Us', href: '#' },
+      { label: 'About Us', href: '#about' },
       { label: 'Case Studies', href: '#case-studies' },
       { label: 'Our Team', href: '#' },
       { label: 'Careers', href: '#' },
@@ -25,9 +29,9 @@ const Footer = () => {
   }
 
   const socialLinks = [
-    { icon: Globe, href: '#', label: 'LinkedIn' },
-    { icon: MessageCircle, href: '#', label: 'Twitter' },
-    { icon: Code, href: '#', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+    { icon: Code, href: 'https://github.com', label: 'GitHub' },
   ]
 
   return (
@@ -53,8 +57,7 @@ const Footer = () => {
               </span>
             </a>
             <p className="text-gray-400 mb-6 max-w-sm">
-              Transforming businesses with cutting-edge AI solutions. 
-              We build intelligent systems that drive growth and innovation.
+              {t('footer.description')}
             </p>
             
             {/* Contact Info */}
@@ -76,12 +79,12 @@ const Footer = () => {
 
           {/* Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Services</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.services')}</h4>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
-                <li key={link.label}>
+                <li key={link.label as string}>
                   <a href={link.href} className="text-gray-400 hover:text-white transition-colors text-sm">
-                    {link.label}
+                    {link.label as string}
                   </a>
                 </li>
               ))}
@@ -89,7 +92,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Company</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.company')}</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
@@ -102,7 +105,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Resources</h4>
+            <h4 className="text-white font-semibold mb-4">{t('footer.resources')}</h4>
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
@@ -118,7 +121,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="py-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} AI Dynamics. All rights reserved.
+            © {new Date().getFullYear()} AI Dynamics. {t('footer.rights')}
           </p>
 
           {/* Social Links */}
@@ -127,6 +130,8 @@ const Footer = () => {
               <a
                 key={social.label}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-lg glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"
                 aria-label={social.label}
               >

@@ -6,52 +6,94 @@ import {
   Shield, 
   LineChart, 
   MessageSquare,
-  ArrowRight
+  ArrowRight,
+  Claw
 } from 'lucide-react'
+import { useI18n } from '../i18n/I18nContext'
+
+// Custom Claw icon since lucide doesn't have one
+const ClawIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+  </svg>
+)
 
 const Services = () => {
+  const { t } = useI18n()
+
   const services = [
     {
       icon: Bot,
-      title: 'Custom AI Integration',
-      description: 'Seamlessly integrate AI into your existing workflows. We build custom solutions that connect with your current systems without disruption.',
-      features: ['API Development', 'Legacy System Integration', 'Real-time Processing', 'Scalable Architecture'],
+      title: t('services.service1.title'),
+      description: t('services.service1.description'),
+      features: [
+        t('services.service1.feature1'),
+        t('services.service1.feature2'),
+        t('services.service1.feature3'),
+        t('services.service1.feature4'),
+      ],
       gradient: 'from-primary-500 to-primary-700',
     },
     {
       icon: Brain,
-      title: 'AGI & LLM Solutions',
-      description: 'Leverage the power of Large Language Models and emerging AGI technologies. From GPT integration to custom model training.',
-      features: ['GPT-4 Integration', 'Custom Model Training', 'Prompt Engineering', 'Fine-tuning'],
+      title: t('services.service2.title'),
+      description: t('services.service2.description'),
+      features: [
+        t('services.service2.feature1'),
+        t('services.service2.feature2'),
+        t('services.service2.feature3'),
+        t('services.service2.feature4'),
+      ],
       gradient: 'from-accent to-accent-700',
     },
     {
       icon: Workflow,
-      title: 'AI-Driven Automation',
-      description: 'Automate repetitive tasks and complex workflows with intelligent systems that learn and improve over time.',
-      features: ['Process Automation', 'Document Processing', 'Data Extraction', 'Smart Workflows'],
+      title: t('services.service3.title'),
+      description: t('services.service3.description'),
+      features: [
+        t('services.service3.feature1'),
+        t('services.service3.feature2'),
+        t('services.service3.feature3'),
+        t('services.service3.feature4'),
+      ],
       gradient: 'from-purple-500 to-purple-700',
     },
     {
       icon: LineChart,
-      title: 'Predictive Analytics',
-      description: 'Transform your data into actionable insights. Our AI models predict trends, identify opportunities, and optimize decisions.',
-      features: ['Demand Forecasting', 'Risk Assessment', 'Customer Insights', 'Market Analysis'],
+      title: t('services.service4.title'),
+      description: t('services.service4.description'),
+      features: [
+        t('services.service4.feature1'),
+        t('services.service4.feature2'),
+        t('services.service4.feature3'),
+        t('services.service4.feature4'),
+      ],
       gradient: 'from-pink-500 to-pink-700',
     },
     {
       icon: MessageSquare,
-      title: 'Conversational AI',
-      description: 'Deploy intelligent chatbots and virtual assistants that understand context, learn from interactions, and deliver human-like experiences.',
-      features: ['Chatbots', 'Voice Assistants', 'Multi-language Support', 'Sentiment Analysis'],
+      title: t('services.service5.title'),
+      description: t('services.service5.description'),
+      features: [
+        t('services.service5.feature1'),
+        t('services.service5.feature2'),
+        t('services.service5.feature3'),
+        t('services.service5.feature4'),
+      ],
       gradient: 'from-cyan-500 to-cyan-700',
     },
     {
       icon: Shield,
-      title: 'AI Security & Compliance',
-      description: 'Ensure your AI implementations are secure, ethical, and compliant with industry regulations and standards.',
-      features: ['Data Privacy', 'Model Security', 'Compliance Audits', 'Ethical AI Framework'],
+      title: t('services.service6.title'),
+      description: t('services.service6.description'),
+      features: [
+        t('services.service6.feature1'),
+        t('services.service6.feature2'),
+        t('services.service6.feature3'),
+        t('services.service6.feature4'),
+      ],
       gradient: 'from-emerald-500 to-emerald-700',
+      isNew: true,
     },
   ]
 
@@ -72,15 +114,14 @@ const Services = () => {
           className="text-center mb-20"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
-            Our Services
+            {t('services.badge')}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-white">Comprehensive</span>{' '}
-            <span className="gradient-text">AI Solutions</span>
+            <span className="text-white">{t('services.title1')}</span>{' '}
+            <span className="gradient-text">{t('services.title2')}</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            From strategy to implementation, we provide end-to-end AI services 
-            tailored to your business needs.
+            {t('services.subtitle')}
           </p>
         </motion.div>
 
@@ -88,7 +129,7 @@ const Services = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <motion.div
-              key={service.title}
+              key={service.title as string}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -96,6 +137,13 @@ const Services = () => {
               className="group relative"
             >
               <div className="relative h-full p-8 rounded-2xl glass gradient-border overflow-hidden transition-all duration-500 hover:bg-white/10">
+                {/* New Badge */}
+                {'isNew' in service && service.isNew && (
+                  <div className="absolute top-4 right-4 px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 text-xs font-semibold text-white">
+                    NEW
+                  </div>
+                )}
+
                 {/* Icon */}
                 <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <service.icon className="w-7 h-7 text-white" />
@@ -108,7 +156,7 @@ const Services = () => {
                 {/* Features */}
                 <ul className="space-y-2 mb-6">
                   {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
+                    <li key={feature as string} className="flex items-center gap-2 text-sm text-gray-300">
                       <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${service.gradient}`} />
                       {feature}
                     </li>
@@ -120,7 +168,7 @@ const Services = () => {
                   href="#contact" 
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors group/link"
                 >
-                  Learn More
+                  {t('services.learnMore')}
                   <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                 </a>
 
