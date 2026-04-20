@@ -59,7 +59,7 @@ const AIVisualization = () => {
         // Draw particle
         ctx.beginPath()
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(139, 92, 246, ${particle.alpha})`
+        ctx.fillStyle = `rgba(201, 169, 110, ${particle.alpha})`
         ctx.fill()
 
         // Draw connections
@@ -72,7 +72,7 @@ const AIVisualization = () => {
             ctx.beginPath()
             ctx.moveTo(particle.x, particle.y)
             ctx.lineTo(other.x, other.y)
-            ctx.strokeStyle = `rgba(139, 92, 246, ${0.2 * (1 - distance / 150)})`
+            ctx.strokeStyle = `rgba(201, 169, 110, ${0.2 * (1 - distance / 150)})`
             ctx.lineWidth = 0.5
             ctx.stroke()
           }
@@ -125,11 +125,11 @@ const AIVisualization = () => {
   ]
 
   return (
-    <section id="solutions" className="section-padding relative overflow-hidden">
+    <section id="solutions" className="section-padding relative overflow-hidden bg-gradient-to-b from-dark to-dark-50">
       {/* Neural Network Canvas Background */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full opacity-50"
+        className="absolute inset-0 w-full h-full opacity-30"
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -141,14 +141,14 @@ const AIVisualization = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
+              <span className="inline-block px-4 py-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 text-luxury-gold text-xs uppercase tracking-[0.2em] font-medium mb-6">
                 Our Process
               </span>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 font-serif">
                 <span className="text-white">How We Integrate</span>{' '}
-                <span className="gradient-text">AI Into Your Business</span>
+                <span className="text-luxury-gold">AI Into Your Business</span>
               </h2>
-              <p className="text-lg text-gray-400 mb-8">
+              <p className="text-lg text-luxury-silver mb-8">
                 Our proven 5-step methodology ensures successful AI implementation 
                 that delivers measurable results from day one.
               </p>
@@ -165,12 +165,12 @@ const AIVisualization = () => {
                   transition={{ delay: index * 0.1 }}
                   className="flex gap-4 group"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-accent flex items-center justify-center font-bold text-white group-hover:scale-110 transition-transform">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl border border-luxury-gold/30 bg-luxury-gold/10 flex items-center justify-center font-bold text-luxury-gold group-hover:scale-110 transition-transform">
                     {item.step}
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
-                    <p className="text-sm text-gray-400">{item.description}</p>
+                    <p className="text-sm text-luxury-silver">{item.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -184,7 +184,7 @@ const AIVisualization = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="relative rounded-2xl overflow-hidden glass">
+            <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]">
               <video
                 autoPlay
                 muted
@@ -201,8 +201,8 @@ const AIVisualization = () => {
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="flex items-center gap-4">
-                  <div className="px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30">
-                    <span className="text-accent font-medium">AI Integration Demo</span>
+                  <div className="px-4 py-2 rounded-full bg-luxury-gold/10 backdrop-blur-sm border border-luxury-gold/30">
+                    <span className="text-luxury-gold font-medium">AI Integration Demo</span>
                   </div>
                 </div>
               </div>
@@ -212,19 +212,19 @@ const AIVisualization = () => {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity }}
-              className="absolute -top-4 -right-4 px-4 py-3 rounded-xl glass"
+              className="absolute -top-4 -right-4 px-4 py-3 rounded-xl border border-luxury-gold/20 bg-luxury-gold/5 backdrop-blur-sm"
             >
-              <div className="text-2xl font-bold text-accent">99.9%</div>
-              <div className="text-xs text-gray-400">Uptime</div>
+              <div className="text-2xl font-bold text-luxury-gold">99.9%</div>
+              <div className="text-xs text-luxury-silver">Uptime</div>
             </motion.div>
 
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 5, repeat: Infinity, delay: 1 }}
-              className="absolute -bottom-4 -left-4 px-4 py-3 rounded-xl glass"
+              className="absolute -bottom-4 -left-4 px-4 py-3 rounded-xl border border-luxury-gold/20 bg-luxury-gold/5 backdrop-blur-sm"
             >
-              <div className="text-2xl font-bold text-primary-400">50ms</div>
-              <div className="text-xs text-gray-400">Response Time</div>
+              <div className="text-2xl font-bold text-luxury-gold">50ms</div>
+              <div className="text-xs text-luxury-silver">Response Time</div>
             </motion.div>
           </motion.div>
         </div>

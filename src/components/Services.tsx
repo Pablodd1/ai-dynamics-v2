@@ -24,7 +24,8 @@ const Services = () => {
         t('services.service1.feature3') as string,
         t('services.service1.feature4') as string,
       ],
-      gradient: 'from-primary-500 to-primary-700',
+      gradient: 'from-luxury-gold/30 to-luxury-gold-dark/30',
+      borderColor: 'border-luxury-gold/20',
     },
     {
       icon: Brain,
@@ -36,7 +37,8 @@ const Services = () => {
         t('services.service2.feature3') as string,
         t('services.service2.feature4') as string,
       ],
-      gradient: 'from-accent to-accent-700',
+      gradient: 'from-luxury-gold/20 to-luxury-champagne/20',
+      borderColor: 'border-luxury-gold/15',
     },
     {
       icon: Workflow,
@@ -48,7 +50,8 @@ const Services = () => {
         t('services.service3.feature3') as string,
         t('services.service3.feature4') as string,
       ],
-      gradient: 'from-purple-500 to-purple-700',
+      gradient: 'from-luxury-gold/25 to-luxury-gold-dark/25',
+      borderColor: 'border-luxury-gold/20',
     },
     {
       icon: LineChart,
@@ -60,7 +63,8 @@ const Services = () => {
         t('services.service4.feature3') as string,
         t('services.service4.feature4') as string,
       ],
-      gradient: 'from-pink-500 to-pink-700',
+      gradient: 'from-luxury-gold/20 to-luxury-champagne/15',
+      borderColor: 'border-luxury-gold/15',
     },
     {
       icon: MessageSquare,
@@ -72,7 +76,8 @@ const Services = () => {
         t('services.service5.feature3') as string,
         t('services.service5.feature4') as string,
       ],
-      gradient: 'from-cyan-500 to-cyan-700',
+      gradient: 'from-luxury-gold/25 to-luxury-gold-dark/20',
+      borderColor: 'border-luxury-gold/20',
     },
     {
       icon: Shield,
@@ -84,17 +89,18 @@ const Services = () => {
         t('services.service6.feature3') as string,
         t('services.service6.feature4') as string,
       ],
-      gradient: 'from-emerald-500 to-emerald-700',
+      gradient: 'from-luxury-gold/30 to-luxury-gold-dark/30',
+      borderColor: 'border-luxury-gold/25',
       isNew: true,
     },
   ]
 
   return (
-    <section id="services" className="section-padding relative overflow-hidden">
+    <section id="services" className="section-padding relative overflow-hidden bg-gradient-to-b from-dark-50 to-dark">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-luxury-gold/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-luxury-gold/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,14 +111,14 @@ const Services = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
+          <span className="inline-block px-4 py-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 text-luxury-gold text-xs uppercase tracking-[0.2em] font-medium mb-6">
             {t('services.badge') as string}
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif">
             <span className="text-white">{t('services.title1') as string}</span>{' '}
-            <span className="gradient-text">{t('services.title2') as string}</span>
+            <span className="text-luxury-gold">{t('services.title2') as string}</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-luxury-silver max-w-3xl mx-auto">
             {t('services.subtitle') as string}
           </p>
         </motion.div>
@@ -128,28 +134,28 @@ const Services = () => {
               transition={{ delay: index * 0.1 }}
               className="group relative"
             >
-              <div className="relative h-full p-8 rounded-2xl glass gradient-border overflow-hidden transition-all duration-500 hover:bg-white/10">
+              <div className="relative h-full p-8 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-luxury-gold/30 overflow-hidden transition-all duration-500 hover:bg-luxury-gold/[0.02]">
                 {/* New Badge */}
                 {'isNew' in service && service.isNew && (
-                  <div className="absolute top-4 right-4 px-2 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 text-xs font-semibold text-white">
+                  <div className="absolute top-4 right-4 px-2 py-1 rounded-full border border-luxury-gold/40 bg-luxury-gold/10 text-xs font-semibold text-luxury-gold">
                     NEW
                   </div>
                 )}
 
                 {/* Icon */}
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <service.icon className="w-7 h-7 text-white" />
+                <div className={`w-14 h-14 rounded-xl border ${service.borderColor} bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <service.icon className="w-7 h-7 text-luxury-gold" />
                 </div>
 
                 {/* Content */}
                 <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                <p className="text-gray-400 mb-6 text-sm leading-relaxed">{service.description}</p>
+                <p className="text-luxury-silver mb-6 text-sm leading-relaxed">{service.description}</p>
 
                 {/* Features */}
                 <ul className="space-y-2 mb-6">
                   {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                      <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${service.gradient}`} />
+                    <li key={feature} className="flex items-center gap-2 text-sm text-luxury-champagne">
+                      <div className="w-1.5 h-1.5 rounded-full bg-luxury-gold" />
                       {feature}
                     </li>
                   ))}
@@ -158,14 +164,14 @@ const Services = () => {
                 {/* CTA */}
                 <a 
                   href="#contact" 
-                  className="inline-flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors group/link"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-luxury-gold hover:text-luxury-champagne transition-colors group/link"
                 >
                   {t('services.learnMore') as string}
                   <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                 </a>
 
                 {/* Hover Glow */}
-                <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${service.gradient} opacity-5`} />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-luxury-gold/5 to-transparent" />
               </div>
             </motion.div>
           ))}

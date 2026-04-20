@@ -14,15 +14,15 @@ const Partners = () => {
       name: 'Railway', 
       role: 'Cloud Infrastructure',
       icon: Server,
-      color: 'from-purple-500/20 to-pink-500/20',
-      borderColor: 'border-purple-500/30',
+      color: 'from-luxury-gold/10 to-luxury-gold-dark/10',
+      borderColor: 'border-luxury-gold/20',
     },
     { 
       name: 'Vercel', 
       role: 'Edge Deployment',
       icon: Globe,
-      color: 'from-gray-500/20 to-slate-500/20',
-      borderColor: 'border-gray-500/30',
+      color: 'from-luxury-silver/10 to-luxury-silver/5',
+      borderColor: 'border-luxury-silver/20',
     },
     { 
       name: 'Supabase', 
@@ -42,8 +42,8 @@ const Partners = () => {
       name: 'Kimi AI', 
       role: 'LLM Intelligence',
       icon: Cpu,
-      color: 'from-blue-500/20 to-cyan-500/20',
-      borderColor: 'border-blue-500/30',
+      color: 'from-luxury-gold/10 to-luxury-champagne/10',
+      borderColor: 'border-luxury-gold/20',
     },
   ]
 
