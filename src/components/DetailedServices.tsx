@@ -15,7 +15,8 @@ const DetailedServices = () => {
         'Report generation in seconds',
       ],
       benefit: 'Save 20+ hours/week per employee',
-      color: 'from-primary-500 to-primary-700',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
     },
     {
       icon: MessageSquare,
@@ -28,7 +29,8 @@ const DetailedServices = () => {
         'Sentiment analysis & escalation',
       ],
       benefit: 'Reduce response time by 90%',
-      color: 'from-accent to-accent-700',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
     },
     {
       icon: FileText,
@@ -41,7 +43,8 @@ const DetailedServices = () => {
         'Compliance document management',
       ],
       benefit: 'Process 1000+ documents/day',
-      color: 'from-purple-500 to-purple-700',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
     },
     {
       icon: BarChart3,
@@ -54,93 +57,96 @@ const DetailedServices = () => {
         'Revenue trend analysis',
       ],
       benefit: 'Improve forecasting accuracy by 85%',
-      color: 'from-pink-500 to-pink-700',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
     },
     {
       icon: Workflow,
-      title: 'Workflow Optimization',
-      description: 'Map, analyze, and optimize your business processes. We identify inefficiencies and implement streamlined workflows that reduce costs and improve quality.',
+      title: 'Workflow Integration',
+      description: 'Seamlessly connect your existing tools and systems. We integrate with 5000+ apps including Salesforce, HubSpot, Slack, and your custom software.',
       features: [
-        'Process mapping & analysis',
-        'Bottleneck identification',
-        'Workflow automation design',
-        'Performance monitoring dashboards',
+        'CRM & ERP integration',
+        'Slack/Teams notifications',
+        'API development & management',
+        'Legacy system modernization',
       ],
-      benefit: 'Increase operational efficiency by 60%',
-      color: 'from-cyan-500 to-cyan-700',
+      benefit: 'Connect your entire tech stack',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
     },
     {
       icon: Shield,
-      title: 'AI Governance & Compliance',
-      description: 'Ensure your AI implementations meet regulatory requirements. We provide frameworks for ethical AI, data privacy, and industry-specific compliance.',
+      title: 'Compliance & Security',
+      description: 'Enterprise-grade security with HIPAA, SOC 2, and GDPR compliance built in. Your data is encrypted, audited, and protected at every layer.',
       features: [
-        'HIPAA compliance for healthcare',
-        'Data privacy impact assessments',
-        'AI ethics framework implementation',
-        'Audit trails & documentation',
+        'HIPAA-compliant AI solutions',
+        'End-to-end AES-256 encryption',
+        'Audit logging & access controls',
+        'SOC 2 Type II certified',
       ],
-      benefit: '100% compliance guaranteed',
-      color: 'from-emerald-500 to-emerald-700',
+      benefit: 'Enterprise security from day one',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
     },
   ]
 
   return (
-    <section id="detailed-services" className="section-padding relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="services" className="section-padding relative overflow-hidden bg-gradient-to-b from-dark to-dark-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
-            Our Services
+          <span className="inline-block px-4 py-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 text-luxury-gold text-xs uppercase tracking-[0.2em] font-medium mb-6">
+            Services
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-white">AI Solutions That </span>
-            <span className="gradient-text">Drive Results</span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-serif">
+            <span className="text-white">AI Solutions, </span>
+            <span className="text-luxury-gold">Real Results</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            From automation to analytics, we deliver end-to-end AI solutions 
-            tailored to your business needs.
+          <p className="text-xl text-luxury-silver max-w-3xl mx-auto">
+            End-to-end AI automation for businesses that want to move faster, reduce costs, and scale without hiring.
           </p>
         </motion.div>
 
+        {/* Services Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="group relative"
+              className="group relative p-8 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-luxury-gold/40 hover:bg-luxury-gold/[0.03] transition-all duration-500"
             >
-              <div className="relative h-full p-8 rounded-2xl glass gradient-border overflow-hidden transition-all duration-500 hover:bg-white/10">
-                <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <service.icon className="w-7 h-7 text-white" />
-                </div>
+              {/* Icon */}
+              <div className={`w-14 h-14 rounded-xl border ${service.color} ${service.bgColor} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                <service.icon className="w-7 h-7 text-luxury-gold" />
+              </div>
 
-                <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
-                <p className="text-gray-400 mb-6 text-sm leading-relaxed">{service.description}</p>
+              {/* Content */}
+              <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>
+              <p className="text-luxury-silver text-sm leading-relaxed mb-6">
+                {service.description}
+              </p>
 
-                <ul className="space-y-2 mb-6">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                      <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${service.color}`} />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+              {/* Features */}
+              <ul className="space-y-2 mb-6">
+                {service.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm text-luxury-silver">
+                    <span className="w-1.5 h-1.5 rounded-full bg-luxury-gold mt-1.5 shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
 
-                <div className={`inline-block px-4 py-2 rounded-full bg-gradient-to-r ${service.color} bg-opacity-10 text-sm font-medium text-white`}>
-                  {service.benefit}
-                </div>
+              {/* Benefit Badge */}
+              <div className="inline-block px-4 py-2 rounded-full border border-luxury-gold/20 bg-luxury-gold/5 text-xs text-luxury-champagne font-medium">
+                {service.benefit}
               </div>
             </motion.div>
           ))}

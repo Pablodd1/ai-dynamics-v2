@@ -42,14 +42,14 @@ const Navigation = () => {
             {/* Logo */}
             <a href="#" className="flex items-center gap-3">
               <div className="relative w-10 h-10">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-accent rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold to-luxury-gold-dark rounded-lg" />
                 <div className="absolute inset-1 bg-dark rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-primary-400" />
+                  <Sparkles className="w-5 h-5 text-luxury-gold" />
                 </div>
               </div>
-              <span className="text-xl font-bold">
+              <span className="text-xl font-bold font-serif">
                 <span className="text-white">AI</span>
-                <span className="gradient-text"> Dynamics</span>
+                <span className="text-luxury-gold"> Dynamics</span>
               </span>
             </a>
 
@@ -59,10 +59,10 @@ const Navigation = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-gray-300 hover:text-white transition-colors relative group"
+                  className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group"
                 >
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-500 to-accent group-hover:w-full transition-all duration-300" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
                 </a>
               ))}
             </nav>
@@ -73,7 +73,7 @@ const Navigation = () => {
               
               <a
                 href="#contact"
-                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-accent text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl border border-luxury-gold/40 text-luxury-gold text-sm font-semibold hover:bg-luxury-gold/10 transition-all"
               >
                 {t('nav.getStarted') as string}
               </a>
@@ -81,7 +81,7 @@ const Navigation = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden w-10 h-10 rounded-xl neo-morphism flex items-center justify-center text-white"
+                className="md:hidden w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-white hover:border-luxury-gold/30 transition-colors"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -105,7 +105,7 @@ const Navigation = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute top-20 right-4 left-4 p-6 rounded-2xl neo-morphism"
+              className="absolute top-20 right-4 left-4 p-6 rounded-2xl border border-white/10 bg-dark-50/95 backdrop-blur-xl"
             >
               <div className="flex flex-col gap-4">
                 {navLinks.map((link, index) => (
@@ -116,7 +116,7 @@ const Navigation = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg text-gray-300 hover:text-white transition-colors py-2"
+                    className="text-lg text-luxury-silver hover:text-luxury-champagne transition-colors py-2"
                   >
                     {link.label}
                   </motion.a>
@@ -127,7 +127,7 @@ const Navigation = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="mt-4 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary-600 to-accent text-white font-semibold"
+                  className="mt-4 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-luxury-gold/40 text-luxury-gold font-semibold hover:bg-luxury-gold/10 transition-all"
                 >
                   {t('nav.getStarted') as string}
                 </motion.a>
