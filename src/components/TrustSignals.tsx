@@ -1,97 +1,74 @@
 import { motion } from 'framer-motion'
-import { Check, Building2, Users, Clock, TrendingUp } from 'lucide-react'
+import { Check, Building2, Stethoscope, Scale, Home, Calculator, Smile } from 'lucide-react'
 
 const TrustSignals = () => {
-  const stats = [
-    { icon: Building2, value: '50+', label: 'Businesses Automated' },
-    { icon: Users, value: '10,000+', label: 'Hours Saved Monthly' },
-    { icon: Clock, value: '30', label: 'Days Average Implementation' },
-    { icon: TrendingUp, value: '40%', label: 'Average Cost Reduction' },
-  ]
-
-  const clients = [
-    'Healthcare Clinic Miami',
-    'Law Firm Associates',
-    'Marketing Agency Pro',
-    'Real Estate Group',
-    'Accounting Solutions',
-    'Dental Care Center',
-  ]
-
-  const certifications = [
-    'Google Cloud Partner',
-    'AWS Certified',
-    'Azure AI Engineer',
-    'HIPAA Compliant',
-    'SOC 2 Type II',
+  const industries = [
+    { icon: Stethoscope, name: 'Healthcare', description: 'HIPAA-compliant AI scribes & automation' },
+    { icon: Scale, name: 'Legal', description: 'Case management & document automation' },
+    { icon: Home, name: 'Real Estate', description: 'Lead qualification & CRM integration' },
+    { icon: Calculator, name: 'Accounting', description: 'Invoice processing & reconciliation' },
+    { icon: Smile, name: 'Dental', description: 'Patient scheduling & recall systems' },
+    { icon: Building2, name: 'Retail', description: 'Inventory & customer service AI' },
   ]
 
   return (
-    <section className="section-padding relative overflow-hidden bg-gradient-to-b from-dark to-dark/95">
+    <section className="section-padding relative overflow-hidden bg-gradient-to-b from-dark-50 to-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Stats */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20"
+          className="text-center mb-16"
         >
-          {stats.map((stat, index) => (
+          <span className="inline-block px-4 py-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 text-luxury-gold text-xs uppercase tracking-[0.2em] font-medium mb-6">
+            Industries
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 font-serif">
+            <span className="text-white">Built for</span>{' '}
+            <span className="text-luxury-gold">Miami Business</span>
+          </h2>
+          <p className="text-lg text-luxury-silver max-w-2xl mx-auto">
+            Specialized AI solutions for the industries that power our city.
+          </p>
+        </motion.div>
+
+        {/* Industries Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {industries.map((industry, index) => (
             <motion.div
-              key={stat.label}
+              key={industry.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="text-center"
+              className="group p-6 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-luxury-gold/30 hover:bg-luxury-gold/5 transition-all duration-500"
             >
-              <stat.icon className="w-8 h-8 text-primary-400 mx-auto mb-4" />
-              <div className="text-4xl font-bold text-white mb-2">{stat.value}</div>
-              <div className="text-sm text-gray-400">{stat.label}</div>
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl border border-luxury-gold/20 bg-luxury-gold/5 flex items-center justify-center group-hover:border-luxury-gold/40 transition-colors">
+                  <industry.icon className="w-6 h-6 text-luxury-gold" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-1">{industry.name}</h3>
+                  <p className="text-sm text-luxury-silver">{industry.description}</p>
+                </div>
+              </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Client Logos */}
+        {/* Trust badges */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="mb-20"
+          className="mt-20 text-center"
         >
-          <p className="text-center text-sm text-gray-500 uppercase tracking-widest mb-8">
-            Trusted by Miami Businesses
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            {clients.map((client) => (
-              <div
-                key={client}
-                className="px-6 py-3 rounded-xl glass text-gray-400 text-sm font-medium"
-              >
-                {client}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Certifications */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <p className="text-sm text-gray-500 uppercase tracking-widest mb-6">
-            Certified & Compliant
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {certifications.map((cert) => (
-              <div
-                key={cert}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20"
-              >
-                <Check className="w-4 h-4 text-primary-400" />
-                <span className="text-sm text-primary-300">{cert}</span>
+          <div className="inline-flex flex-wrap items-center justify-center gap-6 p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            {['Local Miami Business', 'On-site Support Available', 'Spanish & English', 'Same-day Response'].map((badge) => (
+              <div key={badge} className="flex items-center gap-2 text-sm text-luxury-silver">
+                <Check className="w-4 h-4 text-luxury-gold" />
+                {badge}
               </div>
             ))}
           </div>

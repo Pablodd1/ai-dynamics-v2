@@ -1,84 +1,76 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef, useEffect, useState } from 'react'
-
-const AnimatedCounter = ({ target, suffix = '' }: { target: number; suffix?: string }) => {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
-
-  useEffect(() => {
-    if (isInView) {
-      const duration = 2000
-      const steps = 60
-      const increment = target / steps
-      let current = 0
-
-      const timer = setInterval(() => {
-        current += increment
-        if (current >= target) {
-          setCount(target)
-          clearInterval(timer)
-        } else {
-          setCount(Math.floor(current))
-        }
-      }, duration / steps)
-
-      return () => clearInterval(timer)
-    }
-  }, [isInView, target])
-
-  return <span ref={ref}>{count}{suffix}</span>
-}
+import { motion } from 'framer-motion'
+import { TrendingUp, Clock, Users, Building2, Shield, Award } from 'lucide-react'
 
 const Stats = () => {
   const stats = [
-    { value: 98, suffix: '%', label: 'Client Satisfaction', description: 'Based on post-project surveys' },
-    { value: 150, suffix: '+', label: 'AI Projects Delivered', description: 'Across 12 industries' },
-    { value: 40, suffix: '%', label: 'Average Cost Reduction', description: 'Through AI automation' },
-    { value: 3, suffix: 'x', label: 'Faster Time-to-Market', description: 'With AI-powered development' },
+    {
+      icon: Building2,
+      value: '50+',
+      label: 'Businesses Automated',
+      description: 'Across healthcare, legal, and retail',
+    },
+    {
+      icon: Clock,
+      value: '10,000+',
+      label: 'Hours Saved Monthly',
+      description: 'Through intelligent automation',
+    },
+    {
+      icon: Users,
+      value: '40%',
+      label: 'Cost Reduction',
+      description: 'Average client savings',
+    },
+    {
+      icon: TrendingUp,
+      value: '30',
+      label: 'Day Implementation',
+      description: 'Average deployment time',
+    },
   ]
 
   return (
-    <section className="relative py-24 overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark via-primary-950/20 to-dark" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-white">Results That</span>{' '}
-            <span className="gradient-text">Speak for Themselves</span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Real metrics from real projects. Our AI solutions deliver tangible business outcomes.
-          </p>
-        </motion.div>
-
+    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-dark to-dark-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="relative group"
+              className="text-center group"
             >
-              <div className="text-center p-6 rounded-2xl glass hover:bg-white/10 transition-all duration-300">
-                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </div>
-                <div className="text-white font-semibold mb-1">{stat.label}</div>
-                <div className="text-sm text-gray-500">{stat.description}</div>
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl border border-luxury-gold/20 bg-luxury-gold/5 mb-5 group-hover:border-luxury-gold/40 transition-colors">
+                <stat.icon className="w-7 h-7 text-luxury-gold" />
               </div>
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2 font-serif">{stat.value}</div>
+              <div className="text-sm text-luxury-champagne font-medium mb-1">{stat.label}</div>
+              <div className="text-xs text-luxury-silver">{stat.description}</div>
             </motion.div>
           ))}
         </div>
+
+        {/* Certifications row */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-20 flex flex-wrap justify-center items-center gap-8"
+        >
+          {[
+            { icon: Shield, label: 'HIPAA Compliant' },
+            { icon: Award, label: 'SOC 2 Type II' },
+            { icon: Shield, label: 'GDPR Ready' },
+            { icon: Award, label: 'AES-256 Encrypted' },
+          ].map((cert) => (
+            <div key={cert.label} className="flex items-center gap-2 text-luxury-silver/60">
+              <cert.icon className="w-4 h-4 text-luxury-gold/60" />
+              <span className="text-xs uppercase tracking-wider">{cert.label}</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   )

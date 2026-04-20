@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme {
   --color-primary-50: #f5f3ff;
@@ -25,17 +26,26 @@
   --color-accent-800: #155e75;
   --color-accent-900: #164e63;
   
-  --color-dark: #0f0f1a;
-  --color-dark-50: #1a1a2e;
-  --color-dark-100: #16162a;
-  --color-dark-200: #121224;
-  --color-dark-300: #0e0e1e;
-  --color-dark-400: #0a0a18;
-  --color-dark-500: #060612;
-  --color-dark-600: #04040c;
-  --color-dark-700: #020208;
+  --color-dark: #0a0a0f;
+  --color-dark-50: #111118;
+  --color-dark-100: #0f0f16;
+  --color-dark-200: #0d0d14;
+  --color-dark-300: #0b0b12;
+  --color-dark-400: #090910;
+  --color-dark-500: #07070c;
+  --color-dark-600: #05050a;
+  --color-dark-700: #030308;
   --color-dark-800: #010104;
   --color-dark-900: #000000;
+
+  /* Luxury Palette */
+  --color-luxury-gold: #c9a96e;
+  --color-luxury-gold-light: #d4b87a;
+  --color-luxury-gold-dark: #a0894e;
+  --color-luxury-champagne: #f7e7ce;
+  --color-luxury-silver: #a0a0a8;
+  --color-luxury-platinum: #e8e8e8;
+  --color-luxury-onyx: #1a1a24;
 }
 
 html {
@@ -47,6 +57,33 @@ body {
   color: white;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Serif font for luxury headings */
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Luxury gold text */
+.text-luxury-gold {
+  color: #c9a96e;
+}
+
+.text-luxury-champagne {
+  color: #f7e7ce;
+}
+
+.text-luxury-silver {
+  color: #a0a0a8;
+}
+
+.bg-luxury-gold {
+  background-color: #c9a96e;
+}
+
+.border-luxury-gold {
+  border-color: #c9a96e;
 }
 
 /* Neomorphism - Soft UI Design Trend 2025 */
@@ -88,74 +125,54 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Gradient text */
+/* Gradient text - luxury gold */
 .gradient-text {
-  background: linear-gradient(to right, var(--color-primary-400), var(--color-accent), var(--color-primary-400));
+  background: linear-gradient(135deg, #c9a96e 0%, #f7e7ce 50%, #c9a96e 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Gradient border */
-.gradient-border {
-  position: relative;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(6, 182, 212, 0.5));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* Button styles */
+/* Luxury button */
 .btn-primary {
   position: relative;
   overflow: hidden;
-  padding: 1rem 2rem;
-  background: linear-gradient(to right, var(--color-primary-600), var(--color-primary-500));
-  color: white;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #c9a96e, #a0894e);
+  color: #0a0a0f;
   font-weight: 600;
   border-radius: 9999px;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.02em;
 }
 
 .btn-primary:hover {
-  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
-  transform: scale(1.05);
+  box-shadow: 0 10px 40px -10px rgba(201, 169, 110, 0.4);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active {
-  transform: scale(0.95);
+  transform: translateY(0);
 }
 
 .btn-secondary {
   position: relative;
   overflow: hidden;
-  padding: 1rem 2rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  color: white;
+  padding: 1rem 2.5rem;
+  background-color: transparent;
+  color: #c9a96e;
   font-weight: 600;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s;
+  border: 1px solid rgba(201, 169, 110, 0.4);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.02em;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
-}
-
-.btn-secondary:active {
-  transform: scale(0.95);
+  background-color: rgba(201, 169, 110, 0.1);
+  border-color: rgba(201, 169, 110, 0.7);
+  transform: translateY(-2px);
 }
 
 /* Section padding */
