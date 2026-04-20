@@ -18,10 +18,10 @@ const Navigation = () => {
   }, [])
 
   const navLinks = [
-    { label: t('nav.services'), href: '#services' },
-    { label: t('nav.caseStudies'), href: '#case-studies' },
-    { label: t('nav.about'), href: '#about' },
-    { label: t('nav.contact'), href: '#contact' },
+    { label: t('nav.services') as string, href: '#services' },
+    { label: t('nav.caseStudies') as string, href: '#case-studies' },
+    { label: t('nav.about') as string, href: '#about' },
+    { label: t('nav.contact') as string, href: '#contact' },
   ]
 
   return (
@@ -75,7 +75,7 @@ const Navigation = () => {
                 href="#contact"
                 className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-accent text-white text-sm font-semibold hover:opacity-90 transition-opacity"
               >
-                {t('nav.getStarted')}
+                {t('nav.getStarted') as string}
               </a>
 
               {/* Mobile Menu Button */}
@@ -129,7 +129,7 @@ const Navigation = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="mt-4 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary-600 to-accent text-white font-semibold"
                 >
-                  {t('nav.getStarted')}
+                  {t('nav.getStarted') as string}
                 </motion.a>
               </div>
             </motion.nav>

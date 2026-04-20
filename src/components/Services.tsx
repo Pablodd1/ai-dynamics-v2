@@ -6,17 +6,9 @@ import {
   Shield, 
   LineChart, 
   MessageSquare,
-  ArrowRight,
-  Claw
+  ArrowRight
 } from 'lucide-react'
 import { useI18n } from '../i18n/I18nContext'
-
-// Custom Claw icon since lucide doesn't have one
-const ClawIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" className="w-7 h-7 text-white" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-  </svg>
-)
 
 const Services = () => {
   const { t } = useI18n()
@@ -24,73 +16,73 @@ const Services = () => {
   const services = [
     {
       icon: Bot,
-      title: t('services.service1.title'),
-      description: t('services.service1.description'),
+      title: t('services.service1.title') as string,
+      description: t('services.service1.description') as string,
       features: [
-        t('services.service1.feature1'),
-        t('services.service1.feature2'),
-        t('services.service1.feature3'),
-        t('services.service1.feature4'),
+        t('services.service1.feature1') as string,
+        t('services.service1.feature2') as string,
+        t('services.service1.feature3') as string,
+        t('services.service1.feature4') as string,
       ],
       gradient: 'from-primary-500 to-primary-700',
     },
     {
       icon: Brain,
-      title: t('services.service2.title'),
-      description: t('services.service2.description'),
+      title: t('services.service2.title') as string,
+      description: t('services.service2.description') as string,
       features: [
-        t('services.service2.feature1'),
-        t('services.service2.feature2'),
-        t('services.service2.feature3'),
-        t('services.service2.feature4'),
+        t('services.service2.feature1') as string,
+        t('services.service2.feature2') as string,
+        t('services.service2.feature3') as string,
+        t('services.service2.feature4') as string,
       ],
       gradient: 'from-accent to-accent-700',
     },
     {
       icon: Workflow,
-      title: t('services.service3.title'),
-      description: t('services.service3.description'),
+      title: t('services.service3.title') as string,
+      description: t('services.service3.description') as string,
       features: [
-        t('services.service3.feature1'),
-        t('services.service3.feature2'),
-        t('services.service3.feature3'),
-        t('services.service3.feature4'),
+        t('services.service3.feature1') as string,
+        t('services.service3.feature2') as string,
+        t('services.service3.feature3') as string,
+        t('services.service3.feature4') as string,
       ],
       gradient: 'from-purple-500 to-purple-700',
     },
     {
       icon: LineChart,
-      title: t('services.service4.title'),
-      description: t('services.service4.description'),
+      title: t('services.service4.title') as string,
+      description: t('services.service4.description') as string,
       features: [
-        t('services.service4.feature1'),
-        t('services.service4.feature2'),
-        t('services.service4.feature3'),
-        t('services.service4.feature4'),
+        t('services.service4.feature1') as string,
+        t('services.service4.feature2') as string,
+        t('services.service4.feature3') as string,
+        t('services.service4.feature4') as string,
       ],
       gradient: 'from-pink-500 to-pink-700',
     },
     {
       icon: MessageSquare,
-      title: t('services.service5.title'),
-      description: t('services.service5.description'),
+      title: t('services.service5.title') as string,
+      description: t('services.service5.description') as string,
       features: [
-        t('services.service5.feature1'),
-        t('services.service5.feature2'),
-        t('services.service5.feature3'),
-        t('services.service5.feature4'),
+        t('services.service5.feature1') as string,
+        t('services.service5.feature2') as string,
+        t('services.service5.feature3') as string,
+        t('services.service5.feature4') as string,
       ],
       gradient: 'from-cyan-500 to-cyan-700',
     },
     {
       icon: Shield,
-      title: t('services.service6.title'),
-      description: t('services.service6.description'),
+      title: t('services.service6.title') as string,
+      description: t('services.service6.description') as string,
       features: [
-        t('services.service6.feature1'),
-        t('services.service6.feature2'),
-        t('services.service6.feature3'),
-        t('services.service6.feature4'),
+        t('services.service6.feature1') as string,
+        t('services.service6.feature2') as string,
+        t('services.service6.feature3') as string,
+        t('services.service6.feature4') as string,
       ],
       gradient: 'from-emerald-500 to-emerald-700',
       isNew: true,
@@ -114,14 +106,14 @@ const Services = () => {
           className="text-center mb-20"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-gray-300 mb-6">
-            {t('services.badge')}
+            {t('services.badge') as string}
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            <span className="text-white">{t('services.title1')}</span>{' '}
-            <span className="gradient-text">{t('services.title2')}</span>
+            <span className="text-white">{t('services.title1') as string}</span>{' '}
+            <span className="gradient-text">{t('services.title2') as string}</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            {t('services.subtitle')}
+            {t('services.subtitle') as string}
           </p>
         </motion.div>
 
@@ -129,7 +121,7 @@ const Services = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <motion.div
-              key={service.title as string}
+              key={service.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -156,7 +148,7 @@ const Services = () => {
                 {/* Features */}
                 <ul className="space-y-2 mb-6">
                   {service.features.map((feature) => (
-                    <li key={feature as string} className="flex items-center gap-2 text-sm text-gray-300">
+                    <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
                       <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${service.gradient}`} />
                       {feature}
                     </li>
@@ -168,7 +160,7 @@ const Services = () => {
                   href="#contact" 
                   className="inline-flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors group/link"
                 >
-                  {t('services.learnMore')}
+                  {t('services.learnMore') as string}
                   <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                 </a>
 
