@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sparkles } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 import LanguageToggle from '../i18n/LanguageToggle'
 import { useI18n } from '../i18n/I18nContext'
+import AILogo from './AILogo'
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -41,12 +42,7 @@ const Navigation = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href="#" className="flex items-center gap-3">
-              <div className="relative w-10 h-10">
-                <div className="absolute inset-0 bg-gradient-to-br from-luxury-gold to-luxury-gold-dark rounded-lg" />
-                <div className="absolute inset-1 bg-dark rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-luxury-gold" />
-                </div>
-              </div>
+              <AILogo className="w-10 h-10" />
               <span className="text-xl font-bold font-serif">
                 <span className="text-white">AI</span>
                 <span className="text-luxury-gold"> Dynamics</span>

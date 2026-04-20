@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Play, Cpu, Network, Zap, MessageSquare, ChevronDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useI18n } from '../i18n/I18nContext'
+import MatrixRain from './MatrixRain'
 
 // AI Chatbot Demo Widget
 const AIChatDemo = () => {
@@ -119,16 +120,10 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with subtle pattern */}
+      {/* Matrix Rain Background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark via-dark-50 to-dark" />
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(201,169,110,0.5) 1px, transparent 0)`,
-            backgroundSize: '60px 60px',
-          }}
-        />
+        <MatrixRain />
+        <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark-50/60 to-dark" />
       </div>
 
       {/* Gold accent glow */}
