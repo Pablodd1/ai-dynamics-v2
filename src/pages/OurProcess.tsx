@@ -14,11 +14,34 @@ import {
   Zap,
   GraduationCap,
   ChevronRight,
+  MessageCircle,
 } from 'lucide-react'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 
 const steps = [
+  {
+    id: 'consultation',
+    number: '00',
+    title: 'Free Consultation',
+    subtitle: 'Let\'s Talk First',
+    icon: MessageCircle,
+    color: 'from-luxury-gold/30 to-amber-600/30',
+    borderColor: 'border-luxury-gold/40',
+    glowColor: 'shadow-luxury-gold/20',
+    accentColor: '#c9a96e',
+    description:
+      'Every engagement starts with a free consultation. We discuss your challenges, goals, and how AI — including AGI integration — can transform your operations.',
+    details: [
+      '30-minute strategy call',
+      'Business challenge assessment',
+      'AI vs AGI opportunity mapping',
+      'Custom roadmap preview',
+      'No commitment required',
+    ],
+    stats: { label: 'Consultation', value: 'Free' },
+    iconBg: 'bg-luxury-gold/20',
+  },
   {
     id: 'audit',
     number: '01',
@@ -30,13 +53,13 @@ const steps = [
     glowColor: 'shadow-violet-500/20',
     accentColor: '#8b5cf6',
     description:
-      'We begin with a comprehensive assessment of your current operations, identifying where AI can deliver immediate impact.',
+      'We begin with a comprehensive assessment of your current operations, identifying where AI and AGI integration can deliver immediate impact.',
     details: [
       'Process mapping & workflow analysis',
       'Data infrastructure evaluation',
-      'AI opportunity scoring',
+      'AI & AGI opportunity scoring',
       'Feasibility & risk assessment',
-      '30-minute consultation included',
+      'Integration readiness check',
     ],
     stats: { label: 'Audit Duration', value: '3-5 Days' },
     iconBg: 'bg-violet-500/20',
@@ -52,9 +75,9 @@ const steps = [
     glowColor: 'shadow-cyan-500/20',
     accentColor: '#06b6d4',
     description:
-      'We build and deploy custom AI solutions tailored to your specific workflows — minimal disruption, maximum impact.',
+      'We build and deploy custom AI solutions — including AGI integration — tailored to your specific workflows. Minimal disruption, maximum impact.',
     details: [
-      'Custom AI model development',
+      'Custom AI & AGI model development',
       'Integration with existing tools',
       'API connections & automation',
       'Real-time data pipelines',
@@ -74,7 +97,7 @@ const steps = [
     glowColor: 'shadow-emerald-500/20',
     accentColor: '#10b981',
     description:
-      'We quantify the financial impact with detailed cost savings analysis, ROI projections, and performance dashboards.',
+      'We quantify the financial impact with detailed cost savings analysis, ROI projections, and performance dashboards for both AI and AGI investments.',
     details: [
       'Cost-benefit analysis',
       'ROI projection modeling',
@@ -96,7 +119,7 @@ const steps = [
     glowColor: 'shadow-amber-500/20',
     accentColor: '#f59e0b',
     description:
-      'Your team is the key to success. We provide hands-on training to ensure everyone is confident and empowered with the new AI tools.',
+      'Your team is the key to success. We provide hands-on training to ensure everyone is confident and empowered with the new AI & AGI tools.',
     details: [
       'Role-based training sessions',
       'Hands-on workshops',
@@ -119,7 +142,7 @@ const steps = [
     glowColor: 'shadow-rose-500/20',
     accentColor: '#f43f5e',
     description:
-      'We train your team on specific AI use cases for your industry — ensuring they know exactly how to leverage AI for daily operations.',
+      'We train your team on specific AI & AGI use cases for your industry — ensuring they know exactly how to leverage advanced intelligence for daily operations.',
     details: [
       'Industry-specific use cases',
       'Advanced prompt engineering',

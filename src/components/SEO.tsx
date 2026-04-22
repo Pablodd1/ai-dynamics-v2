@@ -11,7 +11,7 @@ interface SEOProps {
   schema?: object
 }
 
-const defaultDescription = "AI Dynamics — Premium AI consulting & automation for businesses in Miami. Custom AI agents, workflow automation, and intelligent systems that reduce costs by 40%+."
+const defaultDescription = "AI Dynamics.PRO — Premium AI & AGI consulting for any industry. Free consultation, custom AI integration, workflow automation, and staff training. We reduce costs by 40%+ while preparing your team for AGI."
 
 const defaultOgImage = "https://aidynamics.pro/og-image.jpg"
 
@@ -32,7 +32,7 @@ export function SEO({
 
     const metaTags: Record<string, string> = {
       'description': description,
-      'keywords': 'AI consulting Miami, AI automation, business automation, AI agents, workflow automation, machine learning consulting, artificial intelligence services, AI integration, process automation, custom AI solutions, AI Dynamics, Miami tech consulting, AI for business',
+      'keywords': 'AI consulting, AGI integration, AI automation, business automation, AI agents, workflow automation, machine learning consulting, artificial intelligence services, AI integration, process automation, custom AI solutions, AI Dynamics, AGI consulting, free AI consultation, AI for business, AI staff training, AI readiness audit',
       'author': 'AI Dynamics',
       'robots': noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
       'googlebot': 'index, follow',

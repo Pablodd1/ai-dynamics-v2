@@ -1,4 +1,4 @@
-const AILogo = ({ className = "w-10 h-10", showText = false }: { className?: string; showText?: boolean }) => {
+const AILogo = ({ className = "w-10 h-10", showText = false, showTagline = false }: { className?: string; showText?: boolean; showTagline?: boolean }) => {
   return (
     <div className={`flex items-center gap-2 ${showText ? '' : ''}`}>
       <svg
@@ -74,10 +74,17 @@ const AILogo = ({ className = "w-10 h-10", showText = false }: { className?: str
       </svg>
       
       {showText && (
-        <span className="text-xl font-bold font-serif">
-          <span className="text-white">AI Dynamics</span>
-          <span className="text-luxury-gold">.PRO</span>
-        </span>
+        <div className="flex flex-col">
+          <span className="text-xl font-bold font-serif leading-tight">
+            <span className="text-white">AI Dynamics</span>
+            <span className="text-luxury-gold">.PRO</span>
+          </span>
+          {showTagline && (
+            <span className="text-[10px] text-luxury-silver tracking-wider uppercase">
+              AI & AGI Integration
+            </span>
+          )}
+        </div>
       )}
     </div>
   )

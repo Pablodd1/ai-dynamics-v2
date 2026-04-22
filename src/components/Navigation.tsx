@@ -43,11 +43,7 @@ const Navigation = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href="#" className="flex items-center gap-3">
-              <AILogo className="w-10 h-10" />
-              <span className="text-xl font-bold font-serif">
-                <span className="text-white">AI</span>
-                <span className="text-luxury-gold"> Dynamics</span>
-              </span>
+              <AILogo className="w-10 h-10" showText showTagline />
             </a>
 
             {/* Desktop Navigation */}
