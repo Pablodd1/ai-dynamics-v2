@@ -22,6 +22,7 @@ const Navigation = () => {
     { label: t('nav.services') as string, href: '#services' },
     { label: t('nav.caseStudies') as string, href: '#case-studies' },
     { label: t('nav.about') as string, href: '#about' },
+    { label: 'Our Process', href: '/process' },
     { label: t('nav.contact') as string, href: '#contact' },
   ]
 
