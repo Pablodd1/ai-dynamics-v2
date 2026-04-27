@@ -185,18 +185,187 @@ const AIVisualization = () => {
             className="relative"
           >
             <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02]">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
+              {/* Self-hosted futuristic canvas animation - replaces broken external video */}
+              <canvas
+                id="ai-demo-canvas"
                 className="w-full aspect-video object-cover"
-              >
-                <source 
-                  src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-futuristic-devices-99786-large.mp4" 
-                  type="video/mp4" 
-                />
-              </video>
+                ref={(canvas) => {
+                  if (!canvas) return
+                  const ctx = canvas.getContext('2d')
+                  if (!ctx) return
+
+                  let animationId: number
+                  let time = 0
+                  const particles: Array<{
+                    x: number
+                    y: number
+                    vx: number
+                    vy: number
+                    size: number
+                    alpha: number
+                    type: 'node' | 'pulse'
+                  }> = []
+                  const connections: Array<{from: number; to: number; strength: number}> = []
+
+                  const resize = () => {
+                    const rect = canvas.getBoundingClientRect()
+                    canvas.width = rect.width * window.devicePixelRatio
+                    canvas.height = rect.height * window.devicePixelRatio
+                    ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+                  }
+
+                  const createParticles = () => {
+                    particles.length = 0
+                    const rect = canvas.getBoundingClientRect()
+                    const count = 30
+                    for (let i = 0; i < count; i++) {
+                      particles.push({
+                        x: Math.random() * rect.width,
+                        y: Math.random() * rect.height,
+                        vx: (Math.random() - 0.5) * 0.8,
+                        vy: (Math.random() - 0.5) * 0.8,
+                        size: Math.random() * 3 + 2,
+                        alpha: Math.random() * 0.6 + 0.3,
+                        type: Math.random() > 0.7 ? 'pulse' : 'node',
+                      })
+                    }
+                    // Create some fixed connections
+                    connections.length = 0
+                    for (let i = 0; i < particles.length; i++) {
+                      for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x
+                        const dy = particles[i].y - particles[j].y
+                        const dist = Math.sqrt(dx * dx + dy * dy)
+                        if (dist < 120 && Math.random() > 0.5) {
+                          connections.push({ from: i, to: j, strength: Math.random() })
+                        }
+                      }
+                    }
+                  }
+
+                  const draw = () => {
+                    const rect = canvas.getBoundingClientRect()
+                    ctx.clearRect(0, 0, rect.width, rect.height)
+                    time += 0.016
+
+                    // Draw dark background
+                    ctx.fillStyle = '#0a0a0f'
+                    ctx.fillRect(0, 0, rect.width, rect.height)
+
+                    // Draw subtle grid
+                    ctx.strokeStyle = 'rgba(201, 169, 110, 0.03)'
+                    ctx.lineWidth = 0.5
+                    const gridSize = 40
+                    for (let x = 0; x < rect.width; x += gridSize) {
+                      ctx.beginPath()
+                      ctx.moveTo(x, 0)
+                      ctx.lineTo(x, rect.height)
+                      ctx.stroke()
+                    }
+                    for (let y = 0; y < rect.height; y += gridSize) {
+                      ctx.beginPath()
+                      ctx.moveTo(0, y)
+                      ctx.lineTo(rect.width, y)
+                      ctx.stroke()
+                    }
+
+                    // Update and draw connections
+                    connections.forEach((conn) => {
+                      const p1 = particles[conn.from]
+                      const p2 = particles[conn.to]
+                      const pulse = Math.sin(time * 2 + conn.strength * 10) * 0.5 + 0.5
+                      ctx.beginPath()
+                      ctx.moveTo(p1.x, p1.y)
+                      ctx.lineTo(p2.x, p2.y)
+                      ctx.strokeStyle = `rgba(201, 169, 110, ${0.15 * pulse * conn.strength})`
+                      ctx.lineWidth = 0.8
+                      ctx.stroke()
+
+                      // Draw data packet traveling along connection
+                      const t = (time * 0.5 + conn.strength) % 1
+                      const packetX = p1.x + (p2.x - p1.x) * t
+                      const packetY = p1.y + (p2.y - p1.y) * t
+                      ctx.beginPath()
+                      ctx.arc(packetX, packetY, 2, 0, Math.PI * 2)
+                      ctx.fillStyle = `rgba(201, 169, 110, ${0.8 * pulse})`
+                      ctx.fill()
+                    })
+
+                    // Update and draw particles
+                    particles.forEach((p) => {
+                      p.x += p.vx
+                      p.y += p.vy
+
+                      // Wrap around
+                      if (p.x < -10) p.x = rect.width + 10
+                      if (p.x > rect.width + 10) p.x = -10
+                      if (p.y < -10) p.y = rect.height + 10
+                      if (p.y > rect.height + 10) p.y = -10
+
+                      if (p.type === 'pulse') {
+                        const pulse = Math.sin(time * 3 + p.x * 0.01) * 0.5 + 0.5
+                        ctx.beginPath()
+                        ctx.arc(p.x, p.y, p.size * (1 + pulse * 0.5), 0, Math.PI * 2)
+                        ctx.fillStyle = `rgba(201, 169, 110, ${p.alpha * pulse})`
+                        ctx.fill()
+
+                        // Glow ring
+                        ctx.beginPath()
+                        ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2)
+                        ctx.fillStyle = `rgba(201, 169, 110, ${0.05 * pulse})`
+                        ctx.fill()
+                      } else {
+                        ctx.beginPath()
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+                        ctx.fillStyle = `rgba(201, 169, 110, ${p.alpha})`
+                        ctx.fill()
+                      }
+                    })
+
+                    // Draw center core
+                    const cx = rect.width / 2
+                    const cy = rect.height / 2
+                    const corePulse = Math.sin(time * 2) * 0.3 + 0.7
+                    ctx.beginPath()
+                    ctx.arc(cx, cy, 15 * corePulse, 0, Math.PI * 2)
+                    ctx.fillStyle = `rgba(201, 169, 110, 0.2)`
+                    ctx.fill()
+                    ctx.beginPath()
+                    ctx.arc(cx, cy, 8 * corePulse, 0, Math.PI * 2)
+                    ctx.fillStyle = `rgba(201, 169, 110, 0.5)`
+                    ctx.fill()
+                    ctx.beginPath()
+                    ctx.arc(cx, cy, 3, 0, Math.PI * 2)
+                    ctx.fillStyle = `rgba(201, 169, 110, 1)`
+                    ctx.fill()
+
+                    // Orbiting ring
+                    ctx.beginPath()
+                    ctx.arc(cx, cy, 40 + Math.sin(time) * 5, 0, Math.PI * 2)
+                    ctx.strokeStyle = `rgba(201, 169, 110, 0.1)`
+                    ctx.lineWidth = 1
+                    ctx.stroke()
+
+                    animationId = requestAnimationFrame(draw)
+                  }
+
+                  resize()
+                  createParticles()
+                  draw()
+
+                  const handleResize = () => {
+                    resize()
+                    createParticles()
+                  }
+                  window.addEventListener('resize', handleResize)
+
+                  // Cleanup when component unmounts or ref changes
+                  return () => {
+                    cancelAnimationFrame(animationId)
+                    window.removeEventListener('resize', handleResize)
+                  }
+                }}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-transparent" />
               
               <div className="absolute bottom-0 left-0 right-0 p-6">
