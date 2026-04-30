@@ -66,10 +66,10 @@ const Navigation = () => {
               <LanguageToggle />
               
               <a
-                href="#contact"
-                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl border border-luxury-gold/40 text-luxury-gold text-sm font-semibold hover:bg-luxury-gold/10 transition-all"
+                href="https://aidynamic.pro/booking"
+                className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-luxury-gold text-dark text-sm font-semibold hover:bg-luxury-gold-light transition-all"
               >
-                {t('nav.getStarted') as string}
+                Book Free Call
               </a>
 
               {/* Mobile Menu Button */}
@@ -116,14 +116,14 @@ const Navigation = () => {
                   </motion.a>
                 ))}
                 <motion.a
-                  href="#contact"
+                  href="https://aidynamic.pro/booking"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="mt-4 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-luxury-gold/40 text-luxury-gold font-semibold hover:bg-luxury-gold/10 transition-all"
+                  className="mt-4 flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-luxury-gold text-dark font-semibold hover:bg-luxury-gold-light transition-all"
                 >
-                  {t('nav.getStarted') as string}
+                  Book Free Call
                 </motion.a>
               </div>
             </motion.nav>
