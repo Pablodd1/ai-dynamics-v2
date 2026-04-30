@@ -210,13 +210,13 @@ const Hero = () => {
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <a href="#contact" className="btn-primary flex items-center justify-center gap-2 group text-base">
-            {t('hero.ctaPrimary') as string}
+          <a href="#pricing" className="btn-primary flex items-center justify-center gap-2 group text-base">
+            See Pricing & Packages
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
-          <a href="#case-studies" className="btn-secondary flex items-center justify-center gap-2 text-base">
+          <a href="#contact" className="btn-secondary flex items-center justify-center gap-2 text-base">
             <Play className="w-5 h-5" />
-            {t('hero.ctaSecondary') as string}
+            Book Free 15-Min Call
           </a>
         </motion.div>
 

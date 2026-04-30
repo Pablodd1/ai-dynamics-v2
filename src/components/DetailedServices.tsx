@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { MessageSquare, FileText, BarChart3, Workflow, Bot, Shield } from 'lucide-react'
+import { MessageSquare, FileText, BarChart3, Workflow, Bot, Shield, TrendingUp } from 'lucide-react'
 
 const DetailedServices = () => {
 
@@ -71,6 +71,20 @@ const DetailedServices = () => {
         'Legacy system modernization',
       ],
       benefit: 'Connect your entire tech stack',
+      color: 'border-luxury-gold/30',
+      bgColor: 'bg-luxury-gold/5',
+    },
+    {
+      icon: TrendingUp,
+      title: 'Viral Content Automation',
+      description: 'AI-powered content engine that generates, schedules, and posts viral content across LinkedIn and Instagram. Never run out of content ideas again.',
+      features: [
+        'AI-generated content calendar (30 days)',
+        'Auto-post to LinkedIn & Instagram',
+        'Hook/trend analysis for virality',
+        'Performance tracking dashboard',
+      ],
+      benefit: '3x engagement without hiring a social team',
       color: 'border-luxury-gold/30',
       bgColor: 'bg-luxury-gold/5',
     },

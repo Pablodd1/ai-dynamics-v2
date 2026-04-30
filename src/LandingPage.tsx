@@ -4,6 +4,7 @@ import Stats from './components/Stats'
 import TrustSignals from './components/TrustSignals'
 import DetailedServices from './components/DetailedServices'
 import Process from './components/Process'
+import Pricing from './components/Pricing'
 import CaseStudies from './components/CaseStudies'
 import Partners from './components/Partners'
 import Contact from './components/Contact'
@@ -19,6 +20,7 @@ function LandingPage() {
         <TrustSignals />
         <DetailedServices />
         <Process />
+        <Pricing />
         <CaseStudies />
         <Partners />
         <Contact />

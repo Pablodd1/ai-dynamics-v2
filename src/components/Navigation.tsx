@@ -21,6 +21,7 @@ const Navigation = () => {
   const navLinks = [
     { label: t('nav.services') as string, href: '#services' },
     { label: t('nav.caseStudies') as string, href: '#case-studies' },
+    { label: 'Pricing', href: '#pricing' },
     { label: t('nav.about') as string, href: '#about' },
     { label: 'Our Process', href: '/process' },
     { label: t('nav.contact') as string, href: '#contact' },
