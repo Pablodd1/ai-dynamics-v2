@@ -57,8 +57,8 @@ const translations: Record<Language, Translations> = {
       },
       // Service 2
       service2: {
-        title: 'AGI & LLM Solutions',
-        description: 'Leverage the power of Large Language Models and emerging AGI technologies. From GPT integration to custom model training.',
+        title: 'Intelligent Workflow Systems',
+        description: 'AI that handles complex, multi-step tasks — not just answering questions. Systems that think through entire workflows for your business.',
         feature1: 'GPT-4 Integration',
         feature2: 'Custom Model Training',
         feature3: 'Prompt Engineering',
@@ -255,8 +255,8 @@ const translations: Record<Language, Translations> = {
         feature4: 'Arquitectura Escalable',
       },
       service2: {
-        title: 'Soluciones AGI y LLM',
-        description: 'Aprovecha el poder de los Modelos de Lenguaje Grande y las tecnologías AGI emergentes. Desde la integración de GPT hasta el entrenamiento de modelos personalizados.',
+        title: 'Sistemas Inteligentes de Flujos',
+        description: 'IA que maneja tareas complejas de múltiples pasos — no solo responde preguntas. Sistemas que piensan a través de flujos de trabajo completos para tu negocio.',
         feature1: 'Integración GPT-4',
         feature2: 'Entrenamiento de Modelos Personalizados',
         feature3: 'Ingeniería de Prompts',
@@ -444,8 +444,8 @@ const translations: Record<Language, Translations> = {
         feature4: 'Масштабируемая архитектура',
       },
       service2: {
-        title: 'Решения AGI и LLM',
-        description: 'Используйте мощь больших языковых моделей и новейших технологий AGI. От интеграции GPT до обучения индивидуальных моделей.',
+        title: 'Интеллектуальные Системы Рабочих Процессов',
+        description: 'ИИ, который выполняет сложные многоэтапные задачи — не просто отвечает на вопросы. Системы, которые продумывают целые рабочие процессы для вашего бизнеса.',
         feature1: 'Интеграция GPT-4',
         feature2: 'Обучение индивидуальных моделей',
         feature3: 'Prompt Engineering',

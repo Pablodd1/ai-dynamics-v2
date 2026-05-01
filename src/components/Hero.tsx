@@ -1,11 +1,9 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Play, Cpu, Network, Zap, ChevronDown } from 'lucide-react'
+import { ArrowRight, Play, Cpu, Network, Zap, ChevronDown, Stethoscope, Scale, Building2, Truck, Plus } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useI18n } from '../i18n/I18nContext'
 import MatrixRain from './MatrixRain'
 
 const Hero = () => {
-  const { t } = useI18n()
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
@@ -14,8 +12,25 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const industryButtons = [
+    { label: 'Healthcare', icon: Stethoscope, href: '#industries' },
+    { label: 'Legal', icon: Scale, href: '#industries' },
+    { label: 'Real Estate', icon: Building2, href: '#industries' },
+    { label: 'Logistics', icon: Truck, href: '#industries' },
+    { label: 'More', icon: Plus, href: '#industries' },
+  ]
+
+  const scrollToSection = (href: string) => {
+    if (href.startsWith('#')) {
+      const el = document.querySelector(href)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+  }
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Matrix Rain Background */}
       <div className="absolute inset-0 z-0">
         <MatrixRain />
@@ -73,7 +88,7 @@ const Hero = () => {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-luxury-gold opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-luxury-gold" />
           </span>
-          <span className="text-sm text-luxury-champagne tracking-wide">{t('hero.badge') as string}</span>
+          <span className="text-sm text-luxury-champagne tracking-wide">AI Automation for Small Business</span>
         </motion.div>
 
         {/* Main Heading */}
@@ -81,11 +96,11 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 font-serif"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-serif"
         >
-          <span className="block text-white mb-3">{t('hero.title1') as string}</span>
+          <span className="block text-white mb-3">We automate the work</span>
           <span className="block text-luxury-gold">
-            {t('hero.title2') as string}
+            that's slowing your business down.
           </span>
         </motion.h1>
 
@@ -94,10 +109,30 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-xl md:text-2xl text-luxury-silver max-w-3xl mx-auto mb-12 leading-relaxed"
+          className="text-lg md:text-xl text-luxury-silver max-w-3xl mx-auto mb-8 leading-relaxed"
         >
-          {t('hero.subtitle') as string}
+          Small and mid-sized businesses lose 15-25% of productive hours to manual, repetitive work. 
+          We build AI systems that give those hours back.
         </motion.p>
+
+        {/* Industry Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="flex flex-wrap justify-center gap-3 mb-10"
+        >
+          {industryButtons.map((btn) => (
+            <button
+              key={btn.label}
+              onClick={() => scrollToSection(btn.href)}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:border-luxury-gold/30 hover:bg-luxury-gold/5 transition-all text-sm text-luxury-champagne"
+            >
+              <btn.icon className="w-4 h-4 text-luxury-gold" />
+              {btn.label}
+            </button>
+          ))}
+        </motion.div>
 
         {/* CTA Buttons */}
         <motion.div
@@ -106,13 +141,13 @@ const Hero = () => {
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <a href="#pricing" className="btn-primary flex items-center justify-center gap-2 group text-base">
-            See Pricing & Packages
+          <a href="https://aidynamic.pro/booking" className="btn-primary flex items-center justify-center gap-2 group text-base">
+            Book a Free Consultation
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
-          <a href="#contact" className="btn-secondary flex items-center justify-center gap-2 text-base">
+          <a href="#pricing" className="btn-secondary flex items-center justify-center gap-2 text-base">
             <Play className="w-5 h-5" />
-            Book Free 15-Min Call
+            See Packages
           </a>
         </motion.div>
 
@@ -124,9 +159,9 @@ const Hero = () => {
           className="flex flex-wrap justify-center gap-4"
         >
           {[
-            { icon: Cpu, label: t('hero.feature1') as string },
-            { icon: Network, label: t('hero.feature2') as string },
-            { icon: Zap, label: t('hero.feature3') as string },
+            { icon: Cpu, label: 'Custom AI Workflows' },
+            { icon: Network, label: 'Any Industry' },
+            { icon: Zap, label: '2-Week Delivery' },
           ].map((feature) => (
             <motion.div
               key={feature.label}

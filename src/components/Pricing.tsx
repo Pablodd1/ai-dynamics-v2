@@ -1,83 +1,91 @@
 import { motion } from 'framer-motion'
-import { Check, ArrowRight, Zap, Building2, Calendar, FileText, MessageSquare, Gauge, Headphones, Users } from 'lucide-react'
+import { Check, ArrowRight, Search, Zap, Building2 } from 'lucide-react'
 
 const Pricing = () => {
   const plans = [
     {
-      name: 'AI Opportunity Audit',
-      price: '$99',
+      name: 'Workflow Audit',
+      price: '$997',
       priceNote: 'one-time',
-      description: 'Know exactly where AI can save you money — before you spend a dollar building.',
-      icon: FileText,
-      popular: false,
-      cta: 'Book Your Audit',
-      ctaAction: '#contact',
+      duration: '1 week',
+      description: 'Map your automation opportunities before you build anything.',
+      icon: Search,
+      accentColor: 'green',
+      cta: 'Book Audit',
+      ctaAction: 'https://aidynamic.pro/booking',
       features: [
-        '30-min strategy call with our AI team',
-        'Workflow analysis & automation map',
-        '3 prioritized AI opportunity reports',
-        'ROI estimate for each recommendation',
-        '48-hour PDF delivery',
-        'No obligation — keep the report even if you don\'t buy',
-      ],
-      deliverables: [
-        { icon: FileText, label: 'Audit Report PDF' },
-        { icon: Gauge, label: 'ROI Calculator' },
-        { icon: Calendar, label: 'Implementation Roadmap' },
+        'Full business process review',
+        'Automation opportunity map',
+        'ROI estimate for each workflow',
+        'Prioritized implementation plan',
+        'PDF deliverable within 1 week',
       ],
     },
     {
       name: 'Single Workflow Build',
       price: '$2,497',
-      priceNote: 'per workflow',
-      description: 'We build and deploy one complete AI automation — working in 14 days or less.',
+      priceNote: 'one-time',
+      duration: '2-3 weeks',
+      description: 'Build + deploy one complete AI automation system.',
       icon: Zap,
-      popular: true,
+      accentColor: 'blue',
       cta: 'Start Your Build',
-      ctaAction: '#contact',
+      ctaAction: 'https://aidynamic.pro/booking',
       features: [
-        'Everything in Audit, plus:',
-        'End-to-end AI workflow design',
-        'Integration with your existing tools',
-        'Custom AI agent development',
+        'End-to-end workflow design',
+        'AI agent development',
+        'Integration with your tools',
         'Testing & quality assurance',
-        '14-day delivery guarantee',
+        '2-3 week delivery',
         '30 days post-launch support',
-        'Team training session (1 hour)',
-      ],
-      deliverables: [
-        { icon: Zap, label: 'Working AI Workflow' },
-        { icon: MessageSquare, label: 'Chatbot or Agent' },
-        { icon: Headphones, label: '30-Day Support' },
+        'Team training session',
       ],
     },
     {
-      name: 'Full AI Transformation',
+      name: 'AI Transformation',
       price: '$4,997',
-      priceNote: 'on-site or virtual',
-      description: 'Comprehensive AI overhaul for your entire operation. We come to you (or do it virtually).',
+      priceNote: '/mo',
+      duration: '3-month minimum',
+      description: 'Multiple workflows + ongoing optimization.',
       icon: Building2,
-      popular: false,
+      accentColor: 'purple',
       cta: 'Book Consultation',
-      ctaAction: '#contact',
+      ctaAction: 'https://aidynamic.pro/booking',
       features: [
-        'Everything in Single Workflow, plus:',
-        'Full business process audit',
-        'Multi-workflow AI architecture',
-        'On-site or virtual consultation',
-        'Custom AI strategy & roadmap',
-        'Team training (up to 10 people)',
-        '90 days premium support',
+        'Everything in Single Build, plus:',
+        'Multiple workflow automation',
         'Monthly performance reviews',
-        'Priority access to new AI features',
-      ],
-      deliverables: [
-        { icon: Building2, label: 'Full AI System' },
-        { icon: Users, label: 'Team Training' },
-        { icon: Headphones, label: '90-Day Support' },
+        'Ongoing optimization & tuning',
+        'Priority support & updates',
+        'Quarterly strategy sessions',
+        'Dedicated automation partner',
       ],
     },
   ]
+
+  const accentStyles: Record<string, { border: string; bg: string; badgeBg: string; badgeText: string; dot: string }> = {
+    green: {
+      border: 'border-green-400/30',
+      bg: 'bg-green-400/5',
+      badgeBg: 'bg-green-400',
+      badgeText: 'text-dark',
+      dot: 'text-green-400',
+    },
+    blue: {
+      border: 'border-blue-400/30',
+      bg: 'bg-blue-400/5',
+      badgeBg: 'bg-blue-400',
+      badgeText: 'text-dark',
+      dot: 'text-blue-400',
+    },
+    purple: {
+      border: 'border-purple-400/30',
+      bg: 'bg-purple-400/5',
+      badgeBg: 'bg-purple-400',
+      badgeText: 'text-dark',
+      dot: 'text-purple-400',
+    },
+  }
 
   return (
     <section id="pricing" className="section-padding relative overflow-hidden bg-gradient-to-b from-dark via-dark-50 to-dark">
@@ -103,121 +111,85 @@ const Pricing = () => {
             <span className="text-luxury-gold">Package</span>
           </h2>
           <p className="text-xl text-luxury-silver max-w-3xl mx-auto">
-            Start with a $99 audit to see what's possible. Then upgrade when you're ready to build.
+            Start with an audit to see what is possible. Then build when you are ready.
           </p>
         </motion.div>
 
         {/* Pricing Cards */}
         <div className="grid md:grid-cols-3 gap-8">
-          {plans.map((plan, index) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.15 }}
-              className={`relative rounded-2xl border ${
-                plan.popular 
-                  ? 'border-luxury-gold/50 bg-gradient-to-b from-luxury-gold/10 to-dark-50' 
-                  : 'border-white/10 bg-white/[0.02]'
-              } p-8 hover:border-luxury-gold/30 transition-all`}
-            >
-              {/* Popular Badge */}
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="px-4 py-1.5 rounded-full bg-luxury-gold text-dark text-xs font-bold uppercase tracking-wider">
-                    Most Popular
+          {plans.map((plan, index) => {
+            const accent = accentStyles[plan.accentColor]
+            return (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15 }}
+                className={`relative rounded-2xl border ${accent.border} ${accent.bg} p-8 hover:border-luxury-gold/30 transition-all`}
+              >
+                {/* Duration Badge */}
+                <div className="absolute -top-3 right-6">
+                  <span className={`px-3 py-1 rounded-full ${accent.badgeBg} ${accent.badgeText} text-xs font-bold uppercase tracking-wider`}>
+                    {plan.duration}
                   </span>
                 </div>
-              )}
 
-              {/* Icon */}
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 ${
-                plan.popular ? 'bg-luxury-gold/20' : 'bg-white/5'
-              }`}>
-                <plan.icon className={`w-7 h-7 ${plan.popular ? 'text-luxury-gold' : 'text-luxury-silver'}`} />
-              </div>
-
-              {/* Plan Name */}
-              <h3 className="text-2xl font-bold text-white mb-2 font-serif">{plan.name}</h3>
-              <p className="text-luxury-silver text-sm mb-6">{plan.description}</p>
-
-              {/* Price */}
-              <div className="mb-8">
-                <span className="text-5xl font-bold text-white">{plan.price}</span>
-                <span className="text-luxury-silver ml-2">{plan.priceNote}</span>
-              </div>
-
-              {/* CTA Button */}
-              <a
-                href={plan.ctaAction}
-                className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all mb-8 ${
-                  plan.popular
-                    ? 'bg-luxury-gold text-dark hover:bg-luxury-gold-light'
-                    : 'border border-luxury-gold/40 text-luxury-gold hover:bg-luxury-gold/10'
-                }`}
-              >
-                {plan.cta}
-                <ArrowRight className="w-5 h-5" />
-              </a>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <Check className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                      plan.popular ? 'text-luxury-gold' : 'text-luxury-gold/60'
-                    }`} />
-                    <span className="text-luxury-champagne text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Deliverables */}
-              <div className="pt-6 border-t border-white/10">
-                <p className="text-xs text-luxury-silver uppercase tracking-wider mb-4">You Get</p>
-                <div className="space-y-3">
-                  {plan.deliverables.map((d) => (
-                    <div key={d.label} className="flex items-center gap-3">
-                      <d.icon className="w-4 h-4 text-luxury-gold/60" />
-                      <span className="text-sm text-luxury-champagne">{d.label}</span>
-                    </div>
-                  ))}
+                {/* Icon */}
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border ${accent.border} ${accent.bg}`}>
+                  <plan.icon className={`w-7 h-7 ${accent.dot}`} />
                 </div>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Plan Name */}
+                <h3 className="text-2xl font-bold text-white mb-2 font-serif">{plan.name}</h3>
+                <p className="text-luxury-silver text-sm mb-6">{plan.description}</p>
+
+                {/* Price */}
+                <div className="mb-8">
+                  <span className="text-5xl font-bold text-white">{plan.price}</span>
+                  <span className="text-luxury-silver ml-2">{plan.priceNote}</span>
+                </div>
+
+                {/* CTA Button */}
+                <a
+                  href={plan.ctaAction}
+                  className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all mb-8 border ${accent.border} ${accent.bg} hover:bg-luxury-gold/10 text-luxury-gold`}
+                >
+                  {plan.cta}
+                  <ArrowRight className="w-5 h-5" />
+                </a>
+
+                {/* Features */}
+                <ul className="space-y-3">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3">
+                      <Check className={`w-5 h-5 mt-0.5 flex-shrink-0 ${accent.dot}`} />
+                      <span className="text-luxury-champagne text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )
+          })}
         </div>
 
-        {/* Money Back Guarantee */}
+        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl border border-luxury-gold/20 bg-luxury-gold/5">
-            <Check className="w-6 h-6 text-luxury-gold" />
-            <span className="text-luxury-champagne">
-              <span className="font-semibold text-white">14-Day Money Back Guarantee</span> on all builds — 
-              if we don't deliver what we promised, you get a full refund. No questions.
-            </span>
-          </div>
-        </motion.div>
-
-        {/* FAQ Teaser */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-12 text-center"
-        >
-          <p className="text-luxury-silver">
-            Questions?{' '}
-            <a href="#contact" className="text-luxury-gold hover:text-luxury-gold-light transition-colors">
-              Book a free 15-min call →
-            </a>
+          <p className="text-luxury-silver mb-4">
+            Not sure which package fits? Every engagement starts with a free call.
           </p>
+          <a
+            href="https://aidynamic.pro/booking"
+            className="btn-primary inline-flex items-center gap-2"
+          >
+            Book Free Consultation
+            <ArrowRight className="w-5 h-5" />
+          </a>
         </motion.div>
       </div>
     </section>

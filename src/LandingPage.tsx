@@ -1,12 +1,13 @@
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
-import Stats from './components/Stats'
-import TrustSignals from './components/TrustSignals'
-import DetailedServices from './components/DetailedServices'
-import Process from './components/Process'
+import TrustBadges from './components/TrustBadges'
+import IndustryTabs from './components/IndustryTabs'
+import CaseStudy from './components/CaseStudy'
+import Founder from './components/Founder'
 import Pricing from './components/Pricing'
-import CaseStudies from './components/CaseStudies'
-import Partners from './components/Partners'
+import LeadMagnet from './components/LeadMagnet'
+import Process from './components/Process'
+import Stats from './components/Stats'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import SocialSidebar from './components/SocialSidebar'
@@ -18,13 +19,14 @@ function LandingPage() {
       <Navigation />
       <main>
         <Hero />
-        <Stats />
-        <TrustSignals />
-        <DetailedServices />
-        <Process />
+        <TrustBadges />
+        <IndustryTabs />
+        <CaseStudy />
+        <Founder />
         <Pricing />
-        <CaseStudies />
-        <Partners />
+        <LeadMagnet />
+        <Process />
+        <Stats />
         <Contact />
       </main>
       <Footer />

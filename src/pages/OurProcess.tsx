@@ -31,11 +31,11 @@ const steps = [
     glowColor: 'shadow-luxury-gold/20',
     accentColor: '#c9a96e',
     description:
-      'Every engagement starts with a free consultation. We discuss your challenges, goals, and how AI — including AGI integration — can transform your operations.',
+      'Every engagement starts with a free consultation. We discuss your challenges, goals, and how AI automation can transform your operations.',
     details: [
       '30-minute strategy call',
       'Business challenge assessment',
-      'AI vs AGI opportunity mapping',
+      'AI automation opportunity mapping',
       'Custom roadmap preview',
       'No commitment required',
     ],
@@ -53,11 +53,11 @@ const steps = [
     glowColor: 'shadow-violet-500/20',
     accentColor: '#8b5cf6',
     description:
-      'We begin with a comprehensive assessment of your current operations, identifying where AI and AGI integration can deliver immediate impact.',
+      'We begin with a comprehensive assessment of your current operations, identifying where AI automation can deliver immediate impact.',
     details: [
       'Process mapping & workflow analysis',
       'Data infrastructure evaluation',
-      'AI & AGI opportunity scoring',
+      'AI automation opportunity scoring',
       'Feasibility & risk assessment',
       'Integration readiness check',
     ],
@@ -75,9 +75,9 @@ const steps = [
     glowColor: 'shadow-cyan-500/20',
     accentColor: '#06b6d4',
     description:
-      'We build and deploy custom AI solutions — including AGI integration — tailored to your specific workflows. Minimal disruption, maximum impact.',
+      'We build and deploy custom AI solutions tailored to your specific workflows. Minimal disruption, maximum impact.',
     details: [
-      'Custom AI & AGI model development',
+      'Custom AI automation development',
       'Integration with existing tools',
       'API connections & automation',
       'Real-time data pipelines',
@@ -97,7 +97,7 @@ const steps = [
     glowColor: 'shadow-emerald-500/20',
     accentColor: '#10b981',
     description:
-      'We quantify the financial impact with detailed cost savings analysis, ROI projections, and performance dashboards for both AI and AGI investments.',
+      'We quantify the financial impact with detailed cost savings analysis, ROI projections, and performance dashboards for AI automation investments.',
     details: [
       'Cost-benefit analysis',
       'ROI projection modeling',
@@ -119,7 +119,7 @@ const steps = [
     glowColor: 'shadow-amber-500/20',
     accentColor: '#f59e0b',
     description:
-      'Your team is the key to success. We provide hands-on training to ensure everyone is confident and empowered with the new AI & AGI tools.',
+      'Your team is the key to success. We provide hands-on training to ensure everyone is confident and empowered with the new AI tools.',
     details: [
       'Role-based training sessions',
       'Hands-on workshops',
@@ -142,7 +142,7 @@ const steps = [
     glowColor: 'shadow-rose-500/20',
     accentColor: '#f43f5e',
     description:
-      'We train your team on specific AI & AGI use cases for your industry — ensuring they know exactly how to leverage advanced intelligence for daily operations.',
+      'We train your team on specific AI automation use cases for your industry — ensuring they know exactly how to leverage advanced systems for daily operations.',
     details: [
       'Industry-specific use cases',
       'Advanced prompt engineering',

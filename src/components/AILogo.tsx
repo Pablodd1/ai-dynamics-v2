@@ -81,7 +81,7 @@ const AILogo = ({ className = "w-10 h-10", showText = false, showTagline = false
           </span>
           {showTagline && (
             <span className="text-[10px] text-luxury-silver tracking-wider uppercase">
-              AI & AGI Integration
+              AI Automation Specialists
             </span>
           )}
         </div>
