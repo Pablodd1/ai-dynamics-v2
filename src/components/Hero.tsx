@@ -1,112 +1,8 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Play, Cpu, Network, Zap, MessageSquare, ChevronDown } from 'lucide-react'
+import { ArrowRight, Play, Cpu, Network, Zap, ChevronDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useI18n } from '../i18n/I18nContext'
 import MatrixRain from './MatrixRain'
-
-// AI Chatbot Demo Widget
-const AIChatDemo = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { t } = useI18n()
-  const [messages, setMessages] = useState([
-    { type: 'ai', text: t('chat.greeting') as string }
-  ])
-  const [input, setInput] = useState('')
-
-  const handleSend = () => {
-    if (!input.trim()) return
-
-    setMessages([...messages, { type: 'user', text: input }])
-
-    setTimeout(() => {
-      const responses = [
-        t('chat.response1') as string,
-        t('chat.response2') as string,
-        t('chat.response3') as string,
-        t('chat.response4') as string,
-      ]
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)]
-      setMessages(prev => [...prev, { type: 'ai', text: randomResponse }])
-    }, 1000)
-
-    setInput('')
-  }
-
-  return (
-    <>
-      {/* Chat Button */}
-      <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-2xl border border-luxury-gold/30 bg-luxury-gold/10 backdrop-blur-md flex items-center justify-center text-luxury-gold hover:bg-luxury-gold/20 transition-all"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <MessageSquare className="w-6 h-6" />
-      </motion.button>
-
-      {/* Chat Window */}
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          className="fixed bottom-28 right-8 z-50 w-80 rounded-2xl border border-white/10 bg-dark-50/95 backdrop-blur-xl overflow-hidden"
-        >
-          {/* Header */}
-          <div className="p-4 border-b border-white/10 flex items-center justify-between bg-gradient-to-r from-luxury-gold/10 to-transparent">
-            <div>
-              <h4 className="font-semibold text-white font-serif">{t('chat.title') as string}</h4>
-              <span className="text-xs text-luxury-gold flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-luxury-gold animate-pulse" />
-                {t('chat.online') as string}
-              </span>
-            </div>
-            <button onClick={() => setIsOpen(false)} className="text-luxury-silver hover:text-white">
-              ×
-            </button>
-          </div>
-
-          {/* Messages */}
-          <div className="h-64 overflow-y-auto p-4 space-y-3">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] p-3 rounded-xl text-sm ${
-                    msg.type === 'user'
-                      ? 'bg-luxury-gold text-dark font-medium'
-                      : 'bg-white/10 text-luxury-champagne'
-                  }`}
-                >
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Input */}
-          <div className="p-3 border-t border-white/10 flex gap-2">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder={t('chat.placeholder') as string}
-              className="flex-1 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-luxury-silver focus:outline-none focus:border-luxury-gold/50 transition-all"
-            />
-            <button
-              onClick={handleSend}
-              className="px-4 py-2 rounded-xl bg-luxury-gold text-dark font-semibold hover:bg-luxury-gold-light transition-colors"
-            >
-              →
-            </button>
-          </div>
-        </motion.div>
-      )}
-    </>
-  )
-}
 
 const Hero = () => {
   const { t } = useI18n()
@@ -260,9 +156,6 @@ const Hero = () => {
           </motion.div>
         </motion.div>
       </div>
-
-      {/* AI Chatbot Demo */}
-      <AIChatDemo />
     </section>
   )
 }

@@ -9,6 +9,8 @@ import CaseStudies from './components/CaseStudies'
 import Partners from './components/Partners'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import SocialSidebar from './components/SocialSidebar'
+import AIAssistantWidget from './components/AIAssistantWidget'
 
 function LandingPage() {
   return (
@@ -26,6 +28,8 @@ function LandingPage() {
         <Contact />
       </main>
       <Footer />
+      <SocialSidebar />
+      <AIAssistantWidget />
     </div>
   )
 }
