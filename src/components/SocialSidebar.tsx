@@ -4,7 +4,7 @@ const socialLinks = [
   {
     id: 'linkedin',
     label: 'LinkedIn',
-    href: 'https://linkedin.com/company/aidynamicpro',
+    href: 'https://www.linkedin.com/in/ai-dynamic-75983a407/',
     color: 'bg-[#0077b5] hover:bg-[#006396]',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
