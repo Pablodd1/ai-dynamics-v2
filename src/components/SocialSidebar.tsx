@@ -15,7 +15,7 @@ const socialLinks = [
   {
     id: 'instagram',
     label: 'Instagram',
-    href: 'https://instagram.com/aidynamicpro',
+    href: 'https://www.instagram.com/aidynamicspro/',
     color: 'bg-gradient-to-br from-[#f09433] via-[#e6683c] via-[#dc2743] via-[#cc2366] to-[#bc1888]',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
