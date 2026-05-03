@@ -25,7 +25,18 @@ const MatrixRain = () => {
       drops = Array(columns.length).fill(1)
     }
 
+    let frameCount = 0
+    const speed = 3 // Update every 3 frames (slower, more like movie)
+
     const draw = () => {
+      frameCount++
+      
+      // Only render on every Nth frame for slower, movie-like effect
+      if (frameCount % speed !== 0) {
+        animationId = requestAnimationFrame(draw)
+        return
+      }
+
       // Semi-transparent black to create trail effect
       ctx.fillStyle = 'rgba(10, 10, 15, 0.05)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -55,8 +66,8 @@ const MatrixRain = () => {
 
         ctx.fillText(char, x, y)
 
-        // Reset drop to top randomly
-        if (y > canvas.height && Math.random() > 0.975) {
+        // Reset drop to top randomly (slower reset for longer trails)
+        if (y > canvas.height && Math.random() > 0.985) {
           drops[i] = 0
         }
 
