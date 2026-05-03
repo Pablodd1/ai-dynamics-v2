@@ -31,6 +31,7 @@ const Booking = () => {
 
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [meetLink, setMeetLink] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,9 +45,14 @@ const Booking = () => {
         body: JSON.stringify(formData)
       })
       
+      const data = await res.json()
+      
       if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'Failed to submit booking')
+        throw new Error(data.error || 'Failed to submit booking')
+      }
+      
+      if (data.meetLink) {
+        setMeetLink(data.meetLink)
       }
       
       setSubmitted(true)
@@ -68,12 +74,21 @@ const Booking = () => {
           <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="w-10 h-10 text-green-400" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-4 font-serif">Booking Request Sent</h1>
+          <h1 className="text-3xl font-bold text-white mb-4 font-serif">Booking Confirmed</h1>
           <p className="text-luxury-silver mb-6">
-            Thanks, {formData.name}! We've received your request for a <strong className="text-luxury-gold">{formData.service}</strong> on <strong className="text-luxury-gold">{formData.date}</strong> at <strong className="text-luxury-gold">{formData.time}</strong>.
+            Thanks, {formData.name}! Your <strong className="text-luxury-gold">{formData.service}</strong> is scheduled for <strong className="text-luxury-gold">{formData.date}</strong> at <strong className="text-luxury-gold">{formData.time}</strong> EST.
           </p>
+          {meetLink && (
+            <div className="mb-6 p-4 bg-white/5 rounded-xl border border-luxury-gold/30">
+              <p className="text-luxury-gold text-sm mb-2">Your Google Meet link</p>
+              <a href={meetLink} target="_blank" rel="noopener noreferrer" className="text-white underline break-all hover:text-luxury-gold transition-colors">
+                {meetLink}
+              </a>
+              <p className="text-luxury-silver/60 text-xs mt-2">Also sent to {formData.email}</p>
+            </div>
+          )}
           <p className="text-luxury-silver/60 text-sm mb-8">
-            We'll confirm via email within 2 hours. If you don't hear from us, call +1 (786) 643-2099.
+            A calendar invite has been sent to your email. If you need to reschedule, reply to the confirmation email or call +1 (786) 643-2099.
           </p>
           <Link to="/" className="btn-primary inline-flex items-center gap-2">
             <ArrowLeft className="w-5 h-5" />
