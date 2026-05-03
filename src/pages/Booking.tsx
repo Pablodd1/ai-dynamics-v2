@@ -29,13 +29,32 @@ const Booking = () => {
   })
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitting(true)
+    setError('')
     
-    // Store booking data (in a real app, send to backend)
-    console.log('Booking request:', formData)
-    
-    setSubmitted(true)
+    try {
+      const res = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Failed to submit booking')
+      }
+      
+      setSubmitted(true)
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again or call +1 (786) 643-2099.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -265,13 +284,27 @@ const Booking = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!formData.name || !formData.email}
+                    disabled={!formData.name || !formData.email || submitting}
                     className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Calendar className="w-5 h-5" />
-                    Confirm Booking
+                    {submitting ? (
+                      <span className="flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Sending...
+                      </span>
+                    ) : (
+                      <>
+                        <Calendar className="w-5 h-5" />
+                        Confirm Booking
+                      </>
+                    )}
                   </button>
                 </div>
+                {error && (
+                  <p className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm text-center">
+                    {error}
+                  </p>
+                )}
               </motion.div>
             )}
           </form>
