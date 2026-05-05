@@ -18,6 +18,50 @@ const AIAssistantWidget = () => {
     scrollToBottom()
   }, [messages])
 
+  // Auto-link URLs in text
+  const linkifyText = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g
+    const parts = text.split(urlRegex)
+    return parts.map((part, i) => {
+      if (urlRegex.test(part)) {
+        return (
+          <a
+            key={i}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-accent-400 hover:text-accent-300 break-all"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {part}
+          </a>
+        )
+      }
+      return part
+    })
+  }
+
+  const getResponse = (lowerText: string): string => {
+    if (lowerText.includes('price') || lowerText.includes('cost') || lowerText.includes('how much')) {
+      return "Our quick-win automations start at $2,000. A full AI Operating System typically ranges from $5,000-$15,000. Most clients see ROI within 30-60 days. Would you like to book a free discovery call to discuss your specific needs?"
+    } else if (lowerText.includes('service') || lowerText.includes('offer') || lowerText.includes('do you do')) {
+      return "We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation. All tailored to your business — not generic templates. Which area interests you most?"
+    } else if (lowerText.includes('book') || lowerText.includes('call') || lowerText.includes('schedule') || lowerText.includes('discovery')) {
+      return "Great! You can book a free 30-minute discovery call at https://calendly.com/aidynamicpro/discovery. Jasmel will analyze your operations and show you exactly where AI can save you time and money."
+    } else if (lowerText.includes('industry') || lowerText.includes('healthcare') || lowerText.includes('medical') || lowerText.includes('legal') || lowerText.includes('real estate')) {
+      return "We work across industries — medical billing, legal, real estate, retail, and more. We build bilingual (English/Spanish) solutions for Miami businesses. What's your industry?"
+    } else {
+      const responses = [
+        "Thanks for reaching out! I'd be happy to help with that. Could you tell me more about your business so I can give you the best recommendation?",
+        "Great question! Based on what we typically see with businesses like yours, an AI chatbot combined with workflow automation would likely save you 15-20 hours per week. Would you like to book a free discovery call?",
+        "I understand! Many of our clients felt the same way before starting. Our quick-win automations start at $2,000 and most see ROI within 30 days. Would you like me to connect you with Jasmel for a free 30-minute call?",
+        "Absolutely! We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. We can definitely build a system that matches your specific workflow. What's the best way to reach you?",
+        "We work with businesses across industries — medical billing, real estate, retail, legal, and more. Our process starts with a free audit where we analyze your operations and identify the highest-ROI automation opportunities. Would you like to schedule one?"
+      ]
+      return responses[Math.floor(Math.random() * responses.length)]
+    }
+  }
+
   const handleSend = () => {
     if (!input.trim()) return
 
@@ -26,28 +70,7 @@ const AIAssistantWidget = () => {
     setInput('')
 
     setTimeout(() => {
-      const lowerText = userText.toLowerCase()
-      let response: string
-
-      if (lowerText.includes('price') || lowerText.includes('cost') || lowerText.includes('how much')) {
-        response = "Our quick-win automations start at $2,000. A full AI Operating System typically ranges from $5,000-$15,000. Most clients see ROI within 30-60 days. Would you like to book a free discovery call to discuss your specific needs?"
-      } else if (lowerText.includes('service') || lowerText.includes('offer') || lowerText.includes('do you do')) {
-        response = "We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation. All tailored to your business — not generic templates. Which area interests you most?"
-      } else if (lowerText.includes('book') || lowerText.includes('call') || lowerText.includes('schedule') || lowerText.includes('discovery')) {
-        response = "Great! You can book a free 30-minute discovery call at https://calendly.com/aidynamicpro/discovery. Jasmel will analyze your operations and show you exactly where AI can save you time and money."
-      } else if (lowerText.includes('industry') || lowerText.includes('healthcare') || lowerText.includes('medical') || lowerText.includes('legal') || lowerText.includes('real estate')) {
-        response = "We work across industries — medical billing, legal, real estate, retail, and more. We build bilingual (English/Spanish) solutions for Miami businesses. What's your industry?"
-      } else {
-        const responses = [
-          "Thanks for reaching out! I'd be happy to help with that. Could you tell me more about your business so I can give you the best recommendation?",
-          "Great question! Based on what we typically see with businesses like yours, an AI chatbot combined with workflow automation would likely save you 15-20 hours per week. Would you like to book a free discovery call?",
-          "I understand! Many of our clients felt the same way before starting. Our quick-win automations start at $2,000 and most see ROI within 30 days. Would you like me to connect you with Jasmel for a free 30-minute call?",
-          "Absolutely! We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. We can definitely build a system that matches your specific workflow. What's the best way to reach you?",
-          "We work with businesses across industries — medical billing, real estate, retail, legal, and more. Our process starts with a free audit where we analyze your operations and identify the highest-ROI automation opportunities. Would you like to schedule one?"
-        ]
-        response = responses[Math.floor(Math.random() * responses.length)]
-      }
-
+      const response = getResponse(userText.toLowerCase())
       setMessages(prev => [...prev, { type: 'ai', text: response }])
     }, 1000 + Math.random() * 500)
   }
@@ -146,7 +169,7 @@ const AIAssistantWidget = () => {
                         : 'bg-white/5 text-luxury-champagne border border-white/5 rounded-bl-md'
                     }`}
                   >
-                    {msg.text}
+                    {linkifyText(msg.text)}
                   </motion.div>
                 </div>
               ))}
@@ -159,19 +182,11 @@ const AIAssistantWidget = () => {
                 <button
                   key={suggestion}
                   onClick={() => {
-                    setInput(suggestion)
+                    setMessages(prev => [...prev, { type: 'user', text: suggestion }])
                     setTimeout(() => {
-                      setMessages(prev => [...prev, { type: 'user', text: suggestion }])
-                      setTimeout(() => {
-                        const responses = [
-                          "Great question! Let me get you details on that...",
-                          "Absolutely! Here's what you need to know...",
-                          "I'd love to help with that. Let me explain..."
-                        ]
-                        const response = responses[Math.floor(Math.random() * responses.length)]
-                        setMessages(prev => [...prev, { type: 'ai', text: response }])
-                      }, 800)
-                    }, 100)
+                      const response = getResponse(suggestion.toLowerCase())
+                      setMessages(prev => [...prev, { type: 'ai', text: response }])
+                    }, 800)
                   }}
                   className="px-3 py-1.5 rounded-full text-xs bg-white/5 hover:bg-primary-600/30 border border-white/10 hover:border-primary-500/30 text-white/70 hover:text-white transition-all"
                 >
