@@ -1,60 +1,110 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, User, Building2, Check, ArrowLeft } from 'lucide-react'
+import { Calendar, User, Building2, Check, ArrowLeft, Loader2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+const API_BASE = import.meta.env.VITE_BOOKING_API || ''
+
 const services = [
-  { id: 'audit', name: 'Strategy & Audit ($99)', duration: '30 min' },
-  { id: 'workflow', name: 'Single Workflow Build ($1,000)', duration: '45 min' },
-  { id: 'transformation', name: 'Full AI Transformation ($5,000/mo)', duration: '60 min' },
-  { id: 'general', name: 'General Consultation (Free)', duration: '20 min' },
+  { id: 'free_ai_consultation', name: 'Free AI Consultation', duration: '30 min', price: 'FREE', desc: 'Strategy call to map your automation opportunities' },
+  { id: 'automation_blueprint', name: 'Automation Blueprint', duration: '60 min', price: '$99', desc: 'Deep-dive audit + roadmap deliverable' },
+  { id: 'ai_strategy_session', name: 'AI Strategy Session', duration: '45 min', price: 'FREE', desc: 'For teams ready to build — architecture + ROI' },
+  { id: 'existing_client_checkin', name: 'Existing Client Check-in', duration: '30 min', price: 'FREE', desc: 'Progress review and next-phase planning' },
 ]
 
-const timeSlots = [
-  '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
-  '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM'
-]
+interface Slot {
+  start: string
+  end: string
+  display: string
+  day: string
+  value: string
+}
+
+interface SlotsData {
+  [date: string]: Slot[]
+}
 
 const Booking = () => {
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     service: '',
-    date: '',
-    time: '',
     name: '',
     email: '',
     company: '',
     phone: '',
-    message: ''
+    interest: '',
+    budget: '',
+    challenge: '',
+    selected_slot: null as Slot | null
   })
   const [submitted, setSubmitted] = useState(false)
-
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [meetLink, setMeetLink] = useState('')
+  const [slots, setSlots] = useState<SlotsData>({})
+  const [slotsLoading, setSlotsLoading] = useState(true)
+  const [selectedDay, setSelectedDay] = useState('')
+
+  useEffect(() => {
+    loadAvailability()
+  }, [])
+
+  const loadAvailability = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/availability`)
+      const data = await res.json()
+      if (data.slots) {
+        setSlots(data.slots)
+        const firstDay = Object.keys(data.slots)[0]
+        if (firstDay) setSelectedDay(firstDay)
+      }
+    } catch (err) {
+      console.error('Failed to load slots:', err)
+    } finally {
+      setSlotsLoading(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
     setError('')
-    
+
+    if (!formData.selected_slot) {
+      setError('Please select a time slot.')
+      setSubmitting(false)
+      return
+    }
+
     try {
-      const res = await fetch('/api/booking', {
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        meeting_type: formData.service,
+        interest: formData.interest,
+        selected_slot: formData.selected_slot,
+        budget: formData.budget,
+        challenge: formData.challenge,
+        source: 'AI Dynamics Pro Website'
+      }
+
+      const res = await fetch(`${API_BASE}/api/book`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       })
-      
+
       const data = await res.json()
-      
-      if (!res.ok) {
+
+      if (!data.success) {
         throw new Error(data.error || 'Failed to submit booking')
       }
-      
-      if (data.meetLink) {
-        setMeetLink(data.meetLink)
+
+      if (data.meet_link) {
+        setMeetLink(data.meet_link)
       }
-      
+
       setSubmitted(true)
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again or call +1 (786) 643-2099.')
@@ -66,7 +116,7 @@ const Booking = () => {
   if (submitted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-dark via-dark-50 to-dark flex items-center justify-center px-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="max-w-md w-full text-center"
@@ -76,7 +126,7 @@ const Booking = () => {
           </div>
           <h1 className="text-3xl font-bold text-white mb-4 font-serif">Booking Confirmed</h1>
           <p className="text-luxury-silver mb-6">
-            Thanks, {formData.name}! Your <strong className="text-luxury-gold">{formData.service}</strong> is scheduled for <strong className="text-luxury-gold">{formData.date}</strong> at <strong className="text-luxury-gold">{formData.time}</strong> EST.
+            Thanks, {formData.name}! Your <strong className="text-luxury-gold">{formData.service}</strong> is scheduled.
           </p>
           {meetLink && (
             <div className="mb-6 p-4 bg-white/5 rounded-xl border border-luxury-gold/30">
@@ -117,8 +167,8 @@ const Booking = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="text-4xl font-bold text-white mb-2 font-serif text-center">Book Your Call</h1>
-          <p className="text-luxury-silver text-center mb-10">Pick a time that works for you. We'll confirm within 2 hours.</p>
+          <h1 className="text-4xl font-bold text-white mb-2 font-serif text-center">Book Your AI Consultation</h1>
+          <p className="text-luxury-silver text-center mb-10">Available Monday–Saturday, 10:00 AM – 5:00 PM EST</p>
 
           {/* Progress */}
           <div className="flex items-center justify-center gap-4 mb-10">
@@ -143,11 +193,11 @@ const Booking = () => {
                       key={service.id}
                       type="button"
                       onClick={() => {
-                        setFormData({ ...formData, service: service.name })
+                        setFormData({ ...formData, service: service.id })
                         setStep(2)
                       }}
                       className={`w-full text-left p-4 rounded-xl border transition-all ${
-                        formData.service === service.name
+                        formData.service === service.id
                           ? 'border-luxury-gold bg-luxury-gold/10'
                           : 'border-white/10 hover:border-luxury-gold/30'
                       }`}
@@ -155,11 +205,15 @@ const Booking = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-white font-semibold">{service.name}</p>
-                          <p className="text-luxury-silver text-sm">{service.duration} consultation</p>
+                          <p className="text-luxury-silver text-sm">{service.desc}</p>
+                          <p className="text-luxury-silver/60 text-xs mt-1">{service.duration}</p>
                         </div>
-                        {formData.service === service.name && (
-                          <Check className="w-5 h-5 text-luxury-gold" />
-                        )}
+                        <div className="text-right">
+                          <span className="text-luxury-gold font-bold">{service.price}</span>
+                          {formData.service === service.id && (
+                            <Check className="w-5 h-5 text-luxury-gold ml-auto mt-1" />
+                          )}
+                        </div>
                       </div>
                     </button>
                   ))}
@@ -172,39 +226,63 @@ const Booking = () => {
               <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                 <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-luxury-gold" />
-                  Pick a Date & Time
+                  Pick a Time Slot
                 </h2>
-                
-                <div className="mb-6">
-                  <label className="text-luxury-silver text-sm mb-2 block">Date</label>
-                  <input
-                    type="date"
-                    required
-                    value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-luxury-gold focus:outline-none"
-                  />
-                </div>
 
-                <div className="mb-6">
-                  <label className="text-luxury-silver text-sm mb-2 block">Time (EST)</label>
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                    {timeSlots.map((slot) => (
-                      <button
-                        key={slot}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, time: slot })}
-                        className={`px-3 py-2 rounded-lg text-sm border transition-all ${
-                          formData.time === slot
-                            ? 'border-luxury-gold bg-luxury-gold/20 text-luxury-gold'
-                            : 'border-white/10 text-luxury-silver hover:border-luxury-gold/30'
-                        }`}
-                      >
-                        {slot}
-                      </button>
-                    ))}
+                {slotsLoading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-8 h-8 text-luxury-gold animate-spin" />
+                    <span className="ml-3 text-luxury-silver">Loading availability...</span>
                   </div>
-                </div>
+                ) : Object.keys(slots).length === 0 ? (
+                  <div className="text-center py-12">
+                    <p className="text-luxury-silver">No available slots. Please contact us directly.</p>
+                    <p className="text-luxury-gold mt-2">+1 (786) 643-2099</p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Day selector */}
+                    <div className="flex gap-2 overflow-x-auto pb-2 mb-4">
+                      {Object.entries(slots).map(([date, daySlots]) => (
+                        <button
+                          key={date}
+                          type="button"
+                          onClick={() => {
+                            setSelectedDay(date)
+                            setFormData({ ...formData, selected_slot: null })
+                          }}
+                          className={`px-4 py-2 rounded-lg text-sm border whitespace-nowrap transition-all ${
+                            selectedDay === date
+                              ? 'border-luxury-gold bg-luxury-gold/20 text-luxury-gold'
+                              : 'border-white/10 text-luxury-silver hover:border-luxury-gold/30'
+                          }`}
+                        >
+                          {daySlots[0]?.day || date}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Time slots */}
+                    {selectedDay && slots[selectedDay] && (
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-6">
+                        {slots[selectedDay].map((slot) => (
+                          <button
+                            key={slot.value}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, selected_slot: slot })}
+                            className={`px-3 py-2 rounded-lg text-sm border transition-all ${
+                              formData.selected_slot?.value === slot.value
+                                ? 'border-luxury-gold bg-luxury-gold/20 text-luxury-gold'
+                                : 'border-white/10 text-luxury-silver hover:border-luxury-gold/30'
+                            }`}
+                          >
+                            {slot.display}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
 
                 <div className="flex gap-3">
                   <button
@@ -216,7 +294,7 @@ const Booking = () => {
                   </button>
                   <button
                     type="button"
-                    disabled={!formData.date || !formData.time}
+                    disabled={!formData.selected_slot}
                     onClick={() => setStep(3)}
                     className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -278,11 +356,43 @@ const Booking = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-luxury-silver text-sm mb-2 block">What do you want to automate?</label>
+                    <label className="text-luxury-silver text-sm mb-2 block">What AI solution interests you?</label>
+                    <select
+                      value={formData.interest}
+                      onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-luxury-gold focus:outline-none"
+                    >
+                      <option value="" className="bg-dark">Select one...</option>
+                      <option value="process-automation" className="bg-dark">AI Process Automation</option>
+                      <option value="customer-service" className="bg-dark">Intelligent Customer Service</option>
+                      <option value="document-intelligence" className="bg-dark">Document Intelligence</option>
+                      <option value="predictive-analytics" className="bg-dark">Predictive Analytics</option>
+                      <option value="workflow-integration" className="bg-dark">Workflow Integration</option>
+                      <option value="viral-content" className="bg-dark">Viral Content Automation</option>
+                      <option value="not-sure" className="bg-dark">Not sure yet — let's discuss</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-luxury-silver text-sm mb-2 block">Estimated Budget</label>
+                    <select
+                      value={formData.budget}
+                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-luxury-gold focus:outline-none"
+                    >
+                      <option value="" className="bg-dark">Select range...</option>
+                      <option value="under-2k" className="bg-dark">Under $2,000</option>
+                      <option value="2k-5k" className="bg-dark">$2,000 – $5,000</option>
+                      <option value="5k-10k" className="bg-dark">$5,000 – $10,000</option>
+                      <option value="10k+" className="bg-dark">$10,000+</option>
+                      <option value="not-sure" className="bg-dark">Not sure yet</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-luxury-silver text-sm mb-2 block">Biggest workflow challenge?</label>
                     <textarea
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us about your current process and what you'd like to automate..."
+                      value={formData.challenge}
+                      onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
+                      placeholder="Tell us about your most time-consuming manual task..."
                       rows={4}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-luxury-gold focus:outline-none resize-none"
                     />
@@ -304,8 +414,8 @@ const Booking = () => {
                   >
                     {submitting ? (
                       <span className="flex items-center gap-2">
-                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Sending...
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Booking...
                       </span>
                     ) : (
                       <>
@@ -328,8 +438,10 @@ const Booking = () => {
           {formData.service && (
             <div className="mt-8 p-4 bg-white/5 rounded-xl border border-white/10">
               <p className="text-luxury-silver text-sm">Booking Summary</p>
-              <p className="text-white font-semibold">{formData.service}</p>
-              {formData.date && <p className="text-luxury-gold text-sm">{formData.date} at {formData.time}</p>}
+              <p className="text-white font-semibold">{services.find(s => s.id === formData.service)?.name}</p>
+              {formData.selected_slot && (
+                <p className="text-luxury-gold text-sm">{formData.selected_slot.day} at {formData.selected_slot.display}</p>
+              )}
             </div>
           )}
         </motion.div>
