@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
   * {
@@ -23,7 +21,7 @@
 
 @layer utilities {
   .hero-heading {
-    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    background: linear-gradient(180deg, #FF8A00 0%, #E55D00 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

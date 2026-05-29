@@ -24,13 +24,13 @@ export const AboutSection = () => {
       <div className="flex flex-col items-center z-10 w-full max-w-4xl mx-auto gap-10 sm:gap-14 md:gap-16">
         <FadeIn delay={0} y={40}>
           <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center text-[clamp(3rem,12vw,160px)]">
-            About me
+            About us
           </h2>
         </FadeIn>
 
         <div className="flex flex-col items-center gap-16 sm:gap-20 md:gap-24">
           <AnimatedText 
-            text="With more than five years of experience in design, i focus on branding, web design, and user experience, i truly enjoy working with businesses that aim to stand out and present their best image. Let's build something incredible together!" 
+            text="We are an elite AI consulting agency automating workflows. We offer free teaching, training, and auditing, plus fully customized AI integration plans. We are experts in top-tier models including Claude, Gemini, OpenAI, and Hermes." 
             className="text-[#D7E2EA] font-medium text-center leading-relaxed max-w-[560px] text-[clamp(1rem,2vw,1.35rem)]"
           />
           <ContactButton />
