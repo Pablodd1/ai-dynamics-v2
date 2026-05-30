@@ -8,7 +8,7 @@ const contactMethods = [
     description: "Instant secure messaging",
     icon: <Send size={32} />,
     color: "from-[#229ED9] to-[#0088CC]",
-    link: "https://t.me/your_telegram_handle",
+    link: "https://t.me/+17869708366",
     delay: 0.1
   },
   {
@@ -16,7 +16,7 @@ const contactMethods = [
     description: "Chat with our human team",
     icon: <MessageCircle size={32} />,
     color: "from-[#25D366] to-[#128C7E]",
-    link: "https://wa.me/1234567890",
+    link: "https://wa.me/17869708366",
     delay: 0.2
   },
   {
@@ -24,7 +24,7 @@ const contactMethods = [
     description: "Speak to a strategist",
     icon: <PhoneCall size={32} />,
     color: "from-[#FF8A00] to-[#E55D00]",
-    link: "tel:+1234567890",
+    link: "tel:+17869708366",
     delay: 0.3
   },
   {
@@ -32,7 +32,7 @@ const contactMethods = [
     description: "Request an RFP or Free Audit",
     icon: <Mail size={32} />,
     color: "from-[#B600A8] to-[#7621B0]",
-    link: "mailto:contact@aidynamic.pro",
+    link: "mailto:jasmelacosta@gmail.com",
     delay: 0.4
   }
 ];
