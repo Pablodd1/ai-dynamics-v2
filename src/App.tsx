@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Analytics } from '@vercel/analytics/react';
 
 import { NavigationBar } from './components/NavigationBar';
 import { HeroSection } from './sections/HeroSection';
@@ -17,6 +18,8 @@ import { TestimonialsSection } from './sections/TestimonialsSection';
 import { InsightsSection } from './sections/InsightsSection';
 import { OmnichannelContactSection } from './sections/OmnichannelContactSection';
 import { FooterSection } from './sections/FooterSection';
+import { AiRoiCalculatorSection } from './sections/AiRoiCalculatorSection';
+import { CalendarBookingSection } from './sections/CalendarBookingSection';
 
 import { LiveAgentChatbot } from './components/LiveAgentChatbot';
 import { NeuralNetworkBackground } from './components/NeuralNetworkBackground';
@@ -29,6 +32,17 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [activeTab]);
+
+  // Listen for cross-component tab switching (e.g. from ROI calculator to Contact)
+  useEffect(() => {
+    const handleSwitchTab = (e: CustomEvent) => {
+      setActiveTab(e.detail);
+    };
+    document.addEventListener('switchTab', handleSwitchTab as EventListener);
+    return () => {
+      document.removeEventListener('switchTab', handleSwitchTab as EventListener);
+    };
+  }, []);
 
   return (
     <div className="main-wrapper relative min-h-screen pb-0">
@@ -77,6 +91,7 @@ function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
+              <AiRoiCalculatorSection />
               <PricingSection />
               <MarketOpportunitySection />
               <TestimonialsSection />
@@ -103,6 +118,7 @@ function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
             >
+              <CalendarBookingSection />
               <OmnichannelContactSection />
             </motion.div>
           )}
@@ -114,6 +130,7 @@ function App() {
       {/* Global Interactive Elements persist across tabs */}
       <LiveAgentChatbot />
       <AICursorCopilot />
+      <Analytics />
     </div>
   );
 }
