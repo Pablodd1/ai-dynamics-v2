@@ -17,18 +17,6 @@ export const HeroSection = () => {
 
   return (
     <section ref={containerRef} className="min-h-[75vh] lg:min-h-[80vh] flex flex-col overflow-x-clip relative pb-20">
-      {/* Navbar */}
-      <FadeIn delay={0} y={-20} className="w-full relative z-40">
-        <nav className="flex justify-between items-center px-6 md:px-10 pt-6 md:pt-8 text-[#D7E2EA] font-medium uppercase tracking-wider text-sm md:text-lg lg:text-[1.4rem]">
-          <div className="font-black tracking-widest">Aidynamic.pro</div>
-          <div className="hidden md:flex gap-8 text-sm">
-            <a href="#services" className="hover:opacity-70 transition-opacity">Services</a>
-            <a href="#industries" className="hover:opacity-70 transition-opacity">Industries</a>
-            <a href="#contact" className="hover:opacity-70 transition-opacity">Get Audit</a>
-            <a href="#contact" className="hover:opacity-70 transition-opacity">Contact</a>
-          </div>
-        </nav>
-      </FadeIn>
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-20 mt-16 sm:mt-10 px-6">
