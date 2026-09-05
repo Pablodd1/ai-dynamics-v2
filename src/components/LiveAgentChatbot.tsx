@@ -9,141 +9,6 @@ interface ChatMessage {
   options?: string[];
 }
 
-const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY || '';
-
-const SYSTEM_PROMPT = `You are the AI Front Desk Assistant for AI Dynamic Pro (AIDynamic.pro), an AI consulting and automation agency based in Miami, FL.
-
-## ABOUT THE COMPANY
-- Name: AI Dynamic Pro (AIDynamic.pro)
-- Founded: 2024 by Jasmel Acosta
-- Location: Miami, FL
-- Focus: AI automation for small businesses, especially bilingual (English/Spanish) solutions
-- Industries: Medical billing, legal, real estate, retail, construction, healthcare
-- Services: AI chatbots, workflow automation, analytics dashboards, document processing, content automation, CRM automation, voice AI agents
-
-## PRICING
-- Quick-win automations: $2,000-$5,000
-- Full AI Operating System: $5,000-$15,000
-- Most clients see ROI within 30-60 days
-- Custom quotes available after discovery call
-- Bilingual (English/Spanish) solutions included at no extra cost
-
-## PROCESS
-1. Discovery Call (Free, 30 min) - analyze operations, identify opportunities
-2. Strategy Blueprint - detailed automation plan with ROI projections
-3. Implementation - build and deploy AI solutions
-4. Optimization - monitor, refine, and scale
-
-## BOOKING
-- Free discovery call: https://calendly.com/aidynamicpro/discovery
-- Phone: +1 (786) 643-2099
-- Email: jasmelacosta@gmail.com
-- Website: https://www.aidynamic.pro
-
-## TONE
-- Professional but warm and approachable
-- Knowledgeable about AI but explain simply
-- Always guide toward booking a discovery call
-- Keep responses concise (2-3 sentences max), friendly, and actionable
-- End with a helpful next step or question
-
-## IMPORTANT RULES
-- NEVER provide code or technical implementation details
-- NEVER promise specific timelines without knowing the project scope
-- ALWAYS suggest booking a discovery call for detailed questions`;
-
-// Rate limiting (client-side, per session)
-let requestCount = 0;
-let lastReset = Date.now();
-const MAX_REQUESTS_PER_MINUTE = 15;
-
-function checkRateLimit(): boolean {
-  const now = Date.now();
-  if (now - lastReset > 60000) {
-    requestCount = 0;
-    lastReset = now;
-  }
-  requestCount++;
-  return requestCount <= MAX_REQUESTS_PER_MINUTE;
-}
-
-async function fetchDeepSeekResponse(userMessage: string): Promise<string> {
-  if (!DEEPSEEK_API_KEY) {
-    throw new Error('DeepSeek API key not configured');
-  }
-
-  if (!checkRateLimit()) {
-    throw new Error('Rate limit exceeded');
-  }
-
-  const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: userMessage },
-      ],
-      temperature: 0.7,
-      max_tokens: 300,
-      top_p: 0.9,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    console.error('DeepSeek API error:', errorData);
-    throw new Error(`DeepSeek API error: ${response.status}`);
-  }
-
-  const data = await response.json();
-  const text = data.choices?.[0]?.message?.content;
-  if (text) return text.trim();
-  throw new Error('No response from DeepSeek');
-}
-
-// Fallback responses when DeepSeek is unavailable
-function getFallbackResponse(input: string): string {
-  const lowerInput = input.toLowerCase();
-
-  if (lowerInput.includes("healthcare") || lowerInput.includes("clinic") || lowerInput.includes("medical")) {
-    return "For healthcare, we deploy AI agents that handle bilingual patient triage, HIPAA-compliant charting, and policy lookups. Want to explore a free audit?";
-  }
-  if (lowerInput.includes("legal") || lowerInput.includes("attorney") || lowerInput.includes("law")) {
-    return "Our legal agents ingest massive documents, audit mutual indemnity anomalies, and cross-reference Florida case law instantly. Shall we schedule a free audit for your firm?";
-  }
-  if (lowerInput.includes("price") || lowerInput.includes("cost") || lowerInput.includes("pricing")) {
-    return "Our quick-win automations start at $2,000 and full AI systems range from $5,000-$15,000. Most clients see ROI within 30-60 days. Want a custom quote? Book a free discovery call at https://calendly.com/aidynamicpro/discovery";
-  }
-  if (lowerInput.includes("contact") || lowerInput.includes("audit") || lowerInput.includes("free") || lowerInput.includes("schedule")) {
-    return "Excellent! The first year audit is free. Our human team will reach out within 15 minutes to begin your operational assessment. Just leave your email below!";
-  }
-  if (lowerInput.includes("robotics") || lowerInput.includes("logistics")) {
-    return "We integrate OpenAI Vision with IoT hardware to automate warehouse fleet dispatch and inventory audits. Want to explore a free audit for your operations?";
-  }
-  if (lowerInput.includes("hello") || lowerInput.includes("hi") || lowerInput.includes("hey")) {
-    return "Hello there! I'm the AI Dynamic receptionist. How can I help automate your Miami business today?";
-  }
-  if (lowerInput.includes("service") || lowerInput.includes("do") || lowerInput.includes("offer")) {
-    return "We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?";
-  }
-  if (lowerInput.includes("spanish") || lowerInput.includes("español") || lowerInput.includes("bilingual")) {
-    return "¡Sí! Todos nuestros sistemas de IA son bilingües (inglés/español) por defecto. No hay costo adicional. ¿En qué industria trabajas?";
-  }
-  if (lowerInput.includes("miami")) {
-    return "Yes! We are based in Miami and understand the local market. We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. What industry are you in?";
-  }
-  if (lowerInput.includes("time") || lowerInput.includes("long") || lowerInput.includes("deploy")) {
-    return "Typical deployment is 2-4 weeks for a single workflow, and 1-3 months for a full AI transformation. Most clients see ROI within the first 30 days.";
-  }
-
-  return "Thanks for reaching out! To give you the best recommendation, could you tell me what industry you are in and what challenges you are facing? Or book a free discovery call at https://calendly.com/aidynamicpro/discovery";
-}
-
 export const LiveAgentChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -157,7 +22,7 @@ export const LiveAgentChatbot = () => {
       options: ["Healthcare / Clinics", "Legal / Attorney", "Pricing & Audit"]
     }
   ]);
-
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<any>(null);
 
@@ -172,7 +37,7 @@ export const LiveAgentChatbot = () => {
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
-        recognition.continuous = false;
+        recognition.continuous = false; // Stop after one phrase so we can answer back-to-back
         recognition.interimResults = false;
         recognition.lang = 'en-US';
 
@@ -182,7 +47,7 @@ export const LiveAgentChatbot = () => {
 
         recognition.onresult = (event: any) => {
           const transcript = event.results[0][0].transcript;
-          handleUserInput(transcript, true);
+          handleUserInput(transcript, true); // true = from voice
         };
 
         recognition.onerror = (event: any) => {
@@ -197,7 +62,7 @@ export const LiveAgentChatbot = () => {
         recognitionRef.current = recognition;
       }
     }
-
+    
     // Preload voices
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = () => {
@@ -210,7 +75,7 @@ export const LiveAgentChatbot = () => {
   useEffect(() => {
     if (isOpen) {
       const greeting = "Hello! I am the AI Dynamic front desk. How can I help you today?";
-
+      
       // Speak greeting
       speakResponse(greeting, () => {
         // After speaking, immediately start listening
@@ -231,19 +96,22 @@ export const LiveAgentChatbot = () => {
 
   const speakResponse = (text: string, onEndCallback?: () => void) => {
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
+      window.speechSynthesis.cancel(); // Stop current speech
       const utterance = new SpeechSynthesisUtterance(text);
-
+      
+      // Natural, smooth conversational tone
       utterance.rate = 1.0;
       utterance.pitch = 1.0;
-
+      
       const voices = window.speechSynthesis.getVoices();
-
-      const premiumVoice = voices.find(v =>
+      
+      // Prioritize premium, natural-sounding browser/OS voices
+      const premiumVoice = voices.find(v => 
         (v.name.includes('Neural') || v.name.includes('Online') || v.name.includes('Google UK English Male') || v.name.includes('Guy')) && v.lang.startsWith('en')
       );
-
-      const fallbackVoice = voices.find(v =>
+      
+      // Fallback to any decent male voice if premium isn't found
+      const fallbackVoice = voices.find(v => 
         (v.name.includes('Male') || v.name.includes('Arthur') || v.name.includes('Mark')) && v.lang.startsWith('en')
       );
 
@@ -261,7 +129,34 @@ export const LiveAgentChatbot = () => {
     }
   };
 
-  const handleUserInput = async (text: string, fromVoice: boolean = false) => {
+  const processIntent = (input: string) => {
+    const lowerInput = input.toLowerCase();
+    let reply = "I'm sorry, I didn't quite catch that. You can ask me about our services, our pricing tiers like the Macho Matchman, or how to get a free audit!";
+    let nextOptions: string[] = ["See Pricing", "Request Free Audit"];
+
+    if (lowerInput.includes("healthcare") || lowerInput.includes("clinic") || lowerInput.includes("medical")) {
+      reply = "For healthcare, we deploy 'Agents of Agents' that handle bilingual patient triage, HIPAA-compliant charting, and policy lookups. Want to explore a free audit?";
+      nextOptions = ["Request Free Audit", "See Pricing"];
+    } else if (lowerInput.includes("legal") || lowerInput.includes("attorney") || lowerInput.includes("law")) {
+      reply = "Our legal agents ingest massive documents, audit mutual indemnity anomalies, and cross-reference Florida case law instantly. Shall we schedule a free audit for your firm?";
+      nextOptions = ["Request Free Audit", "See Pricing"];
+    } else if (lowerInput.includes("price") || lowerInput.includes("cost") || lowerInput.includes("macho") || lowerInput.includes("sovereign")) {
+      reply = "We offer the 'Macho Matchman' integration suite at twenty-five hundred a month, or the full 'Sovereign AI Overlord' with custom private servers at five thousand a month. The first year audit is absolutely free though! Would you like to start there?";
+      nextOptions = ["Request Free Audit"];
+    } else if (lowerInput.includes("contact") || lowerInput.includes("audit") || lowerInput.includes("free") || lowerInput.includes("schedule")) {
+      reply = "Excellent! The first year audit is free. Our human team will reach out within 15 minutes to begin your operational assessment. Just leave your email below!";
+      nextOptions = [];
+    } else if (lowerInput.includes("robotics") || lowerInput.includes("logistics")) {
+      reply = "We integrate OpenAI Vision with IoT hardware to automate warehouse fleet dispatch and inventory audits. Want to explore a free audit for your operations?";
+      nextOptions = ["Request Free Audit", "See Pricing"];
+    } else if (lowerInput.includes("hello") || lowerInput.includes("hi") || lowerInput.includes("hey")) {
+      reply = "Hello there! I'm the AI Dynamic receptionist. How can I help automate your Miami business today?";
+    }
+
+    return { reply, nextOptions };
+  };
+
+  const handleUserInput = (text: string, fromVoice: boolean = false) => {
     if (!text.trim()) return;
 
     // If user types, stop voice/listening
@@ -278,60 +173,27 @@ export const LiveAgentChatbot = () => {
     setIsTyping(true);
     setInputText("");
 
-    try {
-      // Try DeepSeek AI first
-      const reply = await fetchDeepSeekResponse(text);
-      const nextOptions = deriveOptions(reply);
-
+    // Simulate Agent processing delay
+    setTimeout(() => {
       setIsTyping(false);
+      const { reply, nextOptions } = processIntent(text);
+
       setMessages(prev => [
         ...prev,
         { id: Date.now().toString(), sender: 'agent', text: reply, options: nextOptions.length > 0 ? nextOptions : undefined }
       ]);
-
-      // If voice interaction, speak and restart listening
+      
+      // If the interaction was voice, reply with voice and restart listening
       if (fromVoice) {
         speakResponse(reply, () => {
+          // Restart listening for back-to-back conversation
           if (recognitionRef.current && isOpen) {
             try { recognitionRef.current.start(); } catch(e) {}
           }
         });
       }
-    } catch (err) {
-      // Fallback to rule-based
-      console.error('DeepSeek failed, using fallback:', err);
-      const fallbackReply = getFallbackResponse(text);
-      const nextOptions = deriveOptions(fallbackReply);
 
-      setIsTyping(false);
-      setMessages(prev => [
-        ...prev,
-        { id: Date.now().toString(), sender: 'agent', text: fallbackReply, options: nextOptions.length > 0 ? nextOptions : undefined }
-      ]);
-
-      if (fromVoice) {
-        speakResponse(fallbackReply, () => {
-          if (recognitionRef.current && isOpen) {
-            try { recognitionRef.current.start(); } catch(e) {}
-          }
-        });
-      }
-    }
-  };
-
-  // Derive suggestion buttons from response text
-  const deriveOptions = (reply: string): string[] => {
-    const lower = reply.toLowerCase();
-    if (lower.includes('audit') || lower.includes('discovery') || lower.includes('call')) {
-      return ["Request Free Audit", "See Pricing"];
-    }
-    if (lower.includes('pricing') || lower.includes('$') || lower.includes('cost')) {
-      return ["Request Free Audit", "Contact Us"];
-    }
-    if (lower.includes('industry') || lower.includes('service')) {
-      return ["Healthcare", "Legal", "Real Estate"];
-    }
-    return ["Request Free Audit"];
+    }, 1000);
   };
 
   const handleTextSubmit = (e: React.FormEvent) => {
@@ -383,12 +245,12 @@ export const LiveAgentChatbot = () => {
                     {isListening ? (
                       <>Listening <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div></>
                     ) : (
-                      <>DeepSeek AI <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div></>
+                      <>Online <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div></>
                     )}
                   </span>
                 </div>
               </div>
-              <button
+              <button 
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors relative z-10"
               >
@@ -402,17 +264,17 @@ export const LiveAgentChatbot = () => {
 
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
-
+                  
                   <div className={`flex items-end gap-2 max-w-[85%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
                     <div className={`w-6 h-6 rounded-full shrink-0 flex items-center justify-center ${
                       msg.sender === 'user' ? 'bg-[#D7E2EA]/20' : 'bg-[#FF8A00]/20 border border-[#FF8A00]/30'
                     }`}>
                       {msg.sender === 'user' ? <User size={12} className="text-[#D7E2EA]" /> : <Bot size={12} className="text-[#FF8A00]" />}
                     </div>
-
+                    
                     <div className={`p-3 rounded-2xl text-sm leading-relaxed ${
-                      msg.sender === 'user'
-                        ? 'bg-[#D7E2EA]/10 text-[#D7E2EA] rounded-br-none'
+                      msg.sender === 'user' 
+                        ? 'bg-[#D7E2EA]/10 text-[#D7E2EA] rounded-br-none' 
                         : 'bg-[#0C0C0C] text-[#D7E2EA] border border-[#D7E2EA]/10 rounded-bl-none shadow-lg'
                     }`}>
                       {msg.text}
@@ -448,14 +310,14 @@ export const LiveAgentChatbot = () => {
                   </div>
                 </div>
               )}
-
+              
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area with Text/Voice Toggle */}
             <div className="p-3 bg-[#0C0C0C] border-t border-[#D7E2EA]/10">
               <form onSubmit={handleTextSubmit} className="relative flex items-center gap-2">
-                <button
+                <button 
                   type="button"
                   onClick={() => {
                     if (isListening) {
@@ -466,22 +328,22 @@ export const LiveAgentChatbot = () => {
                     }
                   }}
                   className={`w-12 h-12 shrink-0 rounded-full flex items-center justify-center transition-all shadow-lg ${
-                    isListening
-                      ? 'bg-red-500/20 text-red-500 border-2 border-red-500 animate-pulse'
+                    isListening 
+                      ? 'bg-red-500/20 text-red-500 border-2 border-red-500 animate-pulse' 
                       : 'bg-[#151515] text-[#FF8A00] border border-[#FF8A00]/50 hover:bg-[#FF8A00]/10'
                   }`}
                 >
                   {isListening ? <MicOff size={20} /> : <Mic size={20} />}
                 </button>
                 <div className="flex-1 relative">
-                  <input
-                    type="text"
+                  <input 
+                    type="text" 
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
-                    placeholder="Or type here..."
+                    placeholder="Or type here..." 
                     className="w-full bg-[#151515] border border-[#D7E2EA]/20 rounded-full py-3 pl-4 pr-12 text-sm text-[#D7E2EA] placeholder:text-[#D7E2EA]/30 focus:outline-none focus:border-[#FF8A00]/50"
                   />
-                  <button
+                  <button 
                     type="submit"
                     className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#FF8A00] hover:bg-[#E55D00] rounded-full flex items-center justify-center transition-colors"
                   >
