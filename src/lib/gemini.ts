@@ -99,6 +99,11 @@ export async function sendGeminiMessage(
     // Proxy failed, fall through to direct Gemini API
   }
 
+  // If no Gemini API key is configured in environment, fall back immediately without 403 error
+  if (!GEMINI_API_KEY) {
+    throw new Error('No GEMINI_API_KEY configured')
+  }
+
   try {
     // Direct Gemini API call
     const response = await fetch(
