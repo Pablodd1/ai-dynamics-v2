@@ -1,7 +1,9 @@
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import TrustBadges from './components/TrustBadges'
+import LiveCallSimulator from './components/LiveCallSimulator'
 import IndustryTabs from './components/IndustryTabs'
+import ROICalculator from './components/ROICalculator'
 import CaseStudy from './components/CaseStudy'
 import Founder from './components/Founder'
 import Pricing from './components/Pricing'
@@ -21,7 +23,9 @@ function LandingPage() {
       <main>
         <Hero />
         <TrustBadges />
+        <LiveCallSimulator />
         <IndustryTabs />
+        <ROICalculator />
         <CaseStudy />
         <Founder />
         <Pricing />

@@ -45,12 +45,12 @@ const Navigation = () => {
     : user?.email?.[0].toUpperCase() || 'U'
 
   const navLinks = [
+    { label: 'Voice Demo', href: '#call-simulator' },
     { label: t('nav.services') as string, href: '#services' },
-    { label: t('nav.caseStudies') as string, href: '#case-study' },
+    { label: 'ROI Calculator', href: '#roi-calculator' },
     { label: 'Pricing', href: '#pricing' },
     { label: t('nav.about') as string, href: '#about' },
     { label: 'Our Process', href: '#process' },
-    { label: 'FAQ', href: '#faq' },
     { label: t('nav.contact') as string, href: '#contact' },
   ]
 

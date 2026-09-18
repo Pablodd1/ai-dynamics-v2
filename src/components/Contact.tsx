@@ -147,17 +147,38 @@ const Contact = () => {
               ))}
             </div>
 
-            <div className="p-6 rounded-2xl border border-luxury-gold/20 bg-luxury-gold/5">
-              <div className="flex items-center gap-3 mb-3">
+            <div className="p-6 rounded-2xl border border-luxury-gold/30 bg-gradient-to-br from-luxury-gold/15 to-dark-50 shadow-lg">
+              <div className="flex items-center gap-3 mb-2">
                 <div className="relative">
                   <div className="w-3 h-3 rounded-full bg-luxury-gold" />
                   <div className="absolute inset-0 w-3 h-3 rounded-full bg-luxury-gold animate-ping" />
                 </div>
-                <span className="text-luxury-gold font-medium">{t('contact.responseTime') as string}</span>
+                <span className="text-luxury-gold font-bold text-sm">Direct Online Calendar Booking</span>
               </div>
-              <p className="text-sm text-luxury-silver">
-                {t('contact.responseText') as string}
+              <p className="text-sm text-luxury-silver mb-4 leading-relaxed">
+                Prefer to lock in an exact 30-minute strategy session immediately? Choose a convenient time directly on Jasmel's calendar:
               </p>
+              <a
+                href="https://calendly.com/aidynamicpro/discovery"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-5 rounded-xl font-bold text-xs bg-gradient-to-r from-luxury-gold via-amber-300 to-luxury-gold text-dark flex items-center justify-center gap-2 hover:brightness-110 shadow-md transition-all"
+              >
+                Open Real-Time Booking Calendar <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+
+            <div className="mt-6 p-4 rounded-xl border border-emerald-500/20 bg-emerald-950/20 flex items-center justify-between gap-3">
+              <div>
+                <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">📞 Instant Phone Test</span>
+                <span className="text-xs text-white">Call our AI receptionist live:</span>
+              </div>
+              <a
+                href="tel:+17866432099"
+                className="px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-colors"
+              >
+                +1 (786) 643-2099
+              </a>
             </div>
           </motion.div>
 
