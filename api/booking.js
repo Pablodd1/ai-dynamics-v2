@@ -1,13 +1,37 @@
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end()
+  }
+
   // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { service, date, time, name, email, company, phone, message } = req.body
+  const body = req.body || {}
+  const service = body.service || body.meeting_type || 'Free AI Consultation'
+  const name = body.name
+  const email = body.email
+  const company = body.company || ''
+  const phone = body.phone || ''
+  const message = body.message || body.challenge || body.interest || ''
+  
+  let date = body.date
+  let time = body.time
 
-  if (!name || !email || !service) {
-    return res.status(400).json({ error: 'Missing required fields' })
+  if (!date && body.selected_slot?.day) {
+    date = body.selected_slot.day
+  }
+  if (!time && body.selected_slot?.display) {
+    time = body.selected_slot.display
+  }
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Missing required fields: name and email are required.' })
   }
 
   const brevoApiKey = process.env.BREVO_API_KEY
@@ -19,7 +43,7 @@ export default async function handler(req, res) {
   let calendarEventId = null
 
   // ─── GOOGLE CALENDAR: Create event + Meet link ───
-  if (googleClientId && googleClientSecret && googleRefreshToken && date) {
+  if (googleClientId && googleClientSecret && googleRefreshToken && date && time) {
     try {
       // 1. Get access token from refresh token
       const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -37,17 +61,20 @@ export default async function handler(req, res) {
 
       if (tokenData.access_token) {
         // Parse date + time into ISO format
-        const [hourStr, minStr, ampm] = time.match(/(\d+):(\d+)\s*(AM|PM)/i)?.slice(1) || ['9', '00', 'AM']
+        const match = time.match(/(\d+):(\d+)\s*(AM|PM)/i)
+        const [hourStr, minStr, ampm] = match ? match.slice(1) : ['10', '00', 'AM']
         let hour = parseInt(hourStr)
         if (ampm.toUpperCase() === 'PM' && hour !== 12) hour += 12
         if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0
 
-        const startDate = new Date(`${date}T${String(hour).padStart(2, '0')}:${minStr}:00-04:00`)
-        // Default 30-min duration based on service
-        const durationMinutes = 
-          service.includes('Audit') ? 30 :
-          service.includes('Workflow') ? 45 :
-          service.includes('Transformation') ? 60 : 30
+        // Format clean date string if date is formatted like "YYYY-MM-DD"
+        let dateClean = date
+        if (body.selected_slot?.start) {
+          dateClean = body.selected_slot.start.slice(0, 10)
+        }
+        
+        const startDate = new Date(`${dateClean}T${String(hour).padStart(2, '0')}:${minStr}:00-04:00`)
+        const durationMinutes = service.includes('Audit') ? 30 : service.includes('Strategy') ? 45 : 30
         const endDate = new Date(startDate.getTime() + durationMinutes * 60000)
 
         // 2. Create calendar event with Meet conference
@@ -71,13 +98,6 @@ export default async function handler(req, res) {
                 requestId: `aidynamic-${Date.now()}`,
                 conferenceSolutionKey: { type: 'hangoutsMeet' }
               }
-            },
-            reminders: {
-              useDefault: false,
-              overrides: [
-                { method: 'email', minutes: 60 },
-                { method: 'popup', minutes: 15 }
-              ]
             }
           })
         })
@@ -90,96 +110,85 @@ export default async function handler(req, res) {
       }
     } catch (err) {
       console.error('Calendar error:', err)
-      // Don't fail the booking if calendar fails — emails still go through
     }
   }
 
   // ─── BREVO EMAILS ───
-  if (!brevoApiKey) {
-    return res.status(500).json({
-      error: 'Email service not configured. Add BREVO_API_KEY to Vercel environment variables.'
-    })
-  }
-
-  // 1. Notify Jasmel
-  const notifyJasmel = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'accept': 'application/json',
-      'api-key': brevoApiKey,
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      sender: { name: 'AI Dynamics Pro', email: 'jasmelacosta@gmail.com' },
-      to: [{ email: 'jasmelacosta@gmail.com' }],
-      subject: `New Booking: ${service} — ${name}`,
-      htmlContent: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #1a1a2e;">New Booking Request</h2>
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Service:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${service}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Date:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${date || 'Not selected'}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Time:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${time || 'Not selected'} EST</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${email}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Company:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${company || 'N/A'}</td></tr>
-            <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${phone || 'N/A'}</td></tr>
-            <tr><td style="padding: 8px;"><strong>Message:</strong></td><td style="padding: 8px;">${message || 'N/A'}</td></tr>
-            ${meetLink ? `<tr><td style="padding: 8px; border-top: 2px solid #c9a96e;" colspan="2"><strong style="color: #c9a96e;">Google Meet:</strong> <a href="${meetLink}">${meetLink}</a></td></tr>
-            <tr><td style="padding: 8px;" colspan="2"><strong style="color: #c9a96e;">Calendar Event ID:</strong> ${calendarEventId}</td></tr>` : ''}
-          </table>
-          <p style="margin-top: 20px; color: #666;">Reply to this email or call them directly to confirm.</p>
-        </div>
-      `
-    })
-  })
-
-  // 2. Confirm to client
-  const confirmBooking = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'accept': 'application/json',
-      'api-key': brevoApiKey,
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      sender: { name: 'AI Dynamics Pro', email: 'jasmelacosta@gmail.com' },
-      to: [{ email }],
-      subject: `Booking Confirmed — ${service}`,
-      htmlContent: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a2e;">
-          <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 40px; text-align: center; color: #c9a96e;">
-            <h1 style="margin: 0; font-size: 28px;">Booking Confirmed</h1>
-            <p style="margin: 10px 0 0; opacity: 0.8;">We're looking forward to speaking with you</p>
-          </div>
-          <div style="padding: 30px; background: #fafafa;">
-            <h2 style="color: #1a1a2e; margin-top: 0;">Hi ${name},</h2>
-            <p>Your <strong style="color: #c9a96e;">${service}</strong> with AI Dynamics Pro is scheduled.</p>
-            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #c9a96e;">
-              <p style="margin: 0;"><strong>Service:</strong> ${service}</p>
-              <p style="margin: 8px 0 0;"><strong>Date:</strong> ${date || 'TBD'}</p>
-              <p style="margin: 8px 0 0;"><strong>Time:</strong> ${time || 'TBD'} (EST)</p>
-              ${meetLink ? `<p style="margin: 8px 0 0;"><strong>Google Meet:</strong> <a href="${meetLink}" style="color: #c9a96e;">Join here</a></p>
-              <p style="margin: 8px 0 0; font-size: 12px; color: #666;">You'll also receive a calendar invite with the Meet link.</p>` : '<p style="margin: 8px 0 0; color: #666;">You'll receive a confirmation email with meeting details shortly.</p>'}
+  if (brevoApiKey) {
+    try {
+      // 1. Notify Jasmel
+      await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': brevoApiKey,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'AI Dynamics Pro', email: 'jasmelacosta@gmail.com' },
+          to: [{ email: 'jasmelacosta@gmail.com' }],
+          subject: `New Booking: ${service} — ${name}`,
+          htmlContent: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #1a1a2e;">New Booking Request</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Service:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${service}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Date:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${date || 'Not selected'}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Time:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${time || 'Not selected'} EST</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${email}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Company:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${company || 'N/A'}</td></tr>
+                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${phone || 'N/A'}</td></tr>
+                <tr><td style="padding: 8px;"><strong>Message:</strong></td><td style="padding: 8px;">${message || 'N/A'}</td></tr>
+                ${meetLink ? `<tr><td style="padding: 8px; border-top: 2px solid #c9a96e;" colspan="2"><strong style="color: #c9a96e;">Google Meet:</strong> <a href="${meetLink}">${meetLink}</a></td></tr>` : ''}
+              </table>
             </div>
-            <p>Please save the date. If you need to reschedule, reply to this email or call <strong>+1 (786) 643-2099</strong>.</p>
-            <p style="margin-top: 30px;">Questions? Reply to this email anytime.</p>
-            <p style="margin-top: 20px; font-size: 12px; color: #666;">AI Dynamics Pro | Miami, FL | aidynamic.pro</p>
-          </div>
-        </div>
-      `
-    })
-  })
+          `
+        })
+      })
 
-  if (!notifyJasmel.ok || !confirmBooking.ok) {
-    console.error('Email send failed:', await notifyJasmel.text(), await confirmBooking.text())
-    return res.status(500).json({ error: 'Failed to send emails' })
+      // 2. Confirm to client
+      await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': brevoApiKey,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          sender: { name: 'AI Dynamics Pro', email: 'jasmelacosta@gmail.com' },
+          to: [{ email }],
+          subject: `Booking Request Received — ${service}`,
+          htmlContent: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a2e;">
+              <div style="background: linear-gradient(135deg, #0a0a0f 0%, #16213e 100%); padding: 35px; text-align: center; color: #c9a96e;">
+                <h1 style="margin: 0; font-size: 26px;">Booking Received</h1>
+                <p style="margin: 8px 0 0; opacity: 0.9; color: #e2e8f0;">AI Dynamics Pro — Miami, FL</p>
+              </div>
+              <div style="padding: 30px; background: #fafafa;">
+                <h2 style="color: #1a1a2e; margin-top: 0;">Hi ${name},</h2>
+                <p>We received your booking request for <strong>${service}</strong>.</p>
+                <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #c9a96e;">
+                  <p style="margin: 0;"><strong>Service:</strong> ${service}</p>
+                  <p style="margin: 8px 0 0;"><strong>Requested Date:</strong> ${date || 'Pending confirmation'}</p>
+                  <p style="margin: 8px 0 0;"><strong>Requested Time:</strong> ${time || 'Pending confirmation'} (EST)</p>
+                  ${meetLink ? `<p style="margin: 8px 0 0;"><strong>Google Meet:</strong> <a href="${meetLink}" style="color: #c9a96e;">Join Link</a></p>` : ''}
+                </div>
+                <p>Founder Jasmel Acosta will review and confirm your session. If you have an urgent question, call or text us directly at <strong>+1 (786) 643-2099</strong>.</p>
+              </div>
+            </div>
+          `
+        })
+      })
+    } catch (emailErr) {
+      console.error('Email notification failed:', emailErr)
+    }
   }
 
   return res.status(200).json({
     success: true,
-    message: 'Booking confirmed. Check your email for the Google Meet link.',
-    meetLink,
+    message: 'Booking request confirmed! We will follow up with full meeting details.',
+    meet_link: meetLink,
     calendarEventId
   })
 }

@@ -12,6 +12,9 @@ import AISeo from './pages/AISeo'
 import ZeroG from './pages/ZeroG'
 import Simulation from './pages/Simulation'
 import Research from './pages/Research'
+import AIPhoneReceptionistMiami from './pages/blog/AIPhoneReceptionistMiami'
+import MedicalClinicAutomation from './pages/blog/MedicalClinicAutomation'
+import LegalIntakeAutomation from './pages/blog/LegalIntakeAutomation'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Dashboard from './pages/auth/Dashboard'
@@ -30,6 +33,9 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/founders" element={<Founders />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/ai-phone-receptionist-miami" element={<AIPhoneReceptionistMiami />} />
+          <Route path="/blog/medical-clinic-automation" element={<MedicalClinicAutomation />} />
+          <Route path="/blog/legal-intake-automation" element={<LegalIntakeAutomation />} />
           <Route path="/agentic-website" element={<AgenticWebsite />} />
           <Route path="/ai-seo" element={<AISeo />} />
           <Route path="/zero-g" element={<ZeroG />} />

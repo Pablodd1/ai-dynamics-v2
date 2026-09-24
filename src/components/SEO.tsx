@@ -13,7 +13,7 @@ interface SEOProps {
 
 const defaultDescription = "We help small and mid-sized businesses eliminate manual workflows with AI. Any industry. Fast results. Book a free consultation."
 
-const defaultOgImage = "https://aidynamics.pro/og-image.jpg"
+const defaultOgImage = "https://www.aidynamic.pro/og-image.jpg"
 
 export function SEO({
   title = "AI Dynamics | Premium AI Consulting & Automation",
@@ -25,7 +25,7 @@ export function SEO({
   schema
 }: SEOProps) {
   const location = useLocation()
-  const url = `https://aidynamics.pro${location.pathname}`
+  const url = `https://www.aidynamic.pro${location.pathname}`
 
   useEffect(() => {
     document.title = title
@@ -141,13 +141,13 @@ export function SEO({
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://aidynamics.pro/#organization",
+  "@id": "https://www.aidynamic.pro/#organization",
   "name": "AI Dynamics",
   "alternateName": "AI Dynamics.PRO",
-  "url": "https://aidynamics.pro",
+  "url": "https://www.aidynamic.pro",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://aidynamics.pro/logo.png",
+    "url": "https://www.aidynamic.pro/logo.png",
     "width": 512,
     "height": 512
   },
@@ -214,10 +214,10 @@ export const organizationSchema = {
 export const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "@id": "https://aidynamics.pro/#business",
+  "@id": "https://www.aidynamic.pro/#business",
   "name": "AI Dynamics",
-  "image": "https://aidynamics.pro/og-image.jpg",
-  "url": "https://aidynamics.pro",
+  "image": "https://www.aidynamic.pro/og-image.jpg",
+  "url": "https://www.aidynamic.pro",
   "telephone": "+1-786-643-2099",
   "email": "jasmelacosta@gmail.com",
   "priceRange": "$$$",
@@ -257,18 +257,18 @@ export const localBusinessSchema = {
 export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://aidynamics.pro/#website",
-  "url": "https://aidynamics.pro",
+  "@id": "https://www.aidynamic.pro/#website",
+  "url": "https://www.aidynamic.pro",
   "name": "AI Dynamics",
   "alternateName": "AI Dynamics.PRO",
   "publisher": {
-    "@id": "https://aidynamics.pro/#organization"
+    "@id": "https://www.aidynamic.pro/#organization"
   },
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://aidynamics.pro/search?q={search_term_string}"
+      "urlTemplate": "https://www.aidynamic.pro/search?q={search_term_string}"
     },
     "query-input": "required name=search_term_string"
   },
@@ -280,7 +280,7 @@ export const serviceSchema = {
   "@type": "Service",
   "serviceType": "AI Consulting and Automation",
   "provider": {
-    "@id": "https://aidynamics.pro/#organization"
+    "@id": "https://www.aidynamic.pro/#organization"
   },
   "areaServed": {
     "@type": "State",

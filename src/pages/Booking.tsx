@@ -49,17 +49,66 @@ const Booking = () => {
     loadAvailability()
   }, [])
 
+  const generateFallbackSlots = (): SlotsData => {
+    const fallback: SlotsData = {}
+    const timeOptions = [
+      { start: '10:00', end: '10:30', display: '10:00 AM' },
+      { start: '11:00', end: '11:30', display: '11:00 AM' },
+      { start: '13:00', end: '13:30', display: '1:00 PM' },
+      { start: '14:00', end: '14:30', display: '2:00 PM' },
+      { start: '15:00', end: '15:30', display: '3:00 PM' },
+      { start: '16:00', end: '16:30', display: '4:00 PM' },
+    ]
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    let curr = new Date()
+    curr.setDate(curr.getDate() + 1)
+    let count = 0
+    while (count < 5) {
+      const d = curr.getDay()
+      if (d !== 0 && d !== 6) {
+        const yyyy = curr.getFullYear()
+        const mm = String(curr.getMonth() + 1).padStart(2, '0')
+        const dd = String(curr.getDate()).padStart(2, '0')
+        const key = `${yyyy}-${mm}-${dd}`
+        const label = `${days[d]}, ${months[curr.getMonth()]} ${curr.getDate()}`
+        fallback[key] = timeOptions.map(t => ({
+          start: `${key}T${t.start}:00-04:00`,
+          end: `${key}T${t.end}:00-04:00`,
+          display: t.display,
+          day: label,
+          value: `${key} ${t.display}`
+        }))
+        count++
+      }
+      curr.setDate(curr.getDate() + 1)
+    }
+    return fallback
+  }
+
   const loadAvailability = async () => {
     try {
-      const res = await fetch(`${API_BASE}/api/availability`)
-      const data = await res.json()
-      if (data.slots) {
-        setSlots(data.slots)
-        const firstDay = Object.keys(data.slots)[0]
-        if (firstDay) setSelectedDay(firstDay)
+      const res = await fetch(`${API_BASE}/api/availability`).catch(() => null)
+      if (res && res.ok) {
+        const data = await res.json()
+        if (data.slots && Object.keys(data.slots).length > 0) {
+          setSlots(data.slots)
+          const firstDay = Object.keys(data.slots)[0]
+          if (firstDay) setSelectedDay(firstDay)
+          return
+        }
       }
+      // If API fails or is not found, use reliable local fallback
+      const fallback = generateFallbackSlots()
+      setSlots(fallback)
+      const first = Object.keys(fallback)[0]
+      if (first) setSelectedDay(first)
     } catch (err) {
       console.error('Failed to load slots:', err)
+      const fallback = generateFallbackSlots()
+      setSlots(fallback)
+      const first = Object.keys(fallback)[0]
+      if (first) setSelectedDay(first)
     } finally {
       setSlotsLoading(false)
     }
@@ -81,15 +130,20 @@ const Booking = () => {
         name: formData.name,
         email: formData.email,
         company: formData.company,
+        phone: formData.phone,
+        service: formData.service,
         meeting_type: formData.service,
+        date: formData.selected_slot?.day,
+        time: formData.selected_slot?.display,
         interest: formData.interest,
         selected_slot: formData.selected_slot,
         budget: formData.budget,
+        message: formData.challenge,
         challenge: formData.challenge,
         source: 'AI Dynamics Pro Website'
       }
 
-      const res = await fetch(`${API_BASE}/api/book`, {
+      const res = await fetch(`${API_BASE}/api/booking`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -168,7 +222,23 @@ const Booking = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <h1 className="text-4xl font-bold text-white mb-2 font-serif text-center">Book Your AI Consultation</h1>
-          <p className="text-luxury-silver text-center mb-10">Available Monday–Saturday, 10:00 AM – 5:00 PM EST</p>
+          <p className="text-luxury-silver text-center mb-6">Available Monday–Saturday, 10:00 AM – 5:00 PM EST</p>
+
+          {/* Quick Calendly Callout */}
+          <div className="mb-10 p-4 rounded-xl border border-luxury-gold/30 bg-gradient-to-r from-luxury-gold/15 via-luxury-gold/5 to-transparent flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left shadow-lg">
+            <div>
+              <span className="text-xs font-bold text-luxury-gold uppercase tracking-wider block">Prefer Direct Calendar Sync?</span>
+              <span className="text-xs text-luxury-champagne">Book immediately on Jasmel's Calendly calendar with 1 click:</span>
+            </div>
+            <a
+              href="https://calendly.com/aidynamicpro/discovery"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg bg-luxury-gold text-dark font-bold text-xs hover:brightness-110 shrink-0 transition-all shadow-md"
+            >
+              Open Calendly Direct ↗
+            </a>
+          </div>
 
           {/* Progress */}
           <div className="flex items-center justify-center gap-4 mb-10">

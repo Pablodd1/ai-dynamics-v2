@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import MatrixRain from './MatrixRain'
 
 const slogans = [
-  "We automate the boring stuff so you can focus on the fun stuff.",
-  "Your competitors are already using AI. They're just not telling you.",
-  "Stop doing robot work. Let the robots do it.",
-  "We make your business run so smooth, it's almost illegal.",
-  "AI that actually works. Unlike your ex.",
-  "Less paperwork. More revenue. More you-time.",
-  "We build AI that gets you paid while you get laid... back on a beach.",
-  "Your business deserves better than copy-paste.",
+  "We automate the manual busywork so you can scale your revenue.",
+  "Your competitors are already adopting AI. Don't get left behind in Miami.",
+  "24/7 AI systems that answer phone calls and book clients while you sleep.",
+  "Eliminate 15+ hours of repetitive admin and data entry every week.",
+  "Capture every lead in English & Spanish before they call someone else.",
+  "Less paperwork. More closed deals. Predictable business growth.",
+  "Custom AI workflows built specifically for your South Florida business.",
+  "Your business deserves better than manual spreadsheets and missed calls.",
 ]
 
 const Hero = () => {

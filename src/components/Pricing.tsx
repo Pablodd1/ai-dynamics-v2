@@ -116,8 +116,9 @@ const Pricing = () => {
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 items-stretch">
           {plans.map((plan, index) => {
+            const isPopular = plan.name === 'Single High-Impact Workflow'
             const accent = accentStyles[plan.accentColor]
             return (
               <motion.div
@@ -126,65 +127,89 @@ const Pricing = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.15 }}
-                className={`relative rounded-2xl border ${accent.border} ${accent.bg} p-8 hover:border-luxury-gold/30 transition-all`}
+                className={`relative rounded-2xl flex flex-col justify-between p-8 transition-all duration-300 ${
+                  isPopular 
+                    ? 'border-2 border-luxury-gold/60 bg-gradient-to-b from-luxury-gold/[0.08] via-dark-50 to-dark shadow-[0_0_40px_rgba(201,169,110,0.15)] md:-translate-y-2' 
+                    : `border ${accent.border} ${accent.bg} hover:border-luxury-gold/30`
+                }`}
               >
-                {/* Duration Badge */}
-                <div className="absolute -top-3 right-6">
+                {/* Popular or Duration Badge */}
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-6 flex items-center gap-2">
+                  {isPopular && (
+                    <span className="px-3.5 py-1 rounded-full bg-gradient-to-r from-luxury-gold to-amber-500 text-dark text-xs font-extrabold uppercase tracking-wider shadow-lg">
+                      ★ Most Popular
+                    </span>
+                  )}
                   <span className={`px-3 py-1 rounded-full ${accent.badgeBg} ${accent.badgeText} text-xs font-bold uppercase tracking-wider`}>
                     {plan.duration}
                   </span>
                 </div>
 
-                {/* Icon */}
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border ${accent.border} ${accent.bg}`}>
-                  <plan.icon className={`w-7 h-7 ${accent.dot}`} />
-                </div>
+                <div>
+                  {/* Icon */}
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 border ${isPopular ? 'border-luxury-gold/40 bg-luxury-gold/15' : `${accent.border} ${accent.bg}`}`}>
+                    <plan.icon className={`w-7 h-7 ${isPopular ? 'text-luxury-gold' : accent.dot}`} />
+                  </div>
 
-                {/* Plan Name */}
-                <h3 className="text-2xl font-bold text-white mb-2 font-serif">{plan.name}</h3>
-                <p className="text-luxury-silver text-sm mb-6">{plan.description}</p>
+                  {/* Plan Name */}
+                  <h3 className="text-2xl font-bold text-white mb-2 font-serif">{plan.name}</h3>
+                  <p className="text-luxury-silver text-sm mb-6 leading-relaxed">{plan.description}</p>
 
-                {/* Price */}
-                <div className="mb-8">
-                  <div className="flex items-center gap-3">
-                    <span className="text-5xl font-bold text-white relative">
-                      {plan.price}
-                      {plan.price === '$99' && (
-                        <span className="absolute inset-0 flex items-center justify-center">
-                          <span className="w-full h-1 bg-red-500 rotate-[-15deg]" />
-                        </span>
-                      )}
-                    </span>
-                    {plan.price === '$99' && (
-                      <span className="px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-400 text-sm font-bold">
-                        FREE
-                      </span>
+                  {/* Price Block */}
+                  <div className="mb-8 p-4 rounded-xl bg-black/30 border border-white/5">
+                    {plan.name === 'Strategy & Audit' ? (
+                      <div>
+                        <div className="flex items-baseline gap-2.5">
+                          <span className="text-2xl text-luxury-silver/50 line-through font-semibold">$99</span>
+                          <span className="text-5xl font-bold text-luxury-gold">$0</span>
+                          <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30 uppercase">
+                            Free
+                          </span>
+                        </div>
+                        <p className="text-xs text-emerald-400 mt-2 font-medium">Limited time: Comprehensive 1-on-1 audit at $0</p>
+                      </div>
+                    ) : plan.name === 'Single High-Impact Workflow' ? (
+                      <div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-5xl font-bold text-white">$1,000</span>
+                          <span className="text-luxury-silver text-sm">flat rate</span>
+                        </div>
+                        <p className="text-xs text-luxury-champagne mt-2 font-medium">Turnkey deployment • 30 days guarantee & training</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="flex items-baseline gap-2 flex-wrap">
+                          <span className="text-4xl font-bold text-white">$5,000</span>
+                          <span className="text-luxury-silver text-lg font-light">– $15k</span>
+                        </div>
+                        <p className="text-xs text-luxury-silver/80 mt-2 font-medium">Custom multi-system architecture & scaling</p>
+                      </div>
                     )}
                   </div>
-                  <span className="text-luxury-silver ml-2">{plan.priceNote}</span>
-                  {plan.price === '$99' && (
-                    <p className="text-sm text-green-400 mt-2">Limited time: Strategy & Audit now FREE</p>
-                  )}
+
+                  {/* CTA Button */}
+                  <a
+                    href={plan.ctaAction}
+                    className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all mb-8 shadow-md ${
+                      isPopular
+                        ? 'btn-primary'
+                        : `border ${accent.border} ${accent.bg} hover:bg-luxury-gold/10 text-luxury-gold hover:border-luxury-gold/40`
+                    }`}
+                  >
+                    {plan.cta}
+                    <ArrowRight className="w-5 h-5" />
+                  </a>
+
+                  {/* Features */}
+                  <ul className="space-y-3">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <Check className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isPopular ? 'text-luxury-gold' : accent.dot}`} />
+                        <span className="text-luxury-champagne text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-
-                {/* CTA Button */}
-                <a
-                  href={plan.ctaAction}
-                  className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all mb-8 border ${accent.border} ${accent.bg} hover:bg-luxury-gold/10 text-luxury-gold`}
-                >
-                  {plan.cta}
-                  <ArrowRight className="w-5 h-5" />
-                </a>
-
-                {/* Features */}
-                <ul className="space-y-3">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <Check className={`w-5 h-5 mt-0.5 flex-shrink-0 ${accent.dot}`} />
-                      <span className="text-luxury-champagne text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
               </motion.div>
             )
           })}

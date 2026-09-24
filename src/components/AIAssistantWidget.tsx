@@ -464,6 +464,20 @@ export default function AIAssistantWidget() {
               ))}
             </div>
 
+            {/* Phone Receptionist Quick Call Bar */}
+            <div className="px-4 py-2 border-t border-white/5 bg-emerald-950/20 flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium">
+                <PhoneCall className="w-3.5 h-3.5 animate-pulse" />
+                <span>Test receptionist over the phone:</span>
+              </div>
+              <a
+                href="tel:+17866432099"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-semibold hover:bg-emerald-500/30 transition-all"
+              >
+                +1 (786) 643-2099
+              </a>
+            </div>
+
             {/* Input */}
             <div className="p-3 border-t border-white/10 flex gap-2">
               {/* Mic Button */}

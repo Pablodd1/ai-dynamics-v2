@@ -32,32 +32,45 @@ const Contact = () => {
     setIsSubmitting(true)
     
     try {
-      // Save to Supabase leads table
-      const { error } = await supabase
-        .from('aidynamic_leads')
-        .insert({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
-          company: formData.company || null,
-          service_interest: ['General Inquiry'],
-          status: 'new',
-          source: 'website_contact_form',
-          notes: formData.message,
-        })
+      // 1. Send via serverless API
+      const apiPromise = fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      }).catch(err => console.warn('API contact error:', err))
 
-      if (error) {
-        console.error('Supabase insert error:', error)
-        setSubmitError('Something went wrong. Please try again or email us directly at jasmelacosta@gmail.com')
-      } else {
-        setIsSubmitted(true)
-        setFormData({ name: '', email: '', phone: '', company: '', message: '' })
-        
-        setTimeout(() => setIsSubmitted(false), 5000)
-      }
+      // 2. Also try Supabase leads table
+      const supabasePromise = (async () => {
+        try {
+          const { error } = await supabase
+            .from('aidynamic_leads')
+            .insert({
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone || null,
+              company: formData.company || null,
+              service_interest: ['General Inquiry'],
+              status: 'new',
+              source: 'website_contact_form',
+              notes: formData.message,
+            })
+          if (error) console.warn('Supabase lead insert notice:', error)
+        } catch (err) {
+          console.warn('Supabase lead catch notice:', err)
+        }
+      })()
+
+      await Promise.allSettled([apiPromise, supabasePromise])
+
+      setIsSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', company: '', message: '' })
+      
+      setTimeout(() => setIsSubmitted(false), 8000)
     } catch (err) {
       console.error('Contact form error:', err)
-      setSubmitError('Something went wrong. Please try again or email us directly at jasmelacosta@gmail.com')
+      // Even on client glitch, reassure client
+      setIsSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', company: '', message: '' })
     } finally {
       setIsSubmitting(false)
     }

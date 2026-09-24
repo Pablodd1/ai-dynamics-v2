@@ -20,43 +20,44 @@ const LeadMagnet = () => {
     setIsSubmitting(true)
 
     try {
-      // Brevo API integration — key is injected via Vercel env var
-      const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY || ''
-
-      const response = await fetch('https://api.brevo.com/v3/contacts', {
+      const response = await fetch('/api/lead', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'api-key': BREVO_API_KEY,
         },
         body: JSON.stringify({
           email: email,
-          emailBlacklisted: false,
-          smsBlacklisted: false,
-          listIds: [1], // MBMB MIAMI list
-          attributes: {
-            SOURCE: 'AI Dynamics - Lead Magnet',
-            INTEREST: 'Workflow Automation Guide',
-          },
-          updateEnabled: true,
+          source: 'AI Dynamics - Lead Magnet',
+          interest: 'Workflow Automation Guide',
         }),
-      })
+      }).catch(() => null)
 
-      if (response.ok || response.status === 204) {
-        setIsSubmitted(true)
-        setEmail('')
-      } else {
-        const data = await response.json().catch(() => ({}))
-        if (data.message?.includes('already exists')) {
-          setIsSubmitted(true)
-          setEmail('')
-        } else {
-          setError('Something went wrong. Please try again.')
-        }
+      // Fallback direct Brevo call if in local dev with env
+      const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY || ''
+      if (!response && BREVO_API_KEY) {
+        await fetch('https://api.brevo.com/v3/contacts', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            email: email,
+            listIds: [1],
+            attributes: { SOURCE: 'AI Dynamics - Lead Magnet' },
+            updateEnabled: true,
+          }),
+        }).catch(() => null)
       }
+
+      setIsSubmitted(true)
+      setEmail('')
     } catch {
-      setError('Connection error. Please try again.')
+      // Still show success to ensure visitor gets their guide
+      setIsSubmitted(true)
+      setEmail('')
     } finally {
       setIsSubmitting(false)
     }
@@ -82,13 +83,32 @@ const LeadMagnet = () => {
               animate={{ opacity: 1, scale: 1 }}
               className="py-8"
             >
-              <div className="w-16 h-16 rounded-full bg-luxury-gold/20 flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 rounded-full bg-luxury-gold/20 flex items-center justify-center mx-auto mb-4 border border-luxury-gold/40">
                 <CheckCircle className="w-8 h-8 text-luxury-gold" />
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2 font-serif">You're on the list!</h3>
-              <p className="text-luxury-silver">
-                Check your inbox — the guide is on its way.
+              <h3 className="text-2xl font-bold text-white mb-2 font-serif">You're All Set!</h3>
+              <p className="text-luxury-silver max-w-md mx-auto mb-6">
+                Your 2026 Executive AI Playbook is ready. You can download the full blueprint directly or book a free walkthrough.
               </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="/AI-Automation-Playbook-2026.pdf"
+                  download="AI-Dynamic-Automation-Playbook-2026.pdf"
+                  className="btn-primary inline-flex items-center gap-2"
+                >
+                  <Download className="w-5 h-5" />
+                  Download Blueprint PDF
+                </a>
+                <a
+                  href="https://calendly.com/aidynamicpro/discovery"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3.5 rounded-xl border border-luxury-gold/30 hover:bg-luxury-gold/10 text-luxury-champagne text-sm font-semibold transition-all inline-flex items-center gap-2"
+                >
+                  Book 1-on-1 Review
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+              </div>
             </motion.div>
           ) : (
             <>

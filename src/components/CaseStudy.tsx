@@ -41,9 +41,9 @@ const CaseStudy = () => {
 
             <div className="p-8 md:p-12">
               {/* Problem → Solution → Result */}
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 {/* Problem */}
-                <div className="text-center md:text-left">
+                <div className="flex-1 w-full text-center md:text-left p-5 rounded-xl bg-white/[0.02] border border-white/5">
                   <div className="w-12 h-12 rounded-xl border border-red-400/30 bg-red-400/10 flex items-center justify-center mb-4 mx-auto md:mx-0">
                     <Clock className="w-6 h-6 text-red-400" />
                   </div>
@@ -54,12 +54,12 @@ const CaseStudy = () => {
                 </div>
 
                 {/* Arrow (desktop) */}
-                <div className="hidden md:flex items-center justify-center">
-                  <ArrowRight className="w-8 h-8 text-luxury-gold/40" />
+                <div className="hidden md:flex shrink-0 items-center justify-center">
+                  <ArrowRight className="w-6 h-6 text-luxury-gold/50" />
                 </div>
 
                 {/* Solution */}
-                <div className="text-center md:text-left">
+                <div className="flex-1 w-full text-center md:text-left p-5 rounded-xl bg-white/[0.02] border border-white/5">
                   <div className="w-12 h-12 rounded-xl border border-luxury-gold/30 bg-luxury-gold/10 flex items-center justify-center mb-4 mx-auto md:mx-0">
                     <CheckCircle className="w-6 h-6 text-luxury-gold" />
                   </div>
@@ -70,12 +70,12 @@ const CaseStudy = () => {
                 </div>
 
                 {/* Arrow (desktop) */}
-                <div className="hidden md:flex items-center justify-center">
-                  <ArrowRight className="w-8 h-8 text-luxury-gold/40" />
+                <div className="hidden md:flex shrink-0 items-center justify-center">
+                  <ArrowRight className="w-6 h-6 text-luxury-gold/50" />
                 </div>
 
                 {/* Result */}
-                <div className="text-center md:text-left">
+                <div className="flex-1 w-full text-center md:text-left p-5 rounded-xl bg-white/[0.02] border border-white/5">
                   <div className="w-12 h-12 rounded-xl border border-green-400/30 bg-green-400/10 flex items-center justify-center mb-4 mx-auto md:mx-0">
                     <TrendingDown className="w-6 h-6 text-green-400" />
                   </div>
