@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Download, Mail, ArrowRight, CheckCircle } from 'lucide-react'
 import { useState } from 'react'
+import { AnalyticsEvents } from '../lib/analytics'
 
 const LeadMagnet = () => {
   const [email, setEmail] = useState('')
@@ -52,10 +53,12 @@ const LeadMagnet = () => {
         }).catch(() => null)
       }
 
+      AnalyticsEvents.downloadPlaybook(email)
       setIsSubmitted(true)
       setEmail('')
     } catch {
       // Still show success to ensure visitor gets their guide
+      AnalyticsEvents.downloadPlaybook(email)
       setIsSubmitted(true)
       setEmail('')
     } finally {
@@ -94,6 +97,7 @@ const LeadMagnet = () => {
                 <a
                   href="/AI-Automation-Playbook-2026.pdf"
                   download="AI-Dynamic-Automation-Playbook-2026.pdf"
+                  onClick={() => AnalyticsEvents.downloadPlaybook('button_click')}
                   className="btn-primary inline-flex items-center gap-2"
                 >
                   <Download className="w-5 h-5" />
@@ -103,6 +107,7 @@ const LeadMagnet = () => {
                   href="https://calendly.com/aidynamicpro/discovery"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => AnalyticsEvents.clickBooking('lead_magnet_review', 'lead_magnet')}
                   className="px-6 py-3.5 rounded-xl border border-luxury-gold/30 hover:bg-luxury-gold/10 text-luxury-champagne text-sm font-semibold transition-all inline-flex items-center gap-2"
                 >
                   Book 1-on-1 Review

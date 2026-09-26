@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { MessageSquare, X, Send, Mic, Volume2, VolumeX, Loader2, Sparkles, Phone, PhoneCall, Settings2, Play } from 'lucide-react'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { sendGeminiMessage, getFallbackResponse, type ChatMessage } from '../lib/gemini'
+import { AnalyticsEvents } from '../lib/analytics'
 
 interface Message {
   type: 'user' | 'ai'
@@ -177,6 +178,7 @@ export default function AIAssistantWidget() {
     if (!text) return
 
     const userText = text
+    AnalyticsEvents.sendChatMessage(userText.length)
     setMessages(prev => [...prev, { type: 'user', text: userText }])
     setInput('')
     setIsLoading(true)
@@ -245,7 +247,10 @@ export default function AIAssistantWidget() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-2xl bg-dark-50/95 backdrop-blur-xl border border-luxury-gold/30 text-white shadow-2xl shadow-primary-900/40 cursor-pointer hover:border-luxury-gold/60 transition-all"
-              onClick={() => setIsOpen(true)}
+              onClick={() => {
+                setIsOpen(true)
+                AnalyticsEvents.openChatbot()
+              }}
             >
               <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/30 border border-green-500/40 flex items-center justify-center text-green-400">
                 <PhoneCall className="w-4 h-4 animate-bounce" />
@@ -262,7 +267,12 @@ export default function AIAssistantWidget() {
         </AnimatePresence>
 
         <motion.button
-          onClick={() => { setIsOpen(!isOpen); stopSpeaking() }}
+          onClick={() => {
+            const next = !isOpen
+            setIsOpen(next)
+            if (next) AnalyticsEvents.openChatbot()
+            stopSpeaking()
+          }}
           className="w-[72px] h-[72px] rounded-full bg-gradient-to-br from-primary-600 via-indigo-600 to-accent-500 text-white shadow-xl shadow-primary-600/40 flex items-center justify-center relative overflow-hidden group"
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
@@ -472,6 +482,7 @@ export default function AIAssistantWidget() {
               </div>
               <a
                 href="tel:+17866432099"
+                onClick={() => AnalyticsEvents.clickPhoneCall('chatbot_banner')}
                 className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-semibold hover:bg-emerald-500/30 transition-all"
               >
                 +1 (786) 643-2099

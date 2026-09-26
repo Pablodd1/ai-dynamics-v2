@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { AnalyticsEvents } from '../lib/analytics'
 
 const socialLinks = [
   {
@@ -58,6 +59,10 @@ const SocialSidebar = () => {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => {
+            if (link.id === 'whatsapp') AnalyticsEvents.clickWhatsApp('social_sidebar')
+            if (link.id === 'phone') AnalyticsEvents.clickPhoneCall('social_sidebar')
+          }}
           className={`w-11 h-11 rounded-xl flex items-center justify-center text-white ${link.color} shadow-lg transition-all relative group`}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}

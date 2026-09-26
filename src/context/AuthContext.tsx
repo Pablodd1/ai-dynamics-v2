@@ -31,7 +31,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const isAdmin = profile?.role === 'admin'
+  const isAdmin = profile?.role === 'admin' || 
+    user?.email?.toLowerCase() === 'jasmelacosta@gmail.com' || 
+    user?.email?.toLowerCase() === 'hello@aidynamic.pro'
 
   const fetchProfile = async (userId: string) => {
     const { data, error } = await supabase

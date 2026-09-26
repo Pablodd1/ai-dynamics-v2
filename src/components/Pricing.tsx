@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Check, ArrowRight, Search, Zap, Building2 } from 'lucide-react'
+import { AnalyticsEvents } from '../lib/analytics'
 
 const Pricing = () => {
   const plans = [
@@ -190,6 +191,7 @@ const Pricing = () => {
                   {/* CTA Button */}
                   <a
                     href={plan.ctaAction}
+                    onClick={() => AnalyticsEvents.clickBooking(plan.name, 'pricing_card')}
                     className={`w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold transition-all mb-8 shadow-md ${
                       isPopular
                         ? 'btn-primary'
@@ -229,6 +231,7 @@ const Pricing = () => {
             href="https://calendly.com/aidynamicpro/discovery"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => AnalyticsEvents.clickBooking('discovery_consultation', 'pricing_bottom_cta')}
             className="btn-primary inline-flex items-center gap-2"
           >
             Book Free Consultation

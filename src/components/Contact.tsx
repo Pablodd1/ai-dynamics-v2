@@ -12,6 +12,7 @@ import {
 import { useState } from 'react'
 import { useI18n } from '../i18n/I18nContext'
 import { supabase } from '../lib/supabase'
+import { AnalyticsEvents } from '../lib/analytics'
 
 const Contact = () => {
   const { t } = useI18n()
@@ -62,6 +63,7 @@ const Contact = () => {
 
       await Promise.allSettled([apiPromise, supabasePromise])
 
+      AnalyticsEvents.submitContactForm(formData.company)
       setIsSubmitted(true)
       setFormData({ name: '', email: '', phone: '', company: '', message: '' })
       
