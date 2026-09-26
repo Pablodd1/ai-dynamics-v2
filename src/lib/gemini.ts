@@ -11,11 +11,11 @@ const SYSTEM_PROMPT = `You are the AI Front Desk Assistant for AI Dynamic Pro (A
 - Industries: Medical billing, legal, real estate, retail, construction, healthcare
 - Services: AI chatbots, workflow automation, analytics dashboards, document processing, content automation, CRM automation, voice AI agents
 
-## PRICING
-- Quick-win automations: $2,000-$5,000
-- Full AI Operating System: $5,000-$15,000
+## PRICING & PACKAGES
+- Strategy & Audit: $0 (Free 1-on-1 workflow audit)
+- Single High-Impact Workflow: $1,000 flat rate (2-3 week turnkey delivery with 30-day support)
+- Full AI Transformation: $5,000 - $15,000 (multi-workflow enterprise systems)
 - Most clients see ROI within 30-60 days
-- Custom quotes available after discovery call
 - Bilingual (English/Spanish) solutions included at no extra cost
 
 ## PROCESS
@@ -143,9 +143,9 @@ export function getFallbackResponse(userText: string): string {
   const lower = userText.toLowerCase()
 
   const responses: Record<string, string> = {
-    price: 'Our quick-win automations start at $2,000 and full AI systems range from $5,000-$15,000. Most clients see ROI within 30-60 days. Want a custom quote? Book a free discovery call at https://calendly.com/aidynamicpro/discovery',
-    cost: 'Our quick-win automations start at $2,000 and full AI systems range from $5,000-$15,000. Most clients see ROI within 30-60 days. Want a custom quote? Book a free discovery call at https://calendly.com/aidynamicpro/discovery',
-    how_much: 'Our quick-win automations start at $2,000 and full AI systems range from $5,000-$15,000. Most clients see ROI within 30-60 days. Want a custom quote? Book a free discovery call at https://calendly.com/aidynamicpro/discovery',
+    price: 'Our initial Strategy & Audit is currently $0 (Free). A Single High-Impact Workflow build is $1,000 flat, and comprehensive multi-workflow systems range from $5,000-$15,000. Most clients recoup their investment within 30-60 days. Want to review your workflows? Book a free call at https://calendly.com/aidynamicpro/discovery',
+    cost: 'Our initial Strategy & Audit is currently $0 (Free). A Single High-Impact Workflow build is $1,000 flat, and comprehensive multi-workflow systems range from $5,000-$15,000. Most clients recoup their investment within 30-60 days. Want to review your workflows? Book a free call at https://calendly.com/aidynamicpro/discovery',
+    how_much: 'Our initial Strategy & Audit is currently $0 (Free). A Single High-Impact Workflow build is $1,000 flat, and comprehensive multi-workflow systems range from $5,000-$15,000. Most clients recoup their investment within 30-60 days. Want to review your workflows? Book a free call at https://calendly.com/aidynamicpro/discovery',
     service: 'We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?',
     offer: 'We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?',
     do_you_do: 'We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?',
@@ -195,7 +195,7 @@ export function getFallbackResponse(userText: string): string {
   const defaults = [
     "Thanks for reaching out! I would love to help. To give you the best recommendation, could you tell me what industry you are in and what challenges you are facing?",
     'Great question! Based on what we typically see, an AI chatbot + workflow automation would likely save you 15-20 hours per week. Want to book a free discovery call to discuss your specific needs?',
-    'I understand! Many of our clients felt the same way before starting. Our quick-win automations start at $2,000 and most see ROI within 30 days. Book a free 30-minute call: https://calendly.com/aidynamicpro/discovery',
+    'I understand! Many of our clients felt the same way before starting. Our single high-impact workflow builds are $1,000 flat and most see ROI within 30 days. Book a free 30-minute call: https://calendly.com/aidynamicpro/discovery',
     'Absolutely! We build custom AI solutions tailored to your workflow — not generic templates. What type of business do you run?',
     'We specialize in AI automation for Miami businesses, with bilingual (English/Spanish) solutions built-in. Let us book a free audit to analyze your operations: https://calendly.com/aidynamicpro/discovery',
   ]
