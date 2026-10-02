@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react'
+import { Mail, Phone, MapPin, ExternalLink, Send } from 'lucide-react'
 import { useI18n } from '../i18n/I18nContext'
 import AILogo from './AILogo'
 
@@ -34,6 +34,7 @@ const Footer = () => {
   }
 
   const socialLinks = [
+    { icon: Send, href: 'https://t.me/aidynamicpro', label: 'Telegram' },
     {
       label: 'LinkedIn',
       href: 'https://www.linkedin.com/in/ai-dynamic-75983a407/',

@@ -42,6 +42,7 @@ const SYSTEM_PROMPT = `You are the AI Front Desk Assistant for AI Dynamic Pro (A
 - Free Discovery & Architecture Call: https://calendly.com/aidynamicpro/discovery
 - Phone: +1 (786) 643-2099
 - Email: jasmelacosta@gmail.com
+- Telegram: https://t.me/aidynamicpro
 - Portfolio & Systems Catalog: https://www.aidynamic.pro/projects
 
 ## TONE & BILINGUAL / VENEZUELAN SPANISH PERSONA
@@ -178,8 +179,9 @@ export function getFallbackResponse(userText: string): string {
     chatbot: 'AI chatbots & Voice Receptionists are our core services. We build custom conversational AI that handles customer inquiries, schedules appointments, and answers phone calls — 24/7, in English and Spanish. Interested?',
     automation: 'Workflow automation is our bread and butter. We automate repetitive tasks, integrate your tools, and build AI-powered workflows that save you 10-20 hours per week. Want to see what we can automate for you?',
     dashboard: 'We build real-time analytics dashboards that connect your data sources and give you AI-powered insights. See exactly what is happening in your business at a glance. Want to see a demo?',
-    contact: 'You can reach us at: Email: jasmelacosta@gmail.com | Phone: +1 (786) 643-2099 | Or book a free discovery call: https://calendly.com/aidynamicpro/discovery',
-    email: 'You can reach us at: Email: jasmelacosta@gmail.com | Phone: +1 (786) 643-2099 | Or book a free discovery call: https://calendly.com/aidynamicpro/discovery',
+    contact: 'You can reach us at: Email: jasmelacosta@gmail.com | Phone: +1 (786) 643-2099 | Telegram: https://t.me/aidynamicpro | Or book a free discovery call: https://calendly.com/aidynamicpro/discovery',
+    email: 'You can reach us at: Email: jasmelacosta@gmail.com | Phone: +1 (786) 643-2099 | Telegram: https://t.me/aidynamicpro | Or book a free discovery call: https://calendly.com/aidynamicpro/discovery',
+    telegram: 'You can reach us directly on Telegram at https://t.me/aidynamicpro. We are always happy to chat! Or you can book a free discovery call: https://calendly.com/aidynamicpro/discovery',
     hello: '👋 Hi! Welcome to AI Dynamic Pro. I can help you learn about our AI automation services, phone receptionists, pricing, or book a free discovery call. What brings you here today?',
     hi: '👋 Hi! Welcome to AI Dynamic Pro. I can help you learn about our AI automation services, phone receptionists, pricing, or book a free discovery call. What brings you here today?',
     hey: '👋 Hi! Welcome to AI Dynamic Pro. I can help you learn about our AI automation services, phone receptionists, pricing, or book a free discovery call. What brings you here today?',

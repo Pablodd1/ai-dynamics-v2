@@ -92,6 +92,12 @@ const Contact = () => {
       href: 'tel:+17866432099',
     },
     {
+      icon: Send,
+      label: 'Telegram',
+      value: '@aidynamicpro',
+      href: 'https://t.me/aidynamicpro',
+    },
+    {
       icon: MapPin,
       label: t('contact.location') as string,
       value: 'Miami, FL',
