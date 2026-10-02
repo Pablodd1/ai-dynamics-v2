@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react'
 import { useI18n } from '../i18n/I18nContext'
 import AILogo from './AILogo'
@@ -7,18 +8,19 @@ const Footer = () => {
 
   const footerLinks = {
     services: [
-      { label: 'AI Automation', href: '#services' },
+      { label: 'Projects & Systems', href: '/projects' },
+      { label: 'AI Automation & Agents', href: '/projects?pillar=applied-ai' },
+      { label: 'Computer Vision & Defect AI', href: '/projects?pillar=spatial-vision' },
+      { label: 'CRM & Revenue Operations', href: '/projects?pillar=crm-revops' },
       { label: 'Agentic Websites', href: '/agentic-website' },
-      { label: 'AI SEO', href: '/ai-seo' },
-      { label: 'Zero-G Platform', href: '/zero-g' },
-      { label: 'Simulation', href: '/simulation' },
-      { label: 'Research', href: '/research' },
+      { label: 'AI SEO & AEO', href: '/ai-seo' },
     ],
     company: [
+      { label: 'Deployed Projects', href: '/projects' },
       { label: 'Founders', href: '/founders' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Case Studies', href: '#case-study' },
-      { label: 'Contact', href: '#contact' },
+      { label: 'Blog & Intel', href: '/blog' },
+      { label: 'Our Process', href: '/process' },
+      { label: 'Contact', href: '/#contact' },
     ],
     ecosystem: [
       { label: '305business', href: 'https://305business-llc.vercel.app', external: true },
@@ -103,13 +105,22 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{t('footer.services') as string}</h4>
             <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {footerLinks.services.map((link) => {
+                const isInternal = link.href.startsWith('/') && !link.href.includes('#')
+                return (
+                  <li key={link.label}>
+                    {isInternal ? (
+                      <Link to={link.href} className="text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
 
@@ -117,13 +128,22 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{t('footer.company') as string}</h4>
             <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              {footerLinks.company.map((link) => {
+                const isInternal = link.href.startsWith('/') && !link.href.includes('#')
+                return (
+                  <li key={link.label}>
+                    {isInternal ? (
+                      <Link to={link.href} className="text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a href={link.href} className="text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
+                        {link.label}
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
 

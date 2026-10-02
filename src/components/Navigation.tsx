@@ -45,13 +45,13 @@ const Navigation = () => {
     : user?.email?.[0].toUpperCase() || 'U'
 
   const navLinks = [
-    { label: 'Voice Demo', href: '#call-simulator' },
-    { label: t('nav.services') as string, href: '#services' },
-    { label: 'ROI Calculator', href: '#roi-calculator' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: t('nav.about') as string, href: '#about' },
-    { label: 'Our Process', href: '#process' },
-    { label: t('nav.contact') as string, href: '#contact' },
+    { label: 'Voice Demo', href: '/#call-simulator' },
+    { label: t('nav.services') as string, href: '/#services' },
+    { label: 'Projects & Systems', href: '/projects' },
+    { label: 'Pricing', href: '/#pricing' },
+    { label: 'Our Process', href: '/process' },
+    { label: 'Blog & Intel', href: '/blog' },
+    { label: t('nav.contact') as string, href: '/#contact' },
   ]
 
   return (
@@ -75,17 +75,29 @@ const Navigation = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group"
-                >
-                  {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
-                </a>
-              ))}
+            <nav className="hidden md:flex items-center gap-7">
+              {navLinks.map((link) => {
+                const isInternalRoute = link.href.startsWith('/') && !link.href.includes('#')
+                return isInternalRoute ? (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group"
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group"
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
+                  </a>
+                )
+              })}
             </nav>
 
             {/* Right Side */}
@@ -204,19 +216,37 @@ const Navigation = () => {
               className="absolute top-20 right-4 left-4 p-6 rounded-2xl border border-white/10 bg-dark-50/95 backdrop-blur-xl"
             >
               <div className="flex flex-col gap-4">
-                {navLinks.map((link, index) => (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg text-luxury-silver hover:text-luxury-champagne transition-colors py-2"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
+                {navLinks.map((link, index) => {
+                  const isInternalRoute = link.href.startsWith('/') && !link.href.includes('#')
+                  return isInternalRoute ? (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                    >
+                      <Link
+                        to={link.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-lg text-luxury-silver hover:text-luxury-champagne transition-colors py-2 block font-medium"
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.08 }}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-lg text-luxury-silver hover:text-luxury-champagne transition-colors py-2 block font-medium"
+                    >
+                      {link.label}
+                    </motion.a>
+                  )
+                })}
 
                 {user ? (
                   <>

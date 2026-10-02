@@ -28,12 +28,12 @@ const Founder = () => {
               <div className="w-64 h-64 md:w-80 md:h-80 rounded-2xl border border-luxury-gold/40 bg-dark-50 overflow-hidden flex items-center justify-center shadow-[0_0_35px_rgba(212,175,55,0.25)] transition-all duration-500 hover:shadow-[0_0_50px_rgba(212,175,55,0.45)]">
                 <img 
                   src="/founder-3d.jpg" 
-                  alt="Jasmel Acosta - Founder & CEO of AI Dynamic Pro"
+                  alt="Jasmel Acosta - Founder & Applied AI Systems Architect"
                   className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-luxury-gold text-dark text-xs font-bold uppercase tracking-wider">
-                CEO, AI Dynamics
+              <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-luxury-gold text-dark text-xs font-bold uppercase tracking-wider whitespace-nowrap shadow-lg">
+                Founder & Applied AI Systems Architect
               </div>
             </div>
           </motion.div>

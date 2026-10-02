@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, Play, Cpu, Network, Zap, ChevronDown, Stethoscope, Scale, Building2, Truck, Plus } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight, Cpu, Network, Zap, ChevronDown, Stethoscope, Scale, Building2, Truck, Plus, Layers } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import MatrixRain from './MatrixRain'
 
@@ -107,7 +108,9 @@ const Hero = () => {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-luxury-gold opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-luxury-gold" />
           </span>
-          <span className="text-sm text-luxury-champagne tracking-wide">AI Automation for Small Business</span>
+          <span className="text-sm text-luxury-champagne tracking-wide">
+            Applied AI • Computer Vision • Spatial Intelligence • RevOps Systems
+          </span>
         </motion.div>
 
         {/* Main Heading with Rotating Slogans */}
@@ -141,7 +144,7 @@ const Hero = () => {
           className="text-lg md:text-xl text-luxury-silver max-w-3xl mx-auto mb-8 leading-relaxed"
         >
           Small and mid-sized businesses lose 15-25% of productive hours to manual, repetitive work. 
-          We build AI systems that give those hours back.
+          We architect and deploy production AI systems that turn operational overhead into automated revenue.
         </motion.p>
 
         {/* Industry Buttons */}
@@ -170,14 +173,14 @@ const Hero = () => {
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <a href="https://calendly.com/aidynamicpro/discovery" className="btn-primary flex items-center justify-center gap-2 group text-base">
+          <a href="https://calendly.com/aidynamicpro/discovery" target="_blank" rel="noopener noreferrer" className="btn-primary flex items-center justify-center gap-2 group text-base">
             Book a Free Consultation
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </a>
-          <a href="#pricing" className="btn-secondary flex items-center justify-center gap-2 text-base">
-            <Play className="w-5 h-5" />
-            See Packages
-          </a>
+          <Link to="/projects" className="btn-secondary flex items-center justify-center gap-2 text-base">
+            <Layers className="w-5 h-5 text-luxury-gold" />
+            Explore Projects & Systems
+          </Link>
         </motion.div>
 
         {/* Feature Pills */}

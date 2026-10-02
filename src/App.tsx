@@ -12,6 +12,7 @@ import AISeo from './pages/AISeo'
 import ZeroG from './pages/ZeroG'
 import Simulation from './pages/Simulation'
 import Research from './pages/Research'
+import Projects from './pages/Projects'
 import AIPhoneReceptionistMiami from './pages/blog/AIPhoneReceptionistMiami'
 import MedicalClinicAutomation from './pages/blog/MedicalClinicAutomation'
 import LegalIntakeAutomation from './pages/blog/LegalIntakeAutomation'
@@ -27,6 +28,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/process" element={<OurProcess />} />
           <Route path="/terms" element={<TermsOfService />} />
