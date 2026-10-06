@@ -181,6 +181,7 @@ export const PROJECTS: ProjectItem[] = [
       { label: 'Validation Status', value: 'Internal Testing', verified: false }
     ],
     links: {
+      website: 'https://jasmiamimethod.fit/login',
       contact: '/#contact'
     },
     sponsorOpportunity: {
@@ -600,6 +601,7 @@ export const PROJECTS: ProjectItem[] = [
       { label: 'Documentation Time', value: '- 65% Target', verified: false }
     ],
     links: {
+      website: 'https://pocketscribe.online/',
       contact: '/#contact'
     },
     sponsorOpportunity: {
@@ -1296,6 +1298,7 @@ export const PROJECTS: ProjectItem[] = [
       { label: 'Stage', value: 'Pilot Deployment', verified: false }
     ],
     links: {
+      website: 'https://www.chatbuildinginnovation.us/',
       contact: '/#contact'
     },
     sponsorOpportunity: {
@@ -1433,6 +1436,7 @@ export const PROJECTS: ProjectItem[] = [
       { label: 'Status', value: 'Portfolio Project', verified: false }
     ],
     links: {
+      website: 'https://realestatedates.com/',
       contact: '/#contact'
     },
     sponsorOpportunity: {
@@ -1501,6 +1505,7 @@ export const PROJECTS: ProjectItem[] = [
       { label: 'Deployment State', value: 'Production Portfolio', verified: true }
     ],
     links: {
+      website: 'https://www.unitecusadesign.com/',
       contact: '/#contact'
     },
     sponsorOpportunity: {

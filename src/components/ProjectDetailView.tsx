@@ -109,6 +109,18 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
 
         {/* Action CTAs */}
         <div className="flex flex-wrap items-center gap-3 pt-2">
+          {project.links.website && (
+            <a
+              href={project.links.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary text-xs flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 border-emerald-500 text-white"
+            >
+              <span>Visit Live Platform</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          )}
+
           {project.links.liveDemo && (
             <a
               href={project.links.liveDemo}

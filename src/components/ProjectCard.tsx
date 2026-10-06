@@ -140,6 +140,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
           {/* Contextual Action Buttons */}
           <div className="flex items-center gap-2">
+            {/* Live Website / Deployment */}
+            {project.links.website && (
+              <a
+                href={project.links.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 py-1 rounded border border-emerald-500/30 transition-all"
+                title={`Visit live ecosystem site for ${project.shortName}`}
+              >
+                <span>Live Site</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+
             {/* Live Demo - ONLY if real */}
             {project.links.liveDemo && (
               <a
