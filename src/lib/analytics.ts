@@ -82,4 +82,33 @@ export const AnalyticsEvents = {
       industry: industry,
       event_category: 'engagement',
     }),
+
+  // Project & Portfolio Interactions
+  projectViewed: (projectId: string, projectTitle: string) =>
+    trackEvent('project_viewed', {
+      project_id: projectId,
+      project_title: projectTitle,
+      event_category: 'portfolio',
+    }),
+
+  projectDemoClicked: (projectId: string, demoUrl: string) =>
+    trackEvent('project_demo_clicked', {
+      project_id: projectId,
+      demo_url: demoUrl,
+      event_category: 'portfolio',
+    }),
+
+  partnerInquiryClicked: (projectId: string, stage: string) =>
+    trackEvent('partner_inquiry_clicked', {
+      project_id: projectId,
+      stage: stage,
+      event_category: 'conversion',
+    }),
+
+  contactConversion: (conversionType: string, projectId?: string) =>
+    trackEvent('contact_conversion', {
+      conversion_type: conversionType,
+      project_id: projectId || 'general',
+      event_category: 'conversion',
+    }),
 }

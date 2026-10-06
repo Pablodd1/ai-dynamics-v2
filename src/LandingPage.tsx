@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import TrustBadges from './components/TrustBadges'
 import LiveCallSimulator from './components/LiveCallSimulator'
 import IndustryTabs from './components/IndustryTabs'
+import FeaturedProjects from './components/FeaturedProjects'
 import ROICalculator from './components/ROICalculator'
 import CaseStudy from './components/CaseStudy'
 import Founder from './components/Founder'
@@ -25,6 +26,7 @@ function LandingPage() {
         <TrustBadges />
         <LiveCallSimulator />
         <IndustryTabs />
+        <FeaturedProjects />
         <ROICalculator />
         <CaseStudy />
         <Founder />

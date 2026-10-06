@@ -29,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<Projects />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/process" element={<OurProcess />} />
           <Route path="/terms" element={<TermsOfService />} />
