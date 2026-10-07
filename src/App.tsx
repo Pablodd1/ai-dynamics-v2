@@ -22,6 +22,7 @@ import Dashboard from './pages/auth/Dashboard'
 import Profile from './pages/auth/Profile'
 import Admin from './pages/auth/Admin'
 import NotFound from './pages/NotFound'
+import EcosystemWidget from './components/EcosystemWidget'
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           {/* Catch-all 404 Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <EcosystemWidget currentSiteId="ai-dynamics" />
       </BrowserRouter>
     </AuthProvider>
   )
