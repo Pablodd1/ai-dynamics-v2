@@ -150,7 +150,7 @@ export default function Projects() {
           '@type': 'ListItem',
           position: idx + 1,
           name: proj.name,
-          url: `https://www.aidynamic.pro/projects?project=${proj.slug}`,
+          url: `https://www.aidynamic.pro/projects/${proj.slug}`,
           description: proj.summary
         }))
       }
@@ -162,7 +162,7 @@ export default function Projects() {
       <SEO
         title={activeProject ? `${activeProject.name} — AI Dynamic Pro` : "Projects & Systems Architecture — AI Dynamic Pro"}
         description={activeProject ? activeProject.summary : "Explore 22 production-grade AI systems: Computer Vision defect inspection, 3D room mapping, custom RevOps CRM, digital health platforms, sports biomechanics, and bilingual voice agents."}
-        canonical={activeProject ? `https://www.aidynamic.pro/projects?project=${activeProject.slug}` : "https://www.aidynamic.pro/projects"}
+        canonical={activeProject ? `https://www.aidynamic.pro/projects/${activeProject.slug}` : "https://www.aidynamic.pro/projects"}
       />
 
       {/* Inject Structured Data */}

@@ -1,9 +1,15 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Shield, Eye, Database, Lock, Share2, Trash2, Cookie } from 'lucide-react'
+import SEO from '../components/SEO'
 
 const PrivacyPolicy = () => {
   return (
     <div className="min-h-screen bg-dark text-white">
+      <SEO
+        title="Privacy Policy | AI Dynamic Pro"
+        description="Learn how AI Dynamic Pro collects, uses, and safeguards your personal data and business information."
+        canonical="https://www.aidynamic.pro/privacy"
+      />
       {/* Header */}
       <header className="border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 py-6 flex items-center gap-4">

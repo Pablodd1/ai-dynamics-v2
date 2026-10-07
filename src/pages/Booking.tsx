@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, User, Building2, Check, ArrowLeft, Loader2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 
 const API_BASE = import.meta.env.VITE_BOOKING_API || ''
 
@@ -205,6 +206,11 @@ const Booking = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-dark via-dark-50 to-dark">
+      <SEO
+        title="Book an AI Discovery & Architecture Session | AI Dynamic Pro"
+        description="Schedule a 30-minute technical discovery session with AI Dynamic Pro to map out your custom AI voice receptionists, computer vision, and workflow automation."
+        canonical="https://www.aidynamic.pro/booking"
+      />
       {/* Header */}
       <header className="border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">

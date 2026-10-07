@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
+import SEO from '../components/SEO'
 
 const steps = [
   {
@@ -206,6 +207,11 @@ export default function OurProcess() {
 
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
+      <SEO
+        title="Our Process & AI Engineering Methodology | AI Dynamic Pro"
+        description="Our proven 5-stage AI engineering process: Free Discovery Consultation, Workflow Architecture, Model Training & Integration, Live Deployment, and 24/7 Monitored Evolution."
+        canonical="https://www.aidynamic.pro/process"
+      />
       <Navigation />
 
       {/* Hero Header */}

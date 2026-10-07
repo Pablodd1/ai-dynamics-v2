@@ -1,9 +1,15 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, FileText } from 'lucide-react'
+import SEO from '../components/SEO'
 
 const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-dark text-white">
+      <SEO
+        title="Terms of Service | AI Dynamic Pro"
+        description="Review the terms and conditions governing the use of AI Dynamic Pro services and engineering consulting."
+        canonical="https://www.aidynamic.pro/terms"
+      />
       {/* Header */}
       <header className="border-b border-white/10">
         <div className="max-w-4xl mx-auto px-4 py-6 flex items-center gap-4">
