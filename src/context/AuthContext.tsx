@@ -80,6 +80,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setProfile(data)
       }
       setIsLoading(false)
+    }).catch(err => {
+      console.warn('Supabase session initialization notice:', err)
+      setIsLoading(false)
     })
 
     // Listen for auth changes
