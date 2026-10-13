@@ -29,8 +29,21 @@ export default function AISeo() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       <SEO
-        title="AI SEO — Machine Learning Search Optimization"
-        description="We use AI to predict, create, and optimize content that dominates search rankings."
+        title="AI SEO & AEO — Generative Engine & Search Optimization | AI Dynamic Pro"
+        description="Dominate Google, ChatGPT Search, Perplexity, and AI Overviews with structured Generative Engine Optimization (GEO), Answer Engine Optimization (AEO), and machine learning content pipelines."
+        canonical="https://www.aidynamic.pro/ai-seo"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'AI SEO, AEO & Generative Engine Optimization',
+          provider: {
+            '@type': 'Organization',
+            name: 'AI Dynamic Pro',
+            url: 'https://www.aidynamic.pro'
+          },
+          areaServed: 'United States',
+          description: 'Machine-learning search optimization, Answer Engine Optimization (AEO), and Generative Engine Optimization (GEO) for ChatGPT, Perplexity, Claude, and Google AI Overviews.'
+        }}
       />
 
       {/* Navigation */}

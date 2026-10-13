@@ -1,8 +1,7 @@
 // Serverless API Endpoint: /api/lead
-// Captures leads, logs them, and forwards to Brevo (if BREVO_API_KEY is configured)
+// Captures leads, logs them to Supabase & Brevo, and returns the Playbook PDF
 
 export default async function handler(req, res) {
-  // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, api-key');
@@ -23,8 +22,35 @@ export default async function handler(req, res) {
     }
 
     const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '';
+    const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co';
+    const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
-    // 1. If Brevo API key is present, forward contact to Brevo
+    // 1. Save lead to Supabase server-side if configured
+    if (SUPABASE_KEY) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/aidynamic_leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            name: name || email.split('@')[0],
+            email: email.trim().toLowerCase(),
+            service_interest: [interest],
+            status: 'new',
+            source: source,
+            notes: 'Downloaded 2026 AI Automation Playbook',
+          }),
+        });
+      } catch (sbErr) {
+        console.warn('[Lead API] Supabase insert non-critical warning:', sbErr.message);
+      }
+    }
+
+    // 2. If Brevo API key is present, forward contact to Brevo
     if (BREVO_API_KEY) {
       try {
         const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
@@ -53,19 +79,18 @@ export default async function handler(req, res) {
       }
     }
 
-    // 2. Return success with guide download asset link
+    // 3. Return success with exact case-sensitive guide download asset link
     return res.status(200).json({
       success: true,
       message: 'Lead registered successfully',
-      guideUrl: '/ai-automation-playbook-2026.pdf',
+      guideUrl: '/AI-Automation-Playbook-2026.pdf',
     });
   } catch (error) {
     console.error('[Lead API] Error:', error);
-    // Still return graceful success so front-end delivers the guide
     return res.status(200).json({
       success: true,
       message: 'Request received',
-      guideUrl: '/ai-automation-playbook-2026.pdf',
+      guideUrl: '/AI-Automation-Playbook-2026.pdf',
     });
   }
 }

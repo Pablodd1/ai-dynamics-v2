@@ -22,8 +22,8 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
       <SEO
-        title="AI Automation for Small Business | AI Dynamic Pro | Miami"
-        description="Eliminate manual workflows with custom AI automation. Miami-based, bilingual (English/Spanish). 24/7 AI phone receptionists, medical billing, and custom CRM systems."
+        title="AI Consulting, Workflow Automation & Staff Training | AI Dynamic Pro | Miami"
+        description="Miami-based AI Consulting, $99 Workflow Audits, Custom Enterprise Automation & Staff Training across Healthcare, Legal, Real Estate, Construction & Logistics. Backed by 22 production AI systems."
         canonical="https://www.aidynamic.pro/"
       />
       <Navigation />

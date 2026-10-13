@@ -38,6 +38,35 @@ export default async function handler(req, res) {
   const googleClientId = process.env.GOOGLE_CLIENT_ID
   const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
   const googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN
+  const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co'
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || ''
+
+  // ─── SUPABASE: Record booking lead ───
+  if (supabaseKey) {
+    try {
+      await fetch(`${supabaseUrl}/rest/v1/aidynamic_leads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({
+          name,
+          email: email.trim().toLowerCase(),
+          phone: phone || null,
+          company: company || null,
+          service_interest: [service],
+          status: 'new',
+          source: 'website_booking_page',
+          notes: `Requested Slot: ${date || 'TBD'} ${time || ''} EST | Message: ${message || 'N/A'}`,
+        }),
+      })
+    } catch (sbErr) {
+      console.warn('[Booking API] Supabase insert non-critical warning:', sbErr.message)
+    }
+  }
 
   let meetLink = null
   let calendarEventId = null

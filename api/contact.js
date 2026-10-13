@@ -1,5 +1,5 @@
 // Serverless API Endpoint: /api/contact
-// Handles contact inquiries and sends notification via Brevo or fallback
+// Handles contact inquiries, logs to Supabase, and sends notification via Brevo
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -24,8 +24,37 @@ export default async function handler(req, res) {
     console.log('[Contact API] Received inquiry:', { name, email, phone, company, message });
 
     const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '';
+    const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co';
+    const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
-    // 1. Send notification email to founder via Brevo if configured
+    // 1. Persist lead in Supabase server-side if key is available
+    if (SUPABASE_KEY) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/aidynamic_leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            name: name || 'Website Visitor',
+            email: email.trim().toLowerCase(),
+            phone: phone || null,
+            company: company || null,
+            service_interest: ['General Inquiry'],
+            status: 'new',
+            source: 'website_contact_api',
+            notes: message || '',
+          }),
+        });
+      } catch (sbErr) {
+        console.warn('[Contact API] Supabase insert warning:', sbErr.message);
+      }
+    }
+
+    // 2. Send notification email to founder via Brevo if configured
     if (BREVO_API_KEY) {
       try {
         await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -36,7 +65,7 @@ export default async function handler(req, res) {
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
-            sender: { name: 'AI Dynamic Pro Web', email: 'notifications@aidynamic.pro' },
+            sender: { name: 'AI Dynamic Pro Web', email: 'jasmelacosta@gmail.com' },
             to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
             replyTo: { email: email, name: name || email },
             subject: `🚨 New Lead Inquiry from ${name || 'Website Visitor'} (${company || 'Direct'})`,

@@ -20,7 +20,9 @@ const SYSTEM_PROMPT = `You are the AI Front Desk Assistant for AI Dynamic Pro (A
   9. Commerce & Marketplaces (Buyer-seller deal matchmaking, asset valuation multiples, transaction coordination)
 
 ## PRICING & PACKAGES
-- Strategy & Architecture Audit: $0 (Free 1-on-1 discovery & technical roadmap)
+- Discovery Call: $0 (Free 30-min 1-on-1 discovery & strategy call)
+- Comprehensive AI Workflow & Feasibility Audit Special: $99 (60-min deep-dive operational bottleneck audit + custom ROI automation blueprint, normally $500)
+- Corporate Staff Training & AI Adoption Workshops: Custom team upskilling, industry prompt engineering & AI SOPs
 - Single High-Impact Production System: $1,000 flat rate (2-3 week turnkey delivery with 30-day support)
 - Full AI Transformation / Custom Architecture: $5,000 - $15,000+ (multi-workflow enterprise systems & custom CRM/Vision builds)
 - Most clients see ROI within 30-60 days
@@ -143,9 +145,11 @@ export function getFallbackResponse(userText: string): string {
   const lower = userText.toLowerCase()
 
   const responses: Record<string, string> = {
-    price: 'Our initial Strategy & Audit is currently $0 (Free). A Single High-Impact Workflow build is $1,000 flat, and comprehensive multi-workflow systems range from $5,000-$15,000. Most clients recoup their investment within 30-60 days. Want to review your workflows? Book a free call at https://calendly.com/aidynamicpro/discovery',
-    cost: 'Our initial Strategy & Audit is currently $0 (Free). A Single High-Impact Workflow build is $1,000 flat, and comprehensive multi-workflow systems range from $5,000-$15,000. Most clients recoup their investment within 30-60 days. Want to review your workflows? Book a free call at https://calendly.com/aidynamicpro/discovery',
-    how_much: 'Our initial Strategy & Audit is currently $0 (Free). A Single High-Impact Workflow build is $1,000 flat, and comprehensive multi-workflow systems range from $5,000-$15,000. Most clients recoup their investment within 30-60 days. Want to review your workflows? Book a free call at https://calendly.com/aidynamicpro/discovery',
+    audit: 'Our $99 AI Workflow & Feasibility Audit Special (normally $500) includes a 60-minute deep-dive into your manual bottlenecks, payroll leak calculations, and an actionable automation blueprint. You can book it or start with a free 30-min consultation at https://www.aidynamic.pro/booking',
+    training: 'Yes! We conduct hands-on Enterprise Staff Training & AI Adoption workshops — teaching your team industry-specific prompt engineering, data privacy guardrails, and daily AI workflow execution so they operate at 5x speed. Book a consultation at https://www.aidynamic.pro/booking',
+    price: 'We offer a Free 30-min Discovery Call, or our $99 Comprehensive AI Workflow Audit Special (60-min deep dive + blueprint). A Single High-Impact Workflow build is $1,000 flat, and comprehensive enterprise architectures range from $5,000-$15,000+. Book at https://www.aidynamic.pro/booking',
+    cost: 'We offer a Free 30-min Discovery Call, or our $99 Comprehensive AI Workflow Audit Special (60-min deep dive + blueprint). A Single High-Impact Workflow build is $1,000 flat, and comprehensive enterprise architectures range from $5,000-$15,000+. Book at https://www.aidynamic.pro/booking',
+    how_much: 'We offer a Free 30-min Discovery Call, or our $99 Comprehensive AI Workflow Audit Special (60-min deep dive + blueprint). A Single High-Impact Workflow build is $1,000 flat, and comprehensive enterprise architectures range from $5,000-$15,000+. Book at https://www.aidynamic.pro/booking',
     service: 'We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?',
     offer: 'We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?',
     do_you_do: 'We build AI chatbots, workflow automation, analytics dashboards, document processing, and content automation — all tailored to your business. Which area interests you most?',

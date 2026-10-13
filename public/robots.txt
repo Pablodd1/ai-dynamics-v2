@@ -4,4 +4,33 @@ Disallow: /admin
 Disallow: /dashboard
 Disallow: /profile
 
+# Explicitly allow AI Search & Answer Engines (AEO / GEO / LLMO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
 Sitemap: https://www.aidynamic.pro/sitemap.xml
+# LLMs & Generative AI Knowledge Index: https://www.aidynamic.pro/llms.txt

@@ -11,12 +11,12 @@ interface SEOProps {
   schema?: object
 }
 
-const defaultDescription = "We help small and mid-sized businesses eliminate manual workflows with AI. Any industry. Fast results. Book a free consultation."
+const defaultDescription = "Miami-based AI Consulting, $99 Workflow Audits, Custom Automation & Corporate Staff Training across Healthcare, Legal, Real Estate, Construction & Logistics. Backed by 22 production AI platforms."
 
-const defaultOgImage = "https://www.aidynamic.pro/og-image.jpg"
+const defaultOgImage = "https://www.aidynamic.pro/og-image.png"
 
 export function SEO({
-  title = "AI Dynamics | Premium AI Consulting & Automation",
+  title = "AI Consulting, Workflow Automation & Staff Training | AI Dynamic Pro | Miami",
   description = defaultDescription,
   ogImage = defaultOgImage,
   ogType = "website",
@@ -32,8 +32,8 @@ export function SEO({
 
     const metaTags: Record<string, string> = {
       'description': description,
-      'keywords': 'AI automation, small business automation, workflow automation, AI consulting, business process automation, AI for healthcare, AI for legal, AI for real estate, Miami AI consultant, free AI consultation, AI Dynamics, intelligent automation, custom AI solutions, reduce manual work, AI workflow builder',
-      'author': 'AI Dynamics',
+      'keywords': 'AI consulting Miami, business workflow audit, enterprise staff AI training, AI automation, small business automation, workflow automation, business process automation, AI for healthcare, AI for legal, AI for real estate, AI for construction, 24/7 bilingual AI receptionist, AI Dynamic Pro, Jasmel Acosta',
+      'author': 'AI Dynamic Pro',
       'robots': noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
       'googlebot': 'index, follow',
       'bingbot': 'index, follow',
@@ -50,25 +50,25 @@ export function SEO({
       'og:image:width': '1200',
       'og:image:height': '630',
       'og:image:alt': title,
-      'og:site_name': 'AI Dynamics',
+      'og:site_name': 'AI Dynamic Pro',
       'og:locale': 'en_US',
       'og:locale:alternate': 'es_ES',
 
       // Twitter/X
       'twitter:card': 'summary_large_image',
-      'twitter:site': '@aidynamics',
-      'twitter:creator': '@aidynamics',
+      'twitter:site': '@aidynamicpro',
+      'twitter:creator': '@jasmelacosta',
       'twitter:title': title,
       'twitter:description': description,
       'twitter:image': ogImage,
       'twitter:image:alt': title,
 
       // AI SEO / LLM discoverability
-      'ai-content-type': 'business-website',
-      'ai-purpose': 'AI consulting and automation services for businesses',
-      'ai-target-audience': 'small-to-medium businesses, healthcare practices, legal firms, marketing agencies',
-      'ai-service-category': 'technology-consulting, ai-automation, process-optimization',
-      'ai-region': 'Miami-Dade, Florida, United States',
+      'ai-content-type': 'enterprise-ai-consulting-agency',
+      'ai-purpose': 'AI consulting, $99 business workflow audits, custom enterprise automation, 24/7 bilingual voice receptionists, and corporate staff AI training across all industries',
+      'ai-target-audience': 'small-to-medium businesses, mid-market enterprises, healthcare clinics, law firms, real estate brokerages, construction & AEC firms, logistics operators',
+      'ai-service-category': 'ai-consulting, workflow-auditing, enterprise-automation, corporate-staff-ai-training, voice-ai-receptionists',
+      'ai-region': 'Miami-Dade, South Florida, United States, LATAM',
       'ai-language': 'en, es',
 
       // Apple / iOS
@@ -147,9 +147,9 @@ export const organizationSchema = {
   "url": "https://www.aidynamic.pro",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://www.aidynamic.pro/logo.png",
-    "width": 512,
-    "height": 512
+    "url": "https://www.aidynamic.pro/og-image.png",
+    "width": 1200,
+    "height": 630
   },
   "description": defaultDescription,
   "foundingDate": "2024",

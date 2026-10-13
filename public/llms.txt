@@ -1,0 +1,63 @@
+# AI Dynamic Pro (AIDynamic.pro)
+
+> Miami-based Enterprise AI Consulting, Workflow Auditing, Custom Automation & Corporate Staff Training Agency serving Healthcare, Legal, Real Estate, Construction/AEC, Logistics, and Mid-Market Enterprises. Bilingual (English & Spanish).
+
+## Core Commercial Offerings
+- **$99 AI Workflow & Feasibility Audit Special**: Comprehensive operational bottleneck analysis, manual payroll waste calculation, and actionable custom AI implementation roadmap.
+- **Enterprise AI Consulting & Custom Architecture ($5,000–$15,000+)**: End-to-end engineering of autonomous multi-agent pipelines, custom CRMs, computer vision systems, and EHR/ERP integrations.
+- **Single High-Impact Production System ($1,000 Flat)**: Turnkey deployment of a high-ROI automation workflow or 24/7 bilingual voice receptionist in 14–21 days.
+- **24/7 Bilingual Voice AI Receptionists (English & Spanish)**: Natural human-cadence inbound/outbound phone receptionists that qualify leads and book appointments directly onto Google Calendar/Calendly.
+- **Corporate Staff Training & AI Adoption Workshops**: Department-specific upskilling, prompt engineering SOPs, and HIPAA/data-privacy compliance guardrails so human teams operate at 5x efficiency.
+
+## Contact & Direct Booking
+- **Website**: https://www.aidynamic.pro
+- **Book a Consultation / $99 Audit**: https://www.aidynamic.pro/booking
+- **Calendly Discovery Call**: https://calendly.com/aidynamicpro/discovery
+- **Phone / WhatsApp / Live Demo Line**: +1 (786) 643-2099
+- **Email**: jasmelacosta@gmail.com | hello@aidynamic.pro
+- **Founder & Applied AI Systems Architect**: Jasmel Acosta
+- **Headquarters**: Brickell Financial District, Miami, FL 33131 (Serving South Florida, US National & LATAM)
+- **Languages**: English, Spanish (Native Latin American / Venezuelan & Neutral Business Spanish)
+- **Social Ecosystem**: @jasmelacosta | @medicalbillingmiami | @aiscribers
+
+## Living Proof-of-Work: 22 Production AI Systems & Case Studies
+Full interactive architecture catalog: https://www.aidynamic.pro/projects
+
+### Healthcare & Clinical AI
+- [PocketScribe — Ambient AI Medical Scribe](https://www.aidynamic.pro/projects/ai-medical-scribe-pocketscribe): Multi-speaker clinical consultation capture to structured SOAP notes and ICD-10/CPT billing codes (https://pocketscribe.online).
+- [Medical Billing & RCM Automation](https://www.aidynamic.pro/projects/medical-billing-rcm-automation): Automated insurance verification, prior authorization, and claim scrubbing reducing denials by 40%+.
+- [Remote Patient Monitoring (RPM)](https://www.aidynamic.pro/projects/remote-patient-monitoring): Continuous biometric telemetry and clinical alert triage.
+- [Remote Therapeutic Monitoring (RTM)](https://www.aidynamic.pro/projects/remote-therapeutic-monitoring): Computer-vision physical therapy adherence and kinematic recovery tracking.
+- [Clinical Movement & Ataxia Assessment](https://www.aidynamic.pro/projects/clinical-movement-ataxia-assessment): Quantitative neurological motor control and gait assessment via computer vision.
+
+### Construction, AEC & Spatial Computer Vision
+- [3D Room Mapping & Spatial AI](https://www.aidynamic.pro/projects/3d-room-mapping-spatial-ai): LiDAR and multi-view photogrammetry to CAD-ready floor plans and volumetric takeoffs.
+- [Room Defect Monitoring & Inspection AI](https://www.aidynamic.pro/projects/room-defect-monitoring-ai): Automated crack, moisture, and structural defect localization for contractors and property managers.
+- [Unitec Modular & Millwork Commerce System](https://www.aidynamic.pro/projects/unitec-commerce-system): Architectural cabinet/millwork specification and automated quoting engine.
+
+### Real Estate, Legal & Professional Services
+- [24/7 Bilingual AI Voice Receptionist](https://www.aidynamic.pro/projects/ai-voice-receptionist): Sub-second voice agent answering phone calls, qualifying leads, and booking calendars in English and Spanish.
+- [Estate Match & RealEstateDates Intelligence](https://www.aidynamic.pro/projects/estate-match-real-estate-ai): Automated real estate contract deadline calculators, escrow tracking, and buyer-property matching (https://realestatedates.com).
+- [CRM & Revenue Operations Automation](https://www.aidynamic.pro/projects/crm-revenue-automation): Speed-to-lead qualification, WhatsApp/SMS sequences, and multi-channel pipeline orchestration.
+- [AI Chatbots & Digital Assistants](https://www.aidynamic.pro/projects/ai-chatbots-digital-assistants): RAG-grounded enterprise knowledge assistants with deterministic guardrails.
+
+### Sports Science & Biomechanics
+- [JMM — Jas Miami Method Performance Platform](https://www.aidynamic.pro/projects/jmm-jas-miami-method): AI-driven endurance coaching, metabolic zone modeling, and athlete telemetry (https://jasmiamimethod.fit).
+- [RunForm — Running Gait Biomechanics](https://www.aidynamic.pro/projects/runform-running-biomechanics): 60fps smartphone pose estimation computing joint angles, cadence, and ground contact time.
+- [Cycling Bike-Fit Kinematic Analysis](https://www.aidynamic.pro/projects/cycling-bike-fit-analysis): Markerless computer vision saddle, knee-extension, and aerodynamic posture optimization.
+
+### Enterprise Intelligence, Marketplaces & AI-Native Web
+- [WatchFacts Luxury Asset Intelligence](https://www.aidynamic.pro/projects/watchfacts-luxury-intelligence): Counterfeit detection, serial authentication, and real-time market valuation.
+- [Adaptive AI Marketplace](https://www.aidynamic.pro/projects/adaptive-ai-marketplace): Algorithmic B2B deal matching and liquidity scoring.
+- [Agentic Self-Learning Websites](https://www.aidynamic.pro/projects/agentic-self-learning-websites): Dynamic UI personalization and autonomous conversion optimization.
+- [AI SEO & AEO Search Optimization](https://www.aidynamic.pro/projects/ai-seo-aeo-search-optimization): Generative Engine Optimization (GEO) for ChatGPT, Perplexity, and Google AI Overviews.
+- [AI Market & Business Research Engine](https://www.aidynamic.pro/projects/ai-market-business-research): Automated competitor intelligence and financial synthesis.
+- [Zero-G Business Simulation](https://www.aidynamic.pro/projects/zero-g-business-simulation): Monte Carlo operational stress-testing and workflow digital twins.
+- [Rapid Digital Launch & Urgent Web](https://www.aidynamic.pro/projects/rapid-digital-launch-urgent-web): 72-hour full-stack enterprise web and lead-gen deployment.
+
+## High-Intent Guides & Articles
+- [24/7 Bilingual AI Phone Receptionist in Miami](https://www.aidynamic.pro/blog/ai-phone-receptionist-miami)
+- [Medical Clinic & Billing Workflow Automation](https://www.aidynamic.pro/blog/medical-clinic-automation)
+- [Legal Intake & Law Firm Automation](https://www.aidynamic.pro/blog/legal-intake-automation)
+- [Our 4-Step Engineering Process](https://www.aidynamic.pro/process)
+- [Founder Profile: Jasmel Acosta](https://www.aidynamic.pro/founders)
