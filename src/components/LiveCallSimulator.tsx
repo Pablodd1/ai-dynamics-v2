@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Phone, PhoneCall, Volume2, CheckCircle2, XCircle, ArrowRight, Sparkles, Clock, ShieldCheck } from 'lucide-react'
 
 interface Scenario {
@@ -14,6 +14,8 @@ interface Scenario {
   aiResponseEs: string
   audioVoiceText: string
   audioVoiceTextEs: string
+  audioUrlEn: string
+  audioUrlEs: string
   badge: string
 }
 
@@ -35,10 +37,12 @@ const scenarios: Scenario[] = [
       'El paciente llama a la siguiente clínica en Google',
       'Ingreso perdido: ~$350'
     ],
-    aiResponse: 'Answers in 0.4s in Venezuelan/Latin Spanish: "¡Hola buenas noches! Con gusto le atiendo. Aceptamos Aetna y Medicare. Le puedo agendar mañana mismo a las 10:30 AM con el Dr. Martínez. ¿Le confirmo su cita con su número telefónico?"',
-    aiResponseEs: 'Responde en 0.4s en español fluido: "¡Hola, buenas noches! Con gusto le atiendo en la clínica. Sí aceptamos Aetna y Medicare. Tengo disponibilidad mañana a las 10:30 AM. ¿Le aparto el cupo de una vez a este número?"',
-    audioVoiceText: '¡Hola, buenas noches! Con gusto le atiendo en la clínica. Sí aceptamos Aetna y Medicare. Tengo disponibilidad mañana a las diez y media de la mañana. ¿Le aparto el cupo de una vez?',
-    audioVoiceTextEs: '¡Hola, buenas noches! Con gusto le atiendo en la clínica. Sí aceptamos Aetna y Medicare. Tengo disponibilidad mañana a las diez y media de la mañana. ¿Le aparto el cupo de una vez?',
+    aiResponse: 'Answers in 0.4s in natural human voice: "Hello, good evening! Thank you for calling the clinic. Yes, we accept both Aetna and Medicare. I have an opening tomorrow morning at 10:30 AM with Dr. Martinez. Shall I lock in that appointment for you right now?"',
+    aiResponseEs: 'Responde en 0.4s con voz humana natural (Sofía): "¡Hola, buenas noches! Con gusto le atiendo en la clínica. Sí aceptamos Aetna y Medicare. Tengo disponibilidad mañana a las 10:30 AM con el Dr. Martínez. ¿Le aparto el cupo de una vez a este número?"',
+    audioVoiceText: 'Hello, good evening! Thank you for calling the clinic. Yes, we accept both Aetna and Medicare. I have an opening tomorrow morning at 10:30 AM with Doctor Martinez. Shall I lock in that appointment for you right now?',
+    audioVoiceTextEs: '¡Hola, buenas noches! Con gusto le atiendo en la clínica. Sí aceptamos Aetna y Medicare. Tengo disponibilidad mañana a las diez y media de la mañana con el Doctor Martínez. ¿Le aparto el cupo de una vez a este número?',
+    audioUrlEn: '/audio/sim_healthcare_en.mp3',
+    audioUrlEs: '/audio/sim_healthcare_es.mp3',
     badge: 'Healthcare & MedSpa'
   },
   {
@@ -58,10 +62,12 @@ const scenarios: Scenario[] = [
       'Cliente busca otro abogado en Google y firma con él',
       'Caso perdido: ~$8,000+'
     ],
-    aiResponse: 'Immediate intake in 0.3s: "Hello, I am the priority legal assistant for Miami Legal Partners. Are you safe and uninjured? Let me document the accident details and patch you immediately to our on-duty attorney right now."',
-    aiResponseEs: 'Respuesta inmediata en 0.3s: "Hola, le atiende el asistente prioritario de casos. ¿Se encuentra a salvo? Déjeme tomar los datos del choque y transferirlo de inmediato con el abogado de guardia."',
-    audioVoiceText: 'Hello, I am the priority assistant for Miami Legal Partners. Are you safe and uninjured? Let me document the accident details and patch you directly to our on-duty attorney.',
-    audioVoiceTextEs: 'Hola, le atiende el asistente de casos prioritarios. ¿Se encuentra a salvo? Déjeme tomar los datos del choque y transferirle de inmediato con el abogado de guardia.',
+    aiResponse: 'Immediate intake in 0.3s: "Hello, this is Sofia, priority legal intake assistant for Miami Legal Partners. First, are you safe and uninjured? Let me quickly document the accident details and patch you directly to our on-duty attorney right now."',
+    aiResponseEs: 'Respuesta inmediata en 0.3s: "Hola, le atiende Sofía, asistente de casos prioritarios del bufete. Primero que nada, ¿se encuentra usted a salvo? Déjeme tomar los datos del accidente y transferirle de inmediato con nuestro abogado de guardia."',
+    audioVoiceText: 'Hello, this is Sofia, priority legal intake assistant for Miami Legal Partners. First, are you safe and uninjured? Let me quickly document the accident details and patch you directly to our on-duty attorney right now.',
+    audioVoiceTextEs: 'Hola, le atiende Sofía, asistente de casos prioritarios del bufete. Primero que nada, ¿se encuentra usted a salvo? Déjeme tomar los datos del accidente y transferirle de inmediato con nuestro abogado de guardia.',
+    audioUrlEn: '/audio/sim_legal_en.mp3',
+    audioUrlEs: '/audio/sim_legal_es.mp3',
     badge: 'Legal & Attorneys'
   },
   {
@@ -81,10 +87,12 @@ const scenarios: Scenario[] = [
       'El cliente ya contrató al primer técnico que le contestó en Yelp',
       'Servicio perdido: ~$1,400'
     ],
-    aiResponse: 'Answers immediately: "Good morning! We can dispatch a technician to your address between 9:30 AM and 11:00 AM. What is your street address and unit number so I can lock in your dispatch slot?"',
-    aiResponseEs: 'Atiende de inmediato: "¡Buenos días! Podemos enviar a un técnico certificado a su domicilio entre 9:30 y 11:00 AM. ¿Cuál es su dirección exacta para apartar su turno en ruta ya mismo?"',
-    audioVoiceText: 'Good morning! We can dispatch a certified technician to your address between 9:30 AM and 11:00 AM. What is your street address so I can lock in your slot?',
-    audioVoiceTextEs: '¡Buenos días! Podemos enviar a un técnico certificado a su domicilio entre 9:30 y 11:00 AM. ¿Cuál es su dirección exacta para apartar su turno en ruta ya mismo?',
+    aiResponse: 'Answers immediately: "Good morning! I completely understand how urgent an A/C outage is in this Miami heat. We can dispatch a certified technician to your home between 9:30 and 11:00 AM today. What is your street address so I can lock in your dispatch slot?"',
+    aiResponseEs: 'Atiende de inmediato: "¡Buenos días! Entiendo la urgencia con el calor de Miami. Podemos enviar a un técnico certificado a su domicilio hoy mismo entre 9:30 y 11:00 AM. ¿Cuál es su dirección exacta para apartar su turno en ruta?"',
+    audioVoiceText: 'Good morning! I completely understand how urgent an A C outage is in this Miami heat. We can dispatch a certified technician to your home between 9:30 and 11:00 AM today. What is your street address so I can lock in your dispatch slot?',
+    audioVoiceTextEs: '¡Buenos días! Entiendo la urgencia con el calor de Miami. Podemos enviar a un técnico certificado a su domicilio hoy mismo entre nueve y media y once de la mañana. ¿Cuál es su dirección exacta para apartar su turno en ruta?',
+    audioUrlEn: '/audio/sim_hvac_en.mp3',
+    audioUrlEs: '/audio/sim_hvac_es.mp3',
     badge: 'Contractors & Auto'
   }
 ]
@@ -93,37 +101,29 @@ export default function LiveCallSimulator() {
   const [activeScenario, setActiveScenario] = useState<Scenario>(scenarios[0])
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [lang, setLang] = useState<'es' | 'en'>('es')
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  const playVoiceSample = (text: string) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
-    window.speechSynthesis.cancel()
-
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.rate = 1.05
-    utterance.pitch = 1.0
-
-    const voices = window.speechSynthesis.getVoices()
-    const chosenVoice = voices.find(v => v.lang.toLowerCase().includes('es-ve')) ||
-                        voices.find(v => v.lang.toLowerCase().includes('es-419')) ||
-                        voices.find(v => v.lang.toLowerCase().includes('es-us')) ||
-                        voices.find(v => v.lang.toLowerCase().includes('es-mx')) ||
-                        voices.find(v => v.lang.toLowerCase().startsWith('es')) ||
-                        voices[0]
-
-    if (chosenVoice) utterance.voice = chosenVoice
-
-    utterance.onstart = () => setIsPlaying(true)
-    utterance.onend = () => setIsPlaying(false)
-    utterance.onerror = () => setIsPlaying(false)
-
-    window.speechSynthesis.speak(utterance)
+  const playVoiceSample = (scenario: Scenario, currentLang: 'es' | 'en') => {
+    stopVoice()
+    const audioUrl = currentLang === 'es' ? scenario.audioUrlEs : scenario.audioUrlEn
+    const audio = new Audio(audioUrl)
+    audioRef.current = audio
+    audio.onplay = () => setIsPlaying(true)
+    audio.onended = () => setIsPlaying(false)
+    audio.onerror = () => setIsPlaying(false)
+    audio.play().catch(() => setIsPlaying(false))
   }
 
   const stopVoice = () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
+    }
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel()
-      setIsPlaying(false)
     }
+    setIsPlaying(false)
   }
 
   return (
@@ -150,20 +150,20 @@ export default function LiveCallSimulator() {
           {/* Language toggle for simulator */}
           <div className="mt-6 inline-flex p-1 rounded-xl bg-white/5 border border-white/10">
             <button
-              onClick={() => setLang('es')}
+              onClick={() => { stopVoice(); setLang('es') }}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 lang === 'es' ? 'bg-luxury-gold text-dark shadow' : 'text-luxury-silver hover:text-white'
               }`}
             >
-              Español (Miami/Latino)
+              🇻🇪 Español (Sofía — Voz Humana)
             </button>
             <button
-              onClick={() => setLang('en')}
+              onClick={() => { stopVoice(); setLang('en') }}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 lang === 'en' ? 'bg-luxury-gold text-dark shadow' : 'text-luxury-silver hover:text-white'
               }`}
             >
-              English
+              🇺🇸 English (Sofia — Human Voice)
             </button>
           </div>
         </div>
@@ -269,8 +269,7 @@ export default function LiveCallSimulator() {
                   if (isPlaying) {
                     stopVoice()
                   } else {
-                    const text = lang === 'es' ? activeScenario.audioVoiceTextEs : activeScenario.audioVoiceText
-                    playVoiceSample(text)
+                    playVoiceSample(activeScenario, lang)
                   }
                 }}
                 className={`px-5 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg ${
@@ -280,7 +279,7 @@ export default function LiveCallSimulator() {
                 }`}
               >
                 <Volume2 className={`w-4 h-4 ${isPlaying ? 'animate-bounce' : ''}`} />
-                {isPlaying ? 'Stop Voice Sample' : (lang === 'es' ? '🔊 Escuchar Llamada en Vivo' : '🔊 Play Live Call Audio')}
+                {isPlaying ? 'Stop Voice Sample' : (lang === 'es' ? '🔊 Escuchar Voz Humana (Sofía)' : '🔊 Play Human Voice (Sofia)')}
               </button>
 
               <a

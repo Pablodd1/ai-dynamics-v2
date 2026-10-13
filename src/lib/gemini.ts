@@ -74,10 +74,67 @@ export interface ChatMessage {
   parts: { text: string }[]
 }
 
+export interface ChatResponsePayload {
+  text: string
+  audioUrl: string
+  lang: 'es' | 'en'
+}
+
+export function getStudioAudioForResponse(userText: string, aiText: string): { audioUrl: string; lang: 'es' | 'en' } {
+  const combined = `${userText} ${aiText}`.toLowerCase()
+  const isSpanish =
+    /[áéíóúñ¿¡]/i.test(aiText) ||
+    /\b(hola|con gusto|claro que sí|auditoría|llamadas|recepcionista|empresa|negocio|español)\b/i.test(combined)
+
+  if (/\b(phone|call|receptionist|ring|llamada|recepcionista|repique|teléfono|telefono)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_phone_es.mp3' : '/audio/sofia_phone_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  if (/\b(audit|auditoría|auditoria|\$99|99|bottleneck|cuello)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_audit_es.mp3' : '/audio/sofia_audit_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  if (/\b(price|pricing|cost|\$1,000|\$5,000|precio|cuesta|tarifa|mil dólares)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_pricing_es.mp3' : '/audio/sofia_pricing_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  if (/\b(train|training|staff|upskill|workshop|entrenamiento|personal|capacitación)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_training_es.mp3' : '/audio/sofia_training_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  if (/\b(book|schedule|calendar|appointment|agenda|reservar|cita|veinte noventa y nueve)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_booking_es.mp3' : '/audio/sofia_booking_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  if (/\b(22|veintidós|platforms|plataformas|services|servicios|healthcare|legal)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_services_es.mp3' : '/audio/sofia_services_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  if (/\b(hola|welcome|bienvenido|gracias por llamar|thank you for calling)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_call_answer_es.mp3' : '/audio/sofia_call_answer_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
+  return { audioUrl: isSpanish ? '/audio/sofia_default_es.mp3' : '/audio/sofia_default_en.mp3', lang: isSpanish ? 'es' : 'en' }
+}
+
 export async function sendGeminiMessage(
   history: ChatMessage[],
   userMessage: string
 ): Promise<string> {
+  // 1. Call our serverless /api/chat endpoint first
+  try {
+    const apiRes = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ history, prompt: userMessage }),
+    }).catch(() => null)
+
+    if (apiRes && apiRes.ok) {
+      const data = await apiRes.json()
+      if (data.text) return data.text
+    }
+  } catch {
+    // Fall through
+  }
+
+  // 2. If client GEMINI_API_KEY is present in local dev
+  if (!GEMINI_API_KEY) {
+    return getFallbackResponse(userMessage)
+  }
+
   const messages: ChatMessage[] = [
     { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
     { role: 'model', parts: [{ text: 'Understood. I am ready to assist visitors as the AI Front Desk Assistant for AI Dynamic Pro.' }] },
@@ -86,28 +143,6 @@ export async function sendGeminiMessage(
   ]
 
   try {
-    // Try the proxy endpoint first (AIDynamic internal API)
-    const proxyResponse = await fetch('https://api.aidynamic.pro/v1/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GEMINI_API_KEY}` },
-      body: JSON.stringify({ messages: history, prompt: userMessage, system: SYSTEM_PROMPT }),
-    }).catch(() => null)
-
-    if (proxyResponse && proxyResponse.ok) {
-      const data = await proxyResponse.json()
-      if (data.text || data.response) return data.text || data.response
-    }
-  } catch {
-    // Proxy failed, fall through to direct Gemini API
-  }
-
-  // If no Gemini API key is configured in environment, fall back immediately without 403 error
-  if (!GEMINI_API_KEY) {
-    throw new Error('No GEMINI_API_KEY configured')
-  }
-
-  try {
-    // Direct Gemini API call
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
@@ -125,18 +160,15 @@ export async function sendGeminiMessage(
     )
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      console.error('Gemini API error:', errorData)
-      throw new Error(`Gemini API error: ${response.status}`)
+      return getFallbackResponse(userMessage)
     }
 
     const data = await response.json()
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text
     if (text) return text.trim()
-    throw new Error('No response from Gemini')
-  } catch (err) {
-    console.error('Gemini API failed:', err)
-    throw err
+    return getFallbackResponse(userMessage)
+  } catch {
+    return getFallbackResponse(userMessage)
   }
 }
 
