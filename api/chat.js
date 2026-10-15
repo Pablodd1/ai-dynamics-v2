@@ -244,7 +244,49 @@ export default async function handler(req, res) {
     // Trigger asynchronous notification if user leaves details or requests staff
     notifyFounderIfHandoff(prompt, history).catch(() => {});
 
-    // 1. Google Gemini 2.0 Flash (Fastest, latest generation with sub-350ms latency)
+    // 1. OpenAI GPT-4o-mini (Primary conversational intelligence)
+    if (openaiKey && prompt !== 'test') {
+      try {
+        const modelName = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+        const oaRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${openaiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: [
+              { role: 'system', content: SYSTEM_PROMPT },
+              ...history.map(h => ({
+                role: h.role === 'model' ? 'assistant' : 'user',
+                content: h.parts?.[0]?.text || '',
+              })),
+              { role: 'user', content: prompt },
+            ],
+            max_tokens: 190,
+            temperature: 0.65,
+          }),
+        });
+        if (oaRes.ok) {
+          const data = await oaRes.json();
+          const text = data.choices?.[0]?.message?.content?.trim();
+          if (text) {
+            const isEs = /[áéíóúñ¿¡]/i.test(text);
+            return res.status(200).json({
+              text,
+              audioUrl: `/api/tts?lang=${isEs ? 'es' : 'en'}&text=${encodeURIComponent(text)}`,
+              lang: isEs ? 'es' : 'en',
+              provider: modelName,
+            });
+          }
+        }
+      } catch (e) {
+        console.warn('[Chat API] OpenAI call:', e.message);
+      }
+    }
+
+    // 2. Google Gemini 2.0 Flash (Fast fallback)
     if (geminiKey && prompt !== 'test') {
       try {
         const contents = [
@@ -297,47 +339,6 @@ export default async function handler(req, res) {
         }
       } catch (e) {
         console.warn('[Chat API] Gemini dynamic call:', e.message);
-      }
-    }
-
-    // 2. OpenAI GPT-4o-mini (Industry standard conversational fallback)
-    if (openaiKey && prompt !== 'test') {
-      try {
-        const oaRes = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${openaiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-              { role: 'system', content: SYSTEM_PROMPT },
-              ...history.map(h => ({
-                role: h.role === 'model' ? 'assistant' : 'user',
-                content: h.parts?.[0]?.text || '',
-              })),
-              { role: 'user', content: prompt },
-            ],
-            max_tokens: 190,
-            temperature: 0.65,
-          }),
-        });
-        if (oaRes.ok) {
-          const data = await oaRes.json();
-          const text = data.choices?.[0]?.message?.content?.trim();
-          if (text) {
-            const isEs = /[áéíóúñ¿¡]/i.test(text);
-            return res.status(200).json({
-              text,
-              audioUrl: `/api/tts?lang=${isEs ? 'es' : 'en'}&text=${encodeURIComponent(text)}`,
-              lang: isEs ? 'es' : 'en',
-              provider: 'gpt-4o-mini',
-            });
-          }
-        }
-      } catch (e) {
-        console.warn('[Chat API] OpenAI fallback:', e.message);
       }
     }
 
