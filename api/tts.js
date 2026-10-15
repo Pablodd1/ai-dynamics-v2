@@ -36,11 +36,38 @@ export default async function handler(req, res) {
       /[áéíóúñ¿¡]/i.test(cleanText) ||
       /\b(hola|buenas|gracias|empresa|negocio|cita|español|llamada|auditoría|dólares)\b/i.test(cleanText);
 
-    // 1. ElevenLabs Human Voice (if configured)
+    // 1. OpenAI HD Human Voice 'nova' (tts-1) - Priority 1
+    const openaiKey = process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || '';
+    if (openaiKey) {
+      try {
+        const oaRes = await fetch('https://api.openai.com/v1/audio/speech', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${openaiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'tts-1',
+            voice: process.env.OPENAI_VOICE || 'nova',
+            input: cleanText,
+            speed: 1.02,
+          }),
+        });
+        if (oaRes.ok) {
+          const arrayBuffer = await oaRes.arrayBuffer();
+          res.setHeader('Content-Type', 'audio/mpeg');
+          res.setHeader('Cache-Control', 'public, max-age=86400');
+          return res.status(200).send(Buffer.from(arrayBuffer));
+        }
+      } catch (e) {
+        console.warn('[TTS API] OpenAI TTS fallback:', e.message);
+      }
+    }
+
+    // 2. ElevenLabs Multilingual v2 (if configured as alternative)
     const elevenKey = process.env.ELEVENLABS_API_KEY;
     if (elevenKey) {
       try {
-        // Rachel / Bella / Multilingual v2 voice
         const voiceId = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
         const elRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
           method: 'POST',
@@ -63,34 +90,6 @@ export default async function handler(req, res) {
         }
       } catch (e) {
         console.warn('[TTS API] ElevenLabs fallback:', e.message);
-      }
-    }
-
-    // 2. OpenAI HD Human Voice 'nova' (if configured)
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (openaiKey) {
-      try {
-        const oaRes = await fetch('https://api.openai.com/v1/audio/speech', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${openaiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'tts-1',
-            voice: 'nova',
-            input: cleanText,
-            speed: 1.03,
-          }),
-        });
-        if (oaRes.ok) {
-          const arrayBuffer = await oaRes.arrayBuffer();
-          res.setHeader('Content-Type', 'audio/mpeg');
-          res.setHeader('Cache-Control', 'public, max-age=86400');
-          return res.status(200).send(Buffer.from(arrayBuffer));
-        }
-      } catch (e) {
-        console.warn('[TTS API] OpenAI TTS fallback:', e.message);
       }
     }
 

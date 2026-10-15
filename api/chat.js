@@ -239,7 +239,7 @@ export default async function handler(req, res) {
   try {
     const { history = [], prompt = '' } = req.body || {};
     const geminiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
-    const openaiKey = process.env.OPENAI_API_KEY || '';
+    const openaiKey = process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || '';
 
     // Trigger asynchronous notification if user leaves details or requests staff
     notifyFounderIfHandoff(prompt, history).catch(() => {});
