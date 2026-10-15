@@ -32,7 +32,7 @@ export default function AIAssistantWidget() {
   const [callStatus, setCallStatus] = useState<'idle' | 'ringing' | 'speaking' | 'listening' | 'thinking'>('idle')
   const [callSeconds, setCallSeconds] = useState(0)
   const [lastCallTranscript, setLastCallTranscript] = useState(
-    '¡Hola, buenas! Gracias por llamar a las oficinas de AI Dynamic Pro y Medical Billing Miami. Te atiende Sofía, tu asistente ejecutiva con inteligencia artificial.'
+    '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami. Te atiende Sofía, tu recepcionista ejecutiva con inteligencia artificial.'
   )
   const [showAttentionGrabber, setShowAttentionGrabber] = useState(false)
   const [grabberDismissed, setGrabberDismissed] = useState(false)
@@ -40,7 +40,7 @@ export default function AIAssistantWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'ai',
-      text: '👋 ¡Hola! Soy Sofía, tu Asistente Ejecutiva de AI Dynamic Pro y Medical Billing Miami (MBMB). Atiendo consultas y llamadas en vivo 24/7 con voz humana en español e inglés. ¿Te interesa conocer nuestra auditoría de IA ($99 Audit) o soluciones de facturación médica?',
+      text: '👋 ¡Hola! Soy Sofía, la Recepcionista Ejecutiva de AI Dynamic Pro en Miami. Te oriento sobre consultoría de IA ($99 Audit), desarrollo de aplicaciones a medida y entrenamiento para tu equipo. ¿En qué te puedo colaborar hoy?',
       audioUrl: '/audio/sofia_call_answer_es.mp3',
     },
   ])
@@ -375,28 +375,26 @@ export default function AIAssistantWidget() {
   }
 
   const suggestions = [
-    '🏥 Medical Billing & Reclamos (MBMB)',
     '⚡ Auditoría de $99 (Workflow Audit)',
-    '🔊 ¿Cómo funciona la recepcionista de voz?',
-    '🎓 Entrenamiento de IA para personal',
-    '📅 Agendar cita con Jasmel',
+    '💻 Desarrollo de Apps & Sistemas IA',
+    '🎓 Entrenamiento de IA para Personal',
+    '📞 ¿Cómo funciona la recepcionista 24/7?',
+    '👤 Hablar con un Ingeniero / Jasmel',
   ]
 
   const callQuickPrompts =
     callLang === 'es'
       ? [
-          { label: '🏥 Facturación Médica & Reclamos (MBMB)', prompt: '¿Cómo me ayudan con facturación médica y reclamos denegados en Miami?' },
-          { label: '⚡ ¿Qué incluye la Auditoría de $99?', prompt: '¿Qué incluye la auditoría de 99 dólares?' },
-          { label: '📞 ¿Cómo atiendes llamadas 24/7?', prompt: '¿Cómo funciona la recepcionista telefónica?' },
-          { label: '🎓 Entrenamiento para mi equipo', prompt: '¿Ofrecen entrenamiento de IA para mi personal?' },
-          { label: '📅 Quiero agendar una cita', prompt: 'Quiero agendar una cita con Jasmel' },
+          { label: '⚡ Auditoría de $99', prompt: '¿Qué incluye la auditoría de 99 dólares?' },
+          { label: '💻 Desarrollo de Apps & IA', prompt: '¿Qué soluciones de desarrollo de aplicaciones y software realizan?' },
+          { label: '🎓 Entrenamiento de Personal', prompt: '¿Ofrecen entrenamiento y talleres de IA para mi equipo de trabajo?' },
+          { label: '👤 Hablar con Staff / Jasmel', prompt: 'Quiero hablar con una persona del equipo o con Jasmel Acosta' },
         ]
       : [
-          { label: '🏥 Medical Billing & Claims (MBMB)', prompt: 'Tell me about Medical Billing Miami and claim denial recovery' },
-          { label: '⚡ What is the $99 Workflow Audit?', prompt: 'What is included in the $99 workflow audit?' },
-          { label: '📞 How does 24/7 phone answering work?', prompt: 'How does the 24/7 phone receptionist work?' },
-          { label: '🎓 Corporate Staff Training', prompt: 'Do you offer corporate staff AI training?' },
-          { label: '📅 Book a consultation call', prompt: 'I want to schedule a consultation call' },
+          { label: '⚡ $99 Workflow Audit', prompt: 'What is included in the $99 workflow audit?' },
+          { label: '💻 Custom App Development', prompt: 'What custom application and software development services do you offer?' },
+          { label: '🎓 Corporate Staff Training', prompt: 'Do you offer corporate staff AI training workshops?' },
+          { label: '👤 Speak with Jasmel / Staff', prompt: 'I want to speak with Jasmel Acosta or an engineer' },
         ]
 
   const linkifyText = (text: string) => {
@@ -454,7 +452,7 @@ export default function AIAssistantWidget() {
                         En Vivo
                       </span>
                     </div>
-                    <span className="text-[10px] text-luxury-silver">AI Dynamics Pro & Medical Billing</span>
+                    <span className="text-[10px] text-luxury-silver">AI Consulting • App Dev • Training</span>
                   </div>
                 </div>
 
@@ -469,7 +467,7 @@ export default function AIAssistantWidget() {
 
               {/* Friendly message */}
               <p className="text-xs text-luxury-champagne leading-relaxed mb-3">
-                👋 <strong>¡Hola!</strong> ¿Tienes preguntas sobre automatización con IA ($99 Audit) o facturación médica con <strong>Medical Billing Miami</strong>? ¡Pruébame en vivo con voz humana real!
+                👋 <strong>¡Hola!</strong> ¿Tienes preguntas sobre consultoría de IA ($99 Audit), desarrollo de aplicaciones a medida o entrenamiento para tu personal? ¡Pruébame en vivo con voz humana o por chat!
               </p>
 
               {/* Action Buttons */}
