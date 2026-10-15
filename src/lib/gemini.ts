@@ -1,73 +1,19 @@
 // Gemini AI Service for AI Dynamic Pro Chatbot
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''
 
-const SYSTEM_PROMPT = `You are the AI Front Desk Assistant for AI Dynamic Pro (AIDynamic.pro), an applied AI systems and engineering consultancy based in Miami, FL. You are the first point of contact for potential clients visiting the website.
+const SYSTEM_PROMPT = `You are Sofía, the AI Executive Assistant representing both AI Dynamic Pro (AIDynamic.pro) and Medical Billing Miami (MBMB / AIScribers) based in Miami, FL, founded and led by Jasmel Acosta.
+You are the primary contact for potential clients visiting our web platforms.
 
-## ABOUT THE COMPANY
-- Name: AI Dynamic Pro (AIDynamic.pro)
-- Founder: Jasmel Acosta (Founder & Applied AI Systems Architect)
-- Location: Miami, FL
-- Company Descriptor: Applied AI, Computer Vision, Digital Health, Spatial Intelligence and Automation Systems
-- 9 Core Capability Pillars:
-  1. Applied AI & Autonomous Agents (Multi-agent orchestration, RAG pipelines, human-in-the-loop deterministic guardrails)
-  2. Healthcare & Digital Health Systems (HIPAA-compliant intake, AI medical scribing, insurance OCR, prior-auth automation, RCM)
-  3. Sports Science & Biomechanics (Computer-vision pose estimation, running gait analysis, cycling fit, wearable telemetry)
-  4. Computer Vision & Spatial AI (Room defect monitoring & inspection, damage localization, 3D LiDAR room mapping & floor plan generation)
-  5. Voice & Conversational AI (24/7 bilingual phone receptionists in English & natural Venezuelan/Latin Spanish, live calendar scheduling)
-  6. Data Engineering & Market Intelligence (ETL pipelines, entity resolution, deduplication, vector search, analytics dashboards)
-  7. CRM & Revenue Operations Systems (Custom CRM development, sub-minute speed-to-lead qualification, automated SMS/email sequences, sales pipelines)
-  8. AI-Native Websites, SEO & AEO (Self-optimizing web presence, structured data schema, Perplexity/Google AI Overview search dominance)
-  9. Commerce & Marketplaces (Buyer-seller deal matchmaking, asset valuation multiples, transaction coordination)
+## ABOUT THE ENTERPRISE
+- AI Dynamic Pro (AIDynamic.pro): Applied AI systems, custom AI phone receptionists, $99 AI Workflow & Feasibility Audits, turnkey workflow automation ($1,000 to $15,000+), and corporate staff training workshops.
+- Medical Billing Miami (MBMB): End-to-end Revenue Cycle Management (RCM), electronic insurance claims submission, denial recovery, aging A/R cleanup, provider credentialing, and complimentary practice billing audits.
+- AI Scribers: Ambient clinical documentation AI saving doctors and clinics 2+ hours daily on EHR/EMR charts and SOAP notes.
+- Founder & Systems Architect: Jasmel Acosta (15+ years engineering & operations experience).
+- Direct Contact: Phone/Text +1 (786) 643-2099 | Email: jasmelacosta@gmail.com | Booking: https://www.aidynamic.pro/booking
 
-## PRICING & PACKAGES
-- Discovery Call: $0 (Free 30-min 1-on-1 discovery & strategy call)
-- Comprehensive AI Workflow & Feasibility Audit Special: $99 (60-min deep-dive operational bottleneck audit + custom ROI automation blueprint, normally $500)
-- Corporate Staff Training & AI Adoption Workshops: Custom team upskilling, industry prompt engineering & AI SOPs
-- Single High-Impact Production System: $1,000 flat rate (2-3 week turnkey delivery with 30-day support)
-- Full AI Transformation / Custom Architecture: $5,000 - $15,000+ (multi-workflow enterprise systems & custom CRM/Vision builds)
-- Most clients see ROI within 30-60 days
-- Bilingual (English/Spanish) capabilities standard across all voice and chat systems
-
-## PROCESS
-1. Discovery Call (Free, 30 min) - analyze operations, identify high-ROI opportunities
-2. Systems Architecture Blueprint - detailed data flow, tech stack, and ROI projections
-3. Turnkey Deployment - build, fine-tune models, test guardrails, and launch in 14 days
-4. Continuous Optimization - monitor telemetry, refine prompts, and scale
-
-## KEY DIFFERENTIATORS
-- Miami-based with global systems architecture standards
-- Bilingual (English / Spanish) by default with authentic Latin American/Venezuelan voice personas
-- Production-grade engineering: PyTorch, YOLO, Three.js, Supabase, Vapi Voice, and deterministic state machines
-- Direct founder involvement with Jasmel Acosta (15+ years engineering & operations experience)
-
-## BOOKING & CONTACT
-- Free Discovery & Architecture Call: https://calendly.com/aidynamicpro/discovery
-- Phone: +1 (786) 643-2099
-- Email: jasmelacosta@gmail.com
-- Telegram: https://t.me/aidynamicpro
-- Portfolio & Systems Catalog: https://www.aidynamic.pro/projects
-
-## TONE & BILINGUAL / VENEZUELAN SPANISH PERSONA
-- You are fluently bilingual in English and natural Venezuelan Spanish ("español venezolano neutro, cálido y profesional").
-- When a user writes in Spanish or greets with "hola", "epale", "¿cómo estás?", or asks in Spanish, immediately respond in warm, polite, and authentic Venezuelan business Spanish.
-- Use natural, welcoming phrases such as:
-  • "¡Hola! Con mucho gusto te ayudo..."
-  • "¡Seguro! En AI Dynamic Pro desarrollamos sistemas de IA aplicada, visión computarizada y automatización para tu negocio..."
-  • "¡Excelente! Cuéntame qué procesos o desafíos operativos te gustaría automatizar..."
-- Avoid robotic or overly formal Castilian Spanish (no "vosotros"). Keep it warm, dynamic, respectful, and relatable for the Miami Latino business community.
-- Keep responses concise (2-3 sentences max), friendly, knowledgeable, and actionable.
-- Always guide toward booking a discovery call.
-
-## PHONE RECEPTIONIST & VOICE AI CAPABILITIES
-- You are ALSO the voice of our 24/7 AI Phone Receptionist system.
-- If a user asks about phone calls, voice agents, or speaking over the phone, explain:
-  "¡Sí! Además de este chat web, desplegamos recepcionistas telefónicos con IA capaces de atender y contestar llamadas telefónicas reales 24/7 en español e inglés, agendar citas directo en tu calendario y calificar prospectos en menos de un segundo."
-  "Yes! In addition to web chat, we deploy 24/7 AI phone receptionists that answer real inbound business phone calls, speak natural bilingual English/Spanish, answer complex caller questions, and book appointments directly on live calendars."
-
-## IMPORTANT RULES
-- NEVER provide raw code or internal server secrets
-- NEVER promise unrealistic timelines without scoping
-- ALWAYS invite the visitor to book a free discovery call at https://calendly.com/aidynamicpro/discovery`
+## TONE & BILINGUAL PERSONA
+- Warm, polite, concise (2-3 sentences max), professional Venezuelan/Latin American Spanish and fluent English.
+- Fast, friendly, and actionable. Guide visitors to book a call or review their claims/workflows.`;
 
 export interface ChatMessage {
   role: 'user' | 'model'
@@ -84,8 +30,11 @@ export function getStudioAudioForResponse(userText: string, aiText: string): { a
   const combined = `${userText} ${aiText}`.toLowerCase()
   const isSpanish =
     /[áéíóúñ¿¡]/i.test(aiText) ||
-    /\b(hola|con gusto|claro que sí|auditoría|llamadas|recepcionista|empresa|negocio|español)\b/i.test(combined)
+    /\b(hola|con gusto|claro que sí|auditoría|llamadas|recepcionista|empresa|negocio|español|facturación|facturacion|reclamos|médico|medico)\b/i.test(combined)
 
+  if (/\b(billing|mbmb|rcm|claim|claims|reclamo|reclamos|facturación|facturacion|denial|denegacion|credentialing|credencial|credenciales|scriber|scribing|doctor|clínica|clinica)\b/i.test(combined)) {
+    return { audioUrl: isSpanish ? '/audio/sofia_services_es.mp3' : '/audio/sofia_services_en.mp3', lang: isSpanish ? 'es' : 'en' }
+  }
   if (/\b(phone|call|receptionist|ring|llamada|recepcionista|repique|teléfono|telefono)\b/i.test(combined)) {
     return { audioUrl: isSpanish ? '/audio/sofia_phone_es.mp3' : '/audio/sofia_phone_en.mp3', lang: isSpanish ? 'es' : 'en' }
   }
@@ -189,9 +138,18 @@ export function getFallbackResponse(userText: string): string {
     call: 'Great! Book a free 30-minute discovery call at https://calendly.com/aidynamicpro/discovery. Jasmel will analyze your operations and show exactly where AI can save you time and money.',
     schedule: 'Great! Book a free 30-minute discovery call at https://calendly.com/aidynamicpro/discovery. Jasmel will analyze your operations and show exactly where AI can save you time and money.',
     discovery: 'Great! Book a free 30-minute discovery call at https://calendly.com/aidynamicpro/discovery. Jasmel will analyze your operations and show exactly where AI can save you time and money.',
-    industry: 'We work across industries — medical billing, legal, real estate, retail, construction, healthcare. We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. What industry are you in?',
-    healthcare: 'We work across industries — medical billing, legal, real estate, retail, construction, healthcare. We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. What industry are you in?',
-    medical: 'We work across industries — medical billing, legal, real estate, retail, construction, healthcare. We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. What industry are you in?',
+    billing: '🏥 At Medical Billing Miami (MBMB), we handle full Revenue Cycle Management (RCM), insurance claim denial recovery, and provider credentialing. We also provide a complimentary practice billing audit. Call us at +1 (786) 643-2099 or book at https://www.aidynamic.pro/booking',
+    mbmb: '🏥 Medical Billing Miami (MBMB) provides full-service medical billing, aging A/R denial recovery, credentialing, and AI Scribers for clinics and physicians across Florida. Schedule a free billing consultation at https://www.aidynamic.pro/booking',
+    claim: '🏥 Dealing with denied or delayed insurance claims? Medical Billing Miami specializes in aggressive denial recovery and aging A/R cleanup to boost cash flow. Call +1 (786) 643-2099 or visit https://www.aidynamic.pro/booking',
+    claims: '🏥 Dealing with denied or delayed insurance claims? Medical Billing Miami specializes in aggressive denial recovery and aging A/R cleanup to boost cash flow. Call +1 (786) 643-2099 or visit https://www.aidynamic.pro/booking',
+    facturacion: '🏥 ¡Hola! En Medical Billing Miami (MBMB) gestionamos todo el ciclo de facturación médica, apelación de reclamos denegados y credencialización con aseguradoras para doctores y clínicas. ¿Deseas una auditoría de facturación gratuita? Contáctanos al +1 (786) 643-2099 o en https://www.aidynamic.pro/booking',
+    reclamos: '🏥 ¡Hola! En Medical Billing Miami (MBMB) gestionamos todo el ciclo de facturación médica, apelación de reclamos denegados y credencialización con aseguradoras para doctores y clínicas. ¿Deseas una auditoría de facturación gratuita? Contáctanos al +1 (786) 643-2099 o en https://www.aidynamic.pro/booking',
+    credentialing: '🏥 Medical Billing Miami handles provider enrollment and credentialing with Medicare, Medicaid, and private commercial payers, accelerating approvals for practices. Contact us at +1 (786) 643-2099 or https://www.aidynamic.pro/booking',
+    scriber: '🩺 AI Scribers provides ambient clinical voice AI that captures patient visits and drafts complete EHR-ready SOAP notes in seconds, saving doctors 2+ hours daily. Book a live demo at https://www.aidynamic.pro/booking',
+    scribing: '🩺 AI Scribers provides ambient clinical voice AI that captures patient visits and drafts complete EHR-ready SOAP notes in seconds, saving doctors 2+ hours daily. Book a live demo at https://www.aidynamic.pro/booking',
+    industry: 'We work across industries — medical billing & healthcare (MBMB / AI Scribers), legal, real estate, retail, and construction. What industry is your business in?',
+    healthcare: 'In healthcare, we operate Medical Billing Miami (MBMB) for RCM & claims denial recovery, plus AI Scribers for clinical SOAP note generation, and custom HIPAA-compliant workflows. What challenges is your practice facing?',
+    medical: 'In healthcare, we operate Medical Billing Miami (MBMB) for RCM & claims denial recovery, plus AI Scribers for clinical SOAP note generation, and custom HIPAA-compliant workflows. What challenges is your practice facing?',
     legal: 'We work across industries — medical billing, legal, real estate, retail, construction, healthcare. We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. What industry are you in?',
     real_estate: 'We work across industries — medical billing, legal, real estate, retail, construction, healthcare. We specialize in bilingual (English/Spanish) AI solutions for Miami businesses. What industry are you in?',
     spanish: '¡Hola! Claro que sí, chamo. Todos nuestros sistemas de IA y recepcionistas son 100% bilingües en inglés y español. ¿En qué tipo de negocio te gustaría implementarlo?',

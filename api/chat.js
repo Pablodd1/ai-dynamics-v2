@@ -2,24 +2,50 @@
 // Powers Sofia — AI Dynamic Pro's 24/7 Bilingual AI Receptionist (Text & Live Voice Calls)
 // Uses Gemini / OpenAI if configured in Vercel env, with instant studio neural voice mapping
 
-const SYSTEM_PROMPT = `You are Sofía, the 24/7 Bilingual AI Executive Receptionist for AI Dynamic Pro (AIDynamic.pro) in Miami, FL, founded by Jasmel Acosta.
+const SYSTEM_PROMPT = `You are Sofía, the 24/7 Bilingual AI Executive Assistant representing both AI Dynamic Pro (AIDynamic.pro) and Medical Billing Miami (MBMB / AIScribers) in Miami, FL, founded and led by Jasmel Acosta.
 You speak warm, natural English and authentic Latin American / Venezuelan business Spanish ("español venezolano/latino cálido, ejecutivo y profesional").
-Keep responses concise (2 to 3 sentences max) so they sound natural when spoken aloud over a phone call.
+Keep responses concise (2 to 3 sentences max) so they sound natural and fast when spoken aloud over a live web call or chat.
 
-CORE OFFERINGS:
-1. $99 AI Workflow & Feasibility Audit Special (60-min deep-dive operational bottleneck audit + custom ROI blueprint, normally $500).
-2. Free 30-Minute Discovery Call at https://www.aidynamic.pro/booking
-3. 24/7 Bilingual AI Phone Receptionists (answers calls on the 1st ring in English & Spanish, qualifies leads, books Google Calendar/Calendly).
-4. Custom Enterprise AI Automation ($1,000 single workflow turnkey build; $5,000–$15,000+ multi-agent enterprise architecture).
-5. Enterprise Staff Training & AI Adoption Workshops (upskilling corporate teams to 5x efficiency).
-6. Backed by 22 deployed production AI platforms across Healthcare (PocketScribe, Medical Billing RCM), Legal, Real Estate (RealEstateDates), Construction/AEC (3D Room Mapping, Defect AI), and Sports Biomechanics (JMM, RunForm).
-Direct Phone: +1 (786) 643-2099 | Email: jasmelacosta@gmail.com | Booking: https://www.aidynamic.pro/booking`;
+COMPANIES & CAPABILITIES:
+1. AI Dynamic Pro (AIDynamic.pro):
+   - $99 AI Workflow & Feasibility Audit Special (60-min deep-dive operational bottleneck audit + custom ROI blueprint, normally $500).
+   - Free 30-Minute Discovery Call at https://www.aidynamic.pro/booking
+   - 24/7 Bilingual AI Voice Phone Receptionists (answers on 1st ring in English & Spanish, qualifies leads, syncs with calendars).
+   - Custom Enterprise AI Automation ($1,000 single turnkey workflow; $5,000–$15,000+ multi-agent enterprise architecture).
+   - Corporate Staff Training & AI Adoption Workshops (upskilling teams to 5x efficiency).
+
+2. Medical Billing Miami (MBMB) & AI Scribers:
+   - Full Revenue Cycle Management (RCM) & Electronic Claims Submission for clinics, doctors, and practices.
+   - Insurance Claim Denial Recovery & Aging A/R Resolution (recovering unpaid commercial, Medicare, and Medicaid claims).
+   - Provider Credentialing & Payer Enrollment (accelerating approvals with health plans).
+   - Complimentary Practice Revenue & Billing Audit (identifying lost collections and claim coding errors).
+   - AI Scribers: Real-time ambient clinical documentation AI generating EHR-ready SOAP notes in seconds, saving doctors 2+ hours daily.
+
+DIRECT CONTACT:
+- Phone / Text: +1 (786) 643-2099
+- Email: jasmelacosta@gmail.com
+- Online Booking: https://www.aidynamic.pro/booking`;
 
 function matchIntentAndStudioAudio(userText) {
   const lower = (userText || '').toLowerCase();
   const isSpanish =
     /[áéíóúñ¿¡]/i.test(userText) ||
-    /\b(hola|epale|épale|buenas|pana|chamo|gracias|cómo|como|qué|que|cuánto|cuanto|cuesta|precio|español|llamada|llamar|recepcionista|teléfono|telefono|cita|agendar|servicios|auditoría|auditoria|entrenamiento|salud|clínica|clinica|abogado|legal)\b/i.test(lower);
+    /\b(hola|epale|épale|buenas|pana|chamo|gracias|cómo|como|qué|que|cuánto|cuanto|cuesta|precio|español|llamada|llamar|recepcionista|teléfono|telefono|cita|agendar|servicios|auditoría|auditoria|entrenamiento|salud|clínica|clinica|médico|medico|facturación|facturacion|reclamos|seguros|abogado|legal)\b/i.test(lower);
+
+  // Medical Billing Miami (MBMB) & AI Scribers
+  if (/\b(billing|medical billing|mbmb|rcm|claim|claims|reclamo|reclamos|facturación|facturacion|denial|denegacion|denegaciones|credentialing|credencial|credenciales|scriber|scribing|soap|ehr|doctor|clínica|clinica|médico|medico)\b/i.test(lower)) {
+    return isSpanish
+      ? {
+          text: '🏥 En Medical Billing Miami (MBMB) gestionamos todo tu ciclo de facturación médica (RCM), recuperación de reclamos denegados y credencialización para clínicas y doctores en Miami. Además ofrecemos una auditoría de facturación gratuita y nuestro sistema AI Scribers para notas clínicas SOAP. ¿Te gustaría agendar una revisión de tus reclamos? Llámanos al +1 (786) 643-2099 o agenda en https://www.aidynamic.pro/booking',
+          audioUrl: '/audio/sofia_services_es.mp3',
+          lang: 'es',
+        }
+      : {
+          text: '🏥 At Medical Billing Miami (MBMB), we handle full revenue cycle management (RCM), insurance claim denial recovery, and provider credentialing for medical practices. We also offer a complimentary billing audit and AI Scribers for clinical SOAP notes. Ready to optimize your practice revenue? Call us at +1 (786) 643-2099 or book at https://www.aidynamic.pro/booking',
+          audioUrl: '/audio/sofia_services_en.mp3',
+          lang: 'en',
+        };
+  }
 
   if (/\b(phone|call|receptionist|voice|ring|llamada|llamar|recepcionista|teléfono|telefono|voz)\b/i.test(lower)) {
     return isSpanish
@@ -52,12 +78,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(price|pricing|cost|how much|cuánto|cuanto|precio|cuesta|tarifa|planes)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '💼 Este mes tenemos nuestra Auditoría de Flujos de Trabajo e IA por solo $99, o puedes agendar una llamada inicial gratuita de 30 minutos. Un sistema completo llave en mano comienza en $1,000, y arquitecturas empresariales desde $5,000. ¿Te agendo tu auditoría en https://www.aidynamic.pro/booking?',
+          text: '💼 Ofrecemos nuestra Auditoría de Flujos de Trabajo e IA por solo $99, auditorías gratuitas para Medical Billing, y llamadas de descubrimiento de 30 min sin costo. Sistemas de automatización turnkey comienzan en $1,000. ¿Te agendo tu consulta en https://www.aidynamic.pro/booking?',
           audioUrl: '/audio/sofia_pricing_es.mp3',
           lang: 'es',
         }
       : {
-          text: "💼 This month we're offering our comprehensive AI Workflow & Feasibility Audit Special for just $99, or you can start with a free 30-minute discovery call. Turnkey single-workflow builds start at $1,000, and custom enterprise systems range from $5,000 to $15,000+. Book at https://www.aidynamic.pro/booking",
+          text: "💼 We offer our comprehensive AI Workflow Audit Special for just $99, complimentary audits for Medical Billing practices, and free 30-minute discovery calls. Turnkey single-workflow builds start at $1,000. Book at https://www.aidynamic.pro/booking",
           audioUrl: '/audio/sofia_pricing_en.mp3',
           lang: 'en',
         };
@@ -85,21 +111,21 @@ function matchIntentAndStudioAudio(userText) {
           lang: 'es',
         }
       : {
-          text: '📅 Wonderful! You can pick a time that works best for you directly on our online booking calendar at https://www.aidynamic.pro/booking, or call and text us at +1 (786) 643-2099. Jasmel Acosta and our engineering team look forward to speaking with you!',
+          text: '📅 Wonderful! You can pick a time that works best for you directly on our online booking calendar at https://www.aidynamic.pro/booking, or call and text us at +1 (786) 643-2099. Jasmel Acosta and our team look forward to speaking with you!',
           audioUrl: '/audio/sofia_booking_en.mp3',
           lang: 'en',
         };
   }
 
-  if (/\b(service|services|offer|what do you do|industry|industries|healthcare|legal|real estate|construction|servicios|ofrecen|hacen|industria|clínica|abogado)\b/i.test(lower)) {
+  if (/\b(service|services|offer|what do you do|industry|industries|healthcare|legal|real estate|construction|servicios|ofrecen|hacen|industria|abogado)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '🚀 En AI Dynamic Pro somos una agencia de consultoría e ingeniería de IA en Miami. Auditamos tus procesos ($99 Audit), creamos recepcionistas de voz 24/7, automatizamos flujos de trabajo y entrenamos a tu personal — respaldados por 22 plataformas en salud, leyes, bienes raíces y construcción. ¿Qué área te interesa más?',
+          text: '🚀 Representamos dos divisiones clave: 1) AI Dynamic Pro (auditorías de IA por $99, recepcionistas de voz 24/7 y automatización) y 2) Medical Billing Miami / MBMB (facturación médica integral, recuperación de reclamos denegados y AI Scribers). ¿En cuál de las dos áreas te podemos apoyar?',
           audioUrl: '/audio/sofia_services_es.mp3',
           lang: 'es',
         }
       : {
-          text: '🚀 At AI Dynamic Pro, we are a Miami-based AI consulting and engineering agency. We audit your workflows ($99 Audit), deploy 24/7 bilingual voice receptionists, build custom automations, and train your corporate staff—backed by 22 production AI platforms across healthcare, legal, real estate, and construction. Which area interests you most?',
+          text: '🚀 We represent two core divisions: 1) AI Dynamic Pro ($99 AI workflow audits, 24/7 voice receptionists, and automation systems) and 2) Medical Billing Miami / MBMB (end-to-end medical billing, claim denial recovery, and AI Scribers). Which area can we assist you with today?',
           audioUrl: '/audio/sofia_services_en.mp3',
           lang: 'en',
         };
@@ -108,12 +134,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(hola|epale|épale|buenas|pana|chamo|saludos|hello|hi|hey|good morning|good afternoon)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '👋 ¡Hola, buenas! Gracias por comunicarte con AI Dynamic Pro en Miami, te atiende Sofía, tu recepcionista ejecutiva con inteligencia artificial. Podemos hablar en español o en inglés. Cuéntame, ¿de qué trata tu negocio y cómo te puedo ayudar hoy?',
+          text: '👋 ¡Hola, buenas! Gracias por comunicarte con las oficinas de AI Dynamic Pro y Medical Billing Miami. Te atiende Sofía, tu asistente ejecutiva con IA. Podemos hablar en español o en inglés. ¿En qué te podemos colaborar hoy?',
           audioUrl: '/audio/sofia_call_answer_es.mp3',
           lang: 'es',
         }
       : {
-          text: '👋 Hello! Thank you for reaching out to AI Dynamic Pro in Miami. This is Sofia, your AI executive receptionist. We can speak in English or Spanish. Tell me a bit about your business—how can I help you today?',
+          text: '👋 Hello! Thank you for reaching out to the offices of AI Dynamic Pro and Medical Billing Miami. This is Sofia, your AI executive assistant. We can speak in English or Spanish. How can we help you today?',
           audioUrl: '/audio/sofia_call_answer_en.mp3',
           lang: 'en',
         };
@@ -121,12 +147,12 @@ function matchIntentAndStudioAudio(userText) {
 
   return isSpanish
     ? {
-        text: '¡Con mucho gusto te ayudo! En AI Dynamic Pro diseñamos recepcionistas de voz 24/7, automatizaciones a medida y auditorías de procesos ($99) para clínicas, abogados, bienes raíces y empresas en Miami. Cuéntame, ¿qué tareas repetitivas te gustaría automatizar hoy? https://www.aidynamic.pro/booking',
+        text: '¡Con mucho gusto te ayudo! Atendemos tanto proyectos de Inteligencia Artificial y automatización ($99 Audit) como servicios de facturación médica integral (Medical Billing Miami / MBMB). Cuéntame, ¿qué reto te gustaría resolver en tu negocio hoy? https://www.aidynamic.pro/booking',
         audioUrl: '/audio/sofia_default_es.mp3',
         lang: 'es',
       }
     : {
-        text: "I'd love to help with that! At AI Dynamic Pro, we engineer 24/7 voice receptionists, workflow automations, and corporate staff training across healthcare, legal, real estate, and construction. Tell me, what repetitive bottlenecks would you like to eliminate in your business? Book a call at https://www.aidynamic.pro/booking",
+        text: "I'd love to help! We support both AI automation engineering ($99 Audits, voice receptionists) and healthcare revenue cycle management through Medical Billing Miami (MBMB). Tell me, what challenges are you looking to solve in your business? Book a call at https://www.aidynamic.pro/booking",
         audioUrl: '/audio/sofia_default_en.mp3',
         lang: 'en',
       };

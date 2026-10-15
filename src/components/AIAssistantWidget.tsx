@@ -32,13 +32,15 @@ export default function AIAssistantWidget() {
   const [callStatus, setCallStatus] = useState<'idle' | 'ringing' | 'speaking' | 'listening' | 'thinking'>('idle')
   const [callSeconds, setCallSeconds] = useState(0)
   const [lastCallTranscript, setLastCallTranscript] = useState(
-    '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami, te atiende Sofía, tu recepcionista ejecutiva con inteligencia artificial.'
+    '¡Hola, buenas! Gracias por llamar a las oficinas de AI Dynamic Pro y Medical Billing Miami. Te atiende Sofía, tu asistente ejecutiva con inteligencia artificial.'
   )
+  const [showAttentionGrabber, setShowAttentionGrabber] = useState(false)
+  const [grabberDismissed, setGrabberDismissed] = useState(false)
 
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'ai',
-      text: '👋 ¡Hola! Soy Sofía, tu Recepcionista Ejecutiva de AI Dynamic Pro en Miami. Atiendo llamadas y mensajes 24/7 con voz humana en español e inglés. ¿En qué puedo ayudarte hoy?',
+      text: '👋 ¡Hola! Soy Sofía, tu Asistente Ejecutiva de AI Dynamic Pro y Medical Billing Miami (MBMB). Atiendo consultas y llamadas en vivo 24/7 con voz humana en español e inglés. ¿Te interesa conocer nuestra auditoría de IA ($99 Audit) o soluciones de facturación médica?',
       audioUrl: '/audio/sofia_call_answer_es.mp3',
     },
   ])
@@ -56,6 +58,43 @@ export default function AIAssistantWidget() {
   const ringContextRef = useRef<AudioContext | null>(null)
   const isCallActiveRef = useRef(false)
   const callLangRef = useRef<'es' | 'en'>('es')
+
+  // Attention grabber trigger: 2.8s after landing or on scroll
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem('sofia_grabber_dismissed') === 'true') {
+        setGrabberDismissed(true)
+        return
+      }
+    } catch {}
+
+    const timer = setTimeout(() => {
+      if (!isOpen && !grabberDismissed) {
+        setShowAttentionGrabber(true)
+      }
+    }, 2800)
+
+    const handleScroll = () => {
+      if (window.scrollY > 120 && !isOpen && !grabberDismissed) {
+        setShowAttentionGrabber(true)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [isOpen, grabberDismissed])
+
+  const dismissAttentionGrabber = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation()
+    setShowAttentionGrabber(false)
+    setGrabberDismissed(true)
+    try {
+      sessionStorage.setItem('sofia_grabber_dismissed', 'true')
+    } catch {}
+  }, [])
 
   useEffect(() => {
     isCallActiveRef.current = isCallActive
@@ -336,22 +375,24 @@ export default function AIAssistantWidget() {
   }
 
   const suggestions = [
-    '🔊 ¿Cómo funciona la recepcionista de voz?',
+    '🏥 Medical Billing & Reclamos (MBMB)',
     '⚡ Auditoría de $99 (Workflow Audit)',
+    '🔊 ¿Cómo funciona la recepcionista de voz?',
     '🎓 Entrenamiento de IA para personal',
-    '📅 Agendar llamada de descubrimiento',
-    'How does the 24/7 AI receptionist work?',
+    '📅 Agendar cita con Jasmel',
   ]
 
   const callQuickPrompts =
     callLang === 'es'
       ? [
+          { label: '🏥 Facturación Médica & Reclamos (MBMB)', prompt: '¿Cómo me ayudan con facturación médica y reclamos denegados en Miami?' },
           { label: '⚡ ¿Qué incluye la Auditoría de $99?', prompt: '¿Qué incluye la auditoría de 99 dólares?' },
           { label: '📞 ¿Cómo atiendes llamadas 24/7?', prompt: '¿Cómo funciona la recepcionista telefónica?' },
           { label: '🎓 Entrenamiento para mi equipo', prompt: '¿Ofrecen entrenamiento de IA para mi personal?' },
           { label: '📅 Quiero agendar una cita', prompt: 'Quiero agendar una cita con Jasmel' },
         ]
       : [
+          { label: '🏥 Medical Billing & Claims (MBMB)', prompt: 'Tell me about Medical Billing Miami and claim denial recovery' },
           { label: '⚡ What is the $99 Workflow Audit?', prompt: 'What is included in the $99 workflow audit?' },
           { label: '📞 How does 24/7 phone answering work?', prompt: 'How does the 24/7 phone receptionist work?' },
           { label: '🎓 Corporate Staff Training', prompt: 'Do you offer corporate staff AI training?' },
@@ -384,8 +425,84 @@ export default function AIAssistantWidget() {
     <>
       {/* Floating AI Receptionist Controls */}
       <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+        {/* Interactive Attention Grabber Card */}
         <AnimatePresence>
-          {!isOpen && (
+          {showAttentionGrabber && !isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 15, scale: 0.92 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+              className="absolute bottom-[84px] right-0 w-[310px] sm:w-[350px] p-4 rounded-2xl bg-dark-50/98 backdrop-blur-2xl border border-luxury-gold/50 text-white shadow-2xl shadow-black/90 overflow-hidden"
+            >
+              {/* Top ambient luxury accent line */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-400 via-luxury-gold to-accent-500" />
+
+              {/* Header: Sofía Avatar, Status, Close */}
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-primary-600 flex items-center justify-center text-white font-extrabold text-xs shadow-md">
+                      S
+                    </div>
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-dark animate-pulse" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-bold text-white">Sofía — Asistente IA</span>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                        En Vivo
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-luxury-silver">AI Dynamics Pro & Medical Billing</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={dismissAttentionGrabber}
+                  className="w-6 h-6 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center text-white/50 hover:text-white transition-all"
+                  aria-label="Cerrar notificación"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Friendly message */}
+              <p className="text-xs text-luxury-champagne leading-relaxed mb-3">
+                👋 <strong>¡Hola!</strong> ¿Tienes preguntas sobre automatización con IA ($99 Audit) o facturación médica con <strong>Medical Billing Miami</strong>? ¡Pruébame en vivo con voz humana real!
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    dismissAttentionGrabber()
+                    startLiveCall('es')
+                  }}
+                  className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.02]"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 animate-bounce" />
+                  <span>Hablar en Vivo</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    dismissAttentionGrabber()
+                    setIsOpen(true)
+                    setActiveTab('chat')
+                  }}
+                  className="py-2 px-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold text-xs flex items-center gap-1.5 transition-all hover:scale-[1.02]"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-accent-400" />
+                  <span>Chatear</span>
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {!isOpen && !showAttentionGrabber && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
