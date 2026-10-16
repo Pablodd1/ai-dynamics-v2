@@ -32,7 +32,7 @@ export default function AIAssistantWidget() {
   const [callStatus, setCallStatus] = useState<'idle' | 'ringing' | 'speaking' | 'listening' | 'thinking'>('idle')
   const [callSeconds, setCallSeconds] = useState(0)
   const [lastCallTranscript, setLastCallTranscript] = useState(
-    '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami. Te atiende Sofía, tu recepcionista ejecutiva con inteligencia artificial.'
+    '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami. Te atiende JAss, tu asistente ejecutivo con inteligencia artificial.'
   )
   const [showAttentionGrabber, setShowAttentionGrabber] = useState(false)
   const [grabberDismissed, setGrabberDismissed] = useState(false)
@@ -40,7 +40,7 @@ export default function AIAssistantWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'ai',
-      text: '👋 ¡Hola! Soy Sofía, la Recepcionista Ejecutiva de AI Dynamic Pro en Miami. Te oriento sobre consultoría de IA ($99 Audit), desarrollo de aplicaciones a medida y entrenamiento para tu equipo. ¿En qué te puedo colaborar hoy?',
+      text: '👋 ¡Hola! Soy JAss, el Asistente Ejecutivo de AI Dynamic Pro en Miami. Te oriento sobre consultoría de IA ($99 Audit), desarrollo de aplicaciones a medida y entrenamiento para tu equipo. ¿En qué te puedo colaborar hoy?',
       audioUrl: '/audio/sofia_call_answer_es.mp3',
     },
   ])
@@ -62,7 +62,7 @@ export default function AIAssistantWidget() {
   // Attention grabber trigger: 2.8s after landing or on scroll
   useEffect(() => {
     try {
-      if (sessionStorage.getItem('sofia_grabber_dismissed') === 'true') {
+      if (sessionStorage.getItem('jass_grabber_dismissed') === 'true') {
         setGrabberDismissed(true)
         return
       }
@@ -92,7 +92,7 @@ export default function AIAssistantWidget() {
     setShowAttentionGrabber(false)
     setGrabberDismissed(true)
     try {
-      sessionStorage.setItem('sofia_grabber_dismissed', 'true')
+      sessionStorage.setItem('jass_grabber_dismissed', 'true')
     } catch {}
   }, [])
 
@@ -250,7 +250,7 @@ export default function AIAssistantWidget() {
     setIsListening(false)
   }, [])
 
-  // Play realistic US telephone ringback tone (440Hz + 480Hz) for 0.9s before Sofia picks up
+  // Play realistic US telephone ringback tone (440Hz + 480Hz) for 0.9s before JAss picks up
   const playPhoneRing = (): Promise<void> => {
     return new Promise((resolve) => {
       try {
@@ -288,7 +288,7 @@ export default function AIAssistantWidget() {
     })
   }
 
-  // Start interactive Web Voice Call with Sofia
+  // Start interactive Web Voice Call with JAss
   const startLiveCall = async (selectedLang?: 'es' | 'en') => {
     const langToUse = selectedLang || callLang
     if (selectedLang) setCallLang(selectedLang)
@@ -307,8 +307,8 @@ export default function AIAssistantWidget() {
 
     const greetingText =
       langToUse === 'es'
-        ? '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami, te atiende Sofía, tu recepcionista ejecutiva con inteligencia artificial. Podemos hablar en español o en inglés. Cuéntame, ¿de qué trata tu negocio y cómo te puedo ayudar hoy?'
-        : 'Hello! Thank you for calling AI Dynamic Pro in Miami. This is Sofia, your AI executive receptionist. We can speak in English or Spanish. Tell me a bit about your business—how can I help you today?'
+        ? '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami, te atiende JAss, tu asistente ejecutivo con inteligencia artificial. Podemos hablar en español o en inglés. Cuéntame, ¿de qué trata tu negocio y cómo te puedo ayudar hoy?'
+        : 'Hello! Thank you for calling AI Dynamic Pro in Miami. This is JAss, your AI executive assistant. We can speak in English or Spanish. Tell me a bit about your business—how can I help you today?'
 
     const greetingAudio =
       langToUse === 'es' ? '/audio/sofia_call_answer_es.mp3' : '/audio/sofia_call_answer_en.mp3'
@@ -436,18 +436,18 @@ export default function AIAssistantWidget() {
               {/* Top ambient luxury accent line */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-400 via-luxury-gold to-accent-500" />
 
-              {/* Header: Sofía Avatar, Status, Close */}
+              {/* Header: JAss Avatar, Status, Close */}
               <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="relative">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-primary-600 flex items-center justify-center text-white font-extrabold text-xs shadow-md">
-                      S
+                      J
                     </div>
                     <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-dark animate-pulse" />
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-white">Sofía — Asistente IA</span>
+                      <span className="text-xs font-bold text-white">JAss — Asistente IA</span>
                       <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                         En Vivo
                       </span>
@@ -467,7 +467,7 @@ export default function AIAssistantWidget() {
 
               {/* Friendly message */}
               <p className="text-xs text-luxury-champagne leading-relaxed mb-3">
-                👋 <strong>¡Hola!</strong> ¿Tienes preguntas sobre consultoría de IA ($99 Audit), desarrollo de aplicaciones a medida o entrenamiento para tu personal? ¡Pruébame en vivo con voz humana o por chat!
+                👋 <strong>¡Hola!</strong> Soy JAss. ¿Tienes preguntas sobre consultoría de IA ($99 Audit), desarrollo de aplicaciones a medida o entrenamiento para tu personal? ¡Pruébame en vivo con voz humana o por chat!
               </p>
 
               {/* Action Buttons */}
@@ -513,7 +513,7 @@ export default function AIAssistantWidget() {
               </div>
               <div className="text-left pr-1">
                 <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                  Speak with Sofía (AI Receptionist)
+                  Speak with JAss (AI Receptionist)
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 </div>
                 <div className="text-[11px] text-luxury-champagne">
@@ -537,7 +537,7 @@ export default function AIAssistantWidget() {
           className="w-[72px] h-[72px] rounded-full bg-gradient-to-br from-primary-600 via-indigo-600 to-accent-500 text-white shadow-xl shadow-primary-600/40 flex items-center justify-center relative overflow-hidden group"
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
-          aria-label="Open Sofía AI Receptionist (Voice & Chat)"
+          aria-label="Open JAss AI Receptionist (Voice & Chat)"
         >
           <div className="relative flex items-center justify-center">
             <MessageSquare className="w-6 h-6 transition-transform group-hover:scale-110" />
@@ -567,7 +567,7 @@ export default function AIAssistantWidget() {
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h4 className="font-bold text-white text-sm">Sofía — AI Receptionist</h4>
+                    <h4 className="font-bold text-white text-sm">JAss — AI Receptionist</h4>
                     <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-luxury-gold/20 text-luxury-gold border border-luxury-gold/30">
                       Human Voice
                     </span>
@@ -704,13 +704,13 @@ export default function AIAssistantWidget() {
                     )}
                   </div>
 
-                  <h3 className="text-base font-bold text-white">Sofía — Recepcionista Ejecutiva IA</h3>
+                  <h3 className="text-base font-bold text-white">JAss — Asistente Ejecutivo IA</h3>
                   <p className="text-xs text-emerald-400 font-medium mt-0.5">
-                    {callStatus === 'ringing' && (callLang === 'es' ? 'Llamando a Sofía...' : 'Ringing Sofia...')}
-                    {callStatus === 'speaking' && (callLang === 'es' ? '🔊 Sofía está hablando (Voz Humana)...' : '🔊 Sofia is speaking (Human Voice)...')}
+                    {callStatus === 'ringing' && (callLang === 'es' ? 'Llamando a JAss...' : 'Ringing JAss...')}
+                    {callStatus === 'speaking' && (callLang === 'es' ? '🔊 JAss está hablando (Voz Humana)...' : '🔊 JAss is speaking (Human Voice)...')}
                     {callStatus === 'listening' && (callLang === 'es' ? '🎙️ Escuchando tu voz... Habla ahora' : '🎙️ Listening to you... Speak now')}
                     {callStatus === 'thinking' && (callLang === 'es' ? 'Procesando respuesta...' : 'Thinking...')}
-                    {callStatus === 'idle' && (callLang === 'es' ? 'Presiona Iniciar Llamada para hablar en vivo' : 'Tap Start Call to speak live with Sofia')}
+                    {callStatus === 'idle' && (callLang === 'es' ? 'Presiona Iniciar Llamada para hablar en vivo' : 'Tap Start Call to speak live with JAss')}
                   </p>
 
                   {/* Live Subtitle Box */}
@@ -719,10 +719,10 @@ export default function AIAssistantWidget() {
                   </div>
                 </div>
 
-                {/* Quick Voice Topics (Tap to ask Sofia during call) */}
+                {/* Quick Voice Topics (Tap to ask JAss during call) */}
                 <div className="space-y-1.5 mb-3">
                   <div className="text-[10px] uppercase tracking-wider text-luxury-silver/70 font-semibold text-center">
-                    {callLang === 'es' ? 'O toca una pregunta para escuchar a Sofía:' : 'Or tap a topic to hear Sofia answer:'}
+                    {callLang === 'es' ? 'O toca una pregunta para escuchar a JAss:' : 'Or tap a topic to hear JAss answer:'}
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
                     {callQuickPrompts.map((item) => (
@@ -787,7 +787,7 @@ export default function AIAssistantWidget() {
                 <div className="px-4 py-2 bg-emerald-950/30 border-b border-emerald-500/20 flex items-center justify-between">
                   <span className="text-[11px] text-emerald-300 font-medium flex items-center gap-1.5">
                     <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
-                    Voz humana activa • Escucha a Sofía en vivo
+                    Voz humana activa • Escucha a JAss en vivo
                   </span>
                   <button
                     onClick={() => startLiveCall('es')}
@@ -824,7 +824,7 @@ export default function AIAssistantWidget() {
                               className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
                             >
                               <Volume2 className="w-3.5 h-3.5" />
-                              🔊 Escuchar voz de Sofía
+                              🔊 Escuchar voz de JAss
                             </button>
                             <a
                               href="/booking"
@@ -842,7 +842,7 @@ export default function AIAssistantWidget() {
                       <div className="bg-white/5 border border-white/5 rounded-2xl rounded-bl-md p-3">
                         <div className="flex items-center gap-2">
                           <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
-                          <span className="text-xs text-luxury-silver">Sofía está respondiendo...</span>
+                          <span className="text-xs text-luxury-silver">JAss está respondiendo...</span>
                         </div>
                       </div>
                     </div>
@@ -897,7 +897,7 @@ export default function AIAssistantWidget() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                    placeholder={isListening ? 'Escuchando tu voz...' : 'Escribe o habla con Sofía...'}
+                    placeholder={isListening ? 'Escuchando tu voz...' : 'Escribe o habla con JAss...'}
                     className="flex-1 px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-primary-500/50 transition-all text-sm"
                   />
                   <button

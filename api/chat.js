@@ -1,8 +1,8 @@
 // Serverless API Endpoint: /api/chat
-// Powers Sofia — AI Dynamic Pro's 24/7 Bilingual AI Front Desk Receptionist (Text & Live Internet Voice Calls)
+// Powers JAss — AI Dynamic Pro's 24/7 Bilingual AI Front Desk Assistant (Text & Live Internet Voice Calls)
 // Focus: AI Consulting, Custom App Development Solutions, and Corporate Staff Training
 
-const SYSTEM_PROMPT = `You are Sofía, the 24/7 Bilingual AI Front Desk Receptionist for AI Dynamic Pro (AIDynamic.pro) in Miami, FL, founded and led by Jasmel Acosta (Founder & Applied AI Systems Architect).
+const SYSTEM_PROMPT = `You are JAss, the 24/7 Bilingual AI Front Desk Assistant and Executive Receptionist for AI Dynamic Pro (AIDynamic.pro) in Miami, FL, founded and led by Jasmel Acosta (Founder & Applied AI Systems Architect).
 Your role: Be welcoming, highly professional, friendly, and helpful to potential clients visiting the website.
 Tone: Concise (2 to 3 sentences maximum), natural, and executive so your answers sound great whether read in chat or spoken aloud on an internet voice call.
 Bilingual: Fluent English and warm, natural Venezuelan / Latin American business Spanish ("español latino cálido, ejecutivo y profesional").
@@ -161,12 +161,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(hola|epale|épale|buenas|pana|chamo|saludos|hello|hi|hey|good morning|good afternoon)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '👋 ¡Hola, buenas! Gracias por visitar AI Dynamic Pro en Miami. Te atiende Sofía, tu recepcionista ejecutiva con IA. Te puedo orientar sobre consultoría de IA, desarrollo de apps o entrenamiento de personal. ¿Cómo te puedo ayudar hoy?',
+          text: '👋 ¡Hola, buenas! Gracias por visitar AI Dynamic Pro en Miami. Te atiende JAss, tu asistente ejecutivo con IA. Te puedo orientar sobre consultoría de IA, desarrollo de apps o entrenamiento de personal. ¿Cómo te puedo ayudar hoy?',
           audioUrl: '/audio/sofia_call_answer_es.mp3',
           lang: 'es',
         }
       : {
-          text: '👋 Hello! Thank you for visiting AI Dynamic Pro in Miami. This is Sofia, your AI executive front desk receptionist. I can assist you with AI consulting, custom app development, or corporate staff training. How can I help you today?',
+          text: '👋 Hello! Thank you for visiting AI Dynamic Pro in Miami. This is JAss, your AI executive front desk assistant. I can assist you with AI consulting, custom app development, or corporate staff training. How can I help you today?',
           audioUrl: '/audio/sofia_call_answer_en.mp3',
           lang: 'en',
         };
@@ -206,7 +206,7 @@ async function notifyFounderIfHandoff(prompt, history) {
           'api-key': BREVO_API_KEY,
         },
         body: JSON.stringify({
-          sender: { name: 'Sofía Front Desk Receptionist', email: 'receptionist@aidynamic.pro' },
+          sender: { name: 'JAss AI Assistant', email: 'receptionist@aidynamic.pro' },
           to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
           subject: `🔔 [Web Chat Lead / Staff Request] Visitor Inquiry on AIDynamic.pro`,
           htmlContent: `
@@ -291,7 +291,7 @@ export default async function handler(req, res) {
       try {
         const contents = [
           { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-          { role: 'model', parts: [{ text: 'Understood. I am Sofía, the bilingual AI Front Desk Receptionist for AI Dynamic Pro.' }] },
+          { role: 'model', parts: [{ text: 'Understood. I am JAss, the bilingual AI Front Desk Assistant for AI Dynamic Pro.' }] },
           ...history,
           { role: 'user', parts: [{ text: prompt }] },
         ];
@@ -348,7 +348,7 @@ export default async function handler(req, res) {
       text: matched.text,
       audioUrl: matched.audioUrl,
       lang: matched.lang,
-      provider: 'sofia-neural-engine',
+      provider: 'jass-neural-engine',
     });
   } catch (error) {
     console.error('[Chat API] Error:', error);

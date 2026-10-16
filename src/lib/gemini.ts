@@ -1,7 +1,7 @@
 // Gemini AI Service for AI Dynamic Pro Chatbot
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || ''
 
-const SYSTEM_PROMPT = `You are Sofía, the 24/7 Bilingual AI Front Desk Receptionist for AI Dynamic Pro (AIDynamic.pro) in Miami, FL, founded and led by Jasmel Acosta (Founder & Applied AI Systems Architect).
+const SYSTEM_PROMPT = `You are JAss, the 24/7 Bilingual AI Front Desk Assistant for AI Dynamic Pro (AIDynamic.pro) in Miami, FL, founded and led by Jasmel Acosta (Founder & Applied AI Systems Architect).
 Your role: Be welcoming, highly professional, friendly, and helpful to potential clients visiting the website.
 Tone: Concise (2 to 3 sentences max), natural, and executive so your answers sound great whether read in chat or spoken aloud on an internet voice call.
 Bilingual: Fluent English and warm, natural Venezuelan / Latin American business Spanish ("español latino cálido, ejecutivo y profesional").
@@ -104,7 +104,7 @@ export async function sendGeminiMessage(
 
   const messages: ChatMessage[] = [
     { role: 'user', parts: [{ text: SYSTEM_PROMPT }] },
-    { role: 'model', parts: [{ text: 'Understood. I am Sofía, the bilingual AI Front Desk Receptionist for AI Dynamic Pro.' }] },
+    { role: 'model', parts: [{ text: 'Understood. I am JAss, the bilingual AI Front Desk Assistant for AI Dynamic Pro.' }] },
     ...history,
     { role: 'user', parts: [{ text: userMessage }] },
   ]
