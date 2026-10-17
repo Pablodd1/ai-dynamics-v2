@@ -238,55 +238,136 @@ export default async function handler(req, res) {
 
   try {
     const { history = [], prompt = '' } = req.body || {};
+    const deepseekKey = process.env.DEEPSEEK_API_KEY || process.env.VITE_DEEPSEEK_API_KEY || '';
+    const xaiKey = process.env.XAI_API_KEY || process.env.GROK_API_KEY || process.env.VITE_XAI_API_KEY || '';
     const geminiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
     const openaiKey = process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || '';
 
     // Trigger asynchronous notification if user leaves details or requests staff
     notifyFounderIfHandoff(prompt, history).catch(() => {});
 
-    // 1. OpenAI GPT-4o-mini (Primary conversational intelligence)
+    const oaiMessages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...history.map(h => ({
+        role: h.role === 'model' ? 'assistant' : 'user',
+        content: h.parts?.[0]?.text || '',
+      })),
+      { role: 'user', content: prompt },
+    ];
+
+    // 1. xAI Grok Fast Brain (Priority 1 — grok-3-mini-fast / grok-3-mini)
+    if (xaiKey && prompt !== 'test') {
+      const grokModels = [process.env.GROK_MODEL, 'grok-3-mini-fast', 'grok-3-mini', 'grok-3-fast'].filter(Boolean);
+      for (const grokModel of grokModels) {
+        try {
+          const grokRes = await fetch('https://api.x.ai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${xaiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: grokModel,
+              messages: oaiMessages,
+              max_tokens: 190,
+              temperature: 0.5,
+            }),
+          });
+          if (grokRes.ok) {
+            const data = await grokRes.json();
+            const text = (data.choices?.[0]?.message?.content || '')
+              .replace(/<think>[\s\S]*?<\/think>/gi, '')
+              .trim();
+            if (text) {
+              const isEs = /[áéíóúñ¿¡]/i.test(text);
+              return res.status(200).json({
+                text,
+                audioUrl: `/api/tts?lang=${isEs ? 'es' : 'en'}&text=${encodeURIComponent(text)}`,
+                lang: isEs ? 'es' : 'en',
+                provider: grokModel,
+              });
+            }
+          }
+        } catch (e) {
+          console.warn(`[Chat API] Grok (${grokModel}) call:`, e.message);
+        }
+      }
+    }
+
+    // 2. OpenAI (Priority 2 — gpt-5.4-mini / gpt-4o-mini)
     if (openaiKey && prompt !== 'test') {
+      const openAiModels = [process.env.OPENAI_MODEL, 'gpt-5.4-mini', 'gpt-4o-mini'].filter(Boolean);
+      for (const modelName of openAiModels) {
+        try {
+          const isGpt5 = modelName.startsWith('gpt-5');
+          const oaRes = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${openaiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: modelName,
+              messages: oaiMessages,
+              ...(isGpt5 ? { max_completion_tokens: 220 } : { max_tokens: 190, temperature: 0.65 }),
+            }),
+          });
+          if (oaRes.ok) {
+            const data = await oaRes.json();
+            const text = data.choices?.[0]?.message?.content?.trim();
+            if (text) {
+              const isEs = /[áéíóúñ¿¡]/i.test(text);
+              return res.status(200).json({
+                text,
+                audioUrl: `/api/tts?lang=${isEs ? 'es' : 'en'}&text=${encodeURIComponent(text)}`,
+                lang: isEs ? 'es' : 'en',
+                provider: modelName,
+              });
+            }
+          }
+        } catch (e) {
+          console.warn(`[Chat API] OpenAI (${modelName}) call:`, e.message);
+        }
+      }
+    }
+
+    // 3. DeepSeek V3.2 Fast (Failover if DEEPSEEK_API_KEY is active)
+    if (deepseekKey && prompt !== 'test') {
       try {
-        const modelName = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-        const oaRes = await fetch('https://api.openai.com/v1/chat/completions', {
+        const dsRes = await fetch('https://api.deepseek.com/v1/chat/completions', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${openaiKey}`,
+            'Authorization': `Bearer ${deepseekKey}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            model: modelName,
-            messages: [
-              { role: 'system', content: SYSTEM_PROMPT },
-              ...history.map(h => ({
-                role: h.role === 'model' ? 'assistant' : 'user',
-                content: h.parts?.[0]?.text || '',
-              })),
-              { role: 'user', content: prompt },
-            ],
+            model: 'deepseek-chat',
+            messages: oaiMessages,
             max_tokens: 190,
-            temperature: 0.65,
+            temperature: 0.5,
           }),
         });
-        if (oaRes.ok) {
-          const data = await oaRes.json();
-          const text = data.choices?.[0]?.message?.content?.trim();
+        if (dsRes.ok) {
+          const data = await dsRes.json();
+          const text = (data.choices?.[0]?.message?.content || '')
+            .replace(/<think>[\s\S]*?<\/think>/gi, '')
+            .trim();
           if (text) {
             const isEs = /[áéíóúñ¿¡]/i.test(text);
             return res.status(200).json({
               text,
               audioUrl: `/api/tts?lang=${isEs ? 'es' : 'en'}&text=${encodeURIComponent(text)}`,
               lang: isEs ? 'es' : 'en',
-              provider: modelName,
+              provider: 'deepseek-chat',
             });
           }
         }
       } catch (e) {
-        console.warn('[Chat API] OpenAI call:', e.message);
+        console.warn('[Chat API] DeepSeek call:', e.message);
       }
     }
 
-    // 2. Google Gemini 2.0 Flash (Fast fallback)
+    // 4. Google Gemini 2.0 Flash (Fast fallback)
     if (geminiKey && prompt !== 'test') {
       try {
         const contents = [

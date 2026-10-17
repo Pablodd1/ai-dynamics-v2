@@ -1,8 +1,9 @@
 // Serverless API Endpoint: /api/tts
 // Streams natural human voice audio (MP3) for any dynamic text in Spanish or English
-// Priority 1: ElevenLabs Multilingual v2 (if ELEVENLABS_API_KEY is configured)
+// Priority 1: xAI Grok Voice 3.0 Standalone TTS (if XAI_API_KEY / GROK_API_KEY is configured — $15/1M chars, ~90ms TTFA)
 // Priority 2: OpenAI TTS-1 HD Nova human voice (if OPENAI_API_KEY is configured)
-// Priority 3: Cloud TTS MP3 Stream (zero API key required, works on all mobile/desktop browsers)
+// Priority 3: ElevenLabs Multilingual v2 (if ELEVENLABS_API_KEY is configured)
+// Priority 4: Cloud TTS MP3 Stream (zero API key required, works on all mobile/desktop browsers)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -36,7 +37,36 @@ export default async function handler(req, res) {
       /[áéíóúñ¿¡]/i.test(cleanText) ||
       /\b(hola|buenas|gracias|empresa|negocio|cita|español|llamada|auditoría|dólares)\b/i.test(cleanText);
 
-    // 1. OpenAI HD Human Voice 'nova' (tts-1) - Priority 1
+    // 1. xAI Grok Voice 3.0 Standalone TTS ('ara') - Priority 1
+    const xaiKey = process.env.XAI_API_KEY || process.env.GROK_API_KEY || process.env.VITE_XAI_API_KEY || '';
+    if (xaiKey) {
+      try {
+        const grokVoice = process.env.GROK_VOICE || 'ara';
+        const grokRes = await fetch('https://api.x.ai/v1/tts', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${xaiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: cleanText,
+            voice_id: grokVoice,
+            language: isSpanish ? 'es' : 'en',
+          }),
+        });
+        if (grokRes.ok) {
+          const arrayBuffer = await grokRes.arrayBuffer();
+          res.setHeader('Content-Type', 'audio/mpeg');
+          res.setHeader('X-TTS-Provider', 'grok-voice-3.0');
+          res.setHeader('Cache-Control', 'public, max-age=86400');
+          return res.status(200).send(Buffer.from(arrayBuffer));
+        }
+      } catch (e) {
+        console.warn('[TTS API] Grok Voice 3.0 fallback:', e.message);
+      }
+    }
+
+    // 2. OpenAI HD Human Voice 'nova' (tts-1) - Priority 2
     const openaiKey = process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || '';
     if (openaiKey) {
       try {
