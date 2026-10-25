@@ -70,7 +70,7 @@ export default function Admin() {
   const [campaigns, setCampaigns] = useState<CampaignMeta[]>([])
   const [gbpPosts, setGbpPosts] = useState<GbpPost[]>([])
   const [brevoConnected, setBrevoConnected] = useState(true)
-  const [selectedCampaignId, setSelectedCampaignId] = useState('audit_99')
+  const [selectedCampaignId, setSelectedCampaignId] = useState('email_1_voice_jass')
   const [dispatchMode, setDispatchMode] = useState<'test' | 'supabase_leads' | 'custom'>('test')
   const [dispatchStatusFilter, setDispatchStatusFilter] = useState<LeadStatus | 'all'>('all')
   const [customEmailsInput, setCustomEmailsInput] = useState('')
@@ -209,7 +209,7 @@ export default function Admin() {
     }
   }
 
-  const handleQuickSendToLead = async (lead: Lead, campaignId = 'audit_99') => {
+  const handleQuickSendToLead = async (lead: Lead, campaignId = 'email_1_voice_jass') => {
     try {
       const res = await fetch('/api/email-campaign', {
         method: 'POST',
@@ -515,12 +515,12 @@ export default function Admin() {
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
                               <button
-                                onClick={() => handleQuickSendToLead(lead, 'audit_99')}
+                                onClick={() => handleQuickSendToLead(lead, 'email_1_voice_jass')}
                                 className="px-2.5 py-1.5 rounded-lg bg-accent/15 hover:bg-accent/25 text-accent text-xs font-semibold flex items-center gap-1 transition-all"
-                                title="Send $99 Audit Email via Brevo"
+                                title="Send Email #1 via Brevo"
                               >
                                 <Send className="w-3 h-3" />
-                                Send $99 Audit
+                                Send Email #1
                               </button>
                               <span className="text-xs text-luxury-silver flex items-center gap-1">
                                 <Calendar className="w-3 h-3" />

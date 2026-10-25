@@ -12,14 +12,14 @@ const Pricing = () => {
       description: 'A Workflow Audit and Automation Opportunity Map. Know exactly what to automate first for the highest ROI.',
       icon: Search,
       accentColor: 'green',
-      cta: 'Book Audit',
-      ctaAction: 'https://calendly.com/aidynamicpro/discovery',
+      cta: 'Claim $99 Audit',
+      ctaAction: '/booking',
       features: [
-        'Full business process review',
-        'Automation opportunity map',
-        'ROI estimate for each workflow',
-        'Prioritized implementation plan',
-        'PDF report delivered in 1 week',
+        'Full business process & bottleneck review',
+        'Custom app & AI automation opportunity map',
+        'Hard ROI & payroll savings estimate',
+        '100% credited toward any custom build or training',
+        '$0 Risk Guarantee: Free if we don’t find 15+ hrs/mo savings',
       ],
     },
     {
@@ -27,31 +27,31 @@ const Pricing = () => {
       price: '$1,000',
       priceNote: 'one-time',
       duration: '2-3 weeks',
-      description: 'One complete, end-to-end AI automation. Fully integrated into your current tools with 30 days of support.',
+      description: 'One complete, end-to-end AI automation or custom voice/chat receptionist integrated into your tools.',
       icon: Zap,
       accentColor: 'blue',
       cta: 'Start Your Build',
-      ctaAction: 'https://calendly.com/aidynamicpro/discovery',
+      ctaAction: '/booking',
       features: [
-        'End-to-end workflow design',
-        'AI agent development',
-        'Integration with your tools',
+        'End-to-end workflow or custom app design',
+        '24/7 bilingual AI voice/chat agent setup',
+        'Integration with your CRM & calendar',
         'Testing & quality assurance',
         '2-3 week delivery',
         '30 days post-launch support',
-        'Team training session',
+        'Hands-on staff training session',
       ],
     },
     {
-      name: 'Full AI Transformation',
+      name: 'Full AI Transformation & Training',
       price: '$5,000',
       priceNote: '- $15,000',
       duration: '1-3 months',
-      description: 'Comprehensive automation across multiple workflows. Your dedicated AI partner for ongoing optimization and scaling.',
+      description: 'Comprehensive custom app architecture, multi-workflow automation, and corporate staff AI training.',
       icon: Building2,
       accentColor: 'purple',
       cta: 'Book Consultation',
-      ctaAction: 'https://calendly.com/aidynamicpro/discovery',
+      ctaAction: '/booking',
       features: [
         'Everything in Single Build, plus:',
         'Multiple workflow automation',
@@ -161,13 +161,15 @@ const Pricing = () => {
                     {plan.name === 'Strategy & Audit' ? (
                       <div>
                         <div className="flex items-baseline gap-2.5">
-                          <span className="text-2xl text-luxury-silver/50 line-through font-semibold">$99</span>
-                          <span className="text-5xl font-bold text-luxury-gold">$0</span>
+                          <span className="text-2xl text-luxury-silver/50 line-through font-semibold">$500</span>
+                          <span className="text-5xl font-bold text-luxury-gold">$99</span>
                           <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30 uppercase">
-                            Free
+                            Audit Special
                           </span>
                         </div>
-                        <p className="text-xs text-emerald-400 mt-2 font-medium">Limited time: Comprehensive 1-on-1 audit at $0</p>
+                        <p className="text-xs text-emerald-400 mt-2 font-medium">
+                          Zero-Risk Guarantee: Pay $0 unless we uncover 15+ hrs/mo in savings
+                        </p>
                       </div>
                     ) : plan.name === 'Single High-Impact Workflow' ? (
                       <div>
@@ -228,13 +230,11 @@ const Pricing = () => {
             Not sure which package fits? Every engagement starts with a free call.
           </p>
           <a
-            href="https://calendly.com/aidynamicpro/discovery"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/booking"
             onClick={() => AnalyticsEvents.clickBooking('discovery_consultation', 'pricing_bottom_cta')}
             className="btn-primary inline-flex items-center gap-2"
           >
-            Book Free Consultation
+            Claim Your $99 Workflow Audit
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>
