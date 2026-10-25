@@ -720,6 +720,49 @@ export default function Admin() {
 
         {activeTab === 'google_hub' && (
           <div className="space-y-6">
+            {/* Official Google Business Video Verification Ownership Banner */}
+            <div className="bg-gradient-to-r from-slate-900 via-blue-950/60 to-slate-900 border-2 border-luxury-gold/60 rounded-2xl p-6 shadow-xl">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4 mb-4">
+                <div>
+                  <span className="inline-block px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-extrabold uppercase tracking-wider mb-2">
+                    ✓ Verified Backend Management Console — Google Business Profile Proof
+                  </span>
+                  <h2 className="text-2xl font-extrabold text-white tracking-tight">
+                    AI DYNAMIC PRO — OFFICIAL BUSINESS OWNERSHIP CONSOLE
+                  </h2>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-luxury-silver uppercase">Direct Business Phone</div>
+                  <div className="text-xl font-black text-luxury-gold">+1 (786) 643-2099</div>
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <div className="text-xs text-luxury-silver">Legal / Brand Name</div>
+                  <div className="text-base font-bold text-white mt-0.5">AI Dynamic Pro</div>
+                  <div className="text-xs text-emerald-400 mt-0.5">https://www.aidynamic.pro</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <div className="text-xs text-luxury-silver">Owner & Principal</div>
+                  <div className="text-base font-bold text-white mt-0.5">Jasmel Acosta</div>
+                  <div className="text-xs text-luxury-silver mt-0.5">jasmelacosta@gmail.com</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <div className="text-xs text-luxury-silver">Service Area & HQ</div>
+                  <div className="text-base font-bold text-white mt-0.5">Miami / South Florida</div>
+                  <div className="text-xs text-luxury-silver mt-0.5">Brickell • Coral Gables • Doral</div>
+                </div>
+                <div className="p-3.5 rounded-xl bg-black/40 border border-white/10">
+                  <div className="text-xs text-luxury-silver">Google Verification & GA4</div>
+                  <div className="text-sm font-mono font-bold text-sky-400 mt-0.5">{GA4_MEASUREMENT_ID}</div>
+                  <div className="text-[11px] font-mono text-luxury-silver truncate mt-0.5">
+                    GSC: 9oINl9zaT59Y9XeRtbjXTn8B6GeSEWVR4ltKCkF-xvQ
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Top Status Cards */}
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-dark-50/50 border border-white/10 rounded-2xl p-6">
