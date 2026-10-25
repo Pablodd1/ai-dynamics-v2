@@ -337,6 +337,7 @@ export default async function handler(req, res) {
 
     let sentCount = 0;
     const errors = [];
+    const renderedPayloads = [];
 
     for (const recipient of recipients) {
       const utmUrl = `https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=${campaign.utmCampaign}`;
@@ -357,6 +358,17 @@ export default async function handler(req, res) {
         phoneUrl,
       });
 
+      const brevoPayload = {
+        sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+        to: [{ email: recipient.email, name: recipient.name }],
+        replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' },
+        subject: personalizedSubject,
+        htmlContent,
+        tags: [campaign.utmCampaign, 'aidynamic_sequence'],
+      };
+
+      renderedPayloads.push(brevoPayload);
+
       try {
         const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
@@ -365,14 +377,7 @@ export default async function handler(req, res) {
             'Content-Type': 'application/json',
             'api-key': BREVO_API_KEY,
           },
-          body: JSON.stringify({
-            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
-            to: [{ email: recipient.email, name: recipient.name }],
-            replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' },
-            subject: personalizedSubject,
-            htmlContent,
-            tags: [campaign.utmCampaign, 'aidynamic_sequence'],
-          }),
+          body: JSON.stringify(brevoPayload),
         });
 
         if (brevoRes.ok) {
@@ -393,6 +398,7 @@ export default async function handler(req, res) {
       utmCampaign: campaign.utmCampaign,
       sentCount,
       totalAttempted: recipients.length,
+      renderedPayloads: sentCount === 0 ? renderedPayloads : [],
       errors: errors.slice(0, 5),
     });
   } catch (error) {

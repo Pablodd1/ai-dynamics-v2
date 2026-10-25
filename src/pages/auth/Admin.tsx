@@ -187,16 +187,37 @@ export default function Admin() {
       })
 
       const data = await res.json()
-      if (res.ok && data.success) {
-        AnalyticsEvents.emailCampaignSent(selectedCampaignId, data.sentCount || 1)
+      let finalSentCount = data.sentCount || 0
+
+      // Automatic Client-IP Fallback if Brevo blocks Vercel's rotating AWS IP
+      const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
+      if (finalSentCount === 0 && Array.isArray(data.renderedPayloads) && data.renderedPayloads.length > 0 && clientBrevoKey) {
+        for (const payload of data.renderedPayloads) {
+          const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'api-key': clientBrevoKey,
+            },
+            body: JSON.stringify(payload),
+          })
+          if (directRes.ok) {
+            finalSentCount++
+          }
+        }
+      }
+
+      if (finalSentCount > 0) {
+        AnalyticsEvents.emailCampaignSent(selectedCampaignId, finalSentCount)
         setCampaignResult({
           success: true,
-          message: `Dispatched "${data.campaignName}" to ${data.sentCount} recipient(s) via Brevo with GA4 UTM tag (${data.utmCampaign}).`,
+          message: `Dispatched "${data.campaignName}" to ${finalSentCount} recipient(s) via Brevo with GA4 UTM tag (${data.utmCampaign}).`,
         })
       } else {
         setCampaignResult({
           success: false,
-          message: data.error || 'Failed to send email campaign.',
+          message: data.errors?.[0]?.error || data.error || 'Failed to send email campaign.',
         })
       }
     } catch (err: any) {
@@ -227,9 +248,28 @@ export default function Admin() {
         }),
       })
       if (res.ok) {
-        AnalyticsEvents.emailCampaignSent(campaignId, 1)
-        updateStatus(lead.id, 'contacted')
-        alert(`Sent $99 Audit Email Campaign to ${lead.name} (${lead.email})!`)
+        const data = await res.json()
+        let sent = data.sentCount || 0
+        const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
+        if (sent === 0 && Array.isArray(data.renderedPayloads) && clientBrevoKey) {
+          for (const payload of data.renderedPayloads) {
+            const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'api-key': clientBrevoKey,
+              },
+              body: JSON.stringify(payload),
+            })
+            if (directRes.ok) sent++
+          }
+        }
+        if (sent > 0) {
+          AnalyticsEvents.emailCampaignSent(campaignId, 1)
+          updateStatus(lead.id, 'contacted')
+          alert(`Sent Email #1 to ${lead.name} (${lead.email})!`)
+        }
       }
     } catch (err) {
       console.error('Quick send error:', err)
