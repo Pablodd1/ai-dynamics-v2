@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Download, Mail, ArrowRight, CheckCircle } from 'lucide-react'
 import { useState } from 'react'
-import { AnalyticsEvents } from '../lib/analytics'
+import { AnalyticsEvents, getAttributionSource } from '../lib/analytics'
 
 const LeadMagnet = () => {
   const [email, setEmail] = useState('')
@@ -29,7 +29,7 @@ const LeadMagnet = () => {
         },
         body: JSON.stringify({
           email: email,
-          source: 'AI Dynamics - Lead Magnet',
+          source: getAttributionSource('AI Dynamics - Lead Magnet'),
           interest: 'Workflow Automation Guide',
         }),
       }).catch(() => null)

@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields: name and email are required.' })
   }
 
-  const brevoApiKey = process.env.BREVO_API_KEY
+  const brevoApiKey = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || ''
   const googleClientId = process.env.GOOGLE_CLIENT_ID
   const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
   const googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN

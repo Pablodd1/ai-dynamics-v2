@@ -74,6 +74,39 @@ export default async function handler(req, res) {
 
         const brevoData = await brevoRes.json().catch(() => ({}));
         console.log('[Lead API] Brevo Response:', brevoRes.status, brevoData);
+
+        // Send automated Playbook delivery + $99 Audit welcome email with GA4 UTM tracking
+        const utmBookingUrl = 'https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=playbook_welcome_audit99';
+        await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+            to: [{ email: email.trim().toLowerCase(), name: name || email.split('@')[0] }],
+            subject: 'Your 2026 AI Automation Playbook + $99 Workflow Audit Special',
+            htmlContent: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #f8fafc; padding: 28px; border-radius: 12px;">
+                <h2 style="color: #c9a96e; margin-top: 0;">Here is Your 2026 AI Automation Playbook</h2>
+                <p>Hi ${name || 'there'},</p>
+                <p>Thank you for downloading the <strong>AI Dynamic Pro Automation Playbook</strong>. You can access your copy anytime here:</p>
+                <p><a href="https://www.aidynamic.pro/AI-Automation-Playbook-2026.pdf" style="color: #38bdf8; font-weight: bold;">Download the 2026 AI Automation Playbook (PDF)</a></p>
+                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 20px 0;" />
+                <p><strong>Want us to audit your business workflows directly?</strong></p>
+                <p>Claim our <strong>$99 AI Workflow & Feasibility Audit</strong>—we map your manual bottlenecks, build custom app & voice AI solutions, and train your staff to operate at 5x speed.</p>
+                <p style="margin: 24px 0;">
+                  <a href="${utmBookingUrl}" style="background: #c9a96e; color: #0a0a0f; padding: 12px 22px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block;">
+                    Book Your $99 Workflow Audit →
+                  </a>
+                </p>
+                <p style="font-size: 13px; color: #94a3b8;">Direct Miami Line: +1 (786) 643-2099 • www.aidynamic.pro</p>
+              </div>
+            `,
+          }),
+        });
       } catch (brevoErr) {
         console.warn('[Lead API] Brevo forward failed (non-critical):', brevoErr.message);
       }

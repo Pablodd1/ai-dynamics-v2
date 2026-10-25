@@ -111,4 +111,78 @@ export const AnalyticsEvents = {
       project_id: projectId || 'general',
       event_category: 'conversion',
     }),
+
+  // Google Business Profile ("Google Buz") Interactions
+  clickGoogleBusiness: (location: string) =>
+    trackEvent('click_google_business', {
+      location,
+      event_category: 'local_seo',
+    }),
+
+  copyGoogleBusinessPost: (postId: string) =>
+    trackEvent('copy_gbp_post', {
+      post_id: postId,
+      event_category: 'marketing',
+    }),
+
+  // Email Campaign Dispatch Tracking
+  emailCampaignSent: (campaignId: string, recipientCount: number) =>
+    trackEvent('email_campaign_sent', {
+      campaign_id: campaignId,
+      recipient_count: recipientCount,
+      event_category: 'marketing',
+    }),
+}
+
+export const GA4_MEASUREMENT_ID = 'G-M1RHKRVS9M'
+
+// Automatically capture UTM parameters from Email Campaigns & Google Business Profile
+export function initAttributionTracking() {
+  if (typeof window === 'undefined') return
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const utmSource = params.get('utm_source')
+    const utmMedium = params.get('utm_medium')
+    const utmCampaign = params.get('utm_campaign')
+
+    if (utmSource || utmMedium || utmCampaign) {
+      const attribution = {
+        utm_source: utmSource || 'direct',
+        utm_medium: utmMedium || 'none',
+        utm_campaign: utmCampaign || 'none',
+        landing_page: window.location.pathname,
+        timestamp: new Date().toISOString(),
+      }
+      sessionStorage.setItem('aidynamic_attribution', JSON.stringify(attribution))
+
+      if (utmSource === 'google_business' || utmMedium?.includes('gbp')) {
+        trackEvent('google_business_visit', {
+          utm_medium: utmMedium || 'gbp_profile',
+          utm_campaign: utmCampaign || 'local_miami',
+          event_category: 'local_seo',
+        })
+      } else if (utmMedium === 'email' || utmSource === 'brevo') {
+        trackEvent('email_campaign_visit', {
+          utm_source: utmSource || 'brevo',
+          utm_campaign: utmCampaign || 'general',
+          event_category: 'email_marketing',
+        })
+      }
+    }
+  } catch (err) {
+    console.warn('[GA4 Attribution Warning]', err)
+  }
+}
+
+export function getAttributionSource(defaultSource: string): string {
+  if (typeof window === 'undefined') return defaultSource
+  try {
+    const raw = sessionStorage.getItem('aidynamic_attribution')
+    if (!raw) return defaultSource
+    const parsed = JSON.parse(raw)
+    if (parsed.utm_source || parsed.utm_campaign) {
+      return `${defaultSource} [${parsed.utm_source}/${parsed.utm_medium}/${parsed.utm_campaign}]`
+    }
+  } catch {}
+  return defaultSource
 }

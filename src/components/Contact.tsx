@@ -12,7 +12,7 @@ import {
 import { useState } from 'react'
 import { useI18n } from '../i18n/I18nContext'
 import { supabase } from '../lib/supabase'
-import { AnalyticsEvents } from '../lib/analytics'
+import { AnalyticsEvents, getAttributionSource } from '../lib/analytics'
 
 const Contact = () => {
   const { t } = useI18n()
@@ -52,7 +52,7 @@ const Contact = () => {
               company: formData.company || null,
               service_interest: ['General Inquiry'],
               status: 'new',
-              source: 'website_contact_form',
+              source: getAttributionSource('website_contact_form'),
               notes: formData.message,
             })
           if (error) console.warn('Supabase lead insert notice:', error)

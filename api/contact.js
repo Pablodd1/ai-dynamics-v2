@@ -80,6 +80,35 @@ export default async function handler(req, res) {
             `,
           }),
         });
+
+        // Send auto-confirmation & $99 Audit CTA to prospect with GA4 UTM link
+        const utmBookingUrl = 'https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=contact_autoresponder';
+        await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+            to: [{ email: email.trim().toLowerCase(), name: name || email }],
+            subject: 'We received your message — AI Dynamic Pro (Miami)',
+            htmlContent: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #f8fafc; padding: 28px; border-radius: 12px;">
+                <h2 style="color: #c9a96e; margin-top: 0;">Thank You for Reaching Out, ${name || 'there'}!</h2>
+                <p>We received your inquiry at <strong>AI Dynamic Pro</strong> and our team will get back to you shortly.</p>
+                <p>If you'd like to skip the wait and lock in a time on our calendar right now for a <strong>$99 AI Workflow Audit, Custom App Consultation, or Corporate Staff Training</strong>:</p>
+                <p style="margin: 24px 0;">
+                  <a href="${utmBookingUrl}" style="background: #c9a96e; color: #0a0a0f; padding: 12px 22px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block;">
+                    Choose a Time on Our Calendar →
+                  </a>
+                </p>
+                <p style="font-size: 13px; color: #94a3b8;">Need immediate assistance? Call or text us in Miami at <strong>+1 (786) 643-2099</strong> or talk live with <strong>JAss</strong> at www.aidynamic.pro.</p>
+              </div>
+            `,
+          }),
+        });
       } catch (emailErr) {
         console.warn('[Contact API] Brevo email send warning:', emailErr.message);
       }

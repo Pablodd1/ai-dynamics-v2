@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
+import { initAttributionTracking } from './lib/analytics'
 import LandingPage from './LandingPage'
 import TermsOfService from './pages/TermsOfService'
 import PrivacyPolicy from './pages/PrivacyPolicy'
@@ -25,6 +27,10 @@ import NotFound from './pages/NotFound'
 import EcosystemWidget from './components/EcosystemWidget'
 
 function App() {
+  useEffect(() => {
+    initAttributionTracking()
+  }, [])
+
   return (
     <AuthProvider>
       <BrowserRouter>
