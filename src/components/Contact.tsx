@@ -23,6 +23,7 @@ const Contact = () => {
     company: '',
     message: '',
   })
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
@@ -301,9 +302,31 @@ const Contact = () => {
                     />
                   </div>
 
+                  {/* Legal Consent Checkbox (TCPA / FTSA / Terms & Privacy) */}
+                  <label className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/10 cursor-pointer hover:border-luxury-gold/30 transition-colors">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="mt-1 w-4 h-4 rounded border-white/20 bg-dark text-luxury-gold focus:ring-luxury-gold shrink-0"
+                    />
+                    <span className="text-xs text-luxury-silver leading-relaxed">
+                      I agree to the{' '}
+                      <a href="/terms" className="text-luxury-gold hover:underline font-medium">
+                        Terms of Service
+                      </a>{' '}
+                      and{' '}
+                      <a href="/privacy" className="text-luxury-gold hover:underline font-medium">
+                        Privacy Policy
+                      </a>
+                      , and consent to receive follow-up calls, texts/SMS, and emails (including automated or AI-assisted communications) from AI Dynamic Pro regarding my inquiry. Reply STOP to opt out anytime. *
+                    </span>
+                  </label>
+
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !agreedToTerms}
                     className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {isSubmitting ? (

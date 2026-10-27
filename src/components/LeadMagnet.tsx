@@ -167,8 +167,16 @@ const LeadMagnet = () => {
                 <p className="mt-4 text-sm text-red-400">{error}</p>
               )}
 
-              <p className="mt-4 text-xs text-luxury-silver/60">
-                No spam. Unsubscribe anytime. We respect your inbox.
+              <p className="mt-4 text-xs text-luxury-silver/60 max-w-lg mx-auto leading-relaxed">
+                By downloading this guide, you agree to our{' '}
+                <a href="/terms" className="text-luxury-gold/80 hover:underline">
+                  Terms of Service
+                </a>{' '}
+                and{' '}
+                <a href="/privacy" className="text-luxury-gold/80 hover:underline">
+                  Privacy Policy
+                </a>{' '}
+                and consent to receive occasional AI workflow insights by email. Unsubscribe with 1 click anytime.
               </p>
             </>
           )}

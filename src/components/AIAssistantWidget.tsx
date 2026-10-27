@@ -910,6 +910,19 @@ export default function AIAssistantWidget() {
                 </div>
               </>
             )}
+
+            {/* Legal AI & Florida Recording Consent Disclosure Footer */}
+            <div className="px-3 py-1.5 bg-black/50 border-t border-white/5 text-[10px] text-luxury-silver/60 text-center leading-tight">
+              JAss es un asistente de IA. Al chatear o hablar en vivo, aceptas la transcripción y nuestros{' '}
+              <a href="/terms" className="text-luxury-gold/80 hover:underline">
+                Términos
+              </a>{' '}
+              y{' '}
+              <a href="/privacy" className="text-luxury-gold/80 hover:underline">
+                Privacidad
+              </a>
+              .
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

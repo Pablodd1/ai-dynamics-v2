@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, FileText } from 'lucide-react'
+import { ArrowLeft, FileText, ShieldAlert } from 'lucide-react'
 import SEO from '../components/SEO'
 
 const TermsOfService = () => {
   return (
     <div className="min-h-screen bg-dark text-white">
       <SEO
-        title="Terms of Service | AI Dynamic Pro"
-        description="Review the terms and conditions governing the use of AI Dynamic Pro services and engineering consulting."
+        title="Terms of Service & Legal Disclaimers | AI Dynamic Pro"
+        description="Review the terms, AI liability disclaimers, indemnification, and conditions governing the use of AI Dynamic Pro consulting, custom software, and staff training."
         canonical="https://www.aidynamic.pro/terms"
       />
       {/* Header */}
@@ -28,112 +28,112 @@ const TermsOfService = () => {
         >
           <div className="flex items-center gap-3 mb-6">
             <FileText className="w-8 h-8 text-luxury-gold" />
-            <h1 className="text-4xl font-bold font-serif">Terms of Service</h1>
+            <h1 className="text-4xl font-bold font-serif">Terms of Service &amp; AI Protection Policy</h1>
           </div>
-          <p className="text-luxury-silver">Last updated: April 21, 2026</p>
+          <p className="text-luxury-silver">Last updated: October 26, 2026</p>
         </motion.div>
 
-        <div className="space-y-12 text-luxury-silver leading-relaxed">
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">1. Agreement to Terms</h2>
+        <div className="space-y-10 text-luxury-silver leading-relaxed">
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">1. Agreement to Terms</h2>
             <p>
-              By accessing or using AI Dynamics services, you agree to be bound by these Terms of Service. 
-              If you disagree with any part of these terms, you may not access our services. These terms 
-              apply to all visitors, users, and others who access or use our services.
+              By accessing or using the website <strong className="text-white">www.aidynamic.pro</strong>, interacting with our AI Executive Assistant (<strong className="text-white">JAss</strong>), or engaging <strong className="text-white">AI Dynamic Pro</strong> ("Company," "we," "us," or "our") for AI consulting, workflow audits, custom application development, or corporate staff training, you ("Client," "User," or "you") agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, do not use our website or services.
             </p>
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">2. Services Description</h2>
-            <p className="mb-4">
-              AI Dynamics provides AI-powered automation and software development services for businesses, including:
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">2. Scope of Services &amp; $99 Workflow Audit</h2>
+            <p className="mb-3">
+              AI Dynamic Pro provides B2B technology consulting, workflow feasibility auditing, custom software and AI automation development, and corporate staff training.
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Custom AI chatbot development and integration</li>
-              <li>Business process automation and workflow optimization</li>
-              <li>Healthcare compliance automation (HIPAA-aware systems)</li>
-              <li>AI-powered data analysis and reporting</li>
-              <li>Software development and deployment services</li>
+              <li>
+                <strong className="text-white">$99 Workflow &amp; Feasibility Audit:</strong> Our introductory audit evaluates your current manual processes and provides an automation roadmap and estimated time-savings projection. Any "100% credit" applies strictly toward a subsequent custom build or corporate training engagement of $1,000 or more contracted within 30 days. Our "Zero-Risk / $0 Guarantee" means no audit fee is invoiced if our diagnostic review fails to identify at least 15 hours per month of automatable manual tasks in your operation.
+              </li>
+              <li>
+                <strong className="text-white">No Guaranteed Financial Outcomes:</strong> Case studies, time-savings estimates, and ROI projections are illustrative examples based on prior deployments and do not constitute a guarantee of specific revenue or financial results.
+              </li>
             </ul>
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">3. Service Level Agreement</h2>
+          <section className="p-6 rounded-2xl border border-luxury-gold/30 bg-luxury-gold/[0.03]">
+            <div className="flex items-center gap-2 mb-3">
+              <ShieldAlert className="w-5 h-5 text-luxury-gold" />
+              <h2 className="text-xl font-semibold text-white">3. Artificial Intelligence (AI) Disclaimer &amp; Hallucination Protection</h2>
+            </div>
+            <p className="mb-3">
+              Our website and client solutions utilize large language models (LLMs), voice synthesis, and generative artificial intelligence (including technologies from xAI, OpenAI, Google, and other providers). By using our website or AI tools, you acknowledge and agree that:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>
+                <strong className="text-white">Automated AI Assistant ("JAss"):</strong> When interacting via text or voice with <strong>JAss</strong> on our website, you are communicating with an artificial intelligence system, not a human. AI outputs may occasionally contain inaccuracies, omissions, or "hallucinations." No statement made by the AI chatbot constitutes a binding legal contract, price lock, or warranty unless confirmed in a signed written Statement of Work (SOW).
+              </li>
+              <li>
+                <strong className="text-white">No Medical, Legal, or Financial Advice:</strong> AI Dynamic Pro is an engineering and technology consulting firm. Nothing on this website, in our portfolio demonstrations (including clinical transcription, biomechanical, real estate, or legal intake demos), or in our consultations constitutes medical advice, legal counsel, or financial/CPA advice.
+              </li>
+              <li>
+                <strong className="text-white">Human-in-the-Loop Responsibility:</strong> Client is solely responsible for maintaining human oversight and reviewing all AI-generated outputs, transcripts, schedules, codes, and communications before relying on them in production operations.
+              </li>
+            </ul>
+          </section>
+
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">4. Recording, Transcription &amp; Telecommunications Consent (TCPA &amp; Florida Law)</h2>
+            <p className="mb-3">
+              In compliance with the federal Telephone Consumer Protection Act (TCPA), the Florida Telemarketing Act (FTSA), and the Florida Security of Communications Act (<strong className="text-white">Fla. Stat. § 934.03 — All-Party Consent</strong>):
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>
+                <strong className="text-white">Voice &amp; Chat Recording Consent:</strong> By initiating a live web voice call, microphone session, phone call, or text chat with AI Dynamic Pro or our AI assistant (<strong>JAss</strong>), you expressly consent to the real-time recording, transcription, storage, and AI processing of the communication for quality assurance, appointment scheduling, and customer follow-up.
+              </li>
+              <li>
+                <strong className="text-white">Phone, SMS &amp; Email Consent:</strong> By submitting your phone number or email address on any form on our website, you provide express written consent to receive calls, text messages (SMS/WhatsApp), and emails from AI Dynamic Pro (including via automated dialing or AI voice technology) at the contact information provided. Consent is not a condition of purchase. You may opt out at any time by replying <code className="text-luxury-gold">STOP</code> to any text or clicking "Unsubscribe" in any email.
+              </li>
+            </ul>
+          </section>
+
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">5. Client Regulatory Compliance &amp; Indemnification</h2>
             <p>
-              We commit to industry-standard uptime for hosted services. Specific SLA terms, including 
-              uptime guarantees, response times, and maintenance windows, will be defined in your 
-              individual service agreement. For critical healthcare or legal applications, enhanced 
-              SLAs with 99.9% uptime commitments are available.
+              When AI Dynamic Pro develops or configures custom software, voice receptionists, CRM automations, or workflows for a Client, <strong className="text-white">the Client acts as the data controller and operator</strong> of that system. Client is solely responsible for ensuring its use of any deployed AI system complies with all industry-specific regulations applicable to Client's business (including but not limited to HIPAA, BAA execution with third-party cloud hosts, TCPA, GDPR, CCPA, and state bar or medical board rules). You agree to <strong className="text-white">defend, indemnify, and hold harmless AI Dynamic Pro</strong>, its founder, contractors, and affiliates from and against any and all third-party claims, regulatory fines, damages, liabilities, and legal fees arising out of your use or misuse of our software, your failure to obtain end-user consents, or your violation of applicable laws.
             </p>
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">4. Data Processing & Privacy</h2>
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">6. Intellectual Property</h2>
             <p>
-              We process data in accordance with our Privacy Policy and applicable data protection laws. 
-              For healthcare clients, we maintain HIPAA compliance. For all clients, we implement 
-              AES-256 encryption, access controls, and regular security audits. You retain ownership 
-              of your data; we claim no rights over your business information.
+              Upon full payment of all fees specified in an applicable Statement of Work, Client receives ownership or a perpetual license (as defined in the SOW) to the custom configurations built specifically for Client. AI Dynamic Pro retains all right, title, and interest in and to its pre-existing intellectual property, proprietary AI frameworks, prompt architectures, reusable code libraries, and the 22+ showcase platforms displayed on our website.
             </p>
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">5. Intellectual Property</h2>
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">7. Disclaimer of Warranties &amp; Strict Limitation of Liability</h2>
+            <p className="mb-3">
+              ALL WEBSITE CONTENT, AI ASSISTANTS, AND SERVICES ARE PROVIDED <strong className="text-white">"AS IS" AND "AS AVAILABLE"</strong> WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+            </p>
             <p>
-              Custom software developed specifically for your business becomes your property upon 
-              full payment, unless otherwise specified in your service agreement. We retain rights 
-              to our proprietary frameworks, AI models, and reusable components. Open-source 
-              integrations remain subject to their respective licenses.
+              TO THE MAXIMUM EXTENT PERMITTED BY FLORIDA AND FEDERAL LAW, IN NO EVENT SHALL AI DYNAMIC PRO OR ITS FOUNDER BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, LOST PROFITS, LOST LEADS, BUSINESS INTERRUPTION, OR LOSS OF DATA. <strong className="text-white">OUR TOTAL CUMULATIVE LIABILITY FOR ALL CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR OUR SERVICES SHALL NOT EXCEED THE GREATER OF (A) THE TOTAL AMOUNT ACTUALLY PAID BY YOU TO AI DYNAMIC PRO IN THE THREE (3) MONTHS IMMEDIATELY PRECEDING THE EVENT GIVING RISE TO LIABILITY, OR (B) $100.00 USD.</strong>
             </p>
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">6. Limitation of Liability</h2>
+          <section className="p-6 rounded-2xl border border-white/10 bg-white/[0.02]">
+            <h2 className="text-xl font-semibold text-white mb-3">8. Governing Law, Venue &amp; Binding Arbitration</h2>
             <p>
-              AI Dynamics' liability is limited to the amount paid for services in the 12 months 
-              preceding the claim. We are not liable for indirect, incidental, or consequential 
-              damages. For healthcare applications, this limitation does not apply to HIPAA 
-              violations or data breaches caused by our negligence.
+              These Terms are governed by the laws of the <strong className="text-white">State of Florida, USA</strong>, without regard to conflict-of-law principles. Any dispute, claim, or controversy arising out of or relating to these Terms or our services that cannot be resolved informally within 30 days shall be resolved exclusively by <strong className="text-white">binding individual arbitration in Miami-Dade County, Florida</strong> under the rules of the American Arbitration Association (AAA). <strong className="text-white">You and AI Dynamic Pro expressly waive any right to a jury trial or to participate in a class action lawsuit.</strong>
             </p>
           </section>
 
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">7. Termination</h2>
-            <p>
-              Either party may terminate services with 30 days written notice. Upon termination, 
-              we will provide your data in a standard format within 14 days. For immediate 
-              termination due to breach of terms, notice may be shortened to 7 days.
+          <section className="p-6 rounded-2xl border border-luxury-gold/20 bg-luxury-gold/5">
+            <h2 className="text-xl font-semibold text-white mb-3">9. Legal &amp; Compliance Contact Information</h2>
+            <p className="mb-3">
+              For legal notices, compliance inquiries, or questions regarding these Terms, contact:
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">8. Governing Law</h2>
-            <p>
-              These terms are governed by the laws of the State of Florida, USA. Any disputes 
-              will be resolved in Miami-Dade County courts. For international clients, we agree 
-              to alternative dispute resolution through binding arbitration.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">9. Changes to Terms</h2>
-            <p>
-              We may update these terms from time to time. We will notify you of any changes by 
-              posting the new Terms on this page and updating the "Last updated" date. Continued 
-              use of our services after changes constitutes acceptance of the revised terms.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-4">10. Contact Information</h2>
-            <p>
-              For questions about these Terms, please contact us at:
-            </p>
-            <div className="mt-4 p-6 rounded-xl border border-luxury-gold/20 bg-luxury-gold/5">
-              <p className="text-white font-medium">AI Dynamics</p>
+            <div className="text-white space-y-1">
+              <p className="font-bold">AI Dynamic Pro</p>
+              <p>Attn: Jasmel Acosta, Founder</p>
+              <p>Brickell Financial District, Miami, FL 33131</p>
               <p>Email: jasmelacosta@gmail.com</p>
               <p>Phone: +1 (786) 643-2099</p>
-              <p>Location: Miami, FL</p>
             </div>
           </section>
         </div>

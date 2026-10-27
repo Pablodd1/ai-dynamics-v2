@@ -37,6 +37,10 @@ const CAMPAIGNS = {
         <strong>Jasmel Acosta</strong><br/>
         Founder, AI Dynamic Pro (Miami, FL)<br/>
         📞 <a href="${phoneUrl}" style="color: #64748b; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+        </p>
       </div>
     `,
   },
@@ -78,6 +82,10 @@ const CAMPAIGNS = {
         <strong>Jasmel Acosta</strong><br/>
         AI Dynamic Pro • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a><br/>
         📞 (786) 643-2099</p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+        </p>
       </div>
     `,
   },
@@ -114,6 +122,10 @@ const CAMPAIGNS = {
         <strong>Jasmel Acosta</strong><br/>
         Founder, AI Dynamic Pro<br/>
         📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a></p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+        </p>
       </div>
     `,
   },
@@ -152,6 +164,10 @@ const CAMPAIGNS = {
         <strong>Jasmel Acosta</strong><br/>
         AI Dynamic Pro • Miami, FL<br/>
         📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+        </p>
       </div>
     `,
   },
@@ -189,6 +205,10 @@ const CAMPAIGNS = {
         <p style="margin-top: 28px;">Warm regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
         Founder, AI Dynamic Pro</p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+        </p>
       </div>
     `,
   },

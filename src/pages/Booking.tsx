@@ -27,6 +27,7 @@ interface SlotsData {
 
 const Booking = () => {
   const [step, setStep] = useState(1)
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [formData, setFormData] = useState({
     service: '',
     name: '',
@@ -473,6 +474,28 @@ const Booking = () => {
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-luxury-gold focus:outline-none resize-none"
                     />
                   </div>
+
+                  {/* Legal Consent Checkbox (TCPA / FTSA / Terms & Privacy) */}
+                  <label className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/10 cursor-pointer hover:border-luxury-gold/30 transition-colors">
+                    <input
+                      type="checkbox"
+                      required
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="mt-1 w-4 h-4 rounded border-white/20 bg-dark text-luxury-gold focus:ring-luxury-gold shrink-0"
+                    />
+                    <span className="text-xs text-luxury-silver leading-relaxed">
+                      I agree to the{' '}
+                      <Link to="/terms" target="_blank" className="text-luxury-gold hover:underline font-medium">
+                        Terms of Service
+                      </Link>{' '}
+                      and{' '}
+                      <Link to="/privacy" target="_blank" className="text-luxury-gold hover:underline font-medium">
+                        Privacy Policy
+                      </Link>
+                      , and provide express written consent to receive appointment confirmations and follow-up communications via email, phone call, or SMS/text (including automated or AI-assisted voice/messages) from AI Dynamic Pro. Reply STOP to opt out anytime. *
+                    </span>
+                  </label>
                 </div>
 
                 <div className="flex gap-3">
@@ -485,7 +508,7 @@ const Booking = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!formData.name || !formData.email || submitting}
+                    disabled={!formData.name || !formData.email || !agreedToTerms || submitting}
                     className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {submitting ? (
