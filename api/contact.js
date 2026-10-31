@@ -105,6 +105,10 @@ export default async function handler(req, res) {
                   </a>
                 </p>
                 <p style="font-size: 13px; color: #94a3b8;">Need immediate assistance? Call or text us in Miami at <strong>+1 (786) 643-2099</strong> or talk live with <strong>JAss</strong> at www.aidynamic.pro.</p>
+                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 20px 0 12px;" />
+                <p style="font-size: 11px; color: #64748b; line-height: 1.5;">
+                  AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • You are receiving this confirmation because you submitted an inquiry on aidynamic.pro. Reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #94a3b8; text-decoration: underline;">click here to opt out</a> anytime.
+                </p>
               </div>
             `,
           }),

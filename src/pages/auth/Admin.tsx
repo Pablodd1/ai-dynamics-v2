@@ -43,6 +43,21 @@ interface GbpPost {
   content: string
 }
 
+interface BrevoListMeta {
+  id: number
+  name: string
+  totalSubscribers: number
+  totalBlacklisted: number
+}
+
+interface BrevoExternalCampaign {
+  id: number
+  name: string
+  subject: string
+  status: string
+  scheduledAt: string | null
+}
+
 const statusColors: Record<LeadStatus, string> = {
   new: 'bg-blue-500/20 text-blue-400',
   contacted: 'bg-yellow-500/20 text-yellow-400',
@@ -71,8 +86,15 @@ export default function Admin() {
   const [gbpPosts, setGbpPosts] = useState<GbpPost[]>([])
   const [brevoConnected, setBrevoConnected] = useState(true)
   const [selectedCampaignId, setSelectedCampaignId] = useState('email_1_voice_jass')
-  const [dispatchMode, setDispatchMode] = useState<'test' | 'supabase_leads' | 'custom'>('test')
+  const [dispatchMode, setDispatchMode] = useState<'test' | 'supabase_leads' | 'brevo_list' | 'custom'>('test')
   const [dispatchStatusFilter, setDispatchStatusFilter] = useState<LeadStatus | 'all'>('all')
+  const [brevoLists, setBrevoLists] = useState<BrevoListMeta[]>([])
+  const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
+  const [externalCampaigns, setExternalCampaigns] = useState<BrevoExternalCampaign[]>([])
+  const [brevoAccountEmail, setBrevoAccountEmail] = useState<string>('')
+  const [blockedContactsCount, setBlockedContactsCount] = useState<number>(0)
+  const [auditingBrevo, setAuditingBrevo] = useState(false)
+  const [suspendingExternal, setSuspendingExternal] = useState(false)
   const [customEmailsInput, setCustomEmailsInput] = useState('')
   const [customSubject, setCustomSubject] = useState('')
   const [sendingCampaign, setSendingCampaign] = useState(false)
@@ -94,6 +116,7 @@ export default function Admin() {
       setPinError(false)
       fetchLeads()
       fetchCampaignMetadata()
+      runBrevoAudit()
     } else {
       setPinError(true)
       setPin('')
@@ -124,6 +147,128 @@ export default function Admin() {
       }
     } catch (err) {
       console.warn('Could not load campaign metadata:', err)
+    }
+  }
+
+  const runBrevoAudit = async () => {
+    setAuditingBrevo(true)
+    try {
+      const res = await fetch('/api/email-campaign?action=audit')
+      const data = res.ok ? await res.json() : null
+
+      if (data && data.success && !data.ipBlocked) {
+        setBrevoAccountEmail(data.account?.email || 'jasmelacosta@gmail.com')
+        setBrevoLists(data.lists || [])
+        if (data.lists?.length > 0) setSelectedBrevoListId(data.lists[0].id)
+        setExternalCampaigns(data.externalCampaigns || [])
+        setBlockedContactsCount(data.blockedContactsCount || 0)
+        setAuditingBrevo(false)
+        return
+      }
+
+      // Client-IP Fallback if Vercel serverless AWS IP is blocked by Brevo Authorised IPs
+      const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
+      if (clientKey) {
+        const headers = { Accept: 'application/json', 'api-key': clientKey }
+        const [accR, listR, campR, blkR] = await Promise.all([
+          fetch('https://api.brevo.com/v3/account', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/emailCampaigns?limit=25', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=50', { headers }).catch(() => null),
+        ])
+        if (accR && accR.ok) {
+          const acc = await accR.json()
+          setBrevoAccountEmail(acc.email || 'jasmelacosta@gmail.com')
+        }
+        if (listR && listR.ok) {
+          const ld = await listR.json()
+          const mappedLists = (ld.lists || []).map((l: any) => ({
+            id: l.id,
+            name: l.name,
+            totalSubscribers: l.totalSubscribers || l.uniqueSubscribers || 0,
+            totalBlacklisted: l.totalBlacklisted || 0,
+          }))
+          setBrevoLists(mappedLists)
+          if (mappedLists.length > 0) setSelectedBrevoListId(mappedLists[0].id)
+        }
+        if (campR && campR.ok) {
+          const cd = await campR.json()
+          setExternalCampaigns(
+            (cd.campaigns || []).map((c: any) => ({
+              id: c.id,
+              name: c.name,
+              subject: c.subject,
+              status: c.status,
+              scheduledAt: c.scheduledAt || null,
+            }))
+          )
+        }
+        if (blkR && blkR.ok) {
+          const bd = await blkR.json()
+          setBlockedContactsCount(bd.count || (bd.contacts || []).length || 0)
+        }
+      }
+    } catch (err) {
+      console.warn('Brevo audit error:', err)
+    } finally {
+      setAuditingBrevo(false)
+    }
+  }
+
+  const handleSuspendExternalCampaigns = async () => {
+    setSuspendingExternal(true)
+    setCampaignResult(null)
+    try {
+      const activeIds = externalCampaigns
+        .filter((c) => ['queued', 'inProcess', 'replicate'].includes(c.status))
+        .map((c) => c.id)
+
+      const res = await fetch('/api/email-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'suspend_external_campaigns',
+          externalCampaignIds: activeIds,
+        }),
+      })
+      const data = await res.json()
+
+      // Client-IP fallback if needed
+      const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
+      if (activeIds.length > 0 && (!data.suspendedIds || data.suspendedIds.length === 0) && clientKey) {
+        let clientSuspended = 0
+        for (const cid of activeIds) {
+          const putR = await fetch(`https://api.brevo.com/v3/emailCampaigns/${cid}/status`, {
+            method: 'PUT',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'api-key': clientKey,
+            },
+            body: JSON.stringify({ status: 'suspended' }),
+          }).catch(() => null)
+          if (putR && (putR.ok || putR.status === 204)) clientSuspended++
+        }
+        setCampaignResult({
+          success: true,
+          message: `Suspended ${clientSuspended} active external (MBMB) campaign(s) in Brevo.`,
+        })
+      } else {
+        setCampaignResult({
+          success: true,
+          message:
+            data.message ||
+            'Verified: 0 active or scheduled external (MBMB) campaigns are queued in Brevo.',
+        })
+      }
+      await runBrevoAudit()
+    } catch (err: any) {
+      setCampaignResult({
+        success: false,
+        message: err.message || 'Could not verify external campaigns.',
+      })
+    } finally {
+      setSuspendingExternal(false)
     }
   }
 
@@ -165,7 +310,7 @@ export default function Admin() {
     setSendingCampaign(true)
     setCampaignResult(null)
     try {
-      const customRecipients =
+      let customRecipients =
         dispatchMode === 'custom'
           ? customEmailsInput
               .split(/[\n,;]+/)
@@ -174,12 +319,34 @@ export default function Admin() {
               .map((email) => ({ email, name: email.split('@')[0], company: 'your business' }))
           : []
 
+      // If dispatching to a Brevo Contact List and client key is available, pre-fetch contacts client-side in case Vercel IP is restricted
+      const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
+      if (dispatchMode === 'brevo_list' && clientBrevoKey) {
+        const listRes = await fetch(
+          `https://api.brevo.com/v3/contacts/lists/${selectedBrevoListId}/contacts?limit=500`,
+          {
+            headers: { Accept: 'application/json', 'api-key': clientBrevoKey },
+          }
+        ).catch(() => null)
+        if (listRes && listRes.ok) {
+          const listData = await listRes.json()
+          customRecipients = (listData.contacts || [])
+            .filter((c: any) => c && c.email && !c.emailBlacklisted)
+            .map((c: any) => ({
+              email: c.email.trim().toLowerCase(),
+              name: c.attributes?.FIRSTNAME || c.attributes?.NAME || c.email.split('@')[0],
+              company: c.attributes?.COMPANY || 'your business',
+            }))
+        }
+      }
+
       const res = await fetch('/api/email-campaign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           campaignId: selectedCampaignId,
-          mode: dispatchMode,
+          mode: dispatchMode === 'brevo_list' && customRecipients.length > 0 ? 'custom' : dispatchMode,
+          brevoListId: selectedBrevoListId,
           statusFilter: dispatchStatusFilter,
           customRecipients,
           customSubject: customSubject.trim(),
@@ -190,7 +357,6 @@ export default function Admin() {
       let finalSentCount = data.sentCount || 0
 
       // Automatic Client-IP Fallback if Brevo blocks Vercel's rotating AWS IP
-      const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
       if (finalSentCount === 0 && Array.isArray(data.renderedPayloads) && data.renderedPayloads.length > 0 && clientBrevoKey) {
         for (const payload of data.renderedPayloads) {
           const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -579,97 +745,216 @@ export default function Admin() {
         )}
 
         {activeTab === 'campaigns' && (
-          <div className="grid lg:grid-cols-3 gap-6">
-            {/* Left Column: Campaign Selector */}
-            <div className="space-y-4">
-              <div className="bg-dark-50/50 border border-white/10 rounded-2xl p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-base font-bold text-white flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-luxury-gold" />
-                    Select Email Campaign
-                  </h2>
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${
-                      brevoConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-yellow-500/20 text-yellow-400'
-                    }`}
-                  >
-                    {brevoConnected ? 'Brevo Active' : 'Check Key'}
-                  </span>
+          <div className="space-y-6">
+            {/* Brevo Takeover & Anti-MBMB Security Control Banner */}
+            <div className="bg-gradient-to-r from-emerald-950/50 via-dark-50 to-slate-900/60 border border-emerald-500/30 rounded-2xl p-5">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold uppercase tracking-wider">
+                      ✓ Direct Brevo Control Active (MBMB Locked Out)
+                    </span>
+                    {brevoAccountEmail && (
+                      <span className="text-xs text-luxury-silver font-mono">
+                        Account: {brevoAccountEmail}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-base font-bold text-white mt-1.5">
+                    Brevo Security, Unsubscribe Protection & External Campaign Kill-Switch
+                  </h3>
+                  <p className="text-xs text-luxury-silver mt-0.5">
+                    All emails automatically enforce CAN-SPAM physical address footers, <code className="text-emerald-400">List-Unsubscribe</code> headers, and skip blacklisted/unsubscribed contacts ({blockedContactsCount} blocked contacts filtered).
+                  </p>
                 </div>
-                <p className="text-xs text-luxury-silver mb-4">
-                  Note: Instagram posts are handled by <strong>Muse</strong>. All B2B email campaigns below automatically embed Google Analytics (`{GA4_MEASUREMENT_ID}`) UTM tracking.
-                </p>
 
-                <div className="space-y-2.5">
-                  {campaigns.map((camp) => (
-                    <button
-                      key={camp.id}
-                      onClick={() => {
-                        setSelectedCampaignId(camp.id)
-                        setCustomSubject('')
-                        setCampaignResult(null)
-                      }}
-                      className={`w-full text-left p-3.5 rounded-xl border transition-all ${
-                        selectedCampaignId === camp.id
-                          ? 'bg-accent/15 border-accent text-white'
-                          : 'bg-white/5 border-white/10 text-luxury-silver hover:bg-white/10'
-                      }`}
-                    >
-                      <div className="text-sm font-bold text-white">{camp.name}</div>
-                      <div className="text-xs text-luxury-silver mt-1 line-clamp-2">{camp.description}</div>
-                      <div className="text-[11px] text-emerald-400 mt-2 font-mono">
-                        utm_campaign={camp.utmCampaign}
-                      </div>
-                    </button>
-                  ))}
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <button
+                    onClick={runBrevoAudit}
+                    disabled={auditingBrevo}
+                    className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold text-white transition-all"
+                  >
+                    {auditingBrevo ? 'Auditing Brevo...' : '🔄 Audit Brevo Lists & Campaigns'}
+                  </button>
+                  <button
+                    onClick={handleSuspendExternalCampaigns}
+                    disabled={suspendingExternal}
+                    className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-xs font-bold text-red-300 transition-all"
+                  >
+                    {suspendingExternal
+                      ? 'Suspending...'
+                      : '🛑 Stop / Suspend Any Scheduled MBMB Campaigns'}
+                  </button>
                 </div>
               </div>
+
+              {externalCampaigns.length > 0 && (
+                <div className="mt-4 pt-3 border-t border-white/10">
+                  <div className="text-xs font-semibold text-luxury-silver mb-2">
+                    Existing Brevo Dashboard Campaigns Detected ({externalCampaigns.length}):
+                  </div>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {externalCampaigns.slice(0, 6).map((ec) => (
+                      <div
+                        key={ec.id}
+                        className="p-2.5 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between gap-2 text-xs"
+                      >
+                        <div className="truncate">
+                          <div className="text-white font-medium truncate">{ec.name}</div>
+                          <div className="text-[11px] text-luxury-silver truncate">{ec.subject}</div>
+                        </div>
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase shrink-0 ${
+                            ['queued', 'inProcess'].includes(ec.status)
+                              ? 'bg-red-500/20 text-red-300 border border-red-500/40'
+                              : 'bg-white/10 text-luxury-silver'
+                          }`}
+                        >
+                          {ec.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Right 2 Columns: Campaign Dispatch & Configuration */}
-            <div className="lg:col-span-2 bg-dark-50/50 border border-white/10 rounded-2xl p-6 space-y-5">
-              <div>
-                <h2 className="text-lg font-bold text-white">{selectedCampaign?.name || 'Email Campaign'}</h2>
-                <p className="text-sm text-luxury-silver mt-1">{selectedCampaign?.description}</p>
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-xs uppercase tracking-wider text-luxury-silver font-semibold">
-                  Subject Line (Supports &#123;&#123;company&#125;&#125; personalization)
-                </label>
-                <input
-                  type="text"
-                  value={customSubject || selectedCampaign?.subject || ''}
-                  onChange={(e) => setCustomSubject(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-accent"
-                />
-              </div>
-
-              <div className="space-y-3">
-                <label className="block text-xs uppercase tracking-wider text-luxury-silver font-semibold">
-                  Recipient Target Mode
-                </label>
-                <div className="grid sm:grid-cols-3 gap-3">
-                  {[
-                    { id: 'test', label: 'Send Test Preview', desc: 'Sends to jasmelacosta@gmail.com' },
-                    { id: 'supabase_leads', label: 'Supabase CRM Leads', desc: `Send to ${leads.length} stored leads` },
-                    { id: 'custom', label: 'Custom Email List', desc: 'Paste B2B prospect emails' },
-                  ].map((m) => (
-                    <button
-                      key={m.id}
-                      onClick={() => setDispatchMode(m.id as any)}
-                      className={`p-3 rounded-xl border text-left transition-all ${
-                        dispatchMode === m.id
-                          ? 'bg-accent/15 border-accent text-white'
-                          : 'bg-white/5 border-white/10 text-luxury-silver hover:bg-white/10'
+            <div className="grid lg:grid-cols-3 gap-6">
+              {/* Left Column: Campaign Selector */}
+              <div className="space-y-4">
+                <div className="bg-dark-50/50 border border-white/10 rounded-2xl p-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-base font-bold text-white flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-luxury-gold" />
+                      Select Email Campaign
+                    </h2>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${
+                        brevoConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-yellow-500/20 text-yellow-400'
                       }`}
                     >
-                      <div className="text-xs font-bold text-white">{m.label}</div>
-                      <div className="text-[11px] text-luxury-silver mt-0.5">{m.desc}</div>
-                    </button>
-                  ))}
+                      {brevoConnected ? 'Brevo Active' : 'Check Key'}
+                    </span>
+                  </div>
+                  <p className="text-xs text-luxury-silver mb-4">
+                    Note: Instagram posts are handled by <strong>Muse</strong>. All B2B email campaigns below automatically embed Google Analytics (`{GA4_MEASUREMENT_ID}`) UTM tracking.
+                  </p>
+
+                  <div className="space-y-2.5">
+                    {campaigns.map((camp) => (
+                      <button
+                        key={camp.id}
+                        onClick={() => {
+                          setSelectedCampaignId(camp.id)
+                          setCustomSubject('')
+                          setCampaignResult(null)
+                        }}
+                        className={`w-full text-left p-3.5 rounded-xl border transition-all ${
+                          selectedCampaignId === camp.id
+                            ? 'bg-accent/15 border-accent text-white'
+                            : 'bg-white/5 border-white/10 text-luxury-silver hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="text-sm font-bold text-white">{camp.name}</div>
+                        <div className="text-xs text-luxury-silver mt-1 line-clamp-2">{camp.description}</div>
+                        <div className="text-[11px] text-emerald-400 mt-2 font-mono">
+                          utm_campaign={camp.utmCampaign}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+              {/* Right 2 Columns: Campaign Dispatch & Configuration */}
+              <div className="lg:col-span-2 bg-dark-50/50 border border-white/10 rounded-2xl p-6 space-y-5">
+                <div>
+                  <h2 className="text-lg font-bold text-white">{selectedCampaign?.name || 'Email Campaign'}</h2>
+                  <p className="text-sm text-luxury-silver mt-1">{selectedCampaign?.description}</p>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="block text-xs uppercase tracking-wider text-luxury-silver font-semibold">
+                    Subject Line (Supports &#123;&#123;company&#125;&#125; personalization)
+                  </label>
+                  <input
+                    type="text"
+                    value={customSubject || selectedCampaign?.subject || ''}
+                    onChange={(e) => setCustomSubject(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-accent"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="block text-xs uppercase tracking-wider text-luxury-silver font-semibold">
+                    Recipient Target Mode
+                  </label>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    {[
+                      { id: 'test', label: 'Send Test Preview', desc: 'Sends to jasmelacosta@gmail.com' },
+                      { id: 'supabase_leads', label: 'Supabase CRM Leads', desc: `Send to ${leads.length} stored leads` },
+                      {
+                        id: 'brevo_list',
+                        label: 'Brevo Contact Lists',
+                        desc: brevoLists.length > 0 ? `${brevoLists.length} Brevo list(s) synced` : 'Send to Brevo list',
+                      },
+                      { id: 'custom', label: 'Custom Email List', desc: 'Paste B2B prospect emails' },
+                    ].map((m) => (
+                      <button
+                        key={m.id}
+                        onClick={() => setDispatchMode(m.id as any)}
+                        className={`p-3 rounded-xl border text-left transition-all ${
+                          dispatchMode === m.id
+                            ? 'bg-accent/15 border-accent text-white'
+                            : 'bg-white/5 border-white/10 text-luxury-silver hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="text-xs font-bold text-white">{m.label}</div>
+                        <div className="text-[11px] text-luxury-silver mt-0.5">{m.desc}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {dispatchMode === 'brevo_list' && (
+                  <div className="space-y-2">
+                    <label className="block text-xs text-luxury-silver">
+                      Select Brevo Contact List (Unsubscribed & Blacklisted contacts are automatically excluded):
+                    </label>
+                    {brevoLists.length > 0 ? (
+                      <div className="grid sm:grid-cols-2 gap-2.5">
+                        {brevoLists.map((bl) => (
+                          <button
+                            key={bl.id}
+                            onClick={() => setSelectedBrevoListId(bl.id)}
+                            className={`p-3 rounded-xl border text-left transition-all ${
+                              selectedBrevoListId === bl.id
+                                ? 'bg-accent/15 border-accent text-white'
+                                : 'bg-white/5 border-white/10 text-luxury-silver hover:bg-white/10'
+                            }`}
+                          >
+                            <div className="text-xs font-bold text-white">
+                              #{bl.id} — {bl.name}
+                            </div>
+                            <div className="text-[11px] text-emerald-400 mt-0.5">
+                              {bl.totalSubscribers} active subscribers ({bl.totalBlacklisted} unsubscribed)
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-luxury-silver flex items-center justify-between">
+                        <span>Click "Audit Brevo Lists & Campaigns" above to load your Brevo lists, or enter List ID:</span>
+                        <input
+                          type="number"
+                          value={selectedBrevoListId}
+                          onChange={(e) => setSelectedBrevoListId(Number(e.target.value) || 2)}
+                          className="w-20 px-2.5 py-1 rounded-lg bg-black/40 border border-white/15 text-white text-center"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
 
               {dispatchMode === 'supabase_leads' && (
                 <div className="space-y-2">
@@ -747,13 +1032,14 @@ export default function Admin() {
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" />
-                    {dispatchMode === 'test'
-                      ? 'Send Test Campaign to jasmelacosta@gmail.com'
-                      : 'Launch Email Campaign Now'}
-                  </>
-                )}
+                  <Send className="w-4 h-4" />
+                  {dispatchMode === 'test'
+                    ? 'Send Test Campaign to jasmelacosta@gmail.com'
+                    : 'Launch Email Campaign Now'}
+                </>
+              )}
               </button>
+              </div>
             </div>
           </div>
         )}

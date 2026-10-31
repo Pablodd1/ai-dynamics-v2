@@ -103,6 +103,10 @@ export default async function handler(req, res) {
                   </a>
                 </p>
                 <p style="font-size: 13px; color: #94a3b8;">Direct Miami Line: +1 (786) 643-2099 • www.aidynamic.pro</p>
+                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 20px 0 12px;" />
+                <p style="font-size: 11px; color: #64748b; line-height: 1.5;">
+                  AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • You are receiving this email because you requested the 2026 AI Automation Playbook at aidynamic.pro. To opt out of future emails, reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #94a3b8; text-decoration: underline;">click here to unsubscribe</a>.
+                </p>
               </div>
             `,
           }),

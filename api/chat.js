@@ -206,7 +206,7 @@ async function notifyFounderIfHandoff(prompt, history) {
           'api-key': BREVO_API_KEY,
         },
         body: JSON.stringify({
-          sender: { name: 'JAss AI Assistant', email: 'receptionist@aidynamic.pro' },
+          sender: { name: 'JAss AI Assistant — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
           to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
           subject: `🔔 [Web Chat Lead / Staff Request] Visitor Inquiry on AIDynamic.pro`,
           htmlContent: `

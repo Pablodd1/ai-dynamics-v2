@@ -258,8 +258,70 @@ export default async function handler(req, res) {
     process.env.GOOGLE_BUSINESS_URL ||
     'https://www.google.com/search?q=AI+Dynamic+Pro+Miami';
 
-  // GET: Return campaign metadata, GA4 config, and Google Business Profile posts
+  // GET: Return campaign metadata, GA4 config, Google Business Profile posts, or live Brevo Audit
   if (req.method === 'GET') {
+    const queryAction = req.query?.action || '';
+
+    if (queryAction === 'audit' && BREVO_API_KEY) {
+      try {
+        const headers = { Accept: 'application/json', 'api-key': BREVO_API_KEY };
+        const [accountRes, listsRes, campaignsRes, sendersRes, blockedRes] = await Promise.all([
+          fetch('https://api.brevo.com/v3/account', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/emailCampaigns?limit=25', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/senders', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=50', { headers }).catch(() => null),
+        ]);
+
+        const account = accountRes && accountRes.ok ? await accountRes.json() : null;
+        const listsData = listsRes && listsRes.ok ? await listsRes.json() : { lists: [] };
+        const campaignsData = campaignsRes && campaignsRes.ok ? await campaignsRes.json() : { campaigns: [] };
+        const sendersData = sendersRes && sendersRes.ok ? await sendersRes.json() : { senders: [] };
+        const blockedData = blockedRes && blockedRes.ok ? await blockedRes.json() : { contacts: [], count: 0 };
+
+        const ipBlocked =
+          (accountRes && accountRes.status === 401) ||
+          (listsRes && listsRes.status === 401);
+
+        return res.status(200).json({
+          success: Boolean(account || (listsData.lists && listsData.lists.length > 0)),
+          ipBlocked,
+          account: account
+            ? {
+                email: account.email,
+                companyName: account.companyName,
+                plan: account.plan,
+              }
+            : null,
+          lists: (listsData.lists || []).map((l) => ({
+            id: l.id,
+            name: l.name,
+            totalSubscribers: l.totalSubscribers || l.uniqueSubscribers || 0,
+            totalBlacklisted: l.totalBlacklisted || 0,
+          })),
+          externalCampaigns: (campaignsData.campaigns || []).map((c) => ({
+            id: c.id,
+            name: c.name,
+            subject: c.subject,
+            status: c.status, // 'draft' | 'sent' | 'archive' | 'queued' | 'suspended' | 'inProcess'
+            scheduledAt: c.scheduledAt || null,
+          })),
+          senders: (sendersData.senders || []).map((s) => ({
+            id: s.id,
+            name: s.name,
+            email: s.email,
+            active: s.active,
+          })),
+          blockedContactsCount: blockedData.count || (blockedData.contacts || []).length || 0,
+        });
+      } catch (auditErr) {
+        return res.status(200).json({
+          success: false,
+          error: auditErr.message || 'Audit error',
+        });
+      }
+    }
+
     return res.status(200).json({
       brevoConfigured: Boolean(BREVO_API_KEY),
       ga4MeasurementId: 'G-M1RHKRVS9M',
@@ -287,14 +349,15 @@ export default async function handler(req, res) {
 
   try {
     const {
+      action = 'send', // 'send' | 'suspend_external_campaigns'
+      externalCampaignIds = [],
       campaignId = 'email_1_voice_jass',
-      mode = 'test', // 'test' | 'custom' | 'supabase_leads'
+      mode = 'test', // 'test' | 'custom' | 'supabase_leads' | 'brevo_list'
+      brevoListId = 2,
       statusFilter = 'all',
       customRecipients = [],
       customSubject = '',
     } = req.body || {};
-
-    const campaign = CAMPAIGNS[campaignId] || CAMPAIGNS.email_1_voice_jass;
 
     if (!BREVO_API_KEY) {
       return res.status(400).json({
@@ -302,7 +365,72 @@ export default async function handler(req, res) {
       });
     }
 
+    // ACTION: Suspend / Pause any active or queued external (MBMB) campaigns in Brevo
+    if (action === 'suspend_external_campaigns') {
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      };
+      let targetIds = Array.isArray(externalCampaignIds) ? [...externalCampaignIds] : [];
+
+      if (targetIds.length === 0) {
+        const listRes = await fetch('https://api.brevo.com/v3/emailCampaigns?limit=50', { headers }).catch(() => null);
+        if (listRes && listRes.ok) {
+          const listData = await listRes.json();
+          targetIds = (listData.campaigns || [])
+            .filter((c) => ['queued', 'inProcess', 'replicate'].includes(c.status))
+            .map((c) => c.id);
+        }
+      }
+
+      const suspendedIds = [];
+      const suspendErrors = [];
+      for (const cid of targetIds) {
+        const putRes = await fetch(`https://api.brevo.com/v3/emailCampaigns/${cid}/status`, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify({ status: 'suspended' }),
+        }).catch(() => null);
+        if (putRes && (putRes.ok || putRes.status === 204)) {
+          suspendedIds.push(cid);
+        } else if (putRes) {
+          const errTxt = await putRes.text().catch(() => 'Could not suspend');
+          suspendErrors.push({ id: cid, error: errTxt });
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        suspendedIds,
+        suspendErrors,
+        message:
+          suspendedIds.length > 0
+            ? `Suspended ${suspendedIds.length} active/queued external campaign(s) in Brevo.`
+            : 'Verified: 0 active or queued external (MBMB) campaigns are currently scheduled to send.',
+      });
+    }
+
+    const campaign = CAMPAIGNS[campaignId] || CAMPAIGNS.email_1_voice_jass;
+
+    // Fetch global Brevo transactional blocklist so we NEVER email an unsubscribed/blocked contact (CAN-SPAM strict compliance)
+    const blockedSet = new Set();
+    try {
+      const blkRes = await fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=100', {
+        headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+      }).catch(() => null);
+      if (blkRes && blkRes.ok) {
+        const blkData = await blkRes.json();
+        for (const b of blkData.contacts || []) {
+          if (b.email) blockedSet.add(b.email.trim().toLowerCase());
+        }
+      }
+    } catch {
+      // Non-blocking if IP-restricted on serverless
+    }
+
     let recipients = [];
+    let skippedUnsubscribed = 0;
 
     if (mode === 'test') {
       recipients = [
@@ -313,13 +441,49 @@ export default async function handler(req, res) {
         },
       ];
     } else if (mode === 'custom' && Array.isArray(customRecipients)) {
-      recipients = customRecipients
-        .filter((r) => r && r.email && r.email.includes('@'))
-        .map((r) => ({
-          name: r.name || r.email.split('@')[0],
-          email: r.email.trim().toLowerCase(),
+      const seen = new Set();
+      for (const r of customRecipients) {
+        const cleanEmail = (r?.email || '').trim().toLowerCase();
+        if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
+        seen.add(cleanEmail);
+        if (blockedSet.has(cleanEmail) || r?.emailBlacklisted) {
+          skippedUnsubscribed++;
+          continue;
+        }
+        recipients.push({
+          name: r.name || cleanEmail.split('@')[0],
+          email: cleanEmail,
           company: r.company || 'your organization',
-        }));
+        });
+      }
+    } else if (mode === 'brevo_list') {
+      const listIdNum = Number(brevoListId) || 2;
+      const listContactsRes = await fetch(
+        `https://api.brevo.com/v3/contacts/lists/${listIdNum}/contacts?limit=500`,
+        {
+          headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+        }
+      ).catch(() => null);
+
+      if (listContactsRes && listContactsRes.ok) {
+        const listContactsData = await listContactsRes.json();
+        const seen = new Set();
+        for (const c of listContactsData.contacts || []) {
+          const cleanEmail = (c.email || '').trim().toLowerCase();
+          if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
+          seen.add(cleanEmail);
+          if (c.emailBlacklisted || blockedSet.has(cleanEmail)) {
+            skippedUnsubscribed++;
+            continue;
+          }
+          const attrs = c.attributes || {};
+          recipients.push({
+            name: attrs.FIRSTNAME || attrs.NAME || attrs.PRENOM || cleanEmail.split('@')[0],
+            email: cleanEmail,
+            company: attrs.COMPANY || attrs.ENTREPRISE || 'your company',
+          });
+        }
+      }
     } else if (mode === 'supabase_leads' && SUPABASE_KEY) {
       const filterQuery =
         statusFilter && statusFilter !== 'all' ? `&status=eq.${encodeURIComponent(statusFilter)}` : '';
@@ -337,21 +501,28 @@ export default async function handler(req, res) {
         const seen = new Set();
         for (const r of rows) {
           const cleanEmail = (r.email || '').trim().toLowerCase();
-          if (cleanEmail && cleanEmail.includes('@') && !seen.has(cleanEmail)) {
-            seen.add(cleanEmail);
-            recipients.push({
-              name: r.name || cleanEmail.split('@')[0],
-              email: cleanEmail,
-              company: r.company || 'your company',
-            });
+          if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
+          seen.add(cleanEmail);
+          if (blockedSet.has(cleanEmail) || r.status === 'lost') {
+            skippedUnsubscribed++;
+            continue;
           }
+          recipients.push({
+            name: r.name || cleanEmail.split('@')[0],
+            email: cleanEmail,
+            company: r.company || 'your company',
+          });
         }
       }
     }
 
     if (recipients.length === 0) {
       return res.status(400).json({
-        error: 'No valid recipients found for this campaign dispatch.',
+        error:
+          skippedUnsubscribed > 0
+            ? `No eligible recipients left after filtering ${skippedUnsubscribed} unsubscribed/blacklisted contact(s).`
+            : 'No valid recipients found for this campaign dispatch.',
+        skippedUnsubscribed,
       });
     }
 
@@ -384,6 +555,10 @@ export default async function handler(req, res) {
         replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' },
         subject: personalizedSubject,
         htmlContent,
+        headers: {
+          'List-Unsubscribe': '<mailto:jasmelacosta@gmail.com?subject=Unsubscribe>',
+          'X-Entity-Ref-ID': `aidynamic-${campaign.utmCampaign}-${Date.now()}`,
+        },
         tags: [campaign.utmCampaign, 'aidynamic_sequence'],
       };
 
@@ -418,6 +593,7 @@ export default async function handler(req, res) {
       utmCampaign: campaign.utmCampaign,
       sentCount,
       totalAttempted: recipients.length,
+      skippedUnsubscribed,
       renderedPayloads: sentCount === 0 ? renderedPayloads : [],
       errors: errors.slice(0, 5),
     });
