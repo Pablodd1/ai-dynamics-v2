@@ -186,39 +186,73 @@ function matchIntentAndStudioAudio(userText) {
       };
 }
 
-// Asynchronously notify founder if visitor leaves contact info or asks for staff
+// Asynchronously notify founder and log to Supabase CRM if visitor leaves contact info or asks for staff
 async function notifyFounderIfHandoff(prompt, history) {
   const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '';
-  if (!BREVO_API_KEY) return;
+  const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co';
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
   const text = prompt || '';
-  const hasEmail = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(text);
-  const hasPhone = /(\+?\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}/.test(text);
-  const hasHandoffWord = /\b(human|staff|call me|speak with|jasmel|humano|persona|llámame|llamarme|contacto)\b/i.test(text);
+  const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+  const phoneMatch = text.match(/(\+?\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}/);
+  const hasEmail = Boolean(emailMatch);
+  const hasPhone = Boolean(phoneMatch);
+  const hasHandoffWord = /\b(human|staff|call me|speak with|jasmel|humano|persona|llámame|llamarme|contacto|audit|auditoría|auditoria|consult)\b/i.test(text);
 
   if (hasEmail || hasPhone || hasHandoffWord) {
-    try {
-      await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'api-key': BREVO_API_KEY,
-        },
-        body: JSON.stringify({
-          sender: { name: 'JAss AI Assistant — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
-          to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
-          subject: `🔔 [Web Chat Lead / Staff Request] Visitor Inquiry on AIDynamic.pro`,
-          htmlContent: `
-            <h2>New Inquiry on AIDynamic.pro</h2>
-            <p><strong>Visitor Message:</strong> ${text}</p>
-            <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
-            <p><strong>Action Recommended:</strong> Check chat inquiry or call back promptly.</p>
-          `,
-        }),
-      });
-    } catch (e) {
-      console.warn('[Chat API] Lead notification error:', e.message);
+    // 1. Save to Supabase CRM (`aidynamic_leads`) if email or phone is present
+    if (SUPABASE_KEY && (hasEmail || hasPhone)) {
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/aidynamic_leads`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            name: 'JAss Chat Visitor',
+            email: emailMatch ? emailMatch[0].trim().toLowerCase() : `phone-lead-${Date.now()}@aidynamic.pro`,
+            phone: phoneMatch ? phoneMatch[0].trim() : null,
+            service_interest: ['JAss Live Chat Inquiry'],
+            status: 'new',
+            source: 'jass_ai_chat_widget',
+            notes: `Chat Message: ${text}`,
+          }),
+        });
+      } catch (sbErr) {
+        console.warn('[Chat API] Supabase lead save warning:', sbErr.message);
+      }
+    }
+
+    // 2. Email instant alert to Jasmel via Brevo
+    if (BREVO_API_KEY) {
+      try {
+        await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            sender: { name: 'JAss AI Assistant — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+            to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
+            subject: `🔔 [JAss Live Chat Lead] Visitor Inquiry on AIDynamic.pro`,
+            htmlContent: `
+              <h2>New Inquiry via JAss AI Assistant on AIDynamic.pro</h2>
+              <p><strong>Visitor Message:</strong> ${text}</p>
+              <p><strong>Extracted Email:</strong> ${emailMatch ? emailMatch[0] : 'Not provided in this message'}</p>
+              <p><strong>Extracted Phone:</strong> ${phoneMatch ? phoneMatch[0] : 'Not provided in this message'}</p>
+              <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+              <p><strong>Action Recommended:</strong> Check /admin CRM or follow up promptly.</p>
+            `,
+          }),
+        });
+      } catch (e) {
+        console.warn('[Chat API] Lead notification error:', e.message);
+      }
     }
   }
 }
