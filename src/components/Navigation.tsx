@@ -1,9 +1,26 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, LogOut, LayoutDashboard, Shield, Settings } from 'lucide-react'
+import {
+  Menu,
+  X,
+  LogOut,
+  LayoutDashboard,
+  Shield,
+  Settings,
+  ChevronDown,
+  Cpu,
+  Layers,
+  PhoneCall,
+  Coins,
+  Workflow,
+  BookOpen,
+  Users2,
+  MapPin,
+  Lock,
+  ArrowRight
+} from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import LanguageToggle from '../i18n/LanguageToggle'
-import { useI18n } from '../i18n/I18nContext'
 import { useAuth } from '../context/AuthContext'
 import AILogo from './AILogo'
 
@@ -11,8 +28,9 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [activeMenu, setActiveMenu] = useState<'solutions' | 'company' | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const { t } = useI18n()
+  const menuTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const { user, profile, isAdmin, signOut } = useAuth()
   const navigate = useNavigate()
 
@@ -40,18 +58,74 @@ const Navigation = () => {
     navigate('/')
   }
 
+  const handleMouseEnter = (menu: 'solutions' | 'company') => {
+    if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current)
+    setActiveMenu(menu)
+  }
+
+  const handleMouseLeave = () => {
+    menuTimeoutRef.current = setTimeout(() => {
+      setActiveMenu(null)
+    }, 180)
+  }
+
   const initials = profile?.full_name
     ? profile.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
     : user?.email?.[0].toUpperCase() || 'U'
 
-  const navLinks = [
-    { label: 'Voice Demo', href: '/#call-simulator' },
-    { label: t('nav.services') as string, href: '/#services' },
-    { label: 'Projects & Systems', href: '/projects' },
-    { label: 'Pricing', href: '/#pricing' },
-    { label: 'Our Process', href: '/process' },
-    { label: 'Blog & Intel', href: '/blog' },
-    { label: t('nav.contact') as string, href: '/#contact' },
+  // Divided Top Menu Groups (Group 1: Solutions & Systems | Group 2: Company & Process)
+  const solutionsGroup = [
+    {
+      title: 'Services & AI Consulting',
+      desc: 'Cost-reduction audits, workflow automation & staff training',
+      href: '/#services',
+      icon: Cpu,
+    },
+    {
+      title: '21 Deployed AI Systems',
+      desc: 'Computer vision, autonomous agents, IoT & enterprise apps',
+      href: '/projects',
+      icon: Layers,
+    },
+    {
+      title: '24/7 AI Voice Demo (JAss)',
+      desc: 'Test our sub-second bilingual receptionist live in browser',
+      href: '/#call-simulator',
+      icon: PhoneCall,
+    },
+    {
+      title: 'Pricing & $99 Feasibility Audit',
+      desc: 'Transparent ROI packages from turnkey to enterprise builds',
+      href: '/#pricing',
+      icon: Coins,
+    },
+  ]
+
+  const companyGroup = [
+    {
+      title: 'Our 3-Step Process',
+      desc: 'How we audit, prototype, and deploy custom AI in 14-30 days',
+      href: '/process',
+      icon: Workflow,
+    },
+    {
+      title: 'Blog & Market Intel',
+      desc: 'Latest applied AI playbooks, ROI calculations & tech breakdowns',
+      href: '/blog',
+      icon: BookOpen,
+    },
+    {
+      title: 'Leadership & Founders',
+      desc: 'Systems architecture & enterprise track record in Miami',
+      href: '/founders',
+      icon: Users2,
+    },
+    {
+      title: 'Contact Miami HQ',
+      desc: 'Brickell Financial District office, direct line & inquiries',
+      href: '/#contact',
+      icon: MapPin,
+    },
   ]
 
   return (
@@ -63,10 +137,12 @@ const Navigation = () => {
           isScrolled ? 'py-3' : 'py-5'
         }`}
       >
-        <div className={`absolute inset-0 transition-all duration-300 ${
-          isScrolled ? 'bg-dark/80 backdrop-blur-xl border-b border-white/10' : ''
-        }`} />
-        
+        <div
+          className={`absolute inset-0 transition-all duration-300 ${
+            isScrolled ? 'bg-dark/85 backdrop-blur-xl border-b border-white/10' : ''
+          }`}
+        />
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -74,41 +150,179 @@ const Navigation = () => {
               <AILogo className="w-10 h-10" showText showTagline />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-7">
-              {navLinks.map((link) => {
-                const isInternalRoute = link.href.startsWith('/') && !link.href.includes('#')
-                return isInternalRoute ? (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group"
-                  >
-                    {link.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
-                  </Link>
-                ) : (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group"
-                  >
-                    {link.label}
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
-                  </a>
-                )
-              })}
+            {/* Streamlined Desktop Navigation (Divided in Two Clean Dropdown Groups + Pricing) */}
+            <nav className="hidden md:flex items-center gap-6" onMouseLeave={handleMouseLeave}>
+              {/* Group 1: Solutions & Systems Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('solutions')}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActiveMenu(activeMenu === 'solutions' ? null : 'solutions')}
+                  className={`flex items-center gap-1.5 py-2 text-sm font-medium transition-colors ${
+                    activeMenu === 'solutions' ? 'text-luxury-champagne' : 'text-luxury-silver hover:text-white'
+                  }`}
+                >
+                  <span>Solutions & Systems</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      activeMenu === 'solutions' ? 'rotate-180 text-luxury-gold' : 'text-luxury-silver/60'
+                    }`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {activeMenu === 'solutions' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                      transition={{ duration: 0.16 }}
+                      className="absolute top-full -left-6 pt-2 w-[420px]"
+                    >
+                      <div className="p-3.5 rounded-2xl bg-[#090a10]/95 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.85)] grid gap-2">
+                        <div className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-luxury-gold flex items-center justify-between border-b border-white/10 pb-2">
+                          <span>AI Solutions & 21 Systems</span>
+                          <span className="text-[10px] text-luxury-silver/60">Live Production</span>
+                        </div>
+                        {solutionsGroup.map((item) => {
+                          const isInternal = item.href.startsWith('/') && !item.href.includes('#')
+                          const ItemIcon = item.icon
+                          const content = (
+                            <div className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/5 transition-all group">
+                              <div className="w-8 h-8 rounded-lg bg-luxury-gold/10 border border-luxury-gold/20 flex items-center justify-center text-luxury-gold group-hover:scale-105 group-hover:bg-luxury-gold group-hover:text-dark transition-all shrink-0">
+                                <ItemIcon className="w-4 h-4" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-semibold text-white group-hover:text-luxury-champagne transition-colors">
+                                  {item.title}
+                                </div>
+                                <div className="text-xs text-luxury-silver/80 line-clamp-1">
+                                  {item.desc}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                          return isInternal ? (
+                            <Link
+                              key={item.href}
+                              to={item.href}
+                              onClick={() => setActiveMenu(null)}
+                            >
+                              {content}
+                            </Link>
+                          ) : (
+                            <a
+                              key={item.href}
+                              href={item.href}
+                              onClick={() => setActiveMenu(null)}
+                            >
+                              {content}
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Group 2: Company & Process Dropdown */}
+              <div
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('company')}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActiveMenu(activeMenu === 'company' ? null : 'company')}
+                  className={`flex items-center gap-1.5 py-2 text-sm font-medium transition-colors ${
+                    activeMenu === 'company' ? 'text-luxury-champagne' : 'text-luxury-silver hover:text-white'
+                  }`}
+                >
+                  <span>Company & Process</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      activeMenu === 'company' ? 'rotate-180 text-luxury-gold' : 'text-luxury-silver/60'
+                    }`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {activeMenu === 'company' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                      transition={{ duration: 0.16 }}
+                      className="absolute top-full -left-6 pt-2 w-[400px]"
+                    >
+                      <div className="p-3.5 rounded-2xl bg-[#090a10]/95 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.85)] grid gap-2">
+                        <div className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-luxury-gold flex items-center justify-between border-b border-white/10 pb-2">
+                          <span>Methodology & Intel</span>
+                          <span className="text-[10px] text-luxury-silver/60">Miami, FL</span>
+                        </div>
+                        {companyGroup.map((item) => {
+                          const isInternal = item.href.startsWith('/') && !item.href.includes('#')
+                          const ItemIcon = item.icon
+                          const content = (
+                            <div className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-white/5 transition-all group">
+                              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-luxury-silver group-hover:scale-105 group-hover:bg-accent group-hover:text-dark transition-all shrink-0">
+                                <ItemIcon className="w-4 h-4" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="text-sm font-semibold text-white group-hover:text-luxury-champagne transition-colors">
+                                  {item.title}
+                                </div>
+                                <div className="text-xs text-luxury-silver/80 line-clamp-1">
+                                  {item.desc}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                          return isInternal ? (
+                            <Link
+                              key={item.href}
+                              to={item.href}
+                              onClick={() => setActiveMenu(null)}
+                            >
+                              {content}
+                            </Link>
+                          ) : (
+                            <a
+                              key={item.href}
+                              href={item.href}
+                              onClick={() => setActiveMenu(null)}
+                            >
+                              {content}
+                            </a>
+                          )
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Direct Quick Link: Pricing */}
+              <a
+                href="/#pricing"
+                className="text-sm text-luxury-silver hover:text-luxury-champagne transition-colors relative group py-2"
+              >
+                Pricing
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
+              </a>
             </nav>
 
-            {/* Right Side */}
-            <div className="flex items-center gap-4">
+            {/* Right Side (Language + Get Started CTA; "Log In" moved to bottom footer menu) */}
+            <div className="flex items-center gap-3.5">
               <LanguageToggle />
-              
+
               {user ? (
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setShowDropdown(!showDropdown)}
-                    className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-semibold hover:bg-accent/30 transition-all"
+                    className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-semibold hover:bg-accent/30 transition-all border border-accent/30"
                   >
                     {initials}
                   </button>
@@ -170,26 +384,20 @@ const Navigation = () => {
                   </AnimatePresence>
                 </div>
               ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="hidden sm:block text-sm text-luxury-silver hover:text-luxury-champagne transition-colors"
-                  >
-                    Log In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-dark text-sm font-semibold hover:bg-accent-400 transition-all"
-                  >
-                    Get Started
-                  </Link>
-                </>
+                <Link
+                  to="/booking"
+                  className="hidden sm:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-dark text-sm font-bold hover:bg-accent-400 hover:shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all"
+                >
+                  <span>Get Started</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               )}
 
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="md:hidden w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-white hover:border-luxury-gold/30 transition-colors"
+                aria-label="Toggle navigation menu"
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -198,7 +406,7 @@ const Navigation = () => {
         </div>
       </motion.header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu (Divided Cleanly into Two Categories) */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -207,115 +415,96 @@ const Navigation = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] md:hidden"
           >
-            <div className="absolute inset-0 bg-dark/95 backdrop-blur-xl" onClick={() => setIsMobileMenuOpen(false)} />
+            <div
+              className="absolute inset-0 bg-dark/95 backdrop-blur-xl"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
             <motion.nav
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute top-20 right-4 left-4 p-6 rounded-2xl border border-white/10 bg-dark-50/95 backdrop-blur-xl"
+              className="absolute top-20 right-4 left-4 max-h-[85vh] overflow-y-auto p-6 rounded-2xl border border-white/10 bg-[#090a10]/95 backdrop-blur-xl space-y-6 shadow-2xl"
             >
-              <div className="flex flex-col gap-4">
-                {navLinks.map((link, index) => {
-                  const isInternalRoute = link.href.startsWith('/') && !link.href.includes('#')
-                  return isInternalRoute ? (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.08 }}
-                    >
+              {/* Category 1: Solutions & Systems */}
+              <div>
+                <div className="text-xs font-mono uppercase tracking-wider text-luxury-gold pb-2 border-b border-white/10 mb-2">
+                  Solutions & Systems
+                </div>
+                <div className="flex flex-col gap-1">
+                  {solutionsGroup.map((item) => {
+                    const isInternal = item.href.startsWith('/') && !item.href.includes('#')
+                    return isInternal ? (
                       <Link
-                        to={link.href}
+                        key={item.href}
+                        to={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-lg text-luxury-silver hover:text-luxury-champagne transition-colors py-2 block font-medium"
+                        className="text-base text-white hover:text-luxury-champagne transition-colors py-2 block font-medium"
                       >
-                        {link.label}
+                        {item.title}
                       </Link>
-                    </motion.div>
-                  ) : (
-                    <motion.a
-                      key={link.href}
-                      href={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.08 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-lg text-luxury-silver hover:text-luxury-champagne transition-colors py-2 block font-medium"
-                    >
-                      {link.label}
-                    </motion.a>
-                  )
-                })}
+                    ) : (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-base text-white hover:text-luxury-champagne transition-colors py-2 block font-medium"
+                      >
+                        {item.title}
+                      </a>
+                    )
+                  })}
+                </div>
+              </div>
 
-                {user ? (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 }}
-                      className="pt-4 border-t border-white/10 space-y-2"
-                    >
+              {/* Category 2: Company & Process */}
+              <div>
+                <div className="text-xs font-mono uppercase tracking-wider text-luxury-gold pb-2 border-b border-white/10 mb-2">
+                  Company & Process
+                </div>
+                <div className="flex flex-col gap-1">
+                  {companyGroup.map((item) => {
+                    const isInternal = item.href.startsWith('/') && !item.href.includes('#')
+                    return isInternal ? (
                       <Link
-                        to="/dashboard"
+                        key={item.href}
+                        to={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center gap-2 text-luxury-silver hover:text-white py-2"
+                        className="text-base text-white hover:text-luxury-champagne transition-colors py-2 block font-medium"
                       >
-                        <LayoutDashboard className="w-4 h-4" />
-                        Dashboard
+                        {item.title}
                       </Link>
-                      <Link
-                        to="/profile"
+                    ) : (
+                      <a
+                        key={item.href}
+                        href={item.href}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center gap-2 text-luxury-silver hover:text-white py-2"
+                        className="text-base text-white hover:text-luxury-champagne transition-colors py-2 block font-medium"
                       >
-                        <Settings className="w-4 h-4" />
-                        Settings
-                      </Link>
-                      {isAdmin && (
-                        <Link
-                          to="/admin"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="flex items-center gap-2 text-luxury-silver hover:text-white py-2"
-                        >
-                          <Shield className="w-4 h-4" />
-                          Admin
-                        </Link>
-                      )}
-                      <button
-                        onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
-                        className="flex items-center gap-2 text-red-400 py-2"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        Logout
-                      </button>
-                    </motion.div>
-                  </>
-                ) : (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 }}
-                      className="pt-4 border-t border-white/10 flex flex-col gap-3"
-                    >
-                      <Link
-                        to="/login"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-center py-3 rounded-xl border border-white/10 text-luxury-silver hover:text-white hover:bg-white/5 transition-all"
-                      >
-                        Log In
-                      </Link>
-                      <Link
-                        to="/signup"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-center py-3 rounded-xl bg-accent text-dark font-semibold hover:bg-accent-400 transition-all"
-                      >
-                        Get Started
-                      </Link>
-                    </motion.div>
-                  </>
-                )}
+                        {item.title}
+                      </a>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Mobile Actions & Login Link at Bottom */}
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                <Link
+                  to="/booking"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-center py-3 rounded-xl bg-accent text-dark font-bold hover:bg-accent-400 transition-all"
+                >
+                  Get Started (Book Discovery)
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-center py-2.5 rounded-xl border border-white/10 text-luxury-silver hover:text-white hover:bg-white/5 transition-all text-sm flex items-center justify-center gap-2"
+                >
+                  <Lock className="w-4 h-4 text-luxury-gold" />
+                  <span>Client & Staff Log In</span>
+                </Link>
               </div>
             </motion.nav>
           </motion.div>

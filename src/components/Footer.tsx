@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Mail, Phone, MapPin, ExternalLink, Send } from 'lucide-react'
+import { Mail, Phone, MapPin, ExternalLink, Send, Lock } from 'lucide-react'
 import { useI18n } from '../i18n/I18nContext'
 import AILogo from './AILogo'
 
@@ -21,6 +21,7 @@ const Footer = () => {
       { label: 'Blog & Intel', href: '/blog' },
       { label: 'Our Process', href: '/process' },
       { label: 'Contact', href: '/#contact' },
+      { label: 'Client Portal / Log In', href: '/login', isLogin: true },
     ],
     ecosystem: [
       { label: 'Chat Building Innovation', href: 'https://www.chatbuildinginnovation.us/', external: true },
@@ -192,9 +193,19 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="py-6 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-luxury-silver/60">
-            © {new Date().getFullYear()} AI Dynamics. {t('footer.rights') as string}
-          </p>
+          <div className="flex flex-wrap items-center gap-3 text-sm text-luxury-silver/60">
+            <p>
+              © {new Date().getFullYear()} AI Dynamics. {t('footer.rights') as string}
+            </p>
+            <span className="hidden sm:inline text-white/20">•</span>
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-1.5 text-xs text-luxury-silver hover:text-luxury-champagne transition-colors font-medium px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 hover:border-luxury-gold/30"
+            >
+              <Lock className="w-3 h-3 text-luxury-gold" />
+              <span>Client Portal / Log In</span>
+            </Link>
+          </div>
 
           {/* Certifications */}
           <div className="flex items-center gap-4 text-xs text-luxury-silver/40">
