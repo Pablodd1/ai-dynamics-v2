@@ -58,6 +58,13 @@ interface BrevoExternalCampaign {
   scheduledAt: string | null
 }
 
+interface BrevoSenderMeta {
+  id: number
+  name: string
+  email: string
+  active: boolean
+}
+
 const statusColors: Record<LeadStatus, string> = {
   new: 'bg-blue-500/20 text-blue-400',
   contacted: 'bg-yellow-500/20 text-yellow-400',
@@ -91,6 +98,12 @@ export default function Admin() {
   const [brevoLists, setBrevoLists] = useState<BrevoListMeta[]>([])
   const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
   const [externalCampaigns, setExternalCampaigns] = useState<BrevoExternalCampaign[]>([])
+  const [brevoSenders, setBrevoSenders] = useState<BrevoSenderMeta[]>([])
+  const [selectedSenderEmail, setSelectedSenderEmail] = useState<string>('')
+  const [customSenderName, setCustomSenderName] = useState<string>('Jasmel Acosta — AI Dynamic Pro')
+  const [replyToEmail, setReplyToEmail] = useState<string>('jasmelacosta@gmail.com')
+  const [newSenderEmailInput, setNewSenderEmailInput] = useState<string>('jasmel@aidynamic.pro')
+  const [creatingSender, setCreatingSender] = useState<boolean>(false)
   const [brevoAccountEmail, setBrevoAccountEmail] = useState<string>('')
   const [blockedContactsCount, setBlockedContactsCount] = useState<number>(0)
   const [auditingBrevo, setAuditingBrevo] = useState(false)
@@ -104,6 +117,16 @@ export default function Admin() {
     message?: string
   } | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  const pickBestActiveSender = (sendersList: BrevoSenderMeta[]) => {
+    const active = sendersList.filter((s) => s && s.active && s.email)
+    const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'))
+    const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com')
+    if (aiDyn) return aiDyn.email
+    if (gmail) return gmail.email
+    if (active.length > 0) return active[0].email
+    return sendersList[0]?.email || 'jasmelacosta@gmail.com'
+  }
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -162,6 +185,12 @@ export default function Admin() {
         setBrevoLists(data.lists || [])
         if (data.lists?.length > 0) setSelectedBrevoListId(data.lists[0].id)
         setExternalCampaigns(data.externalCampaigns || [])
+        if (Array.isArray(data.senders)) {
+          setBrevoSenders(data.senders)
+          if (!selectedSenderEmail) {
+            setSelectedSenderEmail(pickBestActiveSender(data.senders))
+          }
+        }
         setBlockedContactsCount(data.blockedContactsCount || 0)
         setAuditingBrevo(false)
         return
@@ -171,11 +200,12 @@ export default function Admin() {
       const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
       if (clientKey) {
         const headers = { Accept: 'application/json', 'api-key': clientKey }
-        const [accR, listR, campR, blkR] = await Promise.all([
+        const [accR, listR, campR, blkR, sdrR] = await Promise.all([
           fetch('https://api.brevo.com/v3/account', { headers }).catch(() => null),
           fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null),
           fetch('https://api.brevo.com/v3/emailCampaigns?limit=25', { headers }).catch(() => null),
           fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=50', { headers }).catch(() => null),
+          fetch('https://api.brevo.com/v3/senders', { headers }).catch(() => null),
         ])
         if (accR && accR.ok) {
           const acc = await accR.json()
@@ -208,11 +238,96 @@ export default function Admin() {
           const bd = await blkR.json()
           setBlockedContactsCount(bd.count || (bd.contacts || []).length || 0)
         }
+        if (sdrR && sdrR.ok) {
+          const sd = await sdrR.json()
+          const mappedSenders: BrevoSenderMeta[] = (sd.senders || []).map((s: any) => ({
+            id: s.id,
+            name: s.name,
+            email: s.email,
+            active: Boolean(s.active),
+          }))
+          setBrevoSenders(mappedSenders)
+          if (!selectedSenderEmail && mappedSenders.length > 0) {
+            setSelectedSenderEmail(pickBestActiveSender(mappedSenders))
+          }
+        }
       }
     } catch (err) {
       console.warn('Brevo audit error:', err)
     } finally {
       setAuditingBrevo(false)
+    }
+  }
+
+  const handleCreateBrevoSender = async (emailToVerify?: string) => {
+    const targetEmail = (emailToVerify || newSenderEmailInput || 'jasmelacosta@gmail.com').trim().toLowerCase()
+    if (!targetEmail.includes('@')) return
+    setCreatingSender(true)
+    setCampaignResult(null)
+    try {
+      const res = await fetch('/api/email-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create_sender',
+          senderEmail: targetEmail,
+          senderName: customSenderName || 'Jasmel Acosta — AI Dynamic Pro',
+        }),
+      })
+      const data = await res.json()
+      if (data && data.success) {
+        setCampaignResult({
+          success: true,
+          message:
+            data.message ||
+            `Verification link sent to ${targetEmail}! Click the confirmation link in your inbox, then click "Audit Brevo" above.`,
+        })
+        await runBrevoAudit()
+        setCreatingSender(false)
+        return
+      }
+
+      // Client-side fallback if Vercel serverless IP is restricted in Brevo
+      const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
+      if (clientKey) {
+        const directRes = await fetch('https://api.brevo.com/v3/senders', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': clientKey,
+          },
+          body: JSON.stringify({
+            name: customSenderName || 'Jasmel Acosta — AI Dynamic Pro',
+            email: targetEmail,
+          }),
+        })
+        if (directRes.ok) {
+          setCampaignResult({
+            success: true,
+            message: `✅ Brevo verification email sent to ${targetEmail}! Open your inbox and click "Confirm my email address", then click "Audit Brevo".`,
+          })
+          await runBrevoAudit()
+        } else {
+          const errTxt = await directRes.text().catch(() => 'Could not add sender')
+          setCampaignResult({
+            success: false,
+            message: `Brevo response for ${targetEmail}: ${errTxt}`,
+          })
+        }
+      } else {
+        setCampaignResult({
+          success: false,
+          message: data?.message || 'Could not create sender in Brevo.',
+        })
+      }
+    } catch (err: any) {
+      setCampaignResult({
+        success: false,
+        message: err.message || 'Error creating sender in Brevo.',
+      })
+    } finally {
+      setCreatingSender(false)
     }
   }
 
@@ -384,6 +499,9 @@ export default function Admin() {
       }
 
       const isoSchedule = scheduledAtInput ? new Date(scheduledAtInput).toISOString() : ''
+      const effectiveSenderEmail = selectedSenderEmail || pickBestActiveSender(brevoSenders)
+      const effectiveSenderName = customSenderName.trim() || 'Jasmel Acosta — AI Dynamic Pro'
+      const effectiveReplyTo = replyToEmail.trim() || 'jasmelacosta@gmail.com'
 
       const res = await fetch('/api/email-campaign', {
         method: 'POST',
@@ -399,6 +517,9 @@ export default function Admin() {
           customRecipients,
           customSubject: customSubject.trim(),
           scheduledAt: isoSchedule,
+          senderEmail: effectiveSenderEmail,
+          senderName: effectiveSenderName,
+          replyToEmail: effectiveReplyTo,
         }),
       })
 
@@ -408,6 +529,11 @@ export default function Admin() {
       // Automatic Client-IP Fallback if Brevo blocks Vercel's rotating AWS IP
       if (finalSentCount === 0 && Array.isArray(data.renderedPayloads) && data.renderedPayloads.length > 0 && clientBrevoKey) {
         for (const payload of data.renderedPayloads) {
+          const updatedPayload = {
+            ...payload,
+            sender: { name: effectiveSenderName, email: effectiveSenderEmail },
+            replyTo: { name: effectiveSenderName, email: effectiveReplyTo },
+          }
           const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
             method: 'POST',
             headers: {
@@ -415,7 +541,7 @@ export default function Admin() {
               'Content-Type': 'application/json',
               'api-key': clientBrevoKey,
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify(updatedPayload),
           })
           if (directRes.ok) {
             finalSentCount++
@@ -427,7 +553,7 @@ export default function Admin() {
         AnalyticsEvents.emailCampaignSent(selectedCampaignId, finalSentCount)
         setCampaignResult({
           success: true,
-          message: `Dispatched "${data.campaignName}" to ${finalSentCount} recipient(s) via Brevo with GA4 UTM tag (${data.utmCampaign}).`,
+          message: `Dispatched "${data.campaignName}" to ${finalSentCount} recipient(s) from "${effectiveSenderName} <${effectiveSenderEmail}>" (Reply-To: ${effectiveReplyTo}) with GA4 UTM tag (${data.utmCampaign}).`,
         })
       } else {
         setCampaignResult({
@@ -447,12 +573,19 @@ export default function Admin() {
 
   const handleQuickSendToLead = async (lead: Lead, campaignId = 'email_1_voice_jass') => {
     try {
+      const effectiveSenderEmail = selectedSenderEmail || pickBestActiveSender(brevoSenders)
+      const effectiveSenderName = customSenderName.trim() || 'Jasmel Acosta — AI Dynamic Pro'
+      const effectiveReplyTo = replyToEmail.trim() || 'jasmelacosta@gmail.com'
+
       const res = await fetch('/api/email-campaign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           campaignId,
           mode: 'custom',
+          senderEmail: effectiveSenderEmail,
+          senderName: effectiveSenderName,
+          replyToEmail: effectiveReplyTo,
           customRecipients: [
             {
               name: lead.name,
@@ -468,6 +601,11 @@ export default function Admin() {
         const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
         if (sent === 0 && Array.isArray(data.renderedPayloads) && clientBrevoKey) {
           for (const payload of data.renderedPayloads) {
+            const updatedPayload = {
+              ...payload,
+              sender: { name: effectiveSenderName, email: effectiveSenderEmail },
+              replyTo: { name: effectiveSenderName, email: effectiveReplyTo },
+            }
             const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
               method: 'POST',
               headers: {
@@ -475,7 +613,7 @@ export default function Admin() {
                 'Content-Type': 'application/json',
                 'api-key': clientBrevoKey,
               },
-              body: JSON.stringify(payload),
+              body: JSON.stringify(updatedPayload),
             })
             if (directRes.ok) sent++
           }
@@ -871,6 +1009,136 @@ export default function Admin() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Brevo Verified Sender & Free @aidynamic.pro Setup Manager */}
+            <div className="bg-dark-50/70 border border-luxury-gold/30 rounded-2xl p-5 space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <span className="px-2.5 py-0.5 rounded-full bg-luxury-gold/20 text-luxury-gold border border-luxury-gold/40 text-[11px] font-bold uppercase tracking-wider">
+                    ✉️ Brevo Sender & Reply-To Routing (No Paid @aidynamic.pro Inbox Needed)
+                  </span>
+                  <h3 className="text-base font-bold text-white mt-1.5">
+                    Active Brevo Sender Identity & 1-Click Sender Verification
+                  </h3>
+                  <p className="text-xs text-luxury-silver mt-0.5">
+                    Every campaign displays From Name <strong>&ldquo;{customSenderName}&rdquo;</strong> and routes all replies straight to <strong>{replyToEmail}</strong>. Select any verified sender on your Brevo account below, or add a new sender with 1 click.
+                  </p>
+                </div>
+              </div>
+
+              {/* Verified Senders Detected in Brevo */}
+              <div>
+                <div className="text-xs font-semibold text-luxury-silver mb-2">
+                  Verified Senders in Your Brevo Account ({brevoSenders.length > 0 ? brevoSenders.length : 'Auto-detects on send'}):
+                </div>
+                {brevoSenders.length > 0 ? (
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    {brevoSenders.map((s) => (
+                      <button
+                        key={s.id || s.email}
+                        type="button"
+                        onClick={() => setSelectedSenderEmail(s.email)}
+                        className={`p-3 rounded-xl border text-left transition-all flex items-center justify-between gap-2 ${
+                          selectedSenderEmail === s.email
+                            ? 'bg-accent/15 border-accent text-white'
+                            : 'bg-black/40 border-white/10 text-luxury-silver hover:bg-white/10'
+                        }`}
+                      >
+                        <div className="truncate">
+                          <div className="text-xs font-bold text-white truncate">{s.email}</div>
+                          <div className="text-[11px] text-luxury-silver truncate">
+                            Overrides Name → {customSenderName}
+                          </div>
+                        </div>
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase shrink-0 ${
+                            s.active
+                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                              : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                          }`}
+                        >
+                          {s.active ? '✓ Verified' : 'Pending Click'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-black/40 border border-white/10 text-xs text-luxury-silver">
+                    Click <strong>&ldquo;🔄 Audit Brevo Lists & Campaigns&rdquo;</strong> above to view your active Brevo senders, or enter a sender below. (Our backend also auto-selects your first active verified Brevo sender automatically when sending.)
+                  </div>
+                )}
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-3 pt-2 border-t border-white/10">
+                <div>
+                  <label className="block text-[11px] uppercase tracking-wider text-luxury-silver font-semibold mb-1">
+                    From Display Name (What Recipients See)
+                  </label>
+                  <input
+                    type="text"
+                    value={customSenderName}
+                    onChange={(e) => setCustomSenderName(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:outline-none focus:border-accent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] uppercase tracking-wider text-luxury-silver font-semibold mb-1">
+                    Active Brevo Sender Email
+                  </label>
+                  <input
+                    type="email"
+                    value={selectedSenderEmail}
+                    onChange={(e) => setSelectedSenderEmail(e.target.value)}
+                    placeholder="Auto-picks active verified Brevo sender"
+                    className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:outline-none focus:border-accent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] uppercase tracking-wider text-luxury-silver font-semibold mb-1">
+                    Reply-To Inbox (Where Replies Land)
+                  </label>
+                  <input
+                    type="email"
+                    value={replyToEmail}
+                    onChange={(e) => setReplyToEmail(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:outline-none focus:border-accent"
+                  />
+                </div>
+              </div>
+
+              {/* 1-Click Add / Verify Sender in Brevo */}
+              <div className="p-3.5 rounded-xl bg-black/40 border border-white/10 flex flex-wrap items-center justify-between gap-3">
+                <div className="text-xs text-luxury-silver max-w-2xl">
+                  <strong className="text-white">Want to verify <code className="text-emerald-400">jasmelacosta@gmail.com</code> or a free <code className="text-emerald-400">jasmel@aidynamic.pro</code> forwarder in Brevo?</strong>{' '}
+                  Since <code className="text-white">aidynamic.pro</code> uses Namecheap BasicDNS, turn on free <strong>Redirect Email</strong> (<code className="text-white">jasmel@aidynamic.pro → jasmelacosta@gmail.com</code>) in Namecheap, then click below to send Brevo&apos;s 1-click verification email:
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <input
+                    type="email"
+                    value={newSenderEmailInput}
+                    onChange={(e) => setNewSenderEmailInput(e.target.value)}
+                    placeholder="jasmel@aidynamic.pro"
+                    className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/15 text-white text-xs focus:outline-none focus:border-accent"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleCreateBrevoSender(newSenderEmailInput)}
+                    disabled={creatingSender}
+                    className="px-3 py-1.5 rounded-lg bg-luxury-gold text-dark font-bold text-xs hover:brightness-110 transition-all disabled:opacity-50"
+                  >
+                    {creatingSender ? 'Sending...' : '➕ Verify This Email in Brevo'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleCreateBrevoSender('jasmelacosta@gmail.com')}
+                    disabled={creatingSender}
+                    className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-all disabled:opacity-50"
+                  >
+                    Verify jasmelacosta@gmail.com
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-6">

@@ -57,6 +57,22 @@ export default async function handler(req, res) {
     // 2. Send notification email to founder via Brevo if configured
     if (BREVO_API_KEY) {
       try {
+        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com';
+        try {
+          const sdrR = await fetch('https://api.brevo.com/v3/senders', {
+            headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+          }).catch(() => null);
+          if (sdrR && sdrR.ok) {
+            const sdrD = await sdrR.json();
+            const active = (sdrD.senders || []).filter((s) => s && s.active && s.email);
+            const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'));
+            const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com');
+            if (aiDyn) resolvedSender = aiDyn.email;
+            else if (gmail) resolvedSender = gmail.email;
+            else if (active.length > 0) resolvedSender = active[0].email;
+          }
+        } catch {}
+
         await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
@@ -65,7 +81,7 @@ export default async function handler(req, res) {
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
-            sender: { name: 'AI Dynamic Pro Web', email: 'jasmelacosta@gmail.com' },
+            sender: { name: 'AI Dynamic Pro Web', email: resolvedSender },
             to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
             replyTo: { email: email, name: name || email },
             subject: `🚨 New Lead Inquiry from ${name || 'Website Visitor'} (${company || 'Direct'})`,
@@ -91,7 +107,8 @@ export default async function handler(req, res) {
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
-            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: resolvedSender },
+            replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta — AI Dynamic Pro' },
             to: [{ email: email.trim().toLowerCase(), name: name || email }],
             subject: 'We received your message — AI Dynamic Pro (Miami)',
             htmlContent: `

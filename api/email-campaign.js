@@ -364,7 +364,7 @@ export default async function handler(req, res) {
 
   try {
     const {
-      action = 'send', // 'send' | 'suspend_external_campaigns' | 'resume_external_campaigns'
+      action = 'send', // 'send' | 'suspend_external_campaigns' | 'resume_external_campaigns' | 'create_sender'
       externalCampaignIds = [],
       campaignId = 'email_1_voice_jass',
       mode = 'test', // 'test' | 'custom' | 'supabase_leads' | 'brevo_list' | 'all_brevo_contacts'
@@ -373,11 +373,47 @@ export default async function handler(req, res) {
       customRecipients = [],
       customSubject = '',
       scheduledAt = '', // Optional ISO-8601 future timestamp e.g. '2026-11-03T10:15:00-05:00'
+      senderEmail = '', // Optional verified Brevo sender email override
+      senderName = 'Jasmel Acosta — AI Dynamic Pro',
+      replyToEmail = 'jasmelacosta@gmail.com',
     } = req.body || {};
 
     if (!BREVO_API_KEY) {
       return res.status(400).json({
         error: 'BREVO_API_KEY / VITE_BREVO_API_KEY is not configured in environment variables.',
+      });
+    }
+
+    // ACTION: Create & trigger verification for a new Brevo Sender (e.g. jasmel@aidynamic.pro or jasmelacosta@gmail.com)
+    if (action === 'create_sender') {
+      const targetEmail = (senderEmail || 'jasmelacosta@gmail.com').trim().toLowerCase();
+      const targetName = (senderName || 'Jasmel Acosta — AI Dynamic Pro').trim();
+      const createRes = await fetch('https://api.brevo.com/v3/senders', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'api-key': BREVO_API_KEY,
+        },
+        body: JSON.stringify({
+          name: targetName,
+          email: targetEmail,
+        }),
+      }).catch(() => null);
+
+      if (createRes && createRes.ok) {
+        const created = await createRes.json().catch(() => ({}));
+        return res.status(200).json({
+          success: true,
+          sender: { id: created.id, name: targetName, email: targetEmail },
+          message: `Verification email sent to ${targetEmail}! Open your inbox and click the Brevo confirmation link to activate this sender.`,
+        });
+      }
+      const errTxt = createRes ? await createRes.text().catch(() => 'Could not create sender') : 'Network error';
+      return res.status(200).json({
+        success: false,
+        error: errTxt,
+        message: `Could not create sender from server (${errTxt}). Trying client-side fallback...`,
       });
     }
 
@@ -604,6 +640,41 @@ export default async function handler(req, res) {
       });
     }
 
+    // Resolve verified active sender from Brevo so campaigns never fail due to an unverified sender address
+    let resolvedSenderEmail = (senderEmail || '').trim().toLowerCase();
+    const resolvedSenderName = (senderName || 'Jasmel Acosta — AI Dynamic Pro').trim();
+    const resolvedReplyTo = (replyToEmail || 'jasmelacosta@gmail.com').trim().toLowerCase();
+
+    if (!resolvedSenderEmail) {
+      try {
+        const sdrRes = await fetch('https://api.brevo.com/v3/senders', {
+          headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+        }).catch(() => null);
+        if (sdrRes && sdrRes.ok) {
+          const sdrData = await sdrRes.json();
+          const activeSenders = (sdrData.senders || []).filter((s) => s && s.active && s.email);
+          const aiDynamicSender = activeSenders.find((s) =>
+            s.email.toLowerCase().endsWith('@aidynamic.pro')
+          );
+          const gmailSender = activeSenders.find(
+            (s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com'
+          );
+          if (aiDynamicSender) {
+            resolvedSenderEmail = aiDynamicSender.email.trim().toLowerCase();
+          } else if (gmailSender) {
+            resolvedSenderEmail = gmailSender.email.trim().toLowerCase();
+          } else if (activeSenders.length > 0) {
+            resolvedSenderEmail = activeSenders[0].email.trim().toLowerCase();
+          }
+        }
+      } catch {
+        // Fallback if IP restricted
+      }
+    }
+    if (!resolvedSenderEmail) {
+      resolvedSenderEmail = 'jasmelacosta@gmail.com';
+    }
+
     let sentCount = 0;
     const errors = [];
     const renderedPayloads = [];
@@ -628,14 +699,14 @@ export default async function handler(req, res) {
       });
 
       const brevoPayload = {
-        sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+        sender: { name: resolvedSenderName, email: resolvedSenderEmail },
         to: [{ email: recipient.email, name: recipient.name }],
-        replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' },
+        replyTo: { email: resolvedReplyTo, name: resolvedSenderName },
         subject: personalizedSubject,
         htmlContent,
         ...(scheduledAt ? { scheduledAt } : {}),
         headers: {
-          'List-Unsubscribe': '<mailto:jasmelacosta@gmail.com?subject=Unsubscribe>',
+          'List-Unsubscribe': `<mailto:${resolvedReplyTo}?subject=Unsubscribe>`,
           'X-Entity-Ref-ID': `aidynamic-${campaign.utmCampaign}-${Date.now()}`,
         },
         tags: [campaign.utmCampaign, 'aidynamic_sequence'],
@@ -670,6 +741,8 @@ export default async function handler(req, res) {
       campaignId: campaign.id,
       campaignName: campaign.name,
       utmCampaign: campaign.utmCampaign,
+      senderUsed: resolvedSenderEmail,
+      replyToUsed: resolvedReplyTo,
       sentCount,
       totalAttempted: recipients.length,
       skippedUnsubscribed,

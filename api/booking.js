@@ -145,6 +145,22 @@ export default async function handler(req, res) {
   // ─── BREVO EMAILS ───
   if (brevoApiKey) {
     try {
+      let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com'
+      try {
+        const sdrR = await fetch('https://api.brevo.com/v3/senders', {
+          headers: { accept: 'application/json', 'api-key': brevoApiKey },
+        }).catch(() => null)
+        if (sdrR && sdrR.ok) {
+          const sdrD = await sdrR.json()
+          const active = (sdrD.senders || []).filter((s) => s && s.active && s.email)
+          const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'))
+          const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com')
+          if (aiDyn) resolvedSender = aiDyn.email
+          else if (gmail) resolvedSender = gmail.email
+          else if (active.length > 0) resolvedSender = active[0].email
+        }
+      } catch {}
+
       // 1. Notify Jasmel
       await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
@@ -154,7 +170,8 @@ export default async function handler(req, res) {
           'content-type': 'application/json'
         },
         body: JSON.stringify({
-          sender: { name: 'AI Dynamics Pro', email: 'jasmelacosta@gmail.com' },
+          sender: { name: 'AI Dynamic Pro', email: resolvedSender },
+          replyTo: { email: email, name: name || email },
           to: [{ email: 'jasmelacosta@gmail.com' }],
           subject: `New Booking: ${service} — ${name}`,
           htmlContent: `
@@ -185,7 +202,8 @@ export default async function handler(req, res) {
           'content-type': 'application/json'
         },
         body: JSON.stringify({
-          sender: { name: 'AI Dynamics Pro', email: 'jasmelacosta@gmail.com' },
+          sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: resolvedSender },
+          replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta — AI Dynamic Pro' },
           to: [{ email }],
           subject: `Booking Request Received — ${service}`,
           htmlContent: `

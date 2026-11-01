@@ -76,6 +76,22 @@ export default async function handler(req, res) {
         console.log('[Lead API] Brevo Response:', brevoRes.status, brevoData);
 
         // Send automated Playbook delivery + $99 Audit welcome email with GA4 UTM tracking
+        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com';
+        try {
+          const sdrR = await fetch('https://api.brevo.com/v3/senders', {
+            headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+          }).catch(() => null);
+          if (sdrR && sdrR.ok) {
+            const sdrD = await sdrR.json();
+            const active = (sdrD.senders || []).filter((s) => s && s.active && s.email);
+            const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'));
+            const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com');
+            if (aiDyn) resolvedSender = aiDyn.email;
+            else if (gmail) resolvedSender = gmail.email;
+            else if (active.length > 0) resolvedSender = active[0].email;
+          }
+        } catch {}
+
         const utmBookingUrl = 'https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=playbook_welcome_audit99';
         await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
@@ -85,7 +101,8 @@ export default async function handler(req, res) {
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
-            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: 'jasmelacosta@gmail.com' },
+            sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: resolvedSender },
+            replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta — AI Dynamic Pro' },
             to: [{ email: email.trim().toLowerCase(), name: name || email.split('@')[0] }],
             subject: 'Your 2026 AI Automation Playbook + $99 Workflow Audit Special',
             htmlContent: `
