@@ -4,42 +4,46 @@
 const CAMPAIGNS = {
   email_1_voice_jass: {
     id: 'email_1_voice_jass',
-    name: 'Email #1 (Matches Post #1): The 12:30 PM & 5:15 PM Missed-Call Test + Live JAss Demo',
-    subject: 'quick question about {{company}}’s phone lines after 5pm',
+    name: 'Week 1 — Executive AI Consultation: Cut Operating Costs, Reduce Staff Overhead & Automate',
+    subject: 'cutting operating costs and automating manual work at {{company}}',
     utmCampaign: 'seq1_voice_jass',
-    description: 'Warm, conversational founder note inviting the prospect to test JAss live on aidynamic.pro and introducing the $99 Zero-Risk Audit.',
-    buildHtml: ({ name = 'there', company = 'your office', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
-        <p>Hey ${name},</p>
+    description: 'Executive founder note targeting company owners on payroll bloat, pitching AI Consultation ($99 Audit), Custom AI Solutions (with live JAss demo), and Corporate AI Training.',
+    buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
+        <p>Hi ${name},</p>
 
-        <p>I’m Jasmel, founder of <strong>AI Dynamic Pro</strong> here in Miami. I was looking at how businesses like <strong>${company}</strong> handle incoming calls during the lunch rush (12:00 – 1:30 PM) and after 5:00 PM, and wanted to share something wild we’ve been seeing across South Florida:</p>
+        <p>I’m Jasmel Acosta, Founder of <strong>AI Dynamic Pro</strong> here in Miami. When I sit down with company owners and executives at firms like <strong>${company}</strong>, the #1 challenge on their P&amp;L is almost always the same:</p>
 
-        <p><strong>38% of incoming calls hit voicemail</strong> during those windows—and 8 out of 10 people who get voicemail never leave a message. They just hang up and call the next company on Google.</p>
+        <p><strong>Payroll and operating overhead keep rising, while 60% to 80% of daily staff hours are spent on repetitive tasks that a machine should be doing automatically.</strong></p>
 
-        <p>Instead of sending you a boring pitch deck, I put our 24/7 bilingual (English &amp; Spanish) AI Executive Assistant — <strong>JAss</strong> — live right on our website so you can test it yourself in 30 seconds:</p>
+        <p>At <strong>AI Dynamic Pro</strong>, we are an Executive AI Consultancy &amp; Engineering Partner built around a simple objective—<strong>to cut your operating costs, automate everything possible, reduce staff overhead, and make your entire company run faster and leaner:</strong></p>
 
-        <p style="margin: 22px 0;">
-          👉 <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700; text-decoration: underline;">Click here to visit www.aidynamic.pro and talk live with JAss</a> <em>(tap the green microphone or chat button in the corner and ask anything in English or Spanish)</em>.
-        </p>
-
-        <p>If you want us to wire a custom version into <strong>${company}</strong>’s phone line and calendar—or figure out which repetitive admin chores are quietly eating up your team’s week—we’re doing a <strong>$99 AI Workflow &amp; Feasibility Audit</strong> this month.</p>
-
-        <div style="background: #f8fafc; border-left: 4px solid #0f172a; padding: 14px 18px; margin: 22px 0; border-radius: 6px; font-size: 15px;">
-          <strong>Our Zero-Risk Promise:</strong> 100% of the $99 is credited toward any custom app or staff training we do for you—and <strong>if we don’t uncover at least 15+ hours/month of wasted time to save your team, you pay $0.</strong>
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0f172a; padding: 16px 20px; margin: 20px 0; border-radius: 8px; font-size: 15px;">
+          <p style="margin: 0 0 10px 0;"><strong>1. Executive AI Consultation ($99 Efficiency Audit):</strong><br/>
+          We audit your departments from top to bottom, pinpoint where manual labor is bleeding money, and hand you a step-by-step blueprint of what to automate first.</p>
+          <p style="margin: 0 0 10px 0;"><strong>2. Custom AI Solutions &amp; Full Automation:</strong><br/>
+          We engineer and deploy custom AI systems that replace repetitive manual roles—from our 24/7 bilingual AI voice &amp; chat receptionist (<strong>JAss</strong>) to automated intake, CRM, billing, and computer vision.</p>
+          <p style="margin: 0;"><strong>3. Corporate AI Staff Training:</strong><br/>
+          Instead of hiring more staff, we train your core team on custom AI workflows and SOPs so <strong>1 AI-trained employee produces the output of 5</strong>.</p>
         </div>
 
-        <p>You can grab a 15-minute spot on my calendar here:<br/>
-        📅 <a href="${utmUrl}" style="color: #0284c7; font-weight: 700;">https://www.aidynamic.pro/booking</a></p>
+        <p>You can see how our technology works in 30 seconds right now: visit <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700; text-decoration: underline;">www.aidynamic.pro</a> and talk live with <strong>JAss</strong> (tap the green microphone or chat button in the corner in English or Spanish).</p>
 
-        <p>Or just call/text me directly on my Miami line at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>.</p>
+        <p><strong>Our Zero-Risk Guarantee:</strong> 100% of our <strong>$99 Executive AI Consultation &amp; Audit</strong> is credited toward any solution or training we deploy—and <strong>if we don’t uncover at least 15+ hours/month of payroll waste you can automate immediately, you pay $0.</strong></p>
 
-        <p style="margin-top: 28px;">Best,<br/>
+        <p style="margin: 24px 0;">
+          👉 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book Your Executive AI Consultation ($99 Audit) →</a>
+        </p>
+
+        <p>Or call/text me directly on my Miami line at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>.</p>
+
+        <p style="margin-top: 28px;">Best regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        Founder, AI Dynamic Pro (Miami, FL)<br/>
+        Founder &amp; Applied AI Systems Architect, AI Dynamic Pro<br/>
         📞 <a href="${phoneUrl}" style="color: #64748b; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -47,44 +51,45 @@ const CAMPAIGNS = {
 
   email_2_audit_99: {
     id: 'email_2_audit_99',
-    name: 'Email #2 (Matches Post #2): The "2 Hours a Day of Copy-Paste" Payroll Leak ($99 Audit)',
-    subject: 'the 15-hour/week "spreadsheet tax" at {{company}}',
+    name: 'Week 2 — Custom AI Solutions: Automate Everything Possible & Reduce Headcount Dependency',
+    subject: 'how {{company}} can automate 80% of daily admin without hiring more staff',
     utmCampaign: 'seq2_audit_99',
-    description: 'Addresses manual spreadsheet copy-paste bottlenecks and pitches the $99 Zero-Risk Workflow Audit.',
+    description: 'Focuses on replacing expensive manual bottlenecks with 24/7 autonomous AI solutions across front-desk, operations, billing, and CRM.',
     buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
-        <p>Hey ${name},</p>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
+        <p>Hi ${name},</p>
 
-        <p>Quick follow-up from my last note. Almost every business owner I sit down with in Miami tells me the exact same thing:</p>
+        <p>Every time a company grows, the traditional playbook says you have to hire more people: another receptionist to answer phones, another coordinator to chase paperwork, another admin to copy-paste data between spreadsheets and software.</p>
 
-        <p style="font-style: italic; color: #334155; padding-left: 14px; border-left: 3px solid #cbd5e1;">
-          "Jasmel, I know we should be using AI, I just don't have time to figure out which part of my business is actually worth automating."
-        </p>
+        <p><strong>That model destroys profit margins.</strong> Every manual role adds $45,000–$75,000+ in salary, payroll taxes, turnover, and human error—and human staff still can't answer phones at 7:00 PM or on weekends.</p>
 
-        <p>Here’s the truth: you almost never need a massive $100,000 software overhaul. What hurts most companies are the <strong>2 or 3 repetitive daily bottlenecks</strong>—employees spending 2 hours a day copying data between spreadsheets, chasing intake forms, or manually following up with leads.</p>
+        <p>At <strong>AI Dynamic Pro</strong>, we consult with companies like <strong>${company}</strong> to <strong>automate everything possible</strong> so you can reduce headcount dependency and run a much leaner, more profitable operation:</p>
 
-        <p>That’s how we help at <strong>AI Dynamic Pro</strong>:</p>
-        <ol style="padding-left: 22px; margin: 18px 0;">
-          <li style="margin-bottom: 8px;"><strong>The $99 Workflow Audit:</strong> We map your team's manual processes and find where time and money are leaking.</li>
-          <li style="margin-bottom: 8px;"><strong>Custom App &amp; AI Solutions:</strong> We build the exact automation or custom tool that connects to the software you already use.</li>
-          <li style="margin-bottom: 4px;"><strong>Hands-On Staff Training:</strong> We train your people so they actually use it every day.</li>
-        </ol>
+        <ul style="padding-left: 22px; margin: 18px 0;">
+          <li style="margin-bottom: 10px;"><strong>24/7 Front-Desk &amp; Phone Automation (JAss):</strong> Answers 100% of calls and web inquiries on Ring 1 in fluent English &amp; Spanish, qualifies prospects, and books appointments directly into your calendar.</li>
+          <li style="margin-bottom: 10px;"><strong>Back-Office, Intake &amp; Billing Automation:</strong> Eliminates manual data entry, document intake, invoice/claim scrubbing, and spreadsheet copy-pasting.</li>
+          <li style="margin-bottom: 6px;"><strong>Autonomous Sales &amp; CRM Pipelines:</strong> Follows up with every lead in under 45 seconds across SMS, email, and voice so zero revenue falls through the cracks.</li>
+        </ul>
 
-        <p>Remember: <strong>if we don’t show you how to save at least 15+ hours a month during your audit, you pay $0.</strong></p>
+        <p>Before you hire another administrative employee—or keep paying for manual busywork—let us run a <strong>$99 Executive AI Consultation &amp; Workflow Audit</strong> for <strong>${company}</strong>.</p>
+
+        <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px 18px; margin: 20px 0; border-radius: 6px; font-size: 15px;">
+          <strong>Zero-Risk Executive Guarantee:</strong> We will show you the exact AI solutions to cut your operating costs and save at least <strong>15+ hours/month</strong> of manual labor—or the audit costs you <strong>$0</strong>.
+        </div>
 
         <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #0f172a; color: #f8fafc; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Lock In Your $99 Workflow Audit Here →</a>
+          👉 <a href="${utmUrl}" style="background: #0f172a; color: #f8fafc; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Schedule Your $99 AI Consultation &amp; Automation Audit →</a>
         </p>
 
-        <p>Or reply directly to this email / text me at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> and tell me the #1 manual task driving your team crazy right now.</p>
+        <p>Or reply directly to this email / call me at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> and tell me which department at <strong>${company}</strong> is consuming the most manual hours right now.</p>
 
-        <p style="margin-top: 28px;">Talk soon,<br/>
+        <p style="margin-top: 28px;">Best regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        AI Dynamic Pro • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a><br/>
+        Founder, AI Dynamic Pro • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a><br/>
         📞 (786) 643-2099</p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -92,39 +97,44 @@ const CAMPAIGNS = {
 
   email_3_staff_training: {
     id: 'email_3_staff_training',
-    name: 'Email #3 (Matches Post #3): Why Staff Secretly Avoid AI Tools (Corporate Training)',
-    subject: 'why most employees secretly avoid using AI (and how to fix it)',
+    name: 'Week 3 — Corporate AI Training: Make 1 Trained Employee Do the Work of 5',
+    subject: 'training {{company}}’s staff to produce 5x output with AI (without hiring)',
     utmCampaign: 'seq3_staff_training',
-    description: 'Connects directly with Post #3 on Corporate Staff Training, AI adoption, and data security SOPs.',
+    description: 'Sells Corporate AI Staff Training & SOP implementation so companies operate with a smaller, faster, 5x more productive workforce.',
     buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
-        <p>Hey ${name},</p>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
+        <p>Hi ${name},</p>
 
-        <p>Have you ever bought a great tool or software license for <strong>${company}</strong>, only to realize two months later that your team is still doing everything the old manual way?</p>
+        <p>What would happen to <strong>${company}</strong>’s bottom line if every person on your core team could finish a full 8-hour day of administrative, operational, and client work in under 90 minutes?</p>
 
-        <p>When we audit companies, we see this constantly. The #1 reason AI fails inside a business isn't the technology—<strong>it’s adoption</strong>.</p>
+        <p>Right now, the biggest gap separating high-margin companies from struggling ones isn't how many employees they have—<strong>it’s how much output each employee produces using AI.</strong></p>
 
-        <p>Usually, employees avoid using AI for two reasons:</p>
+        <p>When we consult with companies, we see two problems holding teams back:</p>
         <ul style="padding-left: 22px; margin: 16px 0;">
-          <li style="margin-bottom: 8px;">They feel intimidated and nobody showed them how to use it for <em>their specific daily job</em>.</li>
-          <li style="margin-bottom: 4px;">They’re worried about privacy and don't know what company or client data is safe to put into AI.</li>
+          <li style="margin-bottom: 8px;"><strong>Untrained Staff:</strong> Employees still do tasks manually because nobody trained them on how to use AI for <em>their exact job role</em>.</li>
+          <li style="margin-bottom: 4px;"><strong>No AI Standard Operating Procedures (SOPs):</strong> Owners worry about company data privacy and lack structured workflows that force consistent efficiency.</li>
         </ul>
 
-        <p>That’s why alongside building custom apps, we run <strong>hands-on Corporate Staff AI Training Workshops</strong> (in-person in South Florida or live virtual). We give your team clear <strong>Standard Operating Procedures (SOPs)</strong>, privacy guardrails, and exact workflows so they operate at 5x speed from Day 1.</p>
+        <p>Alongside building custom automation solutions, <strong>AI Dynamic Pro</strong> delivers <strong>Corporate AI Staff Training &amp; Workforce Transformation</strong> (on-site in South Florida or live virtual):</p>
+        <ul style="padding-left: 22px; margin: 16px 0;">
+          <li style="margin-bottom: 6px;">We train your existing staff hands-on with custom AI tools built for their department.</li>
+          <li style="margin-bottom: 6px;">We install strict <strong>Data Privacy Guardrails &amp; AI SOPs</strong> across your company.</li>
+          <li style="margin-bottom: 4px;"><strong>The Result:</strong> 1 trained employee can reliably handle the workload of 4 to 5 manual staff—allowing you to reduce payroll bloat and scale without hiring.</li>
+        </ul>
 
-        <p>Want to see what a tailored training session or workflow audit looks like for <strong>${company}</strong>?</p>
-
-        <p style="margin: 22px 0;">
-          📅 <a href="${utmUrl}" style="color: #0284c7; font-weight: 700;">Grab a quick 15-minute call on our calendar here</a> or check out our work at <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a>.
+        <p style="margin: 24px 0;">
+          📅 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book a Corporate AI Training &amp; Consultation Call →</a>
         </p>
 
-        <p style="margin-top: 28px;">Best,<br/>
+        <p>Or explore our consulting, automation, and training programs at <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a>.</p>
+
+        <p style="margin-top: 28px;">Best regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
         Founder, AI Dynamic Pro<br/>
         📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a></p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -132,41 +142,45 @@ const CAMPAIGNS = {
 
   email_4_before_after: {
     id: 'email_4_before_after',
-    name: 'Email #4 (Matches Post #4 & #5): Monday Morning "Before vs. After" Custom Automation',
-    subject: '6 hours to reply vs. 45 seconds at {{company}}',
+    name: 'Week 4 — The P&L Comparison: Traditional Staffing Overhead vs. The AI-Automated Company',
+    subject: 'the cost of 3 manual roles vs. 1 automated system at {{company}}',
     utmCampaign: 'seq4_before_after',
-    description: 'Paints a vivid Before vs. After picture of Monday morning operations and showcases your 22 built systems.',
-    buildHtml: ({ name = 'there', company = 'your office', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
-        <p>Hey ${name},</p>
+    description: 'Hard executive P&L comparison showing how AI Consultation + Custom AI Solutions + Staff Training slash monthly overhead.',
+    buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
+        <p>Hi ${name},</p>
 
-        <p>Picture two different versions of Monday morning at <strong>${company}</strong>:</p>
+        <p>If you look at how companies in your industry will compete over the next 12 months, it comes down to two operating models for <strong>${company}</strong>:</p>
 
-        <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 14px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
-          <strong>❌ Version A (Before):</strong><br/>
-          Your team walks in to a backlog of weekend emails and missed calls, spends 3 hours copying info between spreadsheets and CRMs, and realizes 3 warm prospects already booked with a competitor because follow-up took 6 hours.
+        <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 15px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
+          <strong>❌ Model A — Traditional High-Payroll Overhead:</strong><br/>
+          • Paying $12,000–$18,000+/month for multiple staff members to answer routine calls, schedule appointments, chase intake forms, and copy-paste data.<br/>
+          • 38% of calls during lunch and after 5:00 PM still go to voicemail.<br/>
+          • Slow 4–6 hour lead follow-up, human error, overtime, and constant staff turnover.
         </div>
 
-        <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
-          <strong>✅ Version B (After):</strong><br/>
-          Every inquiry was answered in under 45 seconds in English or Spanish, qualified, booked directly onto your calendar, and synced across your systems automatically with zero manual typing.
+        <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 15px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
+          <strong>✅ Model B — The AI Dynamic Automated Company:</strong><br/>
+          • <strong>AI Consultation:</strong> Every department audited so zero payroll is wasted on repetitive work.<br/>
+          • <strong>Custom AI Solutions:</strong> Calls, web chat, scheduling, intake, and CRM follow-ups happen autonomously in under 45 seconds, 24/7/365 in English &amp; Spanish.<br/>
+          • <strong>AI-Trained Core Team:</strong> A leaner, sharper staff trained to produce 5x output at a fraction of traditional payroll cost.
         </div>
 
-        <p>Over the last 18 months, we’ve built and deployed <strong>21+ production AI platforms</strong> across Healthcare, Legal, Luxury Computer Vision, Real Estate, Construction, and Logistics—you can inspect our live portfolio anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
+        <p>We have already engineered and deployed <strong>21 production AI systems</strong> across Healthcare, Legal, Real Estate, Construction, Computer Vision, and B2B Operations—you can inspect our live technical portfolio anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
 
-        <p>If you're ready to turn Version A into Version B, start with our <strong>$99 Zero-Risk Workflow Audit</strong>:</p>
+        <p>Ready to transition <strong>${company}</strong> from Model A to Model B? Start with our <strong>$99 Zero-Risk Executive Consultation &amp; Audit</strong>:</p>
 
         <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #10b981; color: #052e16; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: 800; display: inline-block;">Book Your $99 Audit (Pay $0 Unless We Save You 15+ Hrs/Mo) →</a>
+          👉 <a href="${utmUrl}" style="background: #10b981; color: #052e16; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 800; display: inline-block;">Book Your $99 AI Consultation (Pay $0 Unless We Save 15+ Hrs/Mo) →</a>
         </p>
 
-        <p style="margin-top: 28px;">Best,<br/>
+        <p style="margin-top: 28px;">Best regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        AI Dynamic Pro • Miami, FL<br/>
+        Founder, AI Dynamic Pro • Miami, FL<br/>
         📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -174,40 +188,41 @@ const CAMPAIGNS = {
 
   email_5_founder_checkin: {
     id: 'email_5_founder_checkin',
-    name: 'Email #5 (Matches Post #6 + Google Biz): Personal Founder Check-In & Open Door',
-    subject: 'keeping this on your radar for {{company}}, {{name}}',
+    name: 'Week 5 — Direct Founder Note: 15-Minute Cost-Reduction & AI Automation Review',
+    subject: '15-minute AI cost-reduction review for {{company}}, {{name}}',
     utmCampaign: 'seq5_founder_checkin',
-    description: 'Warm, zero-pressure final touch leaving your direct phone, website chatbot JAss, and Google Business link.',
+    description: 'Executive closing check-in from Jasmel Acosta summarizing AI Consultation, AI Solutions, and Corporate AI Training.',
     buildHtml: ({ name = 'there', company = 'your business', utmUrl, homeUtmUrl, gbpUrl, phoneUrl }) => `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
-        <p>Hey ${name},</p>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
+        <p>Hi ${name},</p>
 
-        <p>I know how busy things get running <strong>${company}</strong>, so I’ll make this my last follow-up for now so I don't crowd your inbox.</p>
+        <p>I know running <strong>${company}</strong> keeps your schedule packed, so I will make this my final note for now.</p>
 
-        <p>Whenever the timing makes sense for you to look at:</p>
-        <ul style="padding-left: 22px; margin: 14px 0;">
-          <li>Finding and fixing your biggest manual time-drains (<strong>$99 Zero-Risk Workflow Audit</strong>)</li>
-          <li>Deploying a <strong>24/7 Bilingual AI Receptionist</strong> or custom internal app</li>
-          <li>Running a <strong>Corporate Staff AI Training Workshop</strong> so your team works 5x faster</li>
-        </ul>
+        <p>Whenever you are ready to look seriously at cutting operating costs and modernizing your workflows, remember the 3 ways <strong>AI Dynamic Pro</strong> helps companies scale profits without scaling payroll:</p>
 
-        <p>...you have my direct Miami cell below, or you can test <strong>JAss</strong> live on our site anytime day or night:</p>
+        <ol style="padding-left: 22px; margin: 16px 0;">
+          <li style="margin-bottom: 8px;"><strong>Executive AI Consultation ($99 Zero-Risk Audit):</strong> We audit your operations and calculate your exact monthly payroll savings before you spend a dollar on buildouts.</li>
+          <li style="margin-bottom: 8px;"><strong>Custom AI Solutions &amp; Full Automation:</strong> We automate everything possible—24/7 bilingual AI phone/chat receptionists (<strong>JAss</strong>), CRM pipelines, billing, and custom apps—so you need fewer manual hands.</li>
+          <li style="margin-bottom: 4px;"><strong>Corporate AI Staff Training:</strong> We train and certify your core staff to operate at 5x speed with safe, structured AI SOPs.</li>
+        </ol>
+
+        <p>Keep my direct Miami contact information below for whenever the timing is right—or test <strong>JAss</strong> live on our website anytime:</p>
 
         <p style="margin: 20px 0;">
-          🌐 <strong>Website &amp; Live AI Assistant:</strong> <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a><br/>
-          📅 <strong>Direct Booking Calendar:</strong> <a href="${utmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/booking</a><br/>
-          📍 <strong>Find Us on Google:</strong> <a href="${gbpUrl}" style="color: #0284c7; font-weight: 700;">AI Dynamic Pro on Google (Miami)</a><br/>
+          🌐 <strong>Executive Website &amp; Live AI Demo:</strong> <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a><br/>
+          📅 <strong>Book a 15-Min Consultation or $99 Audit:</strong> <a href="${utmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/booking</a><br/>
+          📍 <strong>Google Business Profile:</strong> <a href="${gbpUrl}" style="color: #0284c7; font-weight: 700;">AI Dynamic Pro on Google (Miami)</a><br/>
           📞 <strong>My Direct Line (Call/Text):</strong> <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>
         </p>
 
-        <p>Wishing you and the team at <strong>${company}</strong> a great rest of the week!</p>
+        <p>Wishing you and the team at <strong>${company}</strong> continued success.</p>
 
         <p style="margin-top: 28px;">Warm regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        Founder, AI Dynamic Pro</p>
+        Founder &amp; Applied AI Systems Architect, AI Dynamic Pro</p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -219,26 +234,26 @@ const GOOGLE_BUSINESS_POSTS = [
   {
     id: 'gbp_audit_offer',
     type: 'OFFER POST',
-    title: '$99 AI Workflow Audit — Zero-Risk Guarantee (Miami Special)',
+    title: 'Executive AI Consultation & $99 Cost-Reduction Audit (Miami)',
     ctaButton: 'Book Online',
     ctaUrl: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_offer&utm_campaign=audit_99',
-    content: `Where is your business losing 15+ hours of payroll every single week? ⏱️⚡\n\nAt AI Dynamic Pro in Miami, we help businesses across Healthcare, Legal, Real Estate, Construction, and Logistics eliminate manual bottlenecks.\n\nOur 3 Core Pillars:\n1️⃣ $99 AI Workflow Audit ($0 if we don't find 15+ hrs/mo in savings!)\n2️⃣ Custom App & AI Solutions (including 24/7 bilingual voice & chat receptionists)\n3️⃣ Corporate Staff Training (hands-on workshops so your team operates at 5x speed)\n\n📞 Call/Text our Miami line: (786) 643-2099 or click "Book Online" to claim your $99 Audit!`,
+    content: `How much payroll is your company spending on manual tasks that AI should be doing automatically? 📉⚡\n\nAt AI Dynamic Pro in Miami, we help companies cut operating costs, reduce staff overhead, and automate everything possible:\n\n1️⃣ Executive AI Consultation ($99 Audit — $0 if we don't uncover 15+ hrs/mo in payroll savings!)\n2️⃣ Custom AI Solutions & Full Automation (24/7 bilingual voice/chat receptionists, CRM, billing & custom apps)\n3️⃣ Corporate AI Staff Training (train 1 employee to produce the output of 5)\n\n📞 Call/Text (786) 643-2099 or click "Book Online" to schedule your AI Consultation!`,
   },
   {
     id: 'gbp_voice_jass',
     type: 'WHAT’S NEW POST',
-    title: '24/7 Bilingual AI Receptionist (JAss) & Custom App Development',
+    title: 'Automate Front-Desk & Operations: 24/7 Bilingual AI Solutions (JAss)',
     ctaButton: 'Learn More',
     ctaUrl: 'https://www.aidynamic.pro/?utm_source=google_business&utm_medium=gbp_post&utm_campaign=voice_jass',
-    content: `38% of client calls happen during lunch or after 5:00 PM—and 80% of callers who hit voicemail immediately call a competitor. 📞📉\n\nAI Dynamic Pro engineers custom 24/7 Bilingual (English & Spanish) AI Receptionists and web apps that answer on Ring Zero, qualify leads, book appointments directly into your calendar, and notify your team instantly.\n\nTest JAss live on our website or call (786) 643-2099 today!`,
+    content: `Stop losing leads to voicemail and stop overpaying for manual administrative busywork. 📞🤖\n\nAI Dynamic Pro engineers custom 24/7 Bilingual (English & Spanish) AI Receptionists and back-office automations that answer on Ring 1, qualify leads, book appointments directly into your calendar, and sync your CRM automatically.\n\nTest JAss live on www.aidynamic.pro or call (786) 643-2099 today!`,
   },
   {
     id: 'gbp_staff_training',
     type: 'UPDATE POST',
-    title: 'Corporate Staff AI Training Workshops in Miami & Virtual',
+    title: 'Corporate AI Staff Training: 1 Trained Employee Doing the Work of 5',
     ctaButton: 'Book Online',
     ctaUrl: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_post&utm_campaign=staff_training',
-    content: `Buying AI software won't help your company if your staff doesn't know how to use it safely and effectively. 💡👥\n\nAI Dynamic Pro conducts hands-on Corporate Staff Training workshops across South Florida:\n✔️ Industry-tailored prompt engineering\n✔️ Data security & privacy Standard Operating Procedures (SOPs)\n✔️ Daily workflow acceleration using custom AI tools\n\nBook a corporate training consultation or $99 Business Audit today!`,
+    content: `Scale your company's output without bloating your payroll. 💡👥\n\nAI Dynamic Pro delivers hands-on Corporate AI Staff Training workshops (on-site in South Florida & virtual):\n✔️ Role-specific AI workflows & automation\n✔️ Data security & privacy Standard Operating Procedures (SOPs)\n✔️ 5x daily output per employee without adding headcount\n\nBook your Executive AI Consultation at www.aidynamic.pro/booking!`,
   },
 ];
 

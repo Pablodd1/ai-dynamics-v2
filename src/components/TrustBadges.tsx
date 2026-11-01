@@ -5,23 +5,23 @@ const TrustBadges = () => {
   const badges = [
     {
       icon: ShieldCheck,
-      label: 'HIPAA Compliant',
-      description: 'Enterprise-grade security for healthcare data',
+      label: 'Executive AI Consulting',
+      description: 'Operational audits to cut payroll waste & overhead',
     },
     {
       icon: Wrench,
-      label: 'Done-for-You',
-      description: 'We build, deploy, and train — you just use it',
+      label: 'Full-Scale AI Automation',
+      description: 'Automate front-desk, back-office & custom apps',
     },
     {
       icon: Globe,
-      label: 'Any Industry',
-      description: 'Healthcare, legal, real estate, retail, and more',
+      label: 'Corporate AI Training',
+      description: 'Train existing staff to operate at 5x output',
     },
     {
       icon: HeartPulse,
-      label: 'Healthcare-Grade Rigor',
-      description: 'The same standards we apply to medical workflows',
+      label: 'Leaner, Faster Operations',
+      description: 'Scale revenue without adding unnecessary staff',
     },
   ]
 

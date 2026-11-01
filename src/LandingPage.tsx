@@ -22,8 +22,8 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
       <SEO
-        title="AI Consulting, Workflow Automation & Staff Training | AI Dynamic Pro | Miami"
-        description="Miami-based AI Consulting, $99 Workflow Audits, Custom Enterprise Automation & Staff Training across Healthcare, Legal, Real Estate, Construction & Logistics. Backed by 22 production AI systems."
+        title="Executive AI Consulting, Full-Scale Automation & Corporate AI Training | AI Dynamic Pro"
+        description="We consult with companies to cut operating costs, build custom AI solutions that automate everything possible, reduce staff overhead, and train teams to operate at 5x efficiency."
         canonical="https://www.aidynamic.pro/"
       />
       <Navigation />
