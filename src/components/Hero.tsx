@@ -1,8 +1,24 @@
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Cpu, Network, Zap, ChevronDown, Stethoscope, Scale, Building2, Truck, Plus, Layers } from 'lucide-react'
-import { useState, useEffect } from 'react'
-import MatrixRain from './MatrixRain'
+import {
+  ArrowRight,
+  Cpu,
+  Network,
+  Zap,
+  ChevronDown,
+  Stethoscope,
+  Scale,
+  Building2,
+  Truck,
+  Plus,
+  Layers,
+  Play,
+  Film,
+  X,
+  Volume2,
+  CheckCircle2
+} from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
 
 const slogans = [
   "Cut Operating Costs. Automate Everything Possible. Multiply Staff Output.",
@@ -13,15 +29,65 @@ const slogans = [
   "24/7 Bilingual AI Voice & Operations Systems That Never Call In Sick.",
 ]
 
-const Hero = () => {
-  const [scrollY, setScrollY] = useState(0)
-  const [currentSlogan, setCurrentSlogan] = useState(0)
+type VideoOptionKey = 'neural_core' | 'command_hud' | 'quantum_gold'
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+interface VideoSceneConfig {
+  id: VideoOptionKey
+  label: string
+  subtitle: string
+  videoSources: string[]
+  posterUrl: string
+  overlayGradient: string
+  accentColor: string
+}
+
+const HERO_VIDEO_OPTIONS: Record<VideoOptionKey, VideoSceneConfig> = {
+  neural_core: {
+    id: 'neural_core',
+    label: 'Option 1: Neural AI Core',
+    subtitle: '3D Autonomous Intelligence & Data Streams',
+    videoSources: [
+      'https://cdn.pixabay.com/video/2023/10/22/186115-877653483_large.mp4',
+      'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-futuristic-devices-99786-large.mp4',
+    ],
+    posterUrl: '/miami-ai-neural-cube.jpg',
+    overlayGradient: 'from-[#060609]/85 via-[#0a0a12]/70 to-[#0a0a0f]',
+    accentColor: '#c5a059',
+  },
+  command_hud: {
+    id: 'command_hud',
+    label: 'Option 2: Enterprise Command HUD',
+    subtitle: 'Executive Operations & Real-Time Automation Matrix',
+    videoSources: [
+      'https://cdn.pixabay.com/video/2021/08/18/85509-589275126_large.mp4',
+      'https://assets.mixkit.co/videos/preview/mixkit-futuristic-hud-interface-with-data-and-graphs-42525-large.mp4',
+    ],
+    posterUrl: '/images/projects/executive-boardroom.jpg',
+    overlayGradient: 'from-[#040814]/85 via-[#080d1a]/75 to-[#0a0a0f]',
+    accentColor: '#0ea5e9',
+  },
+  quantum_gold: {
+    id: 'quantum_gold',
+    label: 'Option 3: Executive Boardroom AI',
+    subtitle: 'Luxury Corporate Strategy & Workforce Transformation',
+    videoSources: [
+      'https://cdn.pixabay.com/video/2020/05/25/40130-424930032_large.mp4',
+      'https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-network-connections-loop-42694-large.mp4',
+    ],
+    posterUrl: '/images/projects/consulting-boardroom.jpg',
+    overlayGradient: 'from-[#0a0906]/85 via-[#12100b]/75 to-[#0a0a0f]',
+    accentColor: '#10b981',
+  },
+}
+
+const Hero = () => {
+  const [currentSlogan, setCurrentSlogan] = useState(0)
+  const [selectedVideo, setSelectedVideo] = useState<VideoOptionKey>('neural_core')
+  const [showBriefingModal, setShowBriefingModal] = useState(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  const activeScene = HERO_VIDEO_OPTIONS[selectedVideo]
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,12 +96,89 @@ const Hero = () => {
     return () => clearInterval(interval)
   }, [])
 
+  // High-FPS Interactive 3D Neural Constellation & Telemetry Overlay Canvas
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let animationFrameId: number
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const nodes = Array.from({ length: 55 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.65,
+      vy: (Math.random() - 0.5) * 0.65,
+      r: 1.2 + Math.random() * 2,
+      pulse: Math.random() * Math.PI * 2,
+    }))
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i]
+        n.x += n.vx
+        n.y += n.vy
+        n.pulse += 0.03
+
+        if (n.x < 0 || n.x > canvas.width) n.vx *= -1
+        if (n.y < 0 || n.y > canvas.height) n.vy *= -1
+
+        // Draw neural synapsis lines
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j]
+          const dx = n.x - m.x
+          const dy = n.y - m.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 170) {
+            const alpha = (1 - dist / 170) * 0.22
+            ctx.beginPath()
+            ctx.moveTo(n.x, n.y)
+            ctx.lineTo(m.x, m.y)
+            ctx.strokeStyle =
+              selectedVideo === 'command_hud'
+                ? `rgba(14, 165, 233, ${alpha})`
+                : `rgba(197, 160, 89, ${alpha})`
+            ctx.lineWidth = 0.8
+            ctx.stroke()
+          }
+        }
+
+        // Draw glowing node
+        const glowAlpha = 0.35 + Math.sin(n.pulse) * 0.25
+        ctx.beginPath()
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2)
+        ctx.fillStyle =
+          selectedVideo === 'command_hud'
+            ? `rgba(56, 189, 248, ${glowAlpha})`
+            : `rgba(212, 175, 55, ${glowAlpha})`
+        ctx.fill()
+      }
+
+      animationFrameId = requestAnimationFrame(render)
+    }
+
+    render()
+    return () => {
+      cancelAnimationFrame(animationFrameId)
+      window.removeEventListener('resize', resize)
+    }
+  }, [selectedVideo])
+
   const industryButtons = [
-    { label: 'Healthcare', icon: Stethoscope, href: '#industries' },
-    { label: 'Legal', icon: Scale, href: '#industries' },
-    { label: 'Real Estate', icon: Building2, href: '#industries' },
-    { label: 'Logistics', icon: Truck, href: '#industries' },
-    { label: 'More', icon: Plus, href: '#industries' },
+    { label: 'Healthcare', icon: Stethoscope, href: '#services' },
+    { label: 'Legal & Real Estate', icon: Scale, href: '#services' },
+    { label: 'Vision & Luxury ID', icon: Building2, href: '#selected-systems' },
+    { label: 'CRM & Logistics', icon: Truck, href: '#services' },
+    { label: 'All 21 Systems', icon: Plus, href: '#selected-systems' },
   ]
 
   const scrollToSection = (href: string) => {
@@ -47,88 +190,133 @@ const Hero = () => {
     }
   }
 
+  const handleOpenBriefing = () => {
+    setShowBriefingModal(true)
+    try {
+      if (!audioRef.current) {
+        audioRef.current = new Audio('/audio/sofia_services_en.mp3')
+      }
+      audioRef.current.currentTime = 0
+      audioRef.current.play().catch(() => {})
+    } catch {
+      // Ignore autoplay restriction
+    }
+  }
+
+  const handleCloseBriefing = () => {
+    setShowBriefingModal(false)
+    if (audioRef.current) {
+      audioRef.current.pause()
+    }
+  }
+
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Matrix Rain Background */}
-      <div className="absolute inset-0 z-0">
-        <MatrixRain />
-        <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark-50/60 to-dark" />
-      </div>
-
-      {/* Gold accent glow */}
-      <div 
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-luxury-gold/5 rounded-full blur-3xl"
-      />
-
-      {/* Animated Grid Background */}
-      <div 
-        className="absolute inset-0 z-0 opacity-[0.08]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(201, 169, 110, 0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 169, 110, 0.3) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-          transform: `translateY(${scrollY * 0.05}px)`,
-        }}
-      />
-
-      {/* Floating Particles */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-luxury-gold/20 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 3,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 mb-10"
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16">
+      {/* 1. Spectacular Full-Bleed HTML5 AI Cinema Video Background */}
+      <div className="absolute inset-0 z-0 bg-[#060609]">
+        <video
+          key={activeScene.id}
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={activeScene.posterUrl}
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-55 scale-105 transition-opacity duration-1000"
         >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-luxury-gold opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-luxury-gold" />
+          {activeScene.videoSources.map((src) => (
+            <source key={src} src={src} type="video/mp4" />
+          ))}
+        </video>
+
+        {/* High-Res Photorealistic Backdrop Underlay for Instant Zero-Latency Paint */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-35 mix-blend-luminosity pointer-events-none"
+          style={{ backgroundImage: `url(${activeScene.posterUrl})` }}
+        />
+
+        {/* Interactive 3D Neural Constellation & Telemetry Canvas */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
+        />
+
+        {/* Cinema Vignette & Luxury Gradient Overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-b ${activeScene.overlayGradient} z-[2]`} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#060609_100%)] opacity-80 z-[2]" />
+      </div>
+
+      {/* Ambient Gold/Cyan Cinema Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-luxury-gold/10 rounded-full blur-[150px] pointer-events-none z-[2]" />
+
+      {/* Main Hero Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Interactive Hero Video Option Switcher Bar (Explore 3 Cinema Video Modes Live) */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex flex-wrap items-center justify-center gap-1.5 p-1.5 rounded-2xl bg-black/70 backdrop-blur-xl border border-white/15 mb-6 shadow-2xl"
+        >
+          <span className="flex items-center gap-1.5 px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
+            <Film className="w-3.5 h-3.5" />
+            <span>Hero Cinema Mode:</span>
           </span>
-          <span className="text-sm text-luxury-champagne tracking-wide">
-            Executive AI Consulting • Full-Scale Automation Solutions • Corporate AI Training
-          </span>
+          {(Object.keys(HERO_VIDEO_OPTIONS) as VideoOptionKey[]).map((key) => {
+            const opt = HERO_VIDEO_OPTIONS[key]
+            const isSel = selectedVideo === key
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setSelectedVideo(key)}
+                className={`px-3 py-1 rounded-xl text-xs font-mono transition-all ${
+                  isSel
+                    ? 'bg-luxury-gold text-dark font-bold shadow-md'
+                    : 'text-luxury-silver hover:text-white hover:bg-white/10'
+                }`}
+              >
+                {opt.label}
+              </button>
+            )
+          })}
         </motion.div>
 
-        {/* Main Heading with Rotating Slogans */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+        {/* Executive Positioning Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 font-serif"
+          className="flex justify-center mb-6"
         >
-          <span className="block text-white mb-3">{slogans[currentSlogan]}</span>
+          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-luxury-gold/40 bg-black/60 backdrop-blur-md">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+            </span>
+            <span className="text-xs sm:text-sm text-luxury-champagne font-mono tracking-wide uppercase">
+              Executive AI Consulting • Full-Scale Automation Solutions • Corporate AI Training
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Main Heading with Rotating Executive Slogans */}
+        <motion.h1
+          key={currentSlogan}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-5 font-serif max-w-5xl mx-auto leading-[1.12] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]"
+        >
+          <span className="block text-white">{slogans[currentSlogan]}</span>
         </motion.h1>
 
         {/* Slogan Dots */}
-        <div className="flex justify-center gap-2 mb-8">
+        <div className="flex justify-center gap-2 mb-6">
           {slogans.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentSlogan(i)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                i === currentSlogan ? 'bg-luxury-gold w-6' : 'bg-white/30'
+              aria-label={`Select headline ${i + 1}`}
+              className={`h-2 rounded-full transition-all ${
+                i === currentSlogan ? 'bg-luxury-gold w-7' : 'w-2 bg-white/30 hover:bg-white/50'
               }`}
             />
           ))}
@@ -138,82 +326,104 @@ const Hero = () => {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl text-luxury-silver max-w-3xl mx-auto mb-8 leading-relaxed"
+          transition={{ delay: 0.15 }}
+          className="text-base sm:text-lg md:text-xl text-luxury-silver max-w-3xl mx-auto mb-8 leading-relaxed drop-shadow"
         >
-          We consult with companies to audit payroll inefficiencies, engineer custom AI solutions that automate everything possible, reduce staff overhead, and train your core workforce to operate at 5x efficiency.
+          We consult with companies to audit payroll inefficiencies, engineer custom AI solutions that automate everything possible, reduce staff overhead, and train your core workforce to operate at <strong className="text-white">5x efficiency</strong>.
         </motion.p>
 
-        {/* Industry Buttons */}
+        {/* CTA Buttons + Interactive Video Briefing Trigger */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="flex flex-wrap justify-center gap-3 mb-10"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10"
+        >
+          <Link to="/booking" className="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 group text-base shadow-2xl shadow-luxury-gold/20">
+            <span>Book AI Consultation & $99 Audit</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+
+          <button
+            type="button"
+            onClick={handleOpenBriefing}
+            className="w-full sm:w-auto px-6 py-4 rounded-xl border border-luxury-gold/50 bg-black/70 hover:bg-luxury-gold/15 text-white font-semibold text-base flex items-center justify-center gap-2.5 backdrop-blur-md transition-all shadow-xl"
+          >
+            <span className="w-7 h-7 rounded-full bg-luxury-gold text-dark flex items-center justify-center">
+              <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+            </span>
+            <span>Watch 60s Executive AI Briefing</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => scrollToSection('#selected-systems')}
+            className="w-full sm:w-auto btn-secondary flex items-center justify-center gap-2 text-base bg-black/50 backdrop-blur-md"
+          >
+            <Layers className="w-5 h-5 text-luxury-gold" />
+            <span>Scroll 21 Built Systems</span>
+          </button>
+        </motion.div>
+
+        {/* 3 Core Executive Pillars (Glassmorphic Cinema Cards) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-8 text-left"
+        >
+          {[
+            {
+              icon: Cpu,
+              badge: 'PILLAR 01 // CONSULTING',
+              title: '1. AI Business Consultation',
+              desc: 'We audit your departments and P&L to pinpoint manual bottlenecks, cut operating costs, and map your exact automation ROI ($99 Zero-Risk Audit).',
+            },
+            {
+              icon: Zap,
+              badge: 'PILLAR 02 // AUTOMATION',
+              title: '2. Custom AI Solutions',
+              desc: 'We automate everything possible—24/7 bilingual voice/chat receptionists (JAss), CRM, billing, and computer vision—reducing staff overhead.',
+            },
+            {
+              icon: Network,
+              badge: 'PILLAR 03 // WORKFORCE',
+              title: '3. Corporate AI Staff Training',
+              desc: 'We train and certify your existing team with role-specific AI workflows and SOPs so 1 trained employee delivers the output of 5.',
+            },
+          ].map((pillar) => (
+            <div
+              key={pillar.title}
+              className="p-5 rounded-2xl border border-white/15 bg-black/65 backdrop-blur-xl hover:border-luxury-gold/50 transition-all shadow-xl"
+            >
+              <div className="text-[10px] font-mono text-luxury-gold uppercase tracking-wider mb-1">
+                {pillar.badge}
+              </div>
+              <div className="flex items-center gap-2.5 mb-2">
+                <pillar.icon className="w-5 h-5 text-luxury-gold shrink-0" />
+                <span className="text-base font-bold text-white">{pillar.title}</span>
+              </div>
+              <p className="text-xs text-luxury-silver leading-relaxed">{pillar.desc}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Quick Sector Jump Pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          className="flex flex-wrap justify-center gap-2.5 mb-6"
         >
           {industryButtons.map((btn) => (
             <button
               key={btn.label}
               onClick={() => scrollToSection(btn.href)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:border-luxury-gold/30 hover:bg-luxury-gold/5 transition-all text-sm text-luxury-champagne"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 bg-black/50 backdrop-blur-md hover:border-luxury-gold/40 hover:bg-luxury-gold/10 transition-all text-xs sm:text-sm text-luxury-champagne"
             >
-              <btn.icon className="w-4 h-4 text-luxury-gold" />
-              {btn.label}
+              <btn.icon className="w-3.5 h-3.5 text-luxury-gold" />
+              <span>{btn.label}</span>
             </button>
-          ))}
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
-        >
-          <Link to="/booking" className="btn-primary flex items-center justify-center gap-2 group text-base">
-            Book AI Consultation & $99 Audit
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
-          <Link to="/projects" className="btn-secondary flex items-center justify-center gap-2 text-base">
-            <Layers className="w-5 h-5 text-luxury-gold" />
-            Explore 21 Deployed AI Solutions
-          </Link>
-        </motion.div>
-
-        {/* 3 Core Executive Pillars */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10 text-left"
-        >
-          {[
-            {
-              icon: Cpu,
-              title: '1. AI Business Consultation',
-              desc: 'We audit your departments and P&L to pinpoint manual bottlenecks, cut operating costs, and map your automation ROI.',
-            },
-            {
-              icon: Zap,
-              title: '2. Custom AI Solutions & Automation',
-              desc: 'We automate everything possible—24/7 voice/chat receptionists, CRM, billing, and computer vision—reducing staff overhead.',
-            },
-            {
-              icon: Network,
-              title: '3. Corporate AI Staff Training',
-              desc: 'We train your existing team with custom AI workflows and SOPs so 1 trained employee delivers the output of 5.',
-            },
-          ].map((pillar) => (
-            <div
-              key={pillar.title}
-              className="p-5 rounded-2xl border border-white/10 bg-dark-50/70 backdrop-blur-md hover:border-luxury-gold/40 transition-all"
-            >
-              <div className="flex items-center gap-2.5 mb-2">
-                <pillar.icon className="w-5 h-5 text-luxury-gold shrink-0" />
-                <span className="text-sm font-bold text-white">{pillar.title}</span>
-              </div>
-              <p className="text-xs text-luxury-silver leading-relaxed">{pillar.desc}</p>
-            </div>
           ))}
         </motion.div>
 
@@ -222,18 +432,114 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="flex justify-center pt-2"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="flex flex-col items-center gap-2 text-luxury-silver/50"
+          <button
+            type="button"
+            onClick={() => scrollToSection('#services')}
+            className="flex flex-col items-center gap-1 text-luxury-silver/60 hover:text-luxury-gold transition-colors"
           >
-            <span className="text-xs uppercase tracking-[0.2em]">Scroll</span>
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em]">Explore Solutions & Side-Scroller</span>
+            <ChevronDown className="w-4 h-4 animate-bounce" />
+          </button>
         </motion.div>
       </div>
+
+      {/* Interactive 60s Executive AI Video & Audio Briefing Modal */}
+      <AnimatePresence>
+        {showBriefingModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl"
+            onClick={handleCloseBriefing}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl rounded-2xl border border-luxury-gold/40 bg-[#0c0c14] overflow-hidden shadow-2xl"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/60">
+                <div className="flex items-center gap-2.5">
+                  <Volume2 className="w-5 h-5 text-luxury-gold animate-pulse" />
+                  <span className="text-sm font-mono font-bold text-white uppercase tracking-wider">
+                    AI Dynamic Pro — Executive Consultation, Automation & Training Briefing
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCloseBriefing}
+                  className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Video + Live Briefing Overlay */}
+              <div className="relative aspect-video bg-black overflow-hidden">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster="/images/projects/executive-boardroom.jpg"
+                  className="w-full h-full object-cover opacity-65"
+                >
+                  <source src="https://cdn.pixabay.com/video/2023/10/22/186115-877653483_large.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 sm:p-10">
+                  <span className="inline-block w-fit px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold mb-3">
+                    ● LIVE AUDIO BRIEFING PLAYING (JAss Executive Voice)
+                  </span>
+                  <h3 className="text-2xl sm:text-4xl font-serif font-bold text-white mb-3">
+                    How We Cut Operating Costs by 30%–50% & Automate Your Company
+                  </h3>
+                  <div className="grid sm:grid-cols-3 gap-3 text-xs text-luxury-silver mb-6">
+                    <div className="p-3 rounded-xl bg-black/75 border border-white/10 flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-luxury-gold shrink-0 mt-0.5" />
+                      <span><strong className="text-white">1. $99 AI Audit:</strong> Pinpoint manual payroll waste ($0 if we don't save 15+ hrs/mo).</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-black/75 border border-white/10 flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-luxury-gold shrink-0 mt-0.5" />
+                      <span><strong className="text-white">2. Full Automation:</strong> 24/7 Voice/Chat (JAss), CRM, Billing & Computer Vision.</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-black/75 border border-white/10 flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-luxury-gold shrink-0 mt-0.5" />
+                      <span><strong className="text-white">3. Staff Training:</strong> Train 1 employee to produce the output of 5.</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Link
+                      to="/booking"
+                      onClick={handleCloseBriefing}
+                      className="btn-primary text-xs sm:text-sm py-3 px-6 flex items-center gap-2"
+                    >
+                      <span>Book Your $99 Executive AI Consultation</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (audioRef.current) {
+                          audioRef.current.src = '/audio/sofia_services_es.mp3'
+                          audioRef.current.play().catch(() => {})
+                        }
+                      }}
+                      className="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-mono text-white transition-all"
+                    >
+                      🔊 Escuchar en Español
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

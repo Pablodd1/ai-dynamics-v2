@@ -77,10 +77,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         </div>
       </div>
 
-      {/* Procedural Visual Graphic / Architecture Blueprint */}
+      {/* Actual High-Resolution Photorealistic Project Image */}
       {showGraphic && (
-        <div className="px-5 pt-3">
-          <ProjectGraphic type={project.graphicType} />
+        <div className="px-4 pt-3">
+          <ProjectGraphic
+            type={project.graphicType}
+            projectId={project.id}
+            projectName={project.name}
+            className="w-full h-48"
+          />
         </div>
       )}
 

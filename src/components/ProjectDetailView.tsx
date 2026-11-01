@@ -104,7 +104,12 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
 
         {/* Hero Visual Blueprint */}
         <div className="mb-6 rounded-xl overflow-hidden border border-white/10">
-          <ProjectGraphic type={project.graphicType} className="w-full h-44 sm:h-52" />
+          <ProjectGraphic
+            type={project.graphicType}
+            projectId={project.id}
+            projectName={project.name}
+            className="w-full h-60 sm:h-80"
+          />
         </div>
 
         {/* Action CTAs */}
