@@ -643,7 +643,7 @@ export default async function handler(req, res) {
     // Resolve verified active sender from Brevo so campaigns never fail due to an unverified sender address
     let resolvedSenderEmail = (senderEmail || '').trim().toLowerCase();
     const resolvedSenderName = (senderName || 'Jasmel Acosta — AI Dynamic Pro').trim();
-    const resolvedReplyTo = (replyToEmail || 'jasmelacosta@gmail.com').trim().toLowerCase();
+    const resolvedReplyTo = (replyToEmail || 'jasmel@aidynamic.pro').trim().toLowerCase();
 
     if (!resolvedSenderEmail) {
       try {
@@ -672,7 +672,7 @@ export default async function handler(req, res) {
       }
     }
     if (!resolvedSenderEmail) {
-      resolvedSenderEmail = 'jasmelacosta@gmail.com';
+      resolvedSenderEmail = 'jasmel@aidynamic.pro';
     }
 
     let sentCount = 0;

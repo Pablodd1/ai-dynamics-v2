@@ -57,7 +57,7 @@ export default async function handler(req, res) {
     // 2. Send notification email to founder via Brevo if configured
     if (BREVO_API_KEY) {
       try {
-        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com';
+        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro';
         try {
           const sdrR = await fetch('https://api.brevo.com/v3/senders', {
             headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },

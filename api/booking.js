@@ -145,7 +145,7 @@ export default async function handler(req, res) {
   // ─── BREVO EMAILS ───
   if (brevoApiKey) {
     try {
-      let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com'
+      let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro'
       try {
         const sdrR = await fetch('https://api.brevo.com/v3/senders', {
           headers: { accept: 'application/json', 'api-key': brevoApiKey },

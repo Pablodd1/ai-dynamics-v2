@@ -76,7 +76,7 @@ export default async function handler(req, res) {
         console.log('[Lead API] Brevo Response:', brevoRes.status, brevoData);
 
         // Send automated Playbook delivery + $99 Audit welcome email with GA4 UTM tracking
-        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com';
+        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro';
         try {
           const sdrR = await fetch('https://api.brevo.com/v3/senders', {
             headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },

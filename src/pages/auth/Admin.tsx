@@ -99,9 +99,9 @@ export default function Admin() {
   const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
   const [externalCampaigns, setExternalCampaigns] = useState<BrevoExternalCampaign[]>([])
   const [brevoSenders, setBrevoSenders] = useState<BrevoSenderMeta[]>([])
-  const [selectedSenderEmail, setSelectedSenderEmail] = useState<string>('')
+  const [selectedSenderEmail, setSelectedSenderEmail] = useState<string>('jasmel@aidynamic.pro')
   const [customSenderName, setCustomSenderName] = useState<string>('Jasmel Acosta — AI Dynamic Pro')
-  const [replyToEmail, setReplyToEmail] = useState<string>('jasmelacosta@gmail.com')
+  const [replyToEmail, setReplyToEmail] = useState<string>('jasmel@aidynamic.pro')
   const [newSenderEmailInput, setNewSenderEmailInput] = useState<string>('jasmel@aidynamic.pro')
   const [creatingSender, setCreatingSender] = useState<boolean>(false)
   const [brevoAccountEmail, setBrevoAccountEmail] = useState<string>('')
@@ -125,7 +125,7 @@ export default function Admin() {
     if (aiDyn) return aiDyn.email
     if (gmail) return gmail.email
     if (active.length > 0) return active[0].email
-    return sendersList[0]?.email || 'jasmelacosta@gmail.com'
+    return sendersList[0]?.email || 'jasmel@aidynamic.pro'
   }
 
   useEffect(() => {

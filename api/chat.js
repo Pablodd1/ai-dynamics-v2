@@ -229,7 +229,7 @@ async function notifyFounderIfHandoff(prompt, history) {
     // 2. Email instant alert to Jasmel via Brevo
     if (BREVO_API_KEY) {
       try {
-        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmelacosta@gmail.com';
+        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro';
         try {
           const sdrR = await fetch('https://api.brevo.com/v3/senders', {
             headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
