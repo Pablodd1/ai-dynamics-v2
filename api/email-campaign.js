@@ -645,31 +645,35 @@ export default async function handler(req, res) {
     const resolvedSenderName = (senderName || 'Jasmel Acosta — AI Dynamic Pro').trim();
     const resolvedReplyTo = (replyToEmail || 'jasmel@aidynamic.pro').trim().toLowerCase();
 
-    if (!resolvedSenderEmail) {
-      try {
-        const sdrRes = await fetch('https://api.brevo.com/v3/senders', {
-          headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
-        }).catch(() => null);
-        if (sdrRes && sdrRes.ok) {
-          const sdrData = await sdrRes.json();
-          const activeSenders = (sdrData.senders || []).filter((s) => s && s.active && s.email);
+    try {
+      const sdrRes = await fetch('https://api.brevo.com/v3/senders', {
+        headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+      }).catch(() => null);
+      if (sdrRes && sdrRes.ok) {
+        const sdrData = await sdrRes.json();
+        const activeSenders = (sdrData.senders || []).filter((s) => s && s.active && s.email);
+        const requestedIsActive =
+          resolvedSenderEmail &&
+          activeSenders.some((s) => s.email.trim().toLowerCase() === resolvedSenderEmail);
+
+        if (!requestedIsActive) {
           const aiDynamicSender = activeSenders.find((s) =>
             s.email.toLowerCase().endsWith('@aidynamic.pro')
           );
-          const gmailSender = activeSenders.find(
-            (s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com'
+          const aiScribeSender = activeSenders.find((s) =>
+            s.email.toLowerCase().includes('aimedicalscriber')
           );
           if (aiDynamicSender) {
             resolvedSenderEmail = aiDynamicSender.email.trim().toLowerCase();
-          } else if (gmailSender) {
-            resolvedSenderEmail = gmailSender.email.trim().toLowerCase();
+          } else if (aiScribeSender) {
+            resolvedSenderEmail = aiScribeSender.email.trim().toLowerCase();
           } else if (activeSenders.length > 0) {
             resolvedSenderEmail = activeSenders[0].email.trim().toLowerCase();
           }
         }
-      } catch {
-        // Fallback if IP restricted
       }
+    } catch {
+      // Fallback if network issue
     }
     if (!resolvedSenderEmail) {
       resolvedSenderEmail = 'jasmel@aidynamic.pro';
