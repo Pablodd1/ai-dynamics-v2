@@ -454,7 +454,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
               onClick={onBack}
               className="text-xs font-mono text-luxury-gold hover:underline flex items-center gap-1"
             >
-              <span>View All 22 Systems</span>
+              <span>View All {PROJECTS.length} Systems</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

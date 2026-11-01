@@ -142,7 +142,7 @@ export default function Projects() {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
       name: 'AI Dynamics Technical Systems & Projects Portfolio',
-      description: 'Comprehensive engineering portfolio of 22 applied AI systems across computer vision, digital health, sports science, and high-throughput data intelligence.',
+      description: `Comprehensive engineering portfolio of ${PROJECTS.length} applied AI systems across computer vision, luxury watch authentication, digital health, sports science, and high-throughput data intelligence.`,
       url: 'https://www.aidynamic.pro/projects',
       mainEntity: {
         '@type': 'ItemList',
@@ -161,7 +161,7 @@ export default function Projects() {
     <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-luxury-gold selection:text-dark">
       <SEO
         title={activeProject ? `${activeProject.name} — AI Dynamic Pro` : "Projects & Systems Architecture — AI Dynamic Pro"}
-        description={activeProject ? activeProject.summary : "Explore 22 production-grade AI systems: Computer Vision defect inspection, 3D room mapping, custom RevOps CRM, digital health platforms, sports biomechanics, and bilingual voice agents."}
+        description={activeProject ? activeProject.summary : `Explore ${PROJECTS.length} production-grade AI systems: Watch & Luxury Computer Vision ID, defect inspection, 3D room mapping, custom RevOps CRM, digital health platforms, sports biomechanics, and bilingual voice agents.`}
         canonical={activeProject ? `https://www.aidynamic.pro/projects/${activeProject.slug}` : "https://www.aidynamic.pro/projects"}
       />
 
@@ -217,7 +217,7 @@ export default function Projects() {
             <div className="max-w-3xl mb-12">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-luxury-gold/30 bg-luxury-gold/10 text-luxury-gold font-mono text-xs tracking-wider uppercase mb-4">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Executive Technology Portfolio · 22 Verified Architectures</span>
+                <span>Executive Technology Portfolio · {PROJECTS.length} Verified Architectures</span>
               </div>
 
               <h1 className="text-3xl sm:text-5xl font-serif font-bold text-white mb-4 leading-tight">
@@ -278,7 +278,7 @@ export default function Projects() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search 22 systems by keyword, technology, capability, or user..."
+                  placeholder={`Search ${PROJECTS.length} systems by keyword, technology, capability, or user...`}
                   className="w-full pl-10 pr-10 py-2.5 bg-dark-50 border border-white/15 rounded-xl text-sm text-white placeholder-luxury-silver/40 focus:border-luxury-gold focus:outline-none transition-colors"
                 />
                 {searchQuery && (

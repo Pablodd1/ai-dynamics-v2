@@ -14,10 +14,10 @@ CORE SERVICES & EXPERTISE:
 
 2. Custom App Development & AI Systems Architecture:
    - Full-stack AI-native web and mobile applications, custom portal development.
-   - Autonomous AI Agents, RAG document search, and Computer Vision (YOLO/PyTorch defect detection, 3D LiDAR spatial mapping).
+   - Autonomous AI Agents, RAG document search, and Computer Vision (Watch & Luxury Item Identification/Authentication, YOLO/PyTorch defect detection, 3D LiDAR spatial mapping).
    - 24/7 Bilingual AI Phone & Web Receptionists (sub-second response, calendar booking).
    - Turnkey Packages: $1,000 for single high-impact workflow; $5,000–$15,000+ for enterprise custom architectures.
-   - Backed by 22 deployed production platforms across Healthcare, Legal, Construction/AEC, Real Estate, and Logistics.
+   - Backed by 23 deployed production platforms across Healthcare, Legal, Luxury Commerce, Construction/AEC, Real Estate, and Logistics.
 
 3. Corporate Staff Training & AI Adoption Workshops:
    - Hands-on team upskilling, practical prompt engineering, enterprise data privacy guardrails, and SOPs to boost productivity 5x.
@@ -68,7 +68,7 @@ export function getStudioAudioForResponse(userText: string, aiText: string): { a
   if (/\b(book|schedule|calendar|appointment|agenda|reservar|cita|veinte noventa y nueve)\b/i.test(combined)) {
     return { audioUrl: isSpanish ? '/audio/sofia_booking_es.mp3' : '/audio/sofia_booking_en.mp3', lang: isSpanish ? 'es' : 'en' }
   }
-  if (/\b(22|veintidós|platforms|plataformas|services|servicios)\b/i.test(combined)) {
+  if (/\b(22|23|veintidós|veintitrés|platforms|plataformas|services|servicios)\b/i.test(combined)) {
     return { audioUrl: isSpanish ? '/audio/sofia_services_es.mp3' : '/audio/sofia_services_en.mp3', lang: isSpanish ? 'es' : 'en' }
   }
   if (/\b(hola|welcome|bienvenido|gracias por llamar|thank you for calling)\b/i.test(combined)) {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Sparkles } from 'lucide-react'
-import { getFeaturedProjects } from '../data/projects'
+import { getFeaturedProjects, PROJECTS } from '../data/projects'
 import type { ProjectItem } from '../data/projects'
 import { ProjectCard } from './ProjectCard'
 import { PartnerInquiryModal } from './PartnerInquiryModal'
@@ -50,13 +50,13 @@ export const FeaturedProjects: React.FC = () => {
           ))}
         </div>
 
-        {/* Bottom Callout: View All 22 Projects */}
+        {/* Bottom Callout: View All Projects */}
         <div className="text-center pt-4">
           <Link
             to="/projects"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-xl border border-luxury-gold/40 bg-luxury-gold/10 hover:bg-luxury-gold/20 text-luxury-champagne hover:text-white font-mono text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 shadow-xl shadow-luxury-gold/5"
           >
-            <span>Explore All 22 Technical Systems</span>
+            <span>Explore All {PROJECTS.length} Technical Systems</span>
             <ArrowRight className="w-4 h-4 text-luxury-gold" />
           </Link>
           <p className="text-xs font-mono text-luxury-silver/50 mt-3">

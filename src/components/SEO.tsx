@@ -11,7 +11,7 @@ interface SEOProps {
   schema?: object
 }
 
-const defaultDescription = "Miami-based AI Consulting, $99 Workflow Audits, Custom Automation & Corporate Staff Training across Healthcare, Legal, Real Estate, Construction & Logistics. Backed by 22 production AI platforms."
+const defaultDescription = "Miami-based AI Consulting, $99 Workflow Audits, Custom Automation & Corporate Staff Training across Healthcare, Legal, Real Estate, Construction & Logistics. Backed by 23 production AI platforms."
 
 const defaultOgImage = "https://www.aidynamic.pro/og-image.png"
 
