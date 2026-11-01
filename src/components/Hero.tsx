@@ -13,7 +13,6 @@ import {
   Plus,
   Layers,
   Play,
-  Film,
   X,
   Volume2,
   CheckCircle2
@@ -29,65 +28,23 @@ const slogans = [
   "24/7 Bilingual AI Voice & Operations Systems That Never Call In Sick.",
 ]
 
-type VideoOptionKey = 'neural_core' | 'command_hud' | 'quantum_gold'
-
-interface VideoSceneConfig {
-  id: VideoOptionKey
-  label: string
-  subtitle: string
-  videoSources: string[]
-  posterUrl: string
-  overlayGradient: string
-  accentColor: string
-}
-
-const HERO_VIDEO_OPTIONS: Record<VideoOptionKey, VideoSceneConfig> = {
-  neural_core: {
-    id: 'neural_core',
-    label: 'Option 1: Neural AI Core',
-    subtitle: '3D Autonomous Intelligence & Data Streams',
-    videoSources: [
-      'https://cdn.pixabay.com/video/2023/10/22/186115-877653483_large.mp4',
-      'https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-futuristic-devices-99786-large.mp4',
-    ],
-    posterUrl: '/miami-ai-neural-cube.jpg',
-    overlayGradient: 'from-[#060609]/85 via-[#0a0a12]/70 to-[#0a0a0f]',
-    accentColor: '#c5a059',
-  },
-  command_hud: {
-    id: 'command_hud',
-    label: 'Option 2: Enterprise Command HUD',
-    subtitle: 'Executive Operations & Real-Time Automation Matrix',
-    videoSources: [
-      'https://cdn.pixabay.com/video/2021/08/18/85509-589275126_large.mp4',
-      'https://assets.mixkit.co/videos/preview/mixkit-futuristic-hud-interface-with-data-and-graphs-42525-large.mp4',
-    ],
-    posterUrl: '/images/projects/executive-boardroom.jpg',
-    overlayGradient: 'from-[#040814]/85 via-[#080d1a]/75 to-[#0a0a0f]',
-    accentColor: '#0ea5e9',
-  },
-  quantum_gold: {
-    id: 'quantum_gold',
-    label: 'Option 3: Executive Boardroom AI',
-    subtitle: 'Luxury Corporate Strategy & Workforce Transformation',
-    videoSources: [
-      'https://cdn.pixabay.com/video/2020/05/25/40130-424930032_large.mp4',
-      'https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-network-connections-loop-42694-large.mp4',
-    ],
-    posterUrl: '/images/projects/consulting-boardroom.jpg',
-    overlayGradient: 'from-[#0a0906]/85 via-[#12100b]/75 to-[#0a0a0f]',
-    accentColor: '#10b981',
-  },
+const EXECUTIVE_HERO_SCENE = {
+  id: 'quantum_gold',
+  videoSources: [
+    'https://cdn.pixabay.com/video/2020/05/25/40130-424930032_large.mp4',
+    'https://assets.mixkit.co/videos/preview/mixkit-abstract-technology-network-connections-loop-42694-large.mp4',
+  ],
+  posterUrl: '/images/projects/consulting-boardroom.jpg',
+  overlayGradient: 'from-[#0a0906]/85 via-[#12100b]/75 to-[#0a0a0f]',
 }
 
 const Hero = () => {
   const [currentSlogan, setCurrentSlogan] = useState(0)
-  const [selectedVideo, setSelectedVideo] = useState<VideoOptionKey>('neural_core')
   const [showBriefingModal, setShowBriefingModal] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  const activeScene = HERO_VIDEO_OPTIONS[selectedVideo]
+  const activeScene = EXECUTIVE_HERO_SCENE
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -143,10 +100,7 @@ const Hero = () => {
             ctx.beginPath()
             ctx.moveTo(n.x, n.y)
             ctx.lineTo(m.x, m.y)
-            ctx.strokeStyle =
-              selectedVideo === 'command_hud'
-                ? `rgba(14, 165, 233, ${alpha})`
-                : `rgba(197, 160, 89, ${alpha})`
+            ctx.strokeStyle = `rgba(197, 160, 89, ${alpha})`
             ctx.lineWidth = 0.8
             ctx.stroke()
           }
@@ -156,10 +110,7 @@ const Hero = () => {
         const glowAlpha = 0.35 + Math.sin(n.pulse) * 0.25
         ctx.beginPath()
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2)
-        ctx.fillStyle =
-          selectedVideo === 'command_hud'
-            ? `rgba(56, 189, 248, ${glowAlpha})`
-            : `rgba(212, 175, 55, ${glowAlpha})`
+        ctx.fillStyle = `rgba(212, 175, 55, ${glowAlpha})`
         ctx.fill()
       }
 
@@ -171,7 +122,7 @@ const Hero = () => {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', resize)
     }
-  }, [selectedVideo])
+  }, [])
 
   const industryButtons = [
     { label: 'Healthcare', icon: Stethoscope, href: '#services' },
@@ -250,36 +201,6 @@ const Hero = () => {
 
       {/* Main Hero Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/* Interactive Hero Video Option Switcher Bar (Explore 3 Cinema Video Modes Live) */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex flex-wrap items-center justify-center gap-1.5 p-1.5 rounded-2xl bg-black/70 backdrop-blur-xl border border-white/15 mb-6 shadow-2xl"
-        >
-          <span className="flex items-center gap-1.5 px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
-            <Film className="w-3.5 h-3.5" />
-            <span>Hero Cinema Mode:</span>
-          </span>
-          {(Object.keys(HERO_VIDEO_OPTIONS) as VideoOptionKey[]).map((key) => {
-            const opt = HERO_VIDEO_OPTIONS[key]
-            const isSel = selectedVideo === key
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setSelectedVideo(key)}
-                className={`px-3 py-1 rounded-xl text-xs font-mono transition-all ${
-                  isSel
-                    ? 'bg-luxury-gold text-dark font-bold shadow-md'
-                    : 'text-luxury-silver hover:text-white hover:bg-white/10'
-                }`}
-              >
-                {opt.label}
-              </button>
-            )
-          })}
-        </motion.div>
-
         {/* Executive Positioning Badge */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
