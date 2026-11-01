@@ -169,7 +169,9 @@ export const organizationSchema = {
   },
   "sameAs": [
     "https://github.com/Pablodd1",
-    "https://www.linkedin.com/in/ai-dynamic-75983a407/"
+    "https://www.linkedin.com/in/ai-dynamic-75983a407/",
+    "https://www.instagram.com/aidynamicspro/",
+    "https://t.me/aidynamicpro"
   ],
   "areaServed": {
     "@type": "City",

@@ -240,12 +240,10 @@ export default function Blog() {
               <ArrowRight className="w-5 h-5" />
             </Link>
             <a
-              href="https://calendly.com/aidynamicpro/discovery"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="tel:+17866432099"
               className="px-6 py-4 rounded-xl border border-white/10 hover:border-luxury-gold/40 text-luxury-champagne text-sm font-semibold transition-all inline-flex items-center gap-2"
             >
-              Schedule via Calendly
+              Call Miami Direct: (786) 643-2099
             </a>
           </div>
         </div>

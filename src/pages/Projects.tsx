@@ -191,14 +191,12 @@ export default function Projects() {
             <Link to="/#contact" className="text-luxury-silver hover:text-white transition-colors hidden sm:inline">
               Contact
             </Link>
-            <a
-              href="https://calendly.com/aidynamicpro/discovery"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/booking"
               className="btn-primary text-xs py-1.5 px-3 ml-2"
             >
               Book Discovery
-            </a>
+            </Link>
           </nav>
         </div>
       </header>
@@ -465,15 +463,13 @@ export default function Projects() {
                 AI Dynamic Pro collaborates with enterprise operators, clinical practices, and founders to architect, deploy, and scale custom AI solutions.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href="https://calendly.com/aidynamicpro/discovery"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/booking"
                   className="btn-primary text-xs flex items-center gap-2"
                 >
                   <span>Book 30-Minute Technical Discovery</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+                </Link>
                 <a
                   href="https://t.me/aidynamicpro"
                   target="_blank"

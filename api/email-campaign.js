@@ -365,8 +365,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // ACTION: Suspend / Pause any active or queued external (MBMB) campaigns in Brevo
-    if (action === 'suspend_external_campaigns') {
+    // ACTION: Suspend / Pause OR Resume / Re-Activate external (MBMB) campaigns in Brevo
+    if (action === 'suspend_external_campaigns' || action === 'resume_external_campaigns') {
+      const isResume = action === 'resume_external_campaigns';
+      const desiredStatus = isResume ? 'queued' : 'suspended';
       const headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -379,35 +381,43 @@ export default async function handler(req, res) {
         if (listRes && listRes.ok) {
           const listData = await listRes.json();
           targetIds = (listData.campaigns || [])
-            .filter((c) => ['queued', 'inProcess', 'replicate'].includes(c.status))
+            .filter((c) =>
+              isResume
+                ? c.status === 'suspended'
+                : ['queued', 'inProcess', 'replicate'].includes(c.status)
+            )
             .map((c) => c.id);
         }
       }
 
-      const suspendedIds = [];
-      const suspendErrors = [];
+      const updatedIds = [];
+      const updateErrors = [];
       for (const cid of targetIds) {
         const putRes = await fetch(`https://api.brevo.com/v3/emailCampaigns/${cid}/status`, {
           method: 'PUT',
           headers,
-          body: JSON.stringify({ status: 'suspended' }),
+          body: JSON.stringify({ status: desiredStatus }),
         }).catch(() => null);
         if (putRes && (putRes.ok || putRes.status === 204)) {
-          suspendedIds.push(cid);
+          updatedIds.push(cid);
         } else if (putRes) {
-          const errTxt = await putRes.text().catch(() => 'Could not suspend');
-          suspendErrors.push({ id: cid, error: errTxt });
+          const errTxt = await putRes.text().catch(() => 'Could not update status');
+          updateErrors.push({ id: cid, error: errTxt });
         }
       }
 
       return res.status(200).json({
         success: true,
-        suspendedIds,
-        suspendErrors,
-        message:
-          suspendedIds.length > 0
-            ? `Suspended ${suspendedIds.length} active/queued external campaign(s) in Brevo.`
-            : 'Verified: 0 active or queued external (MBMB) campaigns are currently scheduled to send.',
+        suspendedIds: updatedIds,
+        updatedIds,
+        suspendErrors: updateErrors,
+        message: isResume
+          ? updatedIds.length > 0
+            ? `Resumed ${updatedIds.length} suspended external (MBMB) campaign(s) in Brevo.`
+            : 'No suspended external (MBMB) campaigns found to resume—MBMB connection remains active and ready.'
+          : updatedIds.length > 0
+          ? `Paused ${updatedIds.length} active/queued external (MBMB) campaign(s) in Brevo.`
+          : 'Verified: 0 active or queued external (MBMB) campaigns are currently scheduled to send.',
       });
     }
 

@@ -247,15 +247,13 @@ export default function IndustryTabs() {
                 <Layers className="w-4 h-4 text-luxury-gold" />
                 <span>Explore All 10+ Production Systems</span>
               </Link>
-              <a
-                href="https://calendly.com/aidynamicpro/discovery"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/booking"
                 className="btn-primary text-sm px-6 py-3 rounded-xl inline-flex items-center gap-2"
               >
                 <span>Book Free Architecture Consultation</span>
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </Link>
             </div>
           </motion.div>
         </AnimatePresence>

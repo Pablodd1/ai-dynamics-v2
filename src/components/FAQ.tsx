@@ -8,7 +8,7 @@ const FAQ = () => {
   const faqs = [
     {
       question: 'How much does AI automation cost?',
-      answer: 'Our quick-win automations start at $2,000 and full AI Operating Systems range from $5,000-$15,000. Most clients see ROI within 30-60 days. We also offer a free 30-minute discovery call to assess your needs and provide a custom quote.',
+      answer: 'We start with our $99 AI Workflow & Feasibility Audit ($0 risk guarantee: if we don’t uncover at least 15+ hours/month in savings, you pay $0, and 100% is credited toward your build). Turnkey single-workflow automations start at $1,000, and full enterprise AI transformations & corporate staff training range from $5,000 to $15,000+.',
     },
     {
       question: 'How long does it take to implement?',
@@ -28,7 +28,7 @@ const FAQ = () => {
     },
     {
       question: 'What if I only want one workflow automated?',
-      answer: 'That is exactly how most clients start. Our Single High-Impact Workflow package ($2,000-$5,000) is designed for businesses that want to test AI automation with one critical process before scaling. Many clients start with one workflow and expand after seeing results.',
+      answer: 'That is exactly how most clients start. Our Single High-Impact Workflow package ($1,000 turnkey) is designed for businesses that want to deploy one critical automation or 24/7 bilingual AI receptionist before scaling across departments.',
     },
     {
       question: 'What industries do you work with?',
@@ -44,7 +44,7 @@ const FAQ = () => {
     },
     {
       question: 'How do I get started?',
-      answer: 'Book a free 30-minute discovery call at https://calendly.com/aidynamicpro/discovery. Jasmel will analyze your operations, identify your highest-ROI automation opportunities, and give you a clear roadmap with pricing. No obligation, no pressure — just actionable insights.',
+      answer: 'Book a free 30-minute discovery call or claim your $99 Workflow Audit directly at https://www.aidynamic.pro/booking (or call/text us at +1 786-643-2099). Jasmel will analyze your operations, identify your highest-ROI automation opportunities, and give you a clear roadmap with pricing.',
     },
   ]
 
@@ -126,15 +126,13 @@ const FAQ = () => {
           className="mt-16 text-center p-8 rounded-2xl border border-luxury-gold/20 bg-luxury-gold/5"
         >
           <p className="text-luxury-champagne mb-4 text-lg">
-            Still have questions? Ask our AI Front Desk Assistant — it is online 24/7.
+            Still have questions? Ask <strong>JAss</strong>, our 24/7 AI Executive Assistant, right in the bottom-right corner.
           </p>
           <p className="text-luxury-silver text-sm mb-4">
-            Or book a free 30-minute call with Jasmel to discuss your specific needs.
+            Or book a 30-minute call or $99 Workflow Audit with Jasmel to discuss your specific needs.
           </p>
           <a
-            href="https://calendly.com/aidynamicpro/discovery"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/booking"
             className="btn-primary inline-flex items-center gap-2"
           >
             Book Free Discovery Call

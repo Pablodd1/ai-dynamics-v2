@@ -217,12 +217,10 @@ export default function ROICalculator() {
 
             <div className="mt-8 pt-6 border-t border-white/10">
               <a
-                href="https://calendly.com/aidynamicpro/discovery"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/booking"
                 className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-luxury-gold via-amber-300 to-luxury-gold text-dark flex items-center justify-center gap-2 hover:brightness-110 shadow-lg hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all"
               >
-                Claim Your Free Automation Audit <ArrowRight className="w-4 h-4" />
+                Claim Your $99 Workflow Audit <ArrowRight className="w-4 h-4" />
               </a>
               <p className="text-[11px] text-center text-luxury-silver/60 mt-2">
                 30-min strategy session with Founder Jasmel Acosta • No commitment

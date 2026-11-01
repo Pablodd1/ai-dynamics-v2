@@ -9,8 +9,8 @@ const founders = [
     role: 'Founder & CEO',
     bio: 'Serial entrepreneur with 15+ years building tech solutions for healthcare and small businesses. Founded AI Dynamics to bridge cutting-edge AI with real-world business results.',
     image: '/founder-3d.jpg',
-    linkedin: 'https://www.linkedin.com/in/jasmel-acosta/',
-    email: 'hello@aidynamic.pro',
+    linkedin: 'https://www.linkedin.com/in/ai-dynamic-75983a407/',
+    email: 'jasmelacosta@gmail.com',
     specialties: ['AI Strategy', 'Healthcare Tech', 'Business Automation'],
     stats: { projects: '150+', experience: '15+ yrs', revenue: '$2M+' }
   },
@@ -19,8 +19,8 @@ const founders = [
     role: 'Co-Founder & CTO',
     bio: 'Technical architect and strategic leader with deep expertise in logistics, construction, and business development. Co-founder of Unitec USA and Building Innovation. Leads the engineering team building intelligent automation solutions.',
     image: '/juan-diaz.jpg',
-    linkedin: '#',
-    email: 'juan@aidynamic.pro',
+    linkedin: 'https://www.linkedin.com/in/ai-dynamic-75983a407/',
+    email: 'jasmelacosta@gmail.com',
     specialties: ['Machine Learning', 'System Architecture', 'Business Strategy'],
     stats: { projects: '80+', experience: '10+ yrs', companies: '2' }
   }

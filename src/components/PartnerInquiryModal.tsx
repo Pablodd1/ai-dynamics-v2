@@ -108,9 +108,7 @@ export const PartnerInquiryModal: React.FC<PartnerInquiryModalProps> = ({
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
-                href="https://calendly.com/aidynamicpro/discovery"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/booking"
                 className="btn-primary text-xs flex items-center gap-2"
               >
                 <Calendar className="w-4 h-4" />

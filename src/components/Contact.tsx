@@ -181,9 +181,7 @@ const Contact = () => {
                 Prefer to lock in an exact 30-minute strategy session immediately? Choose a convenient time directly on Jasmel's calendar:
               </p>
               <a
-                href="https://calendly.com/aidynamicpro/discovery"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/booking"
                 className="w-full py-3 px-5 rounded-xl font-bold text-xs bg-gradient-to-r from-luxury-gold via-amber-300 to-luxury-gold text-dark flex items-center justify-center gap-2 hover:brightness-110 shadow-md transition-all"
               >
                 Open Real-Time Booking Calendar <ArrowRight className="w-4 h-4" />

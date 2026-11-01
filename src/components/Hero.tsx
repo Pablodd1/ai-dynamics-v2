@@ -173,10 +173,10 @@ const Hero = () => {
           transition={{ delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
         >
-          <a href="https://calendly.com/aidynamicpro/discovery" target="_blank" rel="noopener noreferrer" className="btn-primary flex items-center justify-center gap-2 group text-base">
+          <Link to="/booking" className="btn-primary flex items-center justify-center gap-2 group text-base">
             Book a Free Consultation
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </a>
+          </Link>
           <Link to="/projects" className="btn-secondary flex items-center justify-center gap-2 text-base">
             <Layers className="w-5 h-5 text-luxury-gold" />
             Explore Projects & Systems

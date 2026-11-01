@@ -204,6 +204,10 @@ export default async function handler(req, res) {
                   ${meetLink ? `<p style="margin: 8px 0 0;"><strong>Google Meet:</strong> <a href="${meetLink}" style="color: #c9a96e;">Join Link</a></p>` : ''}
                 </div>
                 <p>Founder Jasmel Acosta will review and confirm your session. If you have an urgent question, call or text us directly at <strong>+1 (786) 643-2099</strong>.</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0 12px;" />
+                <p style="font-size: 11px; color: #64748b; line-height: 1.5;">
+                  AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • You are receiving this email because you booked a consultation on aidynamic.pro. Reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+                </p>
               </div>
             </div>
           `

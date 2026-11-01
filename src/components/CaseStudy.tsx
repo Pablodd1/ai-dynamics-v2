@@ -107,7 +107,7 @@ const CaseStudy = () => {
                   Want us to build one for you?
                 </p>
                 <a
-                  href="https://calendly.com/aidynamicpro/discovery"
+                  href="/booking"
                   className="btn-primary inline-flex items-center gap-2"
                 >
                   Book a free consultation

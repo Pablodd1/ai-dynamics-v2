@@ -145,9 +145,7 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
           )}
 
           <a
-            href="https://calendly.com/aidynamicpro/discovery"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/booking"
             className="text-xs font-mono text-luxury-silver hover:text-white px-3 py-2 transition-colors flex items-center gap-1.5"
           >
             <Calendar className="w-3.5 h-3.5 text-luxury-gold" />
@@ -496,8 +494,8 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
           Direct engineering consultation with our Founder & AI Solutions Architect.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono">
-          <a href="https://calendly.com/aidynamicpro/discovery" target="_blank" rel="noopener noreferrer" className="text-luxury-gold hover:underline">
-            Calendly: Book Discovery Call
+          <a href="/booking" className="text-luxury-gold hover:underline">
+            Book Discovery Call
           </a>
           <span className="text-white/20">·</span>
           <a href="https://t.me/aidynamicpro" target="_blank" rel="noopener noreferrer" className="text-luxury-gold hover:underline">

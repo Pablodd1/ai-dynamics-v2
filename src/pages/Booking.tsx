@@ -231,20 +231,28 @@ const Booking = () => {
           <h1 className="text-4xl font-bold text-white mb-2 font-serif text-center">Book Your AI Consultation</h1>
           <p className="text-luxury-silver text-center mb-6">Available Monday–Saturday, 10:00 AM – 5:00 PM EST</p>
 
-          {/* Quick Calendly Callout */}
+          {/* Direct Miami Line & WhatsApp Callout */}
           <div className="mb-10 p-4 rounded-xl border border-luxury-gold/30 bg-gradient-to-r from-luxury-gold/15 via-luxury-gold/5 to-transparent flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left shadow-lg">
             <div>
-              <span className="text-xs font-bold text-luxury-gold uppercase tracking-wider block">Prefer Direct Calendar Sync?</span>
-              <span className="text-xs text-luxury-champagne">Book immediately on Jasmel's Calendly calendar with 1 click:</span>
+              <span className="text-xs font-bold text-luxury-gold uppercase tracking-wider block">Prefer Instant Direct Contact?</span>
+              <span className="text-xs text-luxury-champagne">Call or WhatsApp Jasmel Acosta directly in Miami at +1 (786) 643-2099:</span>
             </div>
-            <a
-              href="https://calendly.com/aidynamicpro/discovery"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg bg-luxury-gold text-dark font-bold text-xs hover:brightness-110 shrink-0 transition-all shadow-md"
-            >
-              Open Calendly Direct ↗
-            </a>
+            <div className="flex items-center gap-2 shrink-0">
+              <a
+                href="tel:+17866432099"
+                className="px-3.5 py-2 rounded-lg bg-luxury-gold text-dark font-bold text-xs hover:brightness-110 transition-all shadow-md"
+              >
+                📞 Call (786) 643-2099
+              </a>
+              <a
+                href="https://wa.me/17866432099?text=Hello%20Jasmel!%20I%20would%20like%20to%20book%20an%20AI%20Workflow%20Audit."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3.5 py-2 rounded-lg bg-emerald-500 text-dark font-bold text-xs hover:brightness-110 transition-all shadow-md"
+              >
+                💬 WhatsApp
+              </a>
+            </div>
           </div>
 
           {/* Progress */}

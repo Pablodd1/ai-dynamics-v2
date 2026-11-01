@@ -104,9 +104,7 @@ const LeadMagnet = () => {
                   Download Blueprint PDF
                 </a>
                 <a
-                  href="https://calendly.com/aidynamicpro/discovery"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/booking"
                   onClick={() => AnalyticsEvents.clickBooking('lead_magnet_review', 'lead_magnet')}
                   className="px-6 py-3.5 rounded-xl border border-luxury-gold/30 hover:bg-luxury-gold/10 text-luxury-champagne text-sm font-semibold transition-all inline-flex items-center gap-2"
                 >

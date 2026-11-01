@@ -215,29 +215,34 @@ export default function Admin() {
     }
   }
 
-  const handleSuspendExternalCampaigns = async () => {
+  const handleToggleExternalCampaigns = async (mode: 'pause' | 'resume') => {
     setSuspendingExternal(true)
     setCampaignResult(null)
     try {
-      const activeIds = externalCampaigns
-        .filter((c) => ['queued', 'inProcess', 'replicate'].includes(c.status))
+      const isResume = mode === 'resume'
+      const targetIds = externalCampaigns
+        .filter((c) =>
+          isResume
+            ? c.status === 'suspended'
+            : ['queued', 'inProcess', 'replicate'].includes(c.status)
+        )
         .map((c) => c.id)
 
       const res = await fetch('/api/email-campaign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: 'suspend_external_campaigns',
-          externalCampaignIds: activeIds,
+          action: isResume ? 'resume_external_campaigns' : 'suspend_external_campaigns',
+          externalCampaignIds: targetIds,
         }),
       })
       const data = await res.json()
 
       // Client-IP fallback if needed
       const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (activeIds.length > 0 && (!data.suspendedIds || data.suspendedIds.length === 0) && clientKey) {
-        let clientSuspended = 0
-        for (const cid of activeIds) {
+      if (targetIds.length > 0 && (!data.updatedIds || data.updatedIds.length === 0) && clientKey) {
+        let clientUpdated = 0
+        for (const cid of targetIds) {
           const putR = await fetch(`https://api.brevo.com/v3/emailCampaigns/${cid}/status`, {
             method: 'PUT',
             headers: {
@@ -245,27 +250,31 @@ export default function Admin() {
               'Content-Type': 'application/json',
               'api-key': clientKey,
             },
-            body: JSON.stringify({ status: 'suspended' }),
+            body: JSON.stringify({ status: isResume ? 'queued' : 'suspended' }),
           }).catch(() => null)
-          if (putR && (putR.ok || putR.status === 204)) clientSuspended++
+          if (putR && (putR.ok || putR.status === 204)) clientUpdated++
         }
         setCampaignResult({
           success: true,
-          message: `Suspended ${clientSuspended} active external (MBMB) campaign(s) in Brevo.`,
+          message: isResume
+            ? `Resumed ${clientUpdated} external (MBMB) campaign(s) in Brevo.`
+            : `Paused ${clientUpdated} active external (MBMB) campaign(s) in Brevo.`,
         })
       } else {
         setCampaignResult({
           success: true,
           message:
             data.message ||
-            'Verified: 0 active or scheduled external (MBMB) campaigns are queued in Brevo.',
+            (isResume
+              ? 'MBMB Brevo connection is active and ready to resume sending.'
+              : 'Verified: 0 active or scheduled external (MBMB) campaigns are queued in Brevo.'),
         })
       }
       await runBrevoAudit()
     } catch (err: any) {
       setCampaignResult({
         success: false,
-        message: err.message || 'Could not verify external campaigns.',
+        message: err.message || 'Could not update external campaigns.',
       })
     } finally {
       setSuspendingExternal(false)
@@ -752,7 +761,7 @@ export default function Admin() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold uppercase tracking-wider">
-                      ✓ Direct Brevo Control Active (MBMB Locked Out)
+                      ✓ Shared Brevo Connection Active (AI Dynamic Pro ↔ MBMB Co-Existence)
                     </span>
                     {brevoAccountEmail && (
                       <span className="text-xs text-luxury-silver font-mono">
@@ -761,10 +770,10 @@ export default function Admin() {
                     )}
                   </div>
                   <h3 className="text-base font-bold text-white mt-1.5">
-                    Brevo Security, Unsubscribe Protection & External Campaign Kill-Switch
+                    Brevo Campaign Switcher (Pause MBMB ↔ Resume MBMB) & CAN-SPAM Protection
                   </h3>
                   <p className="text-xs text-luxury-silver mt-0.5">
-                    All emails automatically enforce CAN-SPAM physical address footers, <code className="text-emerald-400">List-Unsubscribe</code> headers, and skip blacklisted/unsubscribed contacts ({blockedContactsCount} blocked contacts filtered).
+                    MBMB stays connected in the background. Pause MBMB while sending AI Dynamic Pro campaigns, and resume MBMB anytime with 1 click ({blockedContactsCount} unsubscribed/blocked contacts automatically excluded).
                   </p>
                 </div>
 
@@ -777,13 +786,18 @@ export default function Admin() {
                     {auditingBrevo ? 'Auditing Brevo...' : '🔄 Audit Brevo Lists & Campaigns'}
                   </button>
                   <button
-                    onClick={handleSuspendExternalCampaigns}
+                    onClick={() => handleToggleExternalCampaigns('pause')}
                     disabled={suspendingExternal}
-                    className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-xs font-bold text-red-300 transition-all"
+                    className="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-xs font-bold text-amber-300 transition-all"
                   >
-                    {suspendingExternal
-                      ? 'Suspending...'
-                      : '🛑 Stop / Suspend Any Scheduled MBMB Campaigns'}
+                    {suspendingExternal ? 'Updating...' : '⏸️ Pause MBMB (AI Dynamic Active)'}
+                  </button>
+                  <button
+                    onClick={() => handleToggleExternalCampaigns('resume')}
+                    disabled={suspendingExternal}
+                    className="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs font-bold text-emerald-300 transition-all"
+                  >
+                    {suspendingExternal ? 'Updating...' : '▶️ Resume MBMB Sending'}
                   </button>
                 </div>
               </div>

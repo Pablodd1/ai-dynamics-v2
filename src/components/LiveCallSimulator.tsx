@@ -283,9 +283,7 @@ export default function LiveCallSimulator() {
               </button>
 
               <a
-                href="https://calendly.com/aidynamicpro/discovery"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/booking"
                 className="text-xs text-luxury-gold hover:text-white font-semibold flex items-center justify-center gap-1 group transition-colors"
               >
                 Deploy On Your Phone Number <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />

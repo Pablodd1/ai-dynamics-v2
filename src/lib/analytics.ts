@@ -40,6 +40,14 @@ export const AnalyticsEvents = {
       event_category: 'conversion',
     }),
 
+  // Social Media Outbound Clicks (Instagram, LinkedIn, Telegram)
+  clickSocialChannel: (platform: string, location: string) =>
+    trackEvent('click_social_channel', {
+      platform: platform,
+      location: location,
+      event_category: 'engagement',
+    }),
+
   // Calendly / Discovery Booking Clicks
   clickBooking: (service: string, location: string) =>
     trackEvent('begin_booking', {
