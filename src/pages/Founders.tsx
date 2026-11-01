@@ -17,7 +17,7 @@ const founders = [
   {
     name: 'Juan Diaz',
     role: 'Co-Founder & CTO',
-    bio: 'Technical architect and strategic leader with deep expertise in logistics, construction, and business development. Co-founder of Unitec USA and Building Innovation. Leads the engineering team building intelligent automation solutions.',
+    bio: 'Technical architect and strategic leader with deep expertise in logistics, construction, and business development. Co-founder of Building Innovation. Leads the engineering team building intelligent automation solutions.',
     image: '/juan-diaz.jpg',
     linkedin: 'https://www.linkedin.com/in/ai-dynamic-75983a407/',
     email: 'jasmelacosta@gmail.com',

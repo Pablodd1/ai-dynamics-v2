@@ -152,7 +152,7 @@ const CAMPAIGNS = {
           Every inquiry was answered in under 45 seconds in English or Spanish, qualified, booked directly onto your calendar, and synced across your systems automatically with zero manual typing.
         </div>
 
-        <p>Over the last 18 months, we’ve built and deployed <strong>22+ production AI platforms</strong> across Healthcare, Legal, Real Estate, Construction, and Logistics—you can inspect our live portfolio anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
+        <p>Over the last 18 months, we’ve built and deployed <strong>21+ production AI platforms</strong> across Healthcare, Legal, Luxury Computer Vision, Real Estate, Construction, and Logistics—you can inspect our live portfolio anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
 
         <p>If you're ready to turn Version A into Version B, start with our <strong>$99 Zero-Risk Workflow Audit</strong>:</p>
 
@@ -349,14 +349,15 @@ export default async function handler(req, res) {
 
   try {
     const {
-      action = 'send', // 'send' | 'suspend_external_campaigns'
+      action = 'send', // 'send' | 'suspend_external_campaigns' | 'resume_external_campaigns'
       externalCampaignIds = [],
       campaignId = 'email_1_voice_jass',
-      mode = 'test', // 'test' | 'custom' | 'supabase_leads' | 'brevo_list'
+      mode = 'test', // 'test' | 'custom' | 'supabase_leads' | 'brevo_list' | 'all_brevo_contacts'
       brevoListId = 2,
       statusFilter = 'all',
       customRecipients = [],
       customSubject = '',
+      scheduledAt = '', // Optional ISO-8601 future timestamp e.g. '2026-11-03T10:15:00-05:00'
     } = req.body || {};
 
     if (!BREVO_API_KEY) {
@@ -466,6 +467,58 @@ export default async function handler(req, res) {
           company: r.company || 'your organization',
         });
       }
+    } else if (mode === 'all_brevo_contacts') {
+      // Fetch ALL contacts across the entire Brevo account (up to 2,000 contacts in 500-contact pages) + Supabase CRM leads
+      const seen = new Set();
+      for (const offset of [0, 500, 1000, 1500]) {
+        const allRes = await fetch(
+          `https://api.brevo.com/v3/contacts?limit=500&offset=${offset}`,
+          { headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY } }
+        ).catch(() => null);
+        if (!allRes || !allRes.ok) break;
+        const allData = await allRes.json();
+        const contactsBatch = allData.contacts || [];
+        for (const c of contactsBatch) {
+          const cleanEmail = (c.email || '').trim().toLowerCase();
+          if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
+          seen.add(cleanEmail);
+          if (c.emailBlacklisted || blockedSet.has(cleanEmail)) {
+            skippedUnsubscribed++;
+            continue;
+          }
+          const attrs = c.attributes || {};
+          recipients.push({
+            name: attrs.FIRSTNAME || attrs.NAME || attrs.PRENOM || cleanEmail.split('@')[0],
+            email: cleanEmail,
+            company: attrs.COMPANY || attrs.ENTREPRISE || 'your company',
+          });
+        }
+        if (contactsBatch.length < 500) break;
+      }
+      // Also merge any unique Supabase CRM leads not already in Brevo
+      if (SUPABASE_KEY) {
+        const sbRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/aidynamic_leads?select=name,email,company,status&order=created_at.desc&limit=500`,
+          { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+        ).catch(() => null);
+        if (sbRes && sbRes.ok) {
+          const rows = await sbRes.json();
+          for (const r of rows) {
+            const cleanEmail = (r.email || '').trim().toLowerCase();
+            if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
+            seen.add(cleanEmail);
+            if (blockedSet.has(cleanEmail) || r.status === 'lost') {
+              skippedUnsubscribed++;
+              continue;
+            }
+            recipients.push({
+              name: r.name || cleanEmail.split('@')[0],
+              email: cleanEmail,
+              company: r.company || 'your company',
+            });
+          }
+        }
+      }
     } else if (mode === 'brevo_list') {
       const listIdNum = Number(brevoListId) || 2;
       const listContactsRes = await fetch(
@@ -565,6 +618,7 @@ export default async function handler(req, res) {
         replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' },
         subject: personalizedSubject,
         htmlContent,
+        ...(scheduledAt ? { scheduledAt } : {}),
         headers: {
           'List-Unsubscribe': '<mailto:jasmelacosta@gmail.com?subject=Unsubscribe>',
           'X-Entity-Ref-ID': `aidynamic-${campaign.utmCampaign}-${Date.now()}`,

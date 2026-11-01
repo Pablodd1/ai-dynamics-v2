@@ -86,7 +86,7 @@ export default function Admin() {
   const [gbpPosts, setGbpPosts] = useState<GbpPost[]>([])
   const [brevoConnected, setBrevoConnected] = useState(true)
   const [selectedCampaignId, setSelectedCampaignId] = useState('email_1_voice_jass')
-  const [dispatchMode, setDispatchMode] = useState<'test' | 'supabase_leads' | 'brevo_list' | 'custom'>('test')
+  const [dispatchMode, setDispatchMode] = useState<'test' | 'all_brevo_contacts' | 'supabase_leads' | 'brevo_list' | 'custom'>('test')
   const [dispatchStatusFilter, setDispatchStatusFilter] = useState<LeadStatus | 'all'>('all')
   const [brevoLists, setBrevoLists] = useState<BrevoListMeta[]>([])
   const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
@@ -97,6 +97,7 @@ export default function Admin() {
   const [suspendingExternal, setSuspendingExternal] = useState(false)
   const [customEmailsInput, setCustomEmailsInput] = useState('')
   const [customSubject, setCustomSubject] = useState('')
+  const [scheduledAtInput, setScheduledAtInput] = useState('')
   const [sendingCampaign, setSendingCampaign] = useState(false)
   const [campaignResult, setCampaignResult] = useState<{
     success?: boolean
@@ -328,9 +329,42 @@ export default function Admin() {
               .map((email) => ({ email, name: email.split('@')[0], company: 'your business' }))
           : []
 
-      // If dispatching to a Brevo Contact List and client key is available, pre-fetch contacts client-side in case Vercel IP is restricted
+      // If dispatching to a Brevo Contact List or ALL Brevo Contacts and client key is available, pre-fetch contacts client-side in case Vercel IP is restricted
       const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (dispatchMode === 'brevo_list' && clientBrevoKey) {
+      if (dispatchMode === 'all_brevo_contacts' && clientBrevoKey) {
+        const seen = new Set<string>()
+        const merged: { email: string; name: string; company: string }[] = []
+        for (const offset of [0, 500, 1000, 1500]) {
+          const allR = await fetch(`https://api.brevo.com/v3/contacts?limit=500&offset=${offset}`, {
+            headers: { Accept: 'application/json', 'api-key': clientBrevoKey },
+          }).catch(() => null)
+          if (!allR || !allR.ok) break
+          const allD = await allR.json()
+          const batch = allD.contacts || []
+          for (const c of batch) {
+            const clean = (c?.email || '').trim().toLowerCase()
+            if (!clean || !clean.includes('@') || seen.has(clean) || c.emailBlacklisted) continue
+            seen.add(clean)
+            merged.push({
+              email: clean,
+              name: c.attributes?.FIRSTNAME || c.attributes?.NAME || clean.split('@')[0],
+              company: c.attributes?.COMPANY || 'your business',
+            })
+          }
+          if (batch.length < 500) break
+        }
+        for (const l of leads) {
+          const clean = (l.email || '').trim().toLowerCase()
+          if (!clean || !clean.includes('@') || seen.has(clean) || l.status === 'lost') continue
+          seen.add(clean)
+          merged.push({
+            email: clean,
+            name: l.name || clean.split('@')[0],
+            company: l.company || 'your business',
+          })
+        }
+        customRecipients = merged
+      } else if (dispatchMode === 'brevo_list' && clientBrevoKey) {
         const listRes = await fetch(
           `https://api.brevo.com/v3/contacts/lists/${selectedBrevoListId}/contacts?limit=500`,
           {
@@ -349,16 +383,22 @@ export default function Admin() {
         }
       }
 
+      const isoSchedule = scheduledAtInput ? new Date(scheduledAtInput).toISOString() : ''
+
       const res = await fetch('/api/email-campaign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           campaignId: selectedCampaignId,
-          mode: dispatchMode === 'brevo_list' && customRecipients.length > 0 ? 'custom' : dispatchMode,
+          mode:
+            (dispatchMode === 'brevo_list' || dispatchMode === 'all_brevo_contacts') && customRecipients.length > 0
+              ? 'custom'
+              : dispatchMode,
           brevoListId: selectedBrevoListId,
           statusFilter: dispatchStatusFilter,
           customRecipients,
           customSubject: customSubject.trim(),
+          scheduledAt: isoSchedule,
         }),
       })
 
@@ -903,16 +943,21 @@ export default function Admin() {
                   <label className="block text-xs uppercase tracking-wider text-luxury-silver font-semibold">
                     Recipient Target Mode
                   </label>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
                     {[
-                      { id: 'test', label: 'Send Test Preview', desc: 'Sends to jasmelacosta@gmail.com' },
-                      { id: 'supabase_leads', label: 'Supabase CRM Leads', desc: `Send to ${leads.length} stored leads` },
+                      { id: 'test', label: '1. Test Preview', desc: 'jasmelacosta@gmail.com' },
+                      {
+                        id: 'all_brevo_contacts',
+                        label: '2. ALL Available Emails',
+                        desc: 'Every active Brevo + CRM contact',
+                      },
                       {
                         id: 'brevo_list',
-                        label: 'Brevo Contact Lists',
-                        desc: brevoLists.length > 0 ? `${brevoLists.length} Brevo list(s) synced` : 'Send to Brevo list',
+                        label: '3. By Brevo List',
+                        desc: brevoLists.length > 0 ? `${brevoLists.length} Brevo list(s)` : 'Specific Brevo list',
                       },
-                      { id: 'custom', label: 'Custom Email List', desc: 'Paste B2B prospect emails' },
+                      { id: 'supabase_leads', label: '4. CRM Leads Only', desc: `${leads.length} website leads` },
+                      { id: 'custom', label: '5. Paste Emails', desc: 'Paste custom B2B list' },
                     ].map((m) => (
                       <button
                         key={m.id}
@@ -927,6 +972,35 @@ export default function Admin() {
                         <div className="text-[11px] text-luxury-silver mt-0.5">{m.desc}</div>
                       </button>
                     ))}
+                  </div>
+                </div>
+
+                {/* Optional Auto-Schedule Date/Time & Recommended Weekly Presets */}
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2.5">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <label className="text-xs uppercase tracking-wider text-luxury-gold font-bold">
+                      ⏰ Send Immediately OR Auto-Schedule via Brevo (`scheduledAt`)
+                    </label>
+                    {scheduledAtInput && (
+                      <button
+                        type="button"
+                        onClick={() => setScheduledAtInput('')}
+                        className="text-[11px] text-amber-300 hover:underline"
+                      >
+                        Clear Schedule (Send Immediately)
+                      </button>
+                    )}
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3 items-center">
+                    <input
+                      type="datetime-local"
+                      value={scheduledAtInput}
+                      onChange={(e) => setScheduledAtInput(e.target.value)}
+                      className="px-3.5 py-2 rounded-xl bg-black/50 border border-white/15 text-white text-xs focus:outline-none focus:border-accent"
+                    />
+                    <div className="text-[11px] text-luxury-silver leading-relaxed">
+                      <strong>Best B2B Send Window:</strong> <span className="text-emerald-400">Tuesdays @ 10:15 AM EST</span> (Peak Miami executive open rate). Leave blank to dispatch immediately.
+                    </div>
                   </div>
                 </div>
 

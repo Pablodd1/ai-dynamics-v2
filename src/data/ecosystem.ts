@@ -73,18 +73,6 @@ export const ECOSYSTEM_MEMBERS: EcosystemMember[] = [
     featured: true
   },
   {
-    id: "unitec-usa-design",
-    name: "Unitec USA Design",
-    url: "https://www.unitecusadesign.com/",
-    domains: ["unitecusadesign.com", "www.unitecusadesign.com"],
-    tagline: "Architectural Millwork, Luxury Commercial Interiors & 3D Engineering",
-    category: "Design & Architectural Engineering",
-    badge: "Design & 3D",
-    description: "High-end commercial architectural millwork, parametric drafting, and custom luxury fabrication across South Florida.",
-    color: "#d97706",
-    featured: true
-  },
-  {
     id: "305business",
     name: "305business",
     url: "https://305business-llc.vercel.app/",

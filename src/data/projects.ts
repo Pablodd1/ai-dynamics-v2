@@ -1,5 +1,5 @@
 // Centralized Data-Driven Project Registry & Capabilities Engine
-// Single source of truth for all 23 technical AI Dynamics systems, capabilities, and partnership opportunities.
+// Single source of truth for all 21 technical AI Dynamics systems, capabilities, and partnership opportunities.
 
 import type { ProjectGraphicType } from '../components/ProjectGraphic'
 
@@ -707,78 +707,7 @@ export const PROJECTS: ProjectItem[] = [
     relatedProjectSlugs: ['healthcare-hipaa-clinical-intake', 'ai-medical-scribe-pocketscribe', 'remote-patient-monitoring']
   },
 
-  // 9. WATCHFACTS / CURATED LUXURY (Featured #1)
-  {
-    id: 'watchfacts-luxury-intelligence',
-    slug: 'watchfacts-luxury-intelligence',
-    name: 'WatchFacts: Luxury Intelligence & Secondary Market Normalization',
-    shortName: 'WatchFacts',
-    tagline: 'High-Throughput Catalog Matching, Entity Resolution, Computer Vision Photo Verification & Multi-Currency Pricing Engine',
-    summary: 'Flagship enterprise data platform ingesting secondary luxury marketplace listings across Telegram, WhatsApp, and dealer networks, pairing NLP reference resolution with computer vision photo verification and multi-currency pricing intelligence.',
-    industry: 'Commerce & Marketplaces',
-    industryFilter: 'Commerce & Marketplaces',
-    subIndustry: 'Luxury Goods & Financial Market Intelligence',
-    status: 'PRODUCTION',
-    maturity: 'Production Enterprise Data Platform',
-    businessModel: 'Enterprise Intelligence API & Institutional Dealer Subscription',
-    targetUsers: ['Luxury Watch Dealers', 'Institutional Investors', 'Secondary Marketplaces', 'Pawn & Asset Lenders'],
-    problem: 'The secondary luxury watch market is completely fragmented across unstructured chat groups (Telegram/WhatsApp) and dealer boards with conflicting reference formats, unverified photos, typos, and multi-currency quotes.',
-    solution: 'An automated ingestion pipeline that parses noisy chat messages and dealer photos, matches references with confidence scoring, cross-verifies dial/bezel/case visuals via computer vision, normalizes currencies (USD, HKD, EUR, USDT), and detects duplicate listings.',
-    valueLine: 'Normalizes millions of secondary market watch listings with reference matching, photo verification, and multi-currency pricing.',
-    capabilities: [
-      'High-throughput message and image ingestion from authorized Telegram, WhatsApp, and dealer channels',
-      'Unstructured text parsing and brand/reference detection with regex and NLP models',
-      'Reference number catalog resolution and fuzzy matching (e.g. 116500LN, 126610LV)',
-      'Computer vision dial color, bezel, case metal, and bracelet visual attribute verification',
-      'Condition grade, box/papers status, and year normalization',
-      'Multi-currency normalization supporting USD, HKD, EUR, GBP, and USDT',
-      'Dealer identity verification, location tagging, and duplicate listing deduplication',
-      'Confidence scoring with human review thresholds for ambiguous listings',
-      'Historical secondary market pricing curves and liquidity intelligence'
-    ],
-    technologies: ['Python', 'PostgreSQL', 'FastAPI', 'PyTorch Vision', 'Redis', 'Docker', 'NLP Entity Parsers', 'Supabase', 'React UI'],
-    metrics: [
-      { label: 'Reference Match Confidence', value: '99.4%', verified: true },
-      { label: 'Currencies Supported', value: 'USD/HKD/EUR/USDT', verified: true },
-      { label: 'Architecture', value: 'Real-Time Ingestion + Vision', verified: true }
-    ],
-    links: {
-      contact: '/#contact'
-    },
-    sponsorOpportunity: {
-      available: true,
-      stage: 'Production Platform Scaling',
-      type: 'Commercialization Partners',
-      supportNeeded: ['Luxury Asset Funds', 'Large Secondary Dealer Groups', 'Marketplace Syndication Partners']
-    },
-    featured: true,
-    architecture: {
-      input: 'Unstructured text feeds, dealer chat streams, and watch/luxury image attachments',
-      engine: 'High-speed NLP entity extractor + computer vision visual classifier + multi-stage reference catalog matcher',
-      analysis: 'Normalize reference numbers, cross-check photo attributes against text claims, reconcile FX rates, and deduplicate cross-posts',
-      decision: 'Assign confidence score; auto-publish high-confidence matches or route to human review queue',
-      output: 'Clean, structured marketplace records, real-time price trend alerts, and dealer API endpoints'
-    },
-    category: 'Commerce & Marketplaces',
-    professionalTitle: 'Data Engineering & Intelligence Architect',
-    graphicType: 'data-pipeline',
-    commercialOpportunity: {
-      targetCustomers: ['High-Volume Watch Dealers', 'Asset-Backed Lenders', 'Horology Marketplaces', 'Private Equity Luxury Funds'],
-      problemSolved: 'Converts chaotic, unstructured dealer conversations and photos into actionable financial-grade market pricing data.',
-      currentAlternatives: 'Manual spreadsheet tracking and informal memory by individual watch traders.',
-      differentiation: 'Direct handling of real dealer chat workflows with computer vision photo verification and multi-currency crypto (USDT) + fiat conversion.',
-      businessModel: 'Institutional API licensing, dealer SaaS access tiers, and market data feeds.'
-    },
-    validationEvidence: 'Built on comprehensive historical catalog mappings and verified against thousands of active dealer transactions. Listing counts strictly pulled from live database state.',
-    roadmap: [
-      'Phase 1: Chat message parsing and catalog entity resolution core (Completed)',
-      'Phase 2: Multi-currency liquidity curves and dealer inventory matching (In Production)',
-      'Phase 3: Computer vision dial, reference, and condition verification from chat photos (Integrated with Luxury Vision AI)'
-    ],
-    relatedProjectSlugs: ['luxury-watch-computer-vision-ai', 'adaptive-ai-marketplace', 'unitec-commerce-system']
-  },
-
-  // 10. LUXURY WATCH & ITEM COMPUTER VISION IDENTIFICATION AI
+  // 9. LUXURY WATCH & ITEM COMPUTER VISION IDENTIFICATION AI (Featured #1)
   {
     id: 'luxury-watch-computer-vision-ai',
     slug: 'luxury-watch-computer-vision-ai',
@@ -792,25 +721,25 @@ export const PROJECTS: ProjectItem[] = [
     status: 'PRODUCTION',
     maturity: 'Production Computer Vision & Visual Retrieval Engine',
     businessModel: 'Enterprise API Licensing, Dealer Appraisal Workflow & Marketplace Integration',
-    targetUsers: ['Luxury Watch Dealers & Grey Market Desks', 'Auction Houses & Estate Appraisers', 'Collateral & Asset-Backed Lenders', 'Secondary Luxury Marketplaces'],
+    targetUsers: ['Luxury Watch Dealers & Trading Desks', 'Auction Houses & Estate Appraisers', 'Collateral & Asset-Backed Lenders', 'Secondary Luxury Marketplaces'],
     problem: 'Identifying exact luxury watch references (where subtle dial font spacing, bezel insert kerning, crown guard geometry, or hand styles separate a $12,000 reference from a $45,000 variant) and grading micro-scratches or spotting counterfeit components requires rare master-watchmaker expertise and slows down high-volume trading and lending desks.',
     solution: 'A multi-stage computer vision pipeline combining fine-grained visual embeddings (CLIP/DINOv2), high-precision object segmentation, macro OCR for rehaut serials and precious-metal hallmarks, and surface defect mapping to identify references, verify visual authenticity markers, and grade cosmetic condition in seconds.',
     valueLine: 'Identifies exact luxury watch references, reads micro-serial engravings, flags counterfeit dial/bezel anomalies, and grades case condition from photos.',
     capabilities: [
       'Fine-grained visual identification of watch brand, family, exact reference number, and production era from photos',
       'Sub-component segmentation isolating dial, bezel, hands, crown guards, lugs, crystal, and bracelet links (Oyster, Jubilee, President, Nautilus)',
-      'Dial variant and configuration classification (e.g. Tiffany/Stella dials, meteorite, indices, subdials, and date-wheel fonts)',
+      'Dial variant and configuration classification (e.g. specialty dials, meteorite, indices, subdials, and date-wheel fonts)',
       'Macro OCR extraction of inner-rehaut serial numbers, caseback engravings, movement calibre markings, and precious metal hallmarks (750, 950 Pt)',
       'Visual authenticity verification comparing font kerning, cyclops magnification ratio, lume application, and hand stack geometry against canonical reference masters',
       'Automated cosmetic condition grading detecting hairline scratches, lug over-polishing, bezel dings, crystal chips, and bracelet stretch',
       'Multi-category luxury item visual recognition extending to fine jewelry, diamonds, and heritage designer leather hardware/stitching',
-      'Direct integration with WatchFacts pricing engine to pair instant visual identification with live secondary market valuation (USD/HKD/EUR/USDT)'
+      'Structured digital authentication certificates with annotated high-resolution visual inspection heatmaps'
     ],
     technologies: ['Python', 'PyTorch', 'OpenCV', 'YOLOv8 Segmentation', 'DINOv2 / CLIP Visual Embeddings', 'Tesseract / PaddleOCR Macro', 'FastAPI', 'Qdrant Vector DB', 'React UI'],
     metrics: [
       { label: 'Reference & Dial ID', value: 'Fine-Grained CV', verified: true },
       { label: 'Inspection Scope', value: 'Dial / Bezel / Rehaut / Case', verified: true },
-      { label: 'Valuation Sync', value: 'Live WatchFacts Feed', verified: true }
+      { label: 'Output', value: 'Authenticity & Grade Report', verified: true }
     ],
     links: {
       contact: '/#contact'
@@ -821,13 +750,13 @@ export const PROJECTS: ProjectItem[] = [
       type: 'Commercialization Partners',
       supportNeeded: ['Luxury Watch Trading Desks', 'Jewelry & Watch Insurance Underwriters', 'Collateral Lending Vaults']
     },
-    featured: false,
+    featured: true,
     architecture: {
-      input: 'Smartphone photos, dealer chat images, or macro inspection lens captures of watch dial, case, clasp, and movement',
+      input: 'Smartphone photos, dealer images, or macro inspection lens captures of watch dial, case, clasp, and movement',
       engine: 'YOLOv8 component segmentation + DINOv2 fine-grained visual vector retrieval + macro engraving OCR + anomaly detector',
       analysis: 'Compare segmented dial/bezel/lug geometry and font kerning against canonical reference database; map surface wear and polishing loss',
       decision: 'Output exact reference match probability, authenticity anomaly flags, and standardized 1–10 cosmetic condition score',
-      output: 'Structured visual inspection certificate, annotated defect/authenticity heatmaps, and real-time WatchFacts market valuation'
+      output: 'Structured visual inspection certificate, annotated defect/authenticity heatmaps, and component verification breakdown'
     },
     category: 'Computer Vision & Spatial AI',
     professionalTitle: 'Computer Vision Engineer',
@@ -836,16 +765,16 @@ export const PROJECTS: ProjectItem[] = [
       targetCustomers: ['Secondary Watch & Jewelry Dealers', 'Luxury Pawn & Collateral Lenders', 'Online Luxury Marketplaces', 'Collectibles Insurance Carriers'],
       problemSolved: 'Eliminates costly reference misidentification, undetected aftermarket/franken parts, and subjective condition disputes during remote buy/sell quotes.',
       currentAlternatives: 'Manual visual inspection by overburdened human buyers or slow $300+ physical third-party mail-in authentication.',
-      differentiation: 'Purpose-trained on horological micro-attributes (rehaut alignment, cyclops magnification, lug chamfer geometry) and wired directly into WatchFacts real-time pricing.',
+      differentiation: 'Purpose-trained on horological micro-attributes (rehaut alignment, cyclops magnification, lug chamfer geometry) and macro surface defect grading.',
       businessModel: 'Per-inspection API call pricing, monthly dealer desk SaaS seat license, or enterprise marketplace integration.'
     },
-    validationEvidence: 'Integrated with the WatchFacts catalog taxonomy covering thousands of canonical reference configurations, dial variants, and dealer photo datasets.',
+    validationEvidence: 'Trained and validated across thousands of canonical horological reference configurations, dial variants, and high-resolution macro inspection datasets.',
     roadmap: [
       'Phase 1: Fine-grained watch reference, dial color, bezel, and bracelet visual classification (Completed)',
-      'Phase 2: Macro rehaut serial OCR, surface scratch/polishing grading, and WatchFacts valuation sync (In Production)',
+      'Phase 2: Macro rehaut serial OCR and automated surface scratch/polishing grading (In Production)',
       'Phase 3: Smartphone clip-on macro lens kit with guided multi-angle capture for automated movement & hallmark authentication (Q4 2026)'
     ],
-    relatedProjectSlugs: ['watchfacts-luxury-intelligence', 'room-defect-monitoring-ai', 'adaptive-ai-marketplace']
+    relatedProjectSlugs: ['room-defect-monitoring-ai', '3d-room-mapping-spatial-ai', 'adaptive-ai-marketplace']
   },
 
   // 10. ADAPTIVE AI MARKETPLACE
@@ -913,7 +842,7 @@ export const PROJECTS: ProjectItem[] = [
       'Phase 2: Real-time session behavioral re-ranking engine (Active Development)',
       'Phase 3: Autonomous conversational bargaining and custom quote agent (2027)'
     ],
-    relatedProjectSlugs: ['watchfacts-luxury-intelligence', 'agentic-self-learning-websites', 'unitec-commerce-system']
+    relatedProjectSlugs: ['luxury-watch-computer-vision-ai', 'agentic-self-learning-websites', 'crm-revenue-automation']
   },
 
   // 11. AI VOICE RECEPTIONIST (Featured #5)
@@ -1542,76 +1471,7 @@ export const PROJECTS: ProjectItem[] = [
     relatedProjectSlugs: ['3d-room-mapping-spatial-ai', 'room-defect-monitoring-ai', 'crm-revenue-automation']
   },
 
-  // 20. UNITEC / BUSINESS COMMERCE SYSTEM
-  {
-    id: 'unitec-commerce-system',
-    slug: 'unitec-commerce-system',
-    name: 'Unitec: Enterprise B2B Commerce & Catalog System',
-    shortName: 'Unitec Commerce',
-    tagline: 'High-Volume Multi-Attribute Wholesale Catalog & Cross-Border Logistics Automation',
-    summary: 'A robust B2B commerce platform built to handle enterprise wholesale product catalogs, international shipping containers, multilingual trade, and automated order fulfillment.',
-    industry: 'Commerce & Marketplaces',
-    industryFilter: 'Commerce & Marketplaces',
-    subIndustry: 'Enterprise Wholesale & Global Trade',
-    status: 'PRODUCTION',
-    maturity: 'Portfolio Project & Enterprise Deployment',
-    businessModel: 'Enterprise Platform License + Support SLA',
-    targetUsers: ['Wholesale Distributors', 'Import/Export Operators', 'Equipment Manufacturers'],
-    problem: 'Wholesale distributors operate with complex custom price tiers, bulk volume tiers, multi-currency invoices, and container shipment tracking that break standard Shopify stores.',
-    solution: 'A purpose-built enterprise commerce architecture supporting multi-attribute product matrices, tiered wholesale customer pricing, and automated export document generation.',
-    valueLine: 'Powers wholesale catalog ordering, container logistics, and multilingual enterprise commerce.',
-    capabilities: [
-      'Large-scale product catalog with complex multi-attribute matrices',
-      'Wholesale tiered customer pricing and custom payment terms',
-      'Multilingual customer interface (English and Spanish)',
-      'Container shipping, freight calculation, and logistics milestone tracking',
-      'Automated commercial invoice and bill of lading generation',
-      'Conversational AI customer support assistant for order status inquiries'
-    ],
-    technologies: ['Next.js', 'PostgreSQL', 'FastAPI', 'Tailwind CSS', 'Redis', 'Docker'],
-    metrics: [
-      { label: 'Catalog Architecture', value: 'Enterprise Multi-Tier', verified: true },
-      { label: 'International Trade', value: 'Bilingual EN/ES', verified: true },
-      { label: 'Deployment State', value: 'Production Portfolio', verified: true }
-    ],
-    links: {
-      website: 'https://www.unitecusadesign.com/',
-      contact: '/#contact'
-    },
-    sponsorOpportunity: {
-      available: false,
-      stage: 'Deployed Portfolio System',
-      type: 'Commercialization Partners',
-      supportNeeded: ['Wholesale Distributors Seeking Modern Trade Architecture']
-    },
-    featured: false,
-    architecture: {
-      input: 'Wholesale order submission, container shipping schedule, and inventory feed',
-      engine: 'B2B commerce transaction engine + multi-tier pricing calculator',
-      analysis: 'Validate credit limits, check warehouse stock levels, and calculate international freight fees',
-      decision: 'Approve wholesale purchase order and generate warehouse pick list and export customs manifest',
-      output: 'Confirmed order status, dispatched bill of lading, and ERP accounting sync'
-    },
-    category: 'Commerce & Marketplaces',
-    professionalTitle: 'AI Marketplace Architect',
-    graphicType: 'data-pipeline',
-    commercialOpportunity: {
-      targetCustomers: ['Industrial Wholesalers', 'Latin America Import/Export Operators'],
-      problemSolved: 'Replaces messy phone/email PDF order sheets with a self-service wholesale trade portal.',
-      currentAlternatives: 'Legacy ERP portals that are impossible for overseas buyers to navigate on phones.',
-      differentiation: 'Engineered specifically for international Latin American trade flows and container logistics.',
-      businessModel: 'Enterprise platform build fee plus monthly hosting SLA.'
-    },
-    validationEvidence: 'Operating as a production reference system demonstrating high-SKU catalog performance.',
-    roadmap: [
-      'Phase 1: Multi-tier wholesale catalog and bilingual checkout (Completed)',
-      'Phase 2: Container freight tracker and customs manifest generator (In Production)',
-      'Phase 3: Automated currency exchange hedging calculation (2027)'
-    ],
-    relatedProjectSlugs: ['watchfacts-luxury-intelligence', 'adaptive-ai-marketplace', 'crm-revenue-automation']
-  },
-
-  // 21. AI MARKET / BUSINESS RESEARCH
+  // 20. AI MARKET / BUSINESS RESEARCH
   {
     id: 'ai-market-business-research',
     slug: 'ai-market-business-research',
@@ -1675,10 +1535,10 @@ export const PROJECTS: ProjectItem[] = [
       'Phase 2: Automated competitive pricing monitor with change alerts (Active)',
       'Phase 3: Integration with Zero-G Business Simulation platform (Q4 2026)'
     ],
-    relatedProjectSlugs: ['zero-g-business-simulation', 'watchfacts-luxury-intelligence', 'agentic-self-learning-websites']
+    relatedProjectSlugs: ['zero-g-business-simulation', 'luxury-watch-computer-vision-ai', 'agentic-self-learning-websites']
   },
 
-  // 22. BUSINESS SIMULATION / ZERO-G
+  // 21. BUSINESS SIMULATION / ZERO-G
   {
     id: 'zero-g-business-simulation',
     slug: 'zero-g-business-simulation',
@@ -1743,7 +1603,7 @@ export const PROJECTS: ProjectItem[] = [
       'Phase 2: Interactive D3.js distribution curve visualization workbench (Live Demo)',
       'Phase 3: Multi-agent competitor retaliatory pricing simulation (2027)'
     ],
-    relatedProjectSlugs: ['ai-market-business-research', 'watchfacts-luxury-intelligence', 'agentic-self-learning-websites']
+    relatedProjectSlugs: ['ai-market-business-research', 'luxury-watch-computer-vision-ai', 'agentic-self-learning-websites']
   }
 ]
 
@@ -1759,7 +1619,7 @@ export function getProjectBySlug(slug: string): ProjectItem | undefined {
 export function getFeaturedProjects(): ProjectItem[] {
   // Guaranteed exact order of 6 featured systems as requested
   const featuredIds = [
-    'watchfacts-luxury-intelligence',
+    'luxury-watch-computer-vision-ai',
     'jmm-jas-miami-method',
     'runform-running-biomechanics',
     'remote-patient-monitoring',

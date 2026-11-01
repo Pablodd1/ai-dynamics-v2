@@ -163,7 +163,7 @@ export const ProjectGraphic: React.FC<ProjectGraphicProps> = ({
       )
 
     case 'data-pipeline':
-      // WatchFacts & enterprise ingestion matrix
+      // High-throughput enterprise ingestion matrix
       return (
         <div className={`relative overflow-hidden rounded-lg bg-dark-50 border border-white/5 flex items-center justify-center p-3 ${className}`}>
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-transparent to-indigo-500/5" />

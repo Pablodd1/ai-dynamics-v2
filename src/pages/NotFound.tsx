@@ -68,7 +68,7 @@ export default function NotFound() {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 hover:border-luxury-gold/30 transition-all duration-300"
             >
               <Layers className="w-4 h-4 text-luxury-gold" />
-              Browse 23 Production Systems
+              Browse 21 Production Systems
             </Link>
 
             <Link

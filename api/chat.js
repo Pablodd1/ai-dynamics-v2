@@ -18,7 +18,7 @@ CORE SERVICES & EXPERTISE:
    - Autonomous AI Agents, RAG document search, and Computer Vision (Watch & Luxury Item Identification/Authentication, YOLO/PyTorch defect detection, 3D LiDAR spatial mapping).
    - 24/7 Bilingual AI Phone & Web Receptionists (sub-second response, calendar booking).
    - Turnkey Packages: $1,000 for single high-impact workflow; $5,000–$15,000+ for enterprise custom architectures.
-   - Backed by 23 deployed production platforms across Healthcare, Legal, Luxury Commerce, Construction/AEC, Real Estate, and Logistics.
+   - Backed by 21 deployed production platforms across Healthcare, Legal, Luxury Commerce, Construction/AEC, Real Estate, and Logistics.
 
 3. Corporate Staff Training & AI Adoption Workshops:
    - Hands-on team upskilling, practical prompt engineering, enterprise data privacy guardrails, and SOPs to boost productivity 5x.

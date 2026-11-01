@@ -27,7 +27,6 @@ const Footer = () => {
       { label: 'PocketScribe', href: 'https://pocketscribe.online/', external: true },
       { label: 'Real Estate Dates', href: 'https://realestatedates.com/', external: true },
       { label: 'Jas Miami Method', href: 'https://jasmiamimethod.fit/login', external: true },
-      { label: 'Unitec USA Design', href: 'https://www.unitecusadesign.com/', external: true },
       { label: '305business', href: 'https://305business-llc.vercel.app', external: true },
       { label: 'Medical Billing Miami Beach', href: 'https://medicalbillingmb.com', external: true },
     ],
