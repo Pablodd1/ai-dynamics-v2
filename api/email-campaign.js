@@ -384,17 +384,50 @@ export default async function handler(req, res) {
       });
     }
 
-    // ACTION: Create & trigger verification for a new Brevo Sender (e.g. jasmel@aidynamic.pro or jasmelacosta@gmail.com)
-    if (action === 'create_sender') {
-      const targetEmail = (senderEmail || 'jasmelacosta@gmail.com').trim().toLowerCase();
+    // ACTION: Create & trigger verification for a new Brevo Sender (or delete & recreate to re-send confirmation email)
+    if (action === 'create_sender' || action === 'resend_sender_verification') {
+      const targetEmail = (senderEmail || 'jasmel@aidynamic.pro').trim().toLowerCase();
       const targetName = (senderName || 'Jasmel Acosta — AI Dynamic Pro').trim();
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      };
+
+      // Also fetch domain DNS records from Brevo if available
+      let domainDns = null;
+      try {
+        await fetch('https://api.brevo.com/v3/senders/domains', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ name: 'aidynamic.pro' }),
+        }).catch(() => null);
+        const domRes = await fetch('https://api.brevo.com/v3/senders/domains/aidynamic.pro', { headers }).catch(() => null);
+        if (domRes && domRes.ok) {
+          domainDns = await domRes.json().catch(() => null);
+        }
+      } catch {}
+
+      // If sender already exists and is inactive, delete it first so Brevo sends a brand-new verification email
+      try {
+        const listSdr = await fetch('https://api.brevo.com/v3/senders', { headers }).catch(() => null);
+        if (listSdr && listSdr.ok) {
+          const sdrData = await listSdr.json();
+          const existing = (sdrData.senders || []).find(
+            (s) => s.email && s.email.trim().toLowerCase() === targetEmail && !s.active
+          );
+          if (existing && existing.id) {
+            await fetch(`https://api.brevo.com/v3/senders/${existing.id}`, {
+              method: 'DELETE',
+              headers,
+            }).catch(() => null);
+          }
+        }
+      } catch {}
+
       const createRes = await fetch('https://api.brevo.com/v3/senders', {
         method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'api-key': BREVO_API_KEY,
-        },
+        headers,
         body: JSON.stringify({
           name: targetName,
           email: targetEmail,
@@ -406,6 +439,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
           success: true,
           sender: { id: created.id, name: targetName, email: targetEmail },
+          domainDns,
           message: `Verification email sent to ${targetEmail}! Open your inbox and click the Brevo confirmation link to activate this sender.`,
         });
       }
@@ -413,7 +447,8 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: false,
         error: errTxt,
-        message: `Could not create sender from server (${errTxt}). Trying client-side fallback...`,
+        domainDns,
+        message: `Could not create sender from server (${errTxt}).`,
       });
     }
 
