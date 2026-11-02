@@ -19,7 +19,7 @@ interface AuthContextType {
   profile: Profile | null
   isAdmin: boolean
   isLoading: boolean
-  signInWithOtp: (email: string) => Promise<{ error: Error | null }>
+  signInWithOtp: (email: string, metadata?: Record<string, string>) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
 }
@@ -55,13 +55,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (data) setProfile(data)
   }
 
-  const signInWithOtp = async (email: string) => {
+  const signInWithOtp = async (email: string, metadata?: Record<string, string>) => {
+    const cleanEmail = (email || '').trim().toLowerCase()
+    if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(cleanEmail)) {
+      return { error: new Error('Please enter a valid business or personal email address.') }
+    }
+
+    // Block disposable/bot/test domains that trigger Supabase spam complaints
+    const blockedDomains = ['mailinator.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'yopmail.com', 'example.com', 'test.com', 'localhost']
+    const domain = cleanEmail.split('@')[1] || ''
+    if (blockedDomains.includes(domain)) {
+      return { error: new Error('Disposable or test email addresses are not permitted.') }
+    }
+
+    // Client-side rate limit: max 1 OTP request per 120 seconds per browser
+    const lastSentRaw = localStorage.getItem('aidynamic_last_otp_ts')
+    if (lastSentRaw) {
+      const elapsedSec = Math.floor((Date.now() - Number(lastSentRaw)) / 1000)
+      if (elapsedSec < 120) {
+        return { error: new Error(`Please wait ${120 - elapsedSec} seconds before requesting another magic link.`) }
+      }
+    }
+
+    // Only allow OTP emails for existing clients/admins unless explicitly signing up with metadata
+    const isSignup = Boolean(metadata && Object.keys(metadata).length > 0)
     const { error } = await supabase.auth.signInWithOtp({
-      email,
+      email: cleanEmail,
       options: {
-        emailRedirectTo: `${window.location.origin}/reset-password`,
+        shouldCreateUser: isSignup,
+        ...(isSignup ? { data: metadata } : {}),
+        emailRedirectTo: `${window.location.origin}/dashboard`,
       },
     })
+
+    if (!error) {
+      localStorage.setItem('aidynamic_last_otp_ts', String(Date.now()))
+    }
     return { error }
   }
 

@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext'
 
 export default function Login() {
   const [email, setEmail] = useState('')
+  const [honeypot, setHoneypot] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -13,6 +14,11 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (honeypot) {
+      // Silently drop automated bot submissions so Supabase Auth is never hit
+      setSent(true)
+      return
+    }
     setError('')
     setLoading(true)
 
@@ -64,6 +70,17 @@ export default function Login() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Invisible anti-bot honeypot */}
+                <input
+                  type="text"
+                  name="website_url"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 <div>
                   <label className="block text-sm font-medium text-luxury-silver mb-2">
                     Email Address

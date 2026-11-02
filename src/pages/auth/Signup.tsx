@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, User, Phone, Building2, ArrowLeft, Loader2, Sparkles, CheckCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../context/AuthContext'
 
 export default function Signup() {
+  const { signInWithOtp } = useAuth()
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -13,12 +14,18 @@ export default function Signup() {
     role: 'client' as 'client' | 'team',
     agreeToTerms: false,
   })
+  const [honeypot, setHoneypot] = useState('')
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (honeypot) {
+      // Silently absorb automated bot signup spam before it ever touches Supabase
+      setSent(true)
+      return
+    }
     setError('')
 
     if (!form.agreeToTerms) {
@@ -28,17 +35,11 @@ export default function Signup() {
 
     setLoading(true)
 
-    const { error: signUpError } = await supabase.auth.signInWithOtp({
-      email: form.email,
-      options: {
-        data: {
-          full_name: form.fullName,
-          phone: form.phone,
-          company_name: form.company,
-          role: form.role,
-        },
-        emailRedirectTo: `${window.location.origin}/reset-password`,
-      },
+    const { error: signUpError } = await signInWithOtp(form.email, {
+      full_name: form.fullName,
+      phone: form.phone,
+      company_name: form.company,
+      role: form.role,
     })
 
     if (signUpError) {
@@ -87,6 +88,17 @@ export default function Signup() {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Invisible anti-bot honeypot */}
+                <input
+                  type="text"
+                  name="company_website"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 {/* Role Selection */}
                 <div className="grid grid-cols-2 gap-3 mb-2">
                   <button
