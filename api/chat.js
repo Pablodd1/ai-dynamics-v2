@@ -7,27 +7,29 @@ Your role: Be welcoming, highly professional, friendly, and helpful to potential
 Tone: Concise (2 to 3 sentences maximum), natural, and executive so your answers sound great whether read in chat or spoken aloud on an internet voice call.
 Bilingual: Fluent English and warm, natural Venezuelan / Latin American business Spanish ("español latino cálido, ejecutivo y profesional").
 
-CORE SERVICES & EXPERTISE:
-1. AI Consulting & Operational Audits:
-   - $99 AI Workflow & Feasibility Audit Special (60-min deep-dive bottleneck analysis + custom ROI blueprint, normally $500).
-   - Free 30-Minute Discovery Call at https://www.aidynamic.pro/booking
-   - Identifying operational bottlenecks, payroll savings, and automation blueprints.
+CORE SERVICES & 4-TIER COMPETITIVE PRICING:
+1. Executive AI Consultation & Efficiency Audit (Two-Speed Front Door):
+   - Free 15-Minute Executive Triage Call OR $99 Full 60-Min Department AI Efficiency Audit (normally $500) at https://www.aidynamic.pro/booking
+   - Includes a Free 48-Hour Live AI Voice/Workflow Prototype customized for their business.
+   - Zero-Risk Guarantee: Guaranteed to uncover at least $2,500+/month ($30,000/year) in manual payroll savings they can automate immediately, or they pay $0 (100% of the $99 is credited toward any solution or training).
 
-2. Custom App Development & AI Systems Architecture:
-   - Full-stack AI-native web and mobile applications, custom portal development.
-   - Autonomous AI Agents, RAG document search, and Computer Vision (Watch & Luxury Item Identification/Authentication, YOLO/PyTorch defect detection, 3D LiDAR spatial mapping).
-   - 24/7 Bilingual AI Phone & Web Receptionists (sub-second response, calendar booking).
-   - Turnkey Packages: $1,000 for single high-impact workflow; $5,000–$15,000+ for enterprise custom architectures.
-   - Backed by 21 deployed production platforms across Healthcare, Legal, Luxury Commerce, Construction/AEC, Real Estate, and Logistics.
+2. Corporate AI Staff Bootcamp ($497 Half-Day Team Workshop, normally $1,500):
+   - Fast-entry team training for up to 15 staff members (on-site in South Florida or live virtual, English & Spanish).
+   - Role-specific AI workflows, enterprise data privacy guardrails, and custom SOPs so 1 trained employee produces the output of 5.
 
-3. Corporate Staff Training & AI Adoption Workshops:
-   - Hands-on team upskilling, practical prompt engineering, enterprise data privacy guardrails, and SOPs to boost productivity 5x.
+3. Custom AI Solution & 24/7 Agent ($997 Turnkey Build OR $297/mo All-Inclusive Managed AI):
+   - 14-day turnkey deployment of a 24/7 Bilingual AI Voice & Web Receptionist (JAss) or 1 high-impact automated intake, CRM, or billing workflow.
+   - Autonomous AI Agents, RAG document search, and Computer Vision.
+
+4. Full Enterprise AI Transformation ($4,900 – $15,000+):
+   - Multi-department custom AI software, ERP/EHR/CRM architecture, dedicated AI Systems Architect, and includes the Corporate AI Staff Bootcamp free.
+   - Backed by 21 deployed production platforms across Healthcare, Legal, Construction/AEC, Real Estate, and Logistics.
 
 ESCALATION & HUMAN HANDOFF PROTOCOL:
 - If a visitor asks to speak with human staff, an engineer, a representative, or founder Jasmel Acosta, OR if they ask a question outside your scope:
   Politely provide the direct contact channels:
   • Direct Phone / Text: +1 (786) 643-2099
-  • Direct Email: jasmelacosta@gmail.com
+  • Direct Email: jasmel@aidynamic.pro (or jasmelacosta@gmail.com)
   • Online Booking Calendar: https://www.aidynamic.pro/booking
   Invite them to leave their name and phone/email right here so Jasmel can be notified and follow up immediately.`;
 
@@ -41,12 +43,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(human|person|staff|agent|representative|engineer|founder|jasmel|speak with someone|talk to someone|call me|humano|persona|representante|ingeniero|fundador|hablar con alguien|comunicarme|atención personalizada)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '👤 ¡Con mucho gusto te comunico con nuestro equipo! Puedes llamar o escribir al ingeniero Jasmel Acosta al +1 (786) 643-2099, escribir a jasmelacosta@gmail.com, o agendar directamente en https://www.aidynamic.pro/booking. Si me dejas tu nombre y teléfono aquí, le avisaré de inmediato.',
+          text: '👤 ¡Con mucho gusto te comunico con nuestro equipo! Puedes llamar o escribir al ingeniero Jasmel Acosta al +1 (786) 643-2099, escribir a jasmel@aidynamic.pro, o agendar directamente en https://www.aidynamic.pro/booking. Si me dejas tu nombre y teléfono aquí, le avisaré de inmediato.',
           audioUrl: '/audio/sofia_booking_es.mp3',
           lang: 'es',
         }
       : {
-          text: '👤 I would be happy to connect you with our team! You can call or text Jasmel Acosta directly at +1 (786) 643-2099, email jasmelacosta@gmail.com, or schedule at https://www.aidynamic.pro/booking. If you leave your name and number here, I will notify him right away!',
+          text: '👤 I would be happy to connect you with our team! You can call or text Jasmel Acosta directly at +1 (786) 643-2099, email jasmel@aidynamic.pro, or schedule at https://www.aidynamic.pro/booking. If you leave your name and number here, I will notify him right away!',
           audioUrl: '/audio/sofia_booking_en.mp3',
           lang: 'en',
         };
@@ -56,12 +58,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(app|application|development|software|system|build|coding|web app|mobile app|agent|vision|desarrollo|aplicación|aplicacion|sistema|programar|construir|plataforma)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '💻 En AI Dynamic Pro desarrollamos aplicaciones y sistemas de IA a medida: desde agentes autónomos y visión computarizada hasta plataformas web y móviles completas. Un sistema turnkey comienza en $1,000 y desarrollos empresariales desde $5,000. ¿Qué tipo de solución o app te gustaría construir? https://www.aidynamic.pro/booking',
+          text: '💻 En AI Dynamic Pro desarrollamos soluciones de IA a medida en 14 días: desde agentes autónomos 24/7 hasta automatización de CRM y facturación. Un sistema llave en mano comienza en $997 (o $297/mes todo incluido) y transformaciones empresariales desde $4,900. Agenda tu prototipo gratis en https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_services_es.mp3',
           lang: 'es',
         }
       : {
-          text: '💻 At AI Dynamic Pro, we engineer custom AI-native apps and software solutions—from autonomous agents and computer vision to scalable web and mobile platforms. Turnkey single builds start at $1,000, and enterprise systems from $5,000+. What kind of application or system are you looking to build? https://www.aidynamic.pro/booking',
+          text: '💻 At AI Dynamic Pro, we engineer custom AI solutions in 14 days—from 24/7 autonomous agents to CRM and billing automation. Turnkey builds start at $997 (or $297/mo all-inclusive managed AI), and full enterprise transformations from $4,900+. Claim your free 48-hour prototype at https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_services_en.mp3',
           lang: 'en',
         };
@@ -71,12 +73,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(phone|call|receptionist|voice|ring|llamada|llamar|recepcionista|teléfono|telefono|voz)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '📞 ¡Claro que sí! Así mismo como me estás escuchando ahora por internet, desplegamos recepcionistas de voz con IA para atender las llamadas reales de tu negocio 24/7 en español e inglés. Contestamos en el primer repique, respondemos preguntas y agendamos citas en tu calendario. ¿Te gustaría implementarlo? Agenda aquí: https://www.aidynamic.pro/booking',
+          text: '📞 ¡Claro que sí! Desplegamos recepcionistas de voz y chat con IA (como yo, JAss) que atienden tus llamadas 24/7 en español e inglés desde el primer repique por $997 llave en mano o $297/mes todo incluido. Además, te armamos un prototipo en vivo en 48 horas. Agenda en https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_phone_es.mp3',
           lang: 'es',
         }
       : {
-          text: "📞 Just like you're hearing my voice right now, we deploy 24/7 AI voice receptionists that answer your business phone calls on the very first ring in fluent English and Spanish. We qualify leads, answer caller questions, and book appointments into your calendar. Book a demo at https://www.aidynamic.pro/booking",
+          text: "📞 Just like you're hearing my voice right now, we deploy 24/7 bilingual AI voice and web receptionists that answer on the first ring and book appointments into your calendar—for $997 turnkey or $297/mo managed, including a free 48-hour live prototype! Book at https://www.aidynamic.pro/booking",
           audioUrl: '/audio/sofia_phone_en.mp3',
           lang: 'en',
         };
@@ -86,12 +88,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(audit|consulting|consultoría|consultoria|auditoría|auditoria|99|\$99|bottleneck|cuello)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '⚡ Nuestra Auditoría Especial de $99 incluye una sesión de 60 minutos donde analizamos los cuellos de botella de tu equipo, calculamos cuánto tiempo y nómina puedes ahorrar, y te entregamos el plano exacto de automatización. Resérvala en https://www.aidynamic.pro/booking',
+          text: '⚡ Puedes agendar una llamada ejecutiva de 15 min gratis o nuestra Auditoría Profunda de 60 min por $99 (incluye un prototipo IA en 48 horas). Garantizamos encontrar al menos $2,500+/mes en ahorros de nómina automatizables o pagas $0. Resérvala en https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_audit_es.mp3',
           lang: 'es',
         }
       : {
-          text: '⚡ Our $99 Workflow Audit Special includes a 60-minute deep dive into your manual bottlenecks, payroll savings calculations, and a step-by-step automation blueprint. Lock in your spot at https://www.aidynamic.pro/booking',
+          text: '⚡ You can book a Free 15-Minute Executive Triage Call or our 60-minute $99 Efficiency Audit (which includes a Free 48-Hour Live AI Prototype). We guarantee to uncover at least $2,500+/month in payroll savings or you pay $0! Lock in your spot at https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_audit_en.mp3',
           lang: 'en',
         };
@@ -101,27 +103,27 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(price|pricing|cost|how much|cuánto|cuanto|precio|cuesta|tarifa|planes)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '💼 Ofrecemos nuestra Auditoría de Flujos de Trabajo por solo $99, o puedes agendar una llamada de descubrimiento de 30 min sin costo. Un sistema turnkey comienza en $1,000, y arquitecturas empresariales desde $5,000. ¿Te agendo tu consulta en https://www.aidynamic.pro/booking?',
+          text: '💼 Tenemos 4 opciones claras: 1) Llamada de 15 min Gratis o Auditoría de $99 (garantía de ahorrar $2,500+/mes o pagas $0), 2) Bootcamp Corporativo de IA para tu personal por $497, 3) Solución IA o Agente 24/7 por $997 (o $297/mes), y 4) Transformación Empresarial desde $4,900. Agenda en https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_pricing_es.mp3',
           lang: 'es',
         }
       : {
-          text: "💼 We offer our comprehensive AI Workflow Audit Special for just $99, or a free 30-minute discovery call. Turnkey single-workflow builds start at $1,000, and custom enterprise systems range from $5,000 to $15,000+. Book at https://www.aidynamic.pro/booking",
+          text: "💼 We offer 4 transparent tiers: 1) Free 15-Min Triage Call or $99 Full Audit (guaranteed to find $2,500+/mo in payroll savings or $0), 2) $497 Corporate AI Staff Bootcamp, 3) $997 Turnkey AI Solution or $297/mo Managed Agent, and 4) Enterprise AI Transformation from $4,900+. Book at https://www.aidynamic.pro/booking",
           audioUrl: '/audio/sofia_pricing_en.mp3',
           lang: 'en',
         };
   }
 
   // 6. Corporate Staff Training
-  if (/\b(train|training|staff|team|employees|upskill|workshop|entrenamiento|personal|equipo|capacitación|capacitacion)\b/i.test(lower)) {
+  if (/\b(train|training|staff|team|employees|upskill|workshop|bootcamp|entrenamiento|personal|equipo|capacitación|capacitacion)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '🎓 ¡Por supuesto! Capacitamos al personal de tu empresa con talleres prácticos de adopción de IA: ingeniería de prompts, protocolos de privacidad de datos y ejecución de flujos de trabajo diarios a 5x velocidad. Agenda una sesión en https://www.aidynamic.pro/booking',
+          text: '🎓 ¡Por supuesto! Nuestro Bootcamp Corporativo de IA cuesta solo $497 (taller intensivo de medio día para hasta 15 empleados, presencial en el Sur de la Florida o virtual). Entrenamos a tu equipo con SOPs de IA para que 1 empleado produzca el trabajo de 5. Agenda en https://www.aidynamic.pro/booking',
           audioUrl: '/audio/sofia_training_es.mp3',
           lang: 'es',
         }
       : {
-          text: "🎓 Absolutely! We conduct hands-on corporate staff training workshops so your team masters practical prompt engineering, enterprise data privacy guardrails, and daily AI workflows at 5x speed. Schedule a consultation at https://www.aidynamic.pro/booking",
+          text: "🎓 Absolutely! Our Corporate AI Staff Bootcamp is just $497 for a half-day team workshop (up to 15 staff members, on-site in South Florida or virtual). We equip your team with role-specific AI SOPs so 1 trained employee produces the output of 5. Schedule at https://www.aidynamic.pro/booking",
           audioUrl: '/audio/sofia_training_en.mp3',
           lang: 'en',
         };
@@ -131,12 +133,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(book|schedule|appointment|calendar|meeting|discovery|cita|agendar|reservar|reunión|reunion)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '📅 ¡Excelente! Puedes elegir el día y la hora que mejor te convenga directamente en nuestra agenda en línea https://www.aidynamic.pro/booking, o llamarnos al +1 (786) 643-2099. ¡El ingeniero Jasmel Acosta y nuestro equipo te atenderán con mucho gusto!',
+          text: '📅 ¡Excelente! Puedes elegir tu llamada ejecutiva de 15 min gratis o tu Auditoría de $99 directamente en https://www.aidynamic.pro/booking, o llamarnos al +1 (786) 643-2099. ¡El ingeniero Jasmel Acosta y nuestro equipo te atenderán con mucho gusto!',
           audioUrl: '/audio/sofia_booking_es.mp3',
           lang: 'es',
         }
       : {
-          text: '📅 Wonderful! You can pick a time that works best for you directly on our online booking calendar at https://www.aidynamic.pro/booking, or call and text us at +1 (786) 643-2099. Jasmel Acosta and our team look forward to speaking with you!',
+          text: '📅 Wonderful! You can schedule your Free 15-Minute Executive Triage Call or $99 Audit directly on our calendar at https://www.aidynamic.pro/booking, or call and text us at +1 (786) 643-2099. Jasmel Acosta and our team look forward to speaking with you!',
           audioUrl: '/audio/sofia_booking_en.mp3',
           lang: 'en',
         };
@@ -146,12 +148,12 @@ function matchIntentAndStudioAudio(userText) {
   if (/\b(service|services|offer|what do you do|industry|industries|servicios|ofrecen|hacen|industria)\b/i.test(lower)) {
     return isSpanish
       ? {
-          text: '🚀 En AI Dynamic Pro nos especializamos en tres áreas: 1) Consultoría y Auditorías de IA ($99 Audit), 2) Desarrollo de Aplicaciones y Sistemas IA a medida (agentes, visión por computadora, recepcionistas 24/7), y 3) Entrenamiento corporativo para personal. ¿Qué área te gustaría explorar?',
+          text: '🚀 En AI Dynamic Pro ayudamos a empresas a reducir costos y automatizar todo lo posible: 1) Consultoría y Auditoría IA ($99 o llamada 15m gratis + prototipo en 48h), 2) Soluciones IA y Agentes 24/7 ($997 o $297/mes), y 3) Bootcamp de IA para Personal ($497). ¿Cuál te gustaría explorar?',
           audioUrl: '/audio/sofia_services_es.mp3',
           lang: 'es',
         }
       : {
-          text: '🚀 At AI Dynamic Pro, we specialize in three core areas: 1) AI Consulting & Operational Audits ($99 Audit), 2) Custom App Development & AI Systems (autonomous agents, computer vision, 24/7 voice receptionists), and 3) Corporate Staff Training. Which area would you like to explore?',
+          text: '🚀 At AI Dynamic Pro, we cut operating costs and automate everything possible through: 1) Executive AI Consultation (Free 15m Call or $99 Audit + Free 48h Prototype), 2) Custom AI Solutions & 24/7 Agents ($997 turnkey or $297/mo), and 3) $497 Corporate AI Staff Bootcamps. Which area would you like to explore?',
           audioUrl: '/audio/sofia_services_en.mp3',
           lang: 'en',
         };

@@ -19,20 +19,20 @@ const CAMPAIGNS = {
         <p>At <strong>AI Dynamic Pro</strong>, we are an Executive AI Consultancy &amp; Engineering Partner built around a simple objective—<strong>to cut your operating costs, automate everything possible, reduce staff overhead, and make your entire company run faster and leaner:</strong></p>
 
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0f172a; padding: 16px 20px; margin: 20px 0; border-radius: 8px; font-size: 15px;">
-          <p style="margin: 0 0 10px 0;"><strong>1. Executive AI Consultation ($99 Efficiency Audit):</strong><br/>
-          We audit your departments from top to bottom, pinpoint where manual labor is bleeding money, and hand you a step-by-step blueprint of what to automate first.</p>
-          <p style="margin: 0 0 10px 0;"><strong>2. Custom AI Solutions &amp; Full Automation:</strong><br/>
-          We engineer and deploy custom AI systems that replace repetitive manual roles—from our 24/7 bilingual AI voice &amp; chat receptionist (<strong>JAss</strong>) to automated intake, CRM, billing, and computer vision.</p>
-          <p style="margin: 0;"><strong>3. Corporate AI Staff Training:</strong><br/>
-          Instead of hiring more staff, we train your core team on custom AI workflows and SOPs so <strong>1 AI-trained employee produces the output of 5</strong>.</p>
+          <p style="margin: 0 0 10px 0;"><strong>1. Executive AI Consultation (Free 15-Min Triage Call or $99 Full Audit):</strong><br/>
+          We audit your departments, pinpoint where manual labor is bleeding money, and build you a <strong>Free 48-Hour Live AI Prototype</strong> before you spend a dime on development.</p>
+          <p style="margin: 0 0 10px 0;"><strong>2. Custom AI Solutions &amp; 24/7 Agents ($997 Turnkey or $297/mo Managed):</strong><br/>
+          We deploy custom AI systems in 14 days that replace repetitive manual roles—from our 24/7 bilingual AI voice &amp; chat receptionist (<strong>JAss</strong>) to automated intake, CRM, and billing.</p>
+          <p style="margin: 0;"><strong>3. Corporate AI Staff Bootcamp ($497 Half-Day Team Workshop):</strong><br/>
+          Instead of hiring more staff, we train up to 15 of your existing employees on role-specific AI workflows and SOPs so <strong>1 AI-trained employee produces the output of 5</strong>.</p>
         </div>
 
         <p>You can see how our technology works in 30 seconds right now: visit <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700; text-decoration: underline;">www.aidynamic.pro</a> and talk live with <strong>JAss</strong> (tap the green microphone or chat button in the corner in English or Spanish).</p>
 
-        <p><strong>Our Zero-Risk Guarantee:</strong> 100% of our <strong>$99 Executive AI Consultation &amp; Audit</strong> is credited toward any solution or training we deploy—and <strong>if we don’t uncover at least 15+ hours/month of payroll waste you can automate immediately, you pay $0.</strong></p>
+        <p><strong>Our Zero-Risk Dollar Guarantee:</strong> 100% of our <strong>$99 Full Department Audit</strong> is credited toward any solution or training—and <strong>if we don’t uncover at least $2,500+/month ($30,000/year) in payroll waste you can automate immediately, you pay $0.</strong></p>
 
         <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book Your Executive AI Consultation ($99 Audit) →</a>
+          👉 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book Your Free 15-Min Call or $99 Audit (+ Free 48h Prototype) →</a>
         </p>
 
         <p>Or call/text me directly on my Miami line at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>.</p>
@@ -66,19 +66,19 @@ const CAMPAIGNS = {
         <p>At <strong>AI Dynamic Pro</strong>, we consult with companies like <strong>${company}</strong> to <strong>automate everything possible</strong> so you can reduce headcount dependency and run a much leaner, more profitable operation:</p>
 
         <ul style="padding-left: 22px; margin: 18px 0;">
-          <li style="margin-bottom: 10px;"><strong>24/7 Front-Desk &amp; Phone Automation (JAss):</strong> Answers 100% of calls and web inquiries on Ring 1 in fluent English &amp; Spanish, qualifies prospects, and books appointments directly into your calendar.</li>
-          <li style="margin-bottom: 10px;"><strong>Back-Office, Intake &amp; Billing Automation:</strong> Eliminates manual data entry, document intake, invoice/claim scrubbing, and spreadsheet copy-pasting.</li>
+          <li style="margin-bottom: 10px;"><strong>24/7 Front-Desk &amp; Phone Automation (JAss — $997 Turnkey or $297/mo Managed):</strong> Answers 100% of calls and web inquiries on Ring 1 in fluent English &amp; Spanish, qualifies prospects, and books appointments directly into your calendar.</li>
+          <li style="margin-bottom: 10px;"><strong>Back-Office, Intake &amp; Billing Automation:</strong> Eliminates manual data entry, document intake, invoice/claim scrubbing, and spreadsheet copy-pasting in 14 days.</li>
           <li style="margin-bottom: 6px;"><strong>Autonomous Sales &amp; CRM Pipelines:</strong> Follows up with every lead in under 45 seconds across SMS, email, and voice so zero revenue falls through the cracks.</li>
         </ul>
 
-        <p>Before you hire another administrative employee—or keep paying for manual busywork—let us run a <strong>$99 Executive AI Consultation &amp; Workflow Audit</strong> for <strong>${company}</strong>.</p>
+        <p>Before you hire another administrative employee—or keep paying for manual busywork—start with a <strong>Free 15-Minute Executive Triage Call</strong> or our <strong>$99 Full Department AI Audit</strong> for <strong>${company}</strong> (including a <strong>Free 48-Hour Live Prototype</strong>).</p>
 
         <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px 18px; margin: 20px 0; border-radius: 6px; font-size: 15px;">
-          <strong>Zero-Risk Executive Guarantee:</strong> We will show you the exact AI solutions to cut your operating costs and save at least <strong>15+ hours/month</strong> of manual labor—or the audit costs you <strong>$0</strong>.
+          <strong>Zero-Risk Dollar Guarantee:</strong> We will show you the exact AI solutions to cut your operating costs and save at least <strong>$2,500+/month ($30,000/year)</strong> in manual payroll—or the audit costs you <strong>$0</strong>.
         </div>
 
         <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #0f172a; color: #f8fafc; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Schedule Your $99 AI Consultation &amp; Automation Audit →</a>
+          👉 <a href="${utmUrl}" style="background: #0f172a; color: #f8fafc; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Schedule Your Free 15-Min Call or $99 Audit (+ Free 48h Prototype) →</a>
         </p>
 
         <p>Or reply directly to this email / call me at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> and tell me which department at <strong>${company}</strong> is consuming the most manual hours right now.</p>
@@ -115,15 +115,15 @@ const CAMPAIGNS = {
           <li style="margin-bottom: 4px;"><strong>No AI Standard Operating Procedures (SOPs):</strong> Owners worry about company data privacy and lack structured workflows that force consistent efficiency.</li>
         </ul>
 
-        <p>Alongside building custom automation solutions, <strong>AI Dynamic Pro</strong> delivers <strong>Corporate AI Staff Training &amp; Workforce Transformation</strong> (on-site in South Florida or live virtual):</p>
+        <p>Alongside building custom automation solutions, <strong>AI Dynamic Pro</strong> delivers our <strong>$497 Corporate AI Staff Bootcamp</strong> (half-day team workshop for up to 15 employees, on-site in South Florida or live virtual, normally $1,500):</p>
         <ul style="padding-left: 22px; margin: 16px 0;">
-          <li style="margin-bottom: 6px;">We train your existing staff hands-on with custom AI tools built for their department.</li>
-          <li style="margin-bottom: 6px;">We install strict <strong>Data Privacy Guardrails &amp; AI SOPs</strong> across your company.</li>
+          <li style="margin-bottom: 6px;">We train your existing staff hands-on with custom AI tools built for their department (English &amp; Spanish).</li>
+          <li style="margin-bottom: 6px;">We install strict <strong>Data Privacy Guardrails &amp; Role-Specific AI SOPs</strong> across your company.</li>
           <li style="margin-bottom: 4px;"><strong>The Result:</strong> 1 trained employee can reliably handle the workload of 4 to 5 manual staff—allowing you to reduce payroll bloat and scale without hiring.</li>
         </ul>
 
         <p style="margin: 24px 0;">
-          📅 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book a Corporate AI Training &amp; Consultation Call →</a>
+          📅 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book Your $497 Corporate AI Staff Bootcamp or Free 15m Call →</a>
         </p>
 
         <p>Or explore our consulting, automation, and training programs at <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a>.</p>
@@ -161,17 +161,17 @@ const CAMPAIGNS = {
 
         <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 15px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
           <strong>✅ Model B — The AI Dynamic Automated Company:</strong><br/>
-          • <strong>AI Consultation:</strong> Every department audited so zero payroll is wasted on repetitive work.<br/>
-          • <strong>Custom AI Solutions:</strong> Calls, web chat, scheduling, intake, and CRM follow-ups happen autonomously in under 45 seconds, 24/7/365 in English &amp; Spanish.<br/>
-          • <strong>AI-Trained Core Team:</strong> A leaner, sharper staff trained to produce 5x output at a fraction of traditional payroll cost.
+          • <strong>AI Consultation ($99 Audit or Free 15m Call):</strong> Every department audited with a guarantee to uncover <strong>$2,500+/mo in payroll savings</strong> or you pay $0.<br/>
+          • <strong>Custom AI Solutions ($997 Turnkey or $297/mo Managed):</strong> Calls, web chat, scheduling, intake, and CRM follow-ups happen autonomously in under 45 seconds, 24/7/365 in English &amp; Spanish.<br/>
+          • <strong>$497 Corporate AI Staff Bootcamp:</strong> A leaner, sharper team trained in 1 afternoon to produce 5x output at a fraction of traditional payroll cost.
         </div>
 
         <p>We have already engineered and deployed <strong>21 production AI systems</strong> across Healthcare, Legal, Real Estate, Construction, Computer Vision, and B2B Operations—you can inspect our live technical portfolio anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
 
-        <p>Ready to transition <strong>${company}</strong> from Model A to Model B? Start with our <strong>$99 Zero-Risk Executive Consultation &amp; Audit</strong>:</p>
+        <p>Ready to transition <strong>${company}</strong> from Model A to Model B? Start with a <strong>Free 15-Minute Executive Triage Call</strong> or our <strong>$99 Zero-Risk Department Audit (+ Free 48-Hour Live Prototype)</strong>:</p>
 
         <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #10b981; color: #052e16; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 800; display: inline-block;">Book Your $99 AI Consultation (Pay $0 Unless We Save 15+ Hrs/Mo) →</a>
+          👉 <a href="${utmUrl}" style="background: #10b981; color: #052e16; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 800; display: inline-block;">Book Free 15-Min Call or $99 Audit (Save $2,500+/Mo or Pay $0) →</a>
         </p>
 
         <p style="margin-top: 28px;">Best regards,<br/>
@@ -201,9 +201,9 @@ const CAMPAIGNS = {
         <p>Whenever you are ready to look seriously at cutting operating costs and modernizing your workflows, remember the 3 ways <strong>AI Dynamic Pro</strong> helps companies scale profits without scaling payroll:</p>
 
         <ol style="padding-left: 22px; margin: 16px 0;">
-          <li style="margin-bottom: 8px;"><strong>Executive AI Consultation ($99 Zero-Risk Audit):</strong> We audit your operations and calculate your exact monthly payroll savings before you spend a dollar on buildouts.</li>
-          <li style="margin-bottom: 8px;"><strong>Custom AI Solutions &amp; Full Automation:</strong> We automate everything possible—24/7 bilingual AI phone/chat receptionists (<strong>JAss</strong>), CRM pipelines, billing, and custom apps—so you need fewer manual hands.</li>
-          <li style="margin-bottom: 4px;"><strong>Corporate AI Staff Training:</strong> We train and certify your core staff to operate at 5x speed with safe, structured AI SOPs.</li>
+          <li style="margin-bottom: 8px;"><strong>Executive AI Consultation (Free 15-Min Call or $99 Audit + Free 48h Prototype):</strong> Guaranteed to uncover at least <strong>$2,500+/month ($30,000/year)</strong> in manual payroll savings—or you pay $0.</li>
+          <li style="margin-bottom: 8px;"><strong>Custom AI Solutions &amp; 24/7 Agents ($997 Turnkey or $297/mo Managed):</strong> We automate everything possible—24/7 bilingual AI phone/chat receptionists (<strong>JAss</strong>), CRM pipelines, billing, and custom apps—so you need fewer manual hands.</li>
+          <li style="margin-bottom: 4px;"><strong>Corporate AI Staff Bootcamp ($497 Half-Day Team Workshop):</strong> We train and certify up to 15 of your staff members to operate at 5x speed with safe, structured AI SOPs.</li>
         </ol>
 
         <p>Keep my direct Miami contact information below for whenever the timing is right—or test <strong>JAss</strong> live on our website anytime:</p>
@@ -234,26 +234,26 @@ const GOOGLE_BUSINESS_POSTS = [
   {
     id: 'gbp_audit_offer',
     type: 'OFFER POST',
-    title: 'Executive AI Consultation & $99 Cost-Reduction Audit (Miami)',
+    title: 'Free 15-Min AI Triage Call or $99 Cost-Reduction Audit (+ Free 48h Prototype)',
     ctaButton: 'Book Online',
     ctaUrl: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_offer&utm_campaign=audit_99',
-    content: `How much payroll is your company spending on manual tasks that AI should be doing automatically? 📉⚡\n\nAt AI Dynamic Pro in Miami, we help companies cut operating costs, reduce staff overhead, and automate everything possible:\n\n1️⃣ Executive AI Consultation ($99 Audit — $0 if we don't uncover 15+ hrs/mo in payroll savings!)\n2️⃣ Custom AI Solutions & Full Automation (24/7 bilingual voice/chat receptionists, CRM, billing & custom apps)\n3️⃣ Corporate AI Staff Training (train 1 employee to produce the output of 5)\n\n📞 Call/Text (786) 643-2099 or click "Book Online" to schedule your AI Consultation!`,
+    content: `How much payroll is your company spending on manual tasks that AI should be doing automatically? 📉⚡\n\nAt AI Dynamic Pro in Miami, we help companies cut operating costs, reduce staff overhead, and automate everything possible:\n\n1️⃣ Executive AI Consultation (Free 15m Call or $99 Full Audit + Free 48h Prototype — Guaranteed to find $2,500+/mo in payroll savings or you pay $0!)\n2️⃣ Custom AI Solutions & 24/7 Agents ($997 turnkey or $297/mo managed bilingual voice/chat receptionists, CRM & billing)\n3️⃣ $497 Corporate AI Staff Bootcamp (train up to 15 staff so 1 employee produces the output of 5)\n\n📞 Call/Text (786) 643-2099 or click "Book Online" today!`,
   },
   {
     id: 'gbp_voice_jass',
     type: 'WHAT’S NEW POST',
-    title: 'Automate Front-Desk & Operations: 24/7 Bilingual AI Solutions (JAss)',
+    title: '24/7 Bilingual AI Voice & Web Receptionist (JAss) — $997 Turnkey or $297/mo',
     ctaButton: 'Learn More',
     ctaUrl: 'https://www.aidynamic.pro/?utm_source=google_business&utm_medium=gbp_post&utm_campaign=voice_jass',
-    content: `Stop losing leads to voicemail and stop overpaying for manual administrative busywork. 📞🤖\n\nAI Dynamic Pro engineers custom 24/7 Bilingual (English & Spanish) AI Receptionists and back-office automations that answer on Ring 1, qualify leads, book appointments directly into your calendar, and sync your CRM automatically.\n\nTest JAss live on www.aidynamic.pro or call (786) 643-2099 today!`,
+    content: `Stop losing leads to voicemail and stop overpaying for manual administrative busywork. 📞🤖\n\nAI Dynamic Pro deploys custom 24/7 Bilingual (English & Spanish) AI Receptionists and back-office automations in 14 days for $997 turnkey (or $297/mo all-inclusive managed) — plus we build your Free 48-Hour Live Prototype upfront!\n\nTest JAss live on www.aidynamic.pro or call (786) 643-2099 today!`,
   },
   {
     id: 'gbp_staff_training',
     type: 'UPDATE POST',
-    title: 'Corporate AI Staff Training: 1 Trained Employee Doing the Work of 5',
+    title: '$497 Corporate AI Staff Bootcamp: 1 Trained Employee Doing the Work of 5',
     ctaButton: 'Book Online',
     ctaUrl: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_post&utm_campaign=staff_training',
-    content: `Scale your company's output without bloating your payroll. 💡👥\n\nAI Dynamic Pro delivers hands-on Corporate AI Staff Training workshops (on-site in South Florida & virtual):\n✔️ Role-specific AI workflows & automation\n✔️ Data security & privacy Standard Operating Procedures (SOPs)\n✔️ 5x daily output per employee without adding headcount\n\nBook your Executive AI Consultation at www.aidynamic.pro/booking!`,
+    content: `Scale your company's output without bloating your payroll. 💡👥\n\nAI Dynamic Pro delivers our Half-Day Corporate AI Staff Bootcamp for just $497 (up to 15 staff, on-site in South Florida & virtual):\n✔️ Role-specific AI workflows & automation\n✔️ Data security & privacy Standard Operating Procedures (SOPs)\n✔️ 5x daily output per employee without adding headcount\n\nBook your session or Free 15-Min Triage Call at www.aidynamic.pro/booking!`,
   },
 ];
 

@@ -236,7 +236,7 @@ const Hero = () => {
                 to="/booking"
                 className="btn-primary py-4 px-7 rounded-xl flex items-center justify-center gap-2 group text-sm sm:text-base font-bold shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:shadow-[0_0_35px_rgba(212,175,55,0.4)]"
               >
-                <span>Book AI Consultation & $99 Audit</span>
+                <span>Book Free 15m Call or $99 Audit</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
@@ -268,10 +268,10 @@ const Hero = () => {
                 <span>21 Deployed Systems</span>
               </button>
               <span>•</span>
-              <span className="text-emerald-400">Zero-Risk $99 Audit</span>
+              <span className="text-emerald-400">Guaranteed $2,500+/mo Savings or $0</span>
               <span>•</span>
-              <a href="#call-simulator" className="hover:text-luxury-champagne underline flex items-center gap-1 transition-colors">
-                <span>24/7 AI Voice Demo (JAss)</span>
+              <a href="#pricing" className="hover:text-luxury-champagne underline flex items-center gap-1 transition-colors">
+                <span>$497 Team AI Bootcamp</span>
               </a>
             </motion.div>
           </div>
@@ -333,21 +333,21 @@ const Hero = () => {
           {[
             {
               icon: Cpu,
-              badge: 'PILLAR 01 // CONSULTING',
+              badge: 'PILLAR 01 // $99 AUDIT OR FREE 15M CALL',
               title: '1. AI Business Consultation',
-              desc: 'We audit your departments and P&L to pinpoint manual bottlenecks, cut operating costs, and map your exact automation ROI ($99 Zero-Risk Audit).',
+              desc: 'Start with a Free 15-Min Triage Call or our $99 Efficiency Audit—guaranteed to uncover $2,500+/mo in payroll savings or you pay $0.',
             },
             {
               icon: Zap,
-              badge: 'PILLAR 02 // AUTOMATION',
+              badge: 'PILLAR 02 // $997 TURNKEY OR $297/MO',
               title: '2. Custom AI Solutions',
-              desc: 'We automate everything possible—24/7 bilingual voice/chat receptionists (JAss), CRM, billing, and computer vision—reducing staff overhead.',
+              desc: 'Deploy 24/7 bilingual voice/chat receptionists (JAss), CRM, billing, and computer vision from $997 turnkey (or $297/mo managed).',
             },
             {
               icon: Network,
-              badge: 'PILLAR 03 // WORKFORCE',
+              badge: 'PILLAR 03 // $497 TEAM BOOTCAMP',
               title: '3. Corporate AI Staff Training',
-              desc: 'We train and certify your existing team with role-specific AI workflows and SOPs so 1 trained employee delivers the output of 5.',
+              desc: 'Train your existing team in 1 afternoon ($497 Half-Day Bootcamp) with role-specific AI workflows so 1 employee delivers the output of 5.',
             },
           ].map((pillar) => (
             <div
