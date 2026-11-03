@@ -93,7 +93,8 @@ export default function Admin() {
   const [gbpPosts, setGbpPosts] = useState<GbpPost[]>([])
   const [brevoConnected, setBrevoConnected] = useState(true)
   const [selectedCampaignId, setSelectedCampaignId] = useState('email_1_voice_jass')
-  const [dispatchMode, setDispatchMode] = useState<'test' | 'all_brevo_contacts' | 'supabase_leads' | 'brevo_list' | 'custom'>('test')
+  const [dispatchMode, setDispatchMode] = useState<'test' | 'all_brevo_contacts' | 'supabase_leads' | 'brevo_list' | 'miami_gmaps_leads' | 'custom'>('miami_gmaps_leads')
+  const [syncingMiamiLeads, setSyncingMiamiLeads] = useState(false)
   const [dispatchStatusFilter, setDispatchStatusFilter] = useState<LeadStatus | 'all'>('all')
   const [brevoLists, setBrevoLists] = useState<BrevoListMeta[]>([])
   const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
@@ -154,10 +155,61 @@ export default function Admin() {
       .select('*')
       .order('created_at', { ascending: false })
 
-    if (!error && data) {
-      setLeads(data as Lead[])
-    }
+    const dbLeads = !error && data ? (data as Lead[]) : []
+    try {
+      const gmapsRes = await fetch('/leads/miami-b2b-leads.json').catch(() => null)
+      if (gmapsRes && gmapsRes.ok) {
+        const gmapsData = await gmapsRes.json()
+        const existingEmails = new Set(dbLeads.map((l) => (l.email || '').trim().toLowerCase()))
+        const mergedLeads = [...dbLeads]
+        for (const item of gmapsData || []) {
+          const clean = (item.email || '').trim().toLowerCase()
+          if (!clean || existingEmails.has(clean)) continue
+          existingEmails.add(clean)
+          mergedLeads.push({
+            id: `gmaps-${clean}`,
+            name: item.business_name,
+            email: clean,
+            phone: item.phone || null,
+            company: `${item.business_name} (${item.neighborhood})`,
+            service_interest: [item.category, item.recommended_offer],
+            status: 'contacted',
+            source: 'google_maps_scraper_miami',
+            created_at: new Date().toISOString(),
+          })
+        }
+        setLeads(mergedLeads)
+        setLeadsLoading(false)
+        return
+      }
+    } catch {}
+
+    setLeads(dbLeads)
     setLeadsLoading(false)
+  }
+
+  const handleSyncMiamiLeadsToBrevoAndCrm = async () => {
+    setSyncingMiamiLeads(true)
+    try {
+      const res = await fetch('/api/email-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save_leads_to_list' }),
+      })
+      const data = await res.json()
+      if (data && data.success) {
+        setCampaignResult({
+          success: true,
+          message: data.message,
+        })
+        await fetchLeads()
+        await runBrevoAudit()
+      }
+    } catch (err) {
+      console.warn('Could not sync Miami leads:', err)
+    } finally {
+      setSyncingMiamiLeads(false)
+    }
   }
 
   const fetchCampaignMetadata = async () => {
@@ -827,13 +879,23 @@ export default function Admin() {
                   </button>
                 ))}
               </div>
-              <button
-                onClick={exportCSV}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-luxury-silver hover:text-white hover:bg-white/10 transition-all"
-              >
-                <Download className="w-4 h-4" />
-                Export CSV
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={handleSyncMiamiLeadsToBrevoAndCrm}
+                  disabled={syncingMiamiLeads}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-sm font-semibold text-emerald-300 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  {syncingMiamiLeads ? 'Syncing 16 Miami Leads...' : 'Sync 16 Miami Google Maps Leads to Brevo & CRM'}
+                </button>
+                <button
+                  onClick={exportCSV}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-luxury-silver hover:text-white hover:bg-white/10 transition-all"
+                >
+                  <Download className="w-4 h-4" />
+                  Export CSV
+                </button>
+              </div>
             </div>
 
             {/* Leads Table */}
@@ -1211,21 +1273,26 @@ export default function Admin() {
                   <label className="block text-xs uppercase tracking-wider text-luxury-silver font-semibold">
                     Recipient Target Mode
                   </label>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-2.5">
                     {[
-                      { id: 'test', label: '1. Test Preview', desc: 'jasmelacosta@gmail.com' },
+                      {
+                        id: 'miami_gmaps_leads',
+                        label: '1. Miami G-Maps List',
+                        desc: '16 verified Miami B2B leads',
+                      },
+                      { id: 'test', label: '2. Test Preview', desc: 'jasmelacosta@gmail.com' },
                       {
                         id: 'all_brevo_contacts',
-                        label: '2. ALL Available Emails',
+                        label: '3. ALL Available Emails',
                         desc: 'Every active Brevo + CRM contact',
                       },
                       {
                         id: 'brevo_list',
-                        label: '3. By Brevo List',
+                        label: '4. By Brevo List',
                         desc: brevoLists.length > 0 ? `${brevoLists.length} Brevo list(s)` : 'Specific Brevo list',
                       },
-                      { id: 'supabase_leads', label: '4. CRM Leads Only', desc: `${leads.length} website leads` },
-                      { id: 'custom', label: '5. Paste Emails', desc: 'Paste custom B2B list' },
+                      { id: 'supabase_leads', label: '5. CRM Leads Only', desc: `${leads.length} website leads` },
+                      { id: 'custom', label: '6. Paste Emails', desc: 'Paste custom B2B list' },
                     ].map((m) => (
                       <button
                         key={m.id}

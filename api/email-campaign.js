@@ -257,6 +257,25 @@ const GOOGLE_BUSINESS_POSTS = [
   },
 ];
 
+const MIAMI_GMAPS_LEADS = [
+  { name: 'Brickell Dental Associates', email: 'brickelldentalassociates2@gmail.com', phone: '(305) 372-8212', company: 'Brickell Dental Associates (Brickell)', category: 'Dental Practice', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Brickell Dentistry', email: 'brickelldentistry444@gmail.com', phone: '(305) 371-6040', company: 'Brickell Dentistry (Brickell)', category: 'Dental Practice', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Brickell Oral Surgery', email: 'brickelloralsurgery@gmail.com', phone: '(305) 374-6644', company: 'Brickell Oral Surgery (Brickell)', category: 'Oral Surgery Clinic', offer: 'Tier 1 ($99 Audit) -> Tier 2 ($497 Staff AI Bootcamp)' },
+  { name: 'Gables Dental Clinic', email: 'gablesdental@gmail.com', phone: '(305) 444-9951', company: 'Gables Dental Clinic (Coral Gables)', category: 'Dental Practice', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($997 Turnkey AI)' },
+  { name: 'Aloe Medspa', email: 'aloemedspa@gmail.com', phone: '(305) 520-7649', company: 'Aloe Medspa (South Miami)', category: 'Medical Spa', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Laserholic Medspa', email: 'laserholicmedspa@gmail.com', phone: '(786) 762-9103', company: 'Laserholic Medspa (Miami)', category: 'Medical Spa', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Liscano Clinic / Premier MedSpa', email: 'mafamcacorp@gmail.com', phone: '(786) 348-3039', company: 'Liscano Clinic / Premier MedSpa (Miami Beach)', category: 'Medical Clinic & MedSpa', offer: 'Tier 1 ($99 Audit) -> Tier 3 ($997 Turnkey Voice & CRM)' },
+  { name: 'Kuehne Davis Law P.A.', email: 'ben@kuehnelaw.com', phone: '(305) 789-5989', company: 'Kuehne Davis Law P.A. (Brickell/Downtown)', category: 'Law Firm', offer: 'Tier 1 ($99 Audit) -> Tier 2 ($497 Corporate AI Staff Bootcamp)' },
+  { name: 'Ruases International Real Estate', email: 'info@ruases.com', phone: '(305) 590-5000', company: 'Ruases International Real Estate (Miami)', category: 'Real Estate & Investments', offer: 'Tier 1 ($99 Audit) -> Tier 3 ($997 EstateMatch + JAss)' },
+  { name: 'Residence Realty Inc', email: 'resrealtymiami@gmail.com', phone: '(305) 778-2252', company: 'Residence Realty Inc (Miami)', category: 'Real Estate Brokerage', offer: 'Tier 2 ($497 Staff AI Bootcamp) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Casabella Miami Realty Inc', email: 'casabellamiamirealty@gmail.com', phone: '(786) 542-1655', company: 'Casabella Miami Realty Inc (Miami)', category: 'Real Estate Brokerage', offer: 'Tier 2 ($497 Staff AI Bootcamp) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Brokers International Realty', email: 'brokergeorgedaniel@gmail.com', phone: '(786) 972-4511', company: 'Brokers International Realty (Coral Way / Brickell)', category: 'Real Estate Brokerage', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($997 Turnkey AI)' },
+  { name: 'Porcelanosa Florida Corp', email: 'info@porcelanosa-usa.com', phone: '(305) 715-7153', company: 'Porcelanosa Florida Corp (Doral)', category: 'Architecture & Design Showroom', offer: 'Tier 2 ($497 Staff Bootcamp) -> Tier 4 ($4,900 Enterprise AI)' },
+  { name: '360 Repair Techs Inc', email: 'miguelradillo@gmail.com', phone: '(305) 720-7982', company: '360 Repair Techs Inc (Miami)', category: 'General Contractor', offer: 'Tier 1 ($99 Audit + 48h Prototype) -> Tier 3 ($297/mo JAss)' },
+  { name: 'Miami Construction Brokers Inc', email: 'miamiconstructionbrokers@gmail.com', phone: '(786) 431-9231', company: 'Miami Construction Brokers Inc (Doral/Medley)', category: 'Construction & Contracting', offer: 'Tier 1 ($99 Audit) -> Tier 3 ($997 Turnkey Bidding AI)' },
+  { name: 'Zamora & Associates Inc', email: 'zamoraassociates@gmail.com', phone: '(305) 273-7801', company: 'Zamora & Associates Inc (Miami)', category: 'Construction & Engineering', offer: 'Tier 1 ($99 Audit) -> Tier 2 ($497 Staff AI Bootcamp)' },
+];
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -349,6 +368,7 @@ export default async function handler(req, res) {
         trackedBookingUrl: `https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=${utmCampaign}`,
       })),
       googleBusinessPosts: GOOGLE_BUSINESS_POSTS,
+      miamiGmapsLeads: MIAMI_GMAPS_LEADS,
       googleBusinessLinks: {
         websiteUrlForGbpProfile:
           'https://www.aidynamic.pro/?utm_source=google_business&utm_medium=gbp_profile&utm_campaign=miami_local',
@@ -364,10 +384,10 @@ export default async function handler(req, res) {
 
   try {
     const {
-      action = 'send', // 'send' | 'suspend_external_campaigns' | 'resume_external_campaigns' | 'create_sender'
+      action = 'send', // 'send' | 'save_leads_to_list' | 'suspend_external_campaigns' | 'resume_external_campaigns' | 'create_sender'
       externalCampaignIds = [],
       campaignId = 'email_1_voice_jass',
-      mode = 'test', // 'test' | 'custom' | 'supabase_leads' | 'brevo_list' | 'all_brevo_contacts'
+      mode = 'test', // 'test' | 'custom' | 'miami_gmaps_leads' | 'supabase_leads' | 'brevo_list' | 'all_brevo_contacts'
       brevoListId = 2,
       statusFilter = 'all',
       customRecipients = [],
@@ -375,12 +395,127 @@ export default async function handler(req, res) {
       scheduledAt = '', // Optional ISO-8601 future timestamp e.g. '2026-11-03T10:15:00-05:00'
       senderEmail = '', // Optional verified Brevo sender email override
       senderName = 'Jasmel Acosta — AI Dynamic Pro',
-      replyToEmail = 'jasmelacosta@gmail.com',
+      replyToEmail = 'jasmel@aidynamic.pro',
+      leadsToSave = [],
     } = req.body || {};
 
     if (!BREVO_API_KEY) {
       return res.status(400).json({
         error: 'BREVO_API_KEY / VITE_BREVO_API_KEY is not configured in environment variables.',
+      });
+    }
+
+    // ACTION: Save extracted Miami Google Maps B2B Leads into Brevo Contact List AND Supabase `aidynamic_leads`
+    if (action === 'save_leads_to_list') {
+      const sourceLeads = Array.isArray(leadsToSave) && leadsToSave.length > 0 ? leadsToSave : MIAMI_GMAPS_LEADS;
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      };
+
+      let targetListId = Number(brevoListId) || 2;
+      let targetListName = 'Miami Google Maps B2B Leads';
+      try {
+        const listsRes = await fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null);
+        if (listsRes && listsRes.ok) {
+          const listsData = await listsRes.json();
+          const existing = (listsData.lists || []).find(
+            (l) => l.name && l.name.toLowerCase().includes('miami')
+          );
+          if (existing) {
+            targetListId = existing.id;
+            targetListName = existing.name;
+          } else {
+            const folderId = (listsData.lists && listsData.lists[0]?.folderId) || 1;
+            const createListRes = await fetch('https://api.brevo.com/v3/contacts/lists', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ name: targetListName, folderId }),
+            }).catch(() => null);
+            if (createListRes && createListRes.ok) {
+              const created = await createListRes.json().catch(() => ({}));
+              if (created.id) targetListId = created.id;
+            }
+          }
+        }
+      } catch {}
+
+      let brevoSavedCount = 0;
+      for (const item of sourceLeads) {
+        const cleanEmail = (item.email || '').trim().toLowerCase();
+        if (!cleanEmail || !cleanEmail.includes('@')) continue;
+        const cRes = await fetch('https://api.brevo.com/v3/contacts', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            email: cleanEmail,
+            attributes: {
+              FIRSTNAME: item.name || item.business_name || cleanEmail.split('@')[0],
+              NAME: item.name || item.business_name || cleanEmail.split('@')[0],
+              COMPANY: item.company || item.business_name || 'Miami Business',
+            },
+            listIds: [targetListId],
+            updateEnabled: true,
+          }),
+        }).catch(() => null);
+        if (cRes && (cRes.ok || cRes.status === 201 || cRes.status === 204)) {
+          brevoSavedCount++;
+        }
+      }
+
+      let supabaseSavedCount = 0;
+      if (SUPABASE_KEY) {
+        const existingEmails = new Set();
+        const sbGet = await fetch(`${SUPABASE_URL}/rest/v1/aidynamic_leads?select=email&limit=500`, {
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        }).catch(() => null);
+        if (sbGet && sbGet.ok) {
+          const rows = await sbGet.json().catch(() => []);
+          for (const r of rows) {
+            if (r.email) existingEmails.add(r.email.trim().toLowerCase());
+          }
+        }
+
+        for (const item of sourceLeads) {
+          const cleanEmail = (item.email || '').trim().toLowerCase();
+          if (!cleanEmail || !cleanEmail.includes('@')) continue;
+          if (existingEmails.has(cleanEmail)) {
+            supabaseSavedCount++;
+            continue;
+          }
+          const ins = await fetch(`${SUPABASE_URL}/rest/v1/aidynamic_leads`, {
+            method: 'POST',
+            headers: {
+              apikey: SUPABASE_KEY,
+              Authorization: `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': 'application/json',
+              Prefer: 'return=minimal',
+            },
+            body: JSON.stringify({
+              name: item.name || item.business_name || cleanEmail.split('@')[0],
+              email: cleanEmail,
+              phone: item.phone || null,
+              company: item.company || item.business_name || null,
+              service_interest: [item.category || 'Miami B2B', item.offer || item.recommended_offer || '$99 Audit'],
+              status: 'contacted',
+              source: 'google_maps_scraper_miami',
+            }),
+          }).catch(() => null);
+          if (ins && (ins.ok || ins.status === 201)) {
+            supabaseSavedCount++;
+          }
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        brevoListId: targetListId,
+        brevoListName: targetListName,
+        brevoSavedCount,
+        supabaseSavedCount,
+        totalLeads: sourceLeads.length,
+        message: `Saved ${ sourceLeads.length } Miami Google Maps B2B leads to Brevo List #${targetListId} ("${targetListName}": ${brevoSavedCount} synced) and Supabase CRM (${supabaseSavedCount} synced).`,
       });
     }
 
@@ -537,6 +672,22 @@ export default async function handler(req, res) {
           company: 'your company',
         },
       ];
+    } else if (mode === 'miami_gmaps_leads') {
+      const seen = new Set();
+      for (const r of MIAMI_GMAPS_LEADS) {
+        const cleanEmail = (r.email || '').trim().toLowerCase();
+        if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
+        seen.add(cleanEmail);
+        if (blockedSet.has(cleanEmail)) {
+          skippedUnsubscribed++;
+          continue;
+        }
+        recipients.push({
+          name: r.name,
+          email: cleanEmail,
+          company: r.name,
+        });
+      }
     } else if (mode === 'custom' && Array.isArray(customRecipients)) {
       const seen = new Set();
       for (const r of customRecipients) {
