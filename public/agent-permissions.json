@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "organization": "AI Dynamic Pro",
+  "url": "https://www.aidynamic.pro",
+  "contact": {
+    "founder": "Jasmel Acosta",
+    "email": "jasmel@aidynamic.pro",
+    "phone": "+1-786-643-2099",
+    "location": "Brickell Financial District, Miami, FL 33131"
+  },
+  "discovery_files": {
+    "llms_txt": "https://www.aidynamic.pro/llms.txt",
+    "llms_full_txt": "https://www.aidynamic.pro/llms-full.txt",
+    "sitemap": "https://www.aidynamic.pro/sitemap.xml"
+  },
+  "permissions": {
+    "allow_ai_search_indexing": true,
+    "allow_ai_citations": true,
+    "allow_agentic_booking": true
+  },
+  "actions": [
+    {
+      "id": "book_consultation_or_audit",
+      "name": "Book Free 15-Minute Executive Triage Call or $99 Full Department AI Efficiency Audit",
+      "url": "https://www.aidynamic.pro/booking",
+      "method": "GET",
+      "guarantee": "Uncovers at least $2,500+/month ($30,000/year) in manual payroll savings or you pay $0. Includes a Free 48-Hour Live AI Prototype."
+    },
+    {
+      "id": "chat_with_jass_ai",
+      "name": "Chat or Speak Live with JAss (24/7 Bilingual AI Assistant)",
+      "url": "https://www.aidynamic.pro/api/chat",
+      "method": "POST"
+    }
+  ]
+}
