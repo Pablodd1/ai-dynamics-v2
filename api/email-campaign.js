@@ -415,13 +415,13 @@ export default async function handler(req, res) {
       };
 
       let targetListId = Number(brevoListId) || 2;
-      let targetListName = 'Miami Google Maps B2B Leads';
+      let targetListName = 'AI Dynamic Pro — Miami B2B Leads';
       try {
         const listsRes = await fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null);
         if (listsRes && listsRes.ok) {
           const listsData = await listsRes.json();
           const existing = (listsData.lists || []).find(
-            (l) => l.name && l.name.toLowerCase().includes('miami')
+            (l) => l.name && l.name.toLowerCase().includes('ai dynamic pro')
           );
           if (existing) {
             targetListId = existing.id;
