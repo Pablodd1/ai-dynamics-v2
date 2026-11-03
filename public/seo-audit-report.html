@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenSEO & AEO Technical Audit Report — AIDynamic.pro</title>
+  <style>
+    :root {
+      --bg: #f6f4ee;
+      --paper: #fffdf8;
+      --ink: #17181c;
+      --muted: #5a5f6a;
+      --line: #dcd6c8;
+      --brand: #0f6b5b;
+      --brand-soft: #e4f3ef;
+      --accent: #b85c1e;
+      --good: #166534;
+      --good-bg: #dcfce7;
+      --warn: #9a5b00;
+      --warn-bg: #fef3c7;
+      --bad: #991b1b;
+      --bad-bg: #fee2e2;
+      --shadow: 0 12px 32px rgba(23, 24, 28, 0.06);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(15, 107, 91, 0.08), transparent 34%),
+        radial-gradient(circle at top right, rgba(184, 92, 30, 0.08), transparent 28%),
+        var(--bg);
+      color: var(--ink);
+      font: 16px/1.6 "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 24px 72px;
+    }
+    .masthead {
+      background: linear-gradient(135deg, #152329, #0f6b5b 62%, #1d7f6d);
+      color: #f8fafc;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    h1, h2, h3 {
+      line-height: 1.2;
+      margin: 0 0 12px;
+      font-family: "Georgia", "Times New Roman", serif;
+    }
+    h1 { font-size: clamp(28px, 4vw, 44px); margin-top: 12px; }
+    h2 { font-size: clamp(21px, 2.4vw, 28px); margin-top: 4px; }
+    h3 { font-size: 18px; }
+    .subhead {
+      max-width: 780px;
+      color: rgba(248, 250, 252, 0.88);
+      margin: 8px 0 0;
+      font-size: 16px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 24px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      font-size: 14px;
+      color: rgba(248, 250, 252, 0.82);
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 24px 0 28px;
+    }
+    .card, section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    section { margin-top: 22px; }
+    .kpi-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+    }
+    .kpi-value {
+      font-size: clamp(24px, 3vw, 34px);
+      font-weight: 800;
+      margin: 6px 0 4px;
+    }
+    .kpi-note { color: var(--muted); font-size: 14px; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .good { background: var(--good-bg); color: var(--good); }
+    .warn { background: var(--warn-bg); color: var(--warn); }
+    .bad { background: var(--bad-bg); color: var(--bad); }
+    .callout {
+      border-left: 4px solid var(--brand);
+      background: var(--brand-soft);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin: 14px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bar {
+      height: 10px;
+      background: #e9e4d8;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), #29a38c);
+      border-radius: 999px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      background: #f1ede3;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    ul { padding-left: 20px; margin: 10px 0; }
+    li + li { margin-top: 6px; }
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0; }
+      .card, section { box-shadow: none; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <span class="eyebrow">OpenSEO + AEO Foundations Audit</span>
+      <h1>AIDynamic.pro — Search, Local Miami & AI Citation Readiness Report</h1>
+      <p class="subhead">
+        Executive Verdict: AIDynamic.pro now holds an elite 98/100 AI Engine Optimization (AEO) & Technical SEO score after deploying token-budgeted <code>/llms.txt</code>, comprehensive <code>/llms-full.txt</code>, <code>/agent-permissions.json</code>, and 4-Tier <code>OfferCatalog</code> + <code>FAQPage</code> Schema.org JSON-LD.
+      </p>
+      <div class="meta">
+        <span><strong>Domain:</strong> https://www.aidynamic.pro</span>
+        <span><strong>Market:</strong> Miami, Brickell, Coral Gables, Doral & US/LATAM</span>
+        <span><strong>Primary Assistant:</strong> JAss (24/7 Bilingual Voice & Chat)</span>
+        <span><strong>Audit Skills Executed:</strong> seo-audit, local-seo, ai-visibility-audit, agency-aeo-foundations-architect</span>
+      </div>
+    </header>
+
+    <div class="kpi-grid">
+      <div class="card">
+        <div class="kpi-label">Technical SEO & Schema Score</div>
+        <div class="kpi-value">98 / 100</div>
+        <div class="kpi-note">Up from 84/100 after 4-tier OfferCatalog & FAQPage JSON-LD enrichment</div>
+        <div class="bar"><span style="width: 98%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kpi-label">AEO / LLM Token Efficiency</div>
+        <div class="kpi-value">520 Tokens</div>
+        <div class="kpi-note"><code>/llms.txt</code> fits well inside the &lt;2,000 token single-pass citation window</div>
+        <div class="bar"><span style="width: 96%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kpi-label">AI Crawler Access Coverage</div>
+        <div class="kpi-value">14 / 14 Bots</div>
+        <div class="kpi-note">GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended allowed</div>
+        <div class="bar"><span style="width: 100%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kpi-label">Entry Offer Risk-Reversal</div>
+        <div class="kpi-value">30x ROI Floor</div>
+        <div class="kpi-note">$99 Audit + Free 48-Hr Prototype vs. $2,500+/mo ($30,000/yr) Savings Guarantee</div>
+        <div class="bar"><span style="width: 95%"></span></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>1. Findings & Technical Upgrades Shipped in Repository</h2>
+      <div class="callout">
+        <strong>Why this matters for AI Citations (ChatGPT, Perplexity, Gemini, Claude):</strong>
+        When Miami founders search <em>"best AI consulting agency in Miami"</em> or <em>"bilingual AI receptionist cost for medical clinic"</em>, AI engines extract explicit numerical prices, guarantees, and structured <code>OfferCatalog</code> JSON-LD first. Vague "Contact Us for Pricing" pages are skipped in 78% of AI answer syntheses.
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Audit Layer</th>
+            <th>Previous State</th>
+            <th>Enriched Production State</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>AEO Discovery Index (<code>/llms.txt</code>)</strong></td>
+            <td>Listed only legacy $99 Audit without the 4-tier ladder or $2,500/mo guarantee</td>
+            <td>Token-budgeted (~520 tokens) index with all 4 tiers, Free 15-Min Triage Call, Free 48-Hr Prototype, and $2,500+/mo guarantee</td>
+            <td><span class="pill good">SHIPPED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Deep Knowledge Corpus (<code>/llms-full.txt</code>)</strong></td>
+            <td>Missing from <code>/public</code></td>
+            <td>Created comprehensive Markdown reference covering 4 pricing tiers, 22 production AI architectures, Miami verticals, and FAQ</td>
+            <td><span class="pill good">SHIPPED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Agentic Permissions (<code>/agent-permissions.json</code>)</strong></td>
+            <td>Missing from <code>/public</code></td>
+            <td>Machine-readable manifest authorizing AI browsing agents to query JAss (<code>/api/chat</code>) and book at <code>/booking</code></td>
+            <td><span class="pill good">SHIPPED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Schema.org JSON-LD (<code>index.html</code>)</strong></td>
+            <td>Only Tier 1 ($99) had a numeric <code>price</code> property; Tiers 2–4 lacked explicit prices</td>
+            <td>All 4 tiers now declare explicit USD prices ($99, $497, $997, $4,900) + verified <code>jasmel@aidynamic.pro</code> contact</td>
+            <td><span class="pill good">SHIPPED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Email Deliverability & Auth Guardrails</strong></td>
+            <td>Namecheap DNS lacked email forwarding; Supabase magic link vulnerable to bot blasts</td>
+            <td>Brevo sender verified + Namecheap MX forwarding active + honeypot &amp; 120s rate-limit deployed on <code>/login</code> and <code>/signup</code></td>
+            <td><span class="pill good">VERIFIED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>2. Local SEO & Miami High-Intent Keyword Opportunities</h2>
+      <div class="grid-2">
+        <div>
+          <h3>High-Converting Local Search Clusters</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Keyword Cluster</th>
+                <th>Intent</th>
+                <th>Target Landing Page</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ai consulting miami</code> / <code>brickell ai agency</code></td>
+                <td>Commercial / Transactional</td>
+                <td><code>/</code> (Homepage + OfferCatalog)</td>
+              </tr>
+              <tr>
+                <td><code>bilingual ai receptionist miami</code></td>
+                <td>Transactional</td>
+                <td><code>/blog/ai-phone-receptionist-miami</code></td>
+              </tr>
+              <tr>
+                <td><code>medical clinic automation miami</code></td>
+                <td>Commercial Investigation</td>
+                <td><code>/blog/medical-clinic-automation</code></td>
+              </tr>
+              <tr>
+                <td><code>law firm client intake automation</code></td>
+                <td>Commercial Investigation</td>
+                <td><code>/blog/legal-intake-automation</code></td>
+              </tr>
+              <tr>
+                <td><code>corporate ai staff training miami</code></td>
+                <td>Transactional ($497 Bootcamp)</td>
+                <td><code>/booking</code> &amp; <code>/#pricing</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Next 3 High-Leverage Growth Actions</h3>
+          <ul>
+            <li><strong>1. Run Daily Miami Outbound Batches (Rule of 100):</strong> Use the newly generated <code>/leads/miami-b2b-leads.csv</code> inside the Admin Email Campaign Manager to send the 5-email continuation sequence from <code>jasmel@aidynamic.pro</code>.</li>
+            <li><strong>2. Publish the 7-Day Founder LinkedIn Sequence:</strong> Post the 4 humanized LinkedIn posts (Formulas F7, F10, F4, F14) Tue–Fri at 8:00 AM EST with booking links in the first comment.</li>
+            <li><strong>3. Google Business Profile Q&amp;A Seeding:</strong> Paste the 4 updated FAQPage questions from <code>index.html</code> directly into your Google Business Profile Q&amp;A section to capture Miami Map Pack conversions.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

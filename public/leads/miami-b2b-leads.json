@@ -1,0 +1,178 @@
+[
+  {
+    "business_name": "Brickell Dental Associates",
+    "category": "Dental Practice",
+    "neighborhood": "Brickell",
+    "address": "848 Brickell Avenue, Ste 920, Miami, FL 33131",
+    "phone": "(305) 372-8212",
+    "email": "brickelldentalassociates2@gmail.com",
+    "website": "https://www.brickelldentalassociates.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Voice Prototype) -> Tier 3 ($297/mo JAss Bilingual Receptionist)",
+    "buying_signal": "High inbound bilingual patient volume + manual appointment confirmations"
+  },
+  {
+    "business_name": "Brickell Dentistry",
+    "category": "Dental Practice",
+    "neighborhood": "Brickell",
+    "address": "444 Brickell Avenue, Suite 48A, Miami, FL 33131",
+    "phone": "(305) 371-6040",
+    "email": "brickelldentistry444@gmail.com",
+    "website": "https://www.brickelldentistrymiami.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Voice Prototype) -> Tier 3 ($297/mo JAss Bilingual Receptionist)",
+    "buying_signal": "After-hours missed calls & bilingual scheduling bottleneck"
+  },
+  {
+    "business_name": "Brickell Oral Surgery",
+    "category": "Oral Surgery & Medical Clinic",
+    "neighborhood": "Brickell",
+    "address": "444 Brickell Avenue, Suite 48B, Miami, FL 33131",
+    "phone": "(305) 374-6644",
+    "email": "brickelloralsurgery@gmail.com",
+    "website": "https://www.brickelloralsurgerymiami.com",
+    "recommended_offer": "Tier 1 ($99 Audit) -> Tier 2 ($497 Staff AI Bootcamp) + PocketScribe Clinical AI",
+    "buying_signal": "Surgical referral intake & clinical documentation workload"
+  },
+  {
+    "business_name": "Gables Dental Clinic",
+    "category": "Dental Practice",
+    "neighborhood": "Coral Gables",
+    "address": "5500 SW 8th Street, Coral Gables, FL 33134",
+    "phone": "(305) 444-9951",
+    "email": "gablesdental@gmail.com",
+    "website": "https://www.gablesdentalclinic.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Voice Prototype) -> Tier 3 ($997 Turnkey AI Receptionist)",
+    "buying_signal": "High Spanish/English phone inquiry volume on SW 8th St"
+  },
+  {
+    "business_name": "Aloe Medspa",
+    "category": "Medical Spa & Wellness",
+    "neighborhood": "South Miami / Coral Gables",
+    "address": "5975 Sunset Dr, Suite 603, South Miami, FL 33143",
+    "phone": "(305) 520-7649",
+    "email": "aloemedspa@gmail.com",
+    "website": "https://www.aloemedspa.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Prototype) -> Tier 3 ($297/mo JAss WhatsApp/IG/Voice Agent)",
+    "buying_signal": "High-ticket aesthetic consultations lost to slow IG/WhatsApp DM response"
+  },
+  {
+    "business_name": "Laserholic Medspa",
+    "category": "Medical Spa & Aesthetics",
+    "neighborhood": "Miami",
+    "address": "9380 SW 72nd St, Suite B-250, Miami, FL 33173",
+    "phone": "(786) 762-9103",
+    "email": "laserholicmedspa@gmail.com",
+    "website": "https://www.thelaserholicmedspa.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Prototype) -> Tier 3 ($297/mo JAss Bilingual Receptionist)",
+    "buying_signal": "Automated package rebooking & no-show SMS recovery"
+  },
+  {
+    "business_name": "Liscano Clinic / Premier MedSpa",
+    "category": "Medical Clinic & MedSpa",
+    "neighborhood": "Miami Beach",
+    "address": "400 West 41st St, Suite 506, Miami Beach, FL 33140",
+    "phone": "(786) 348-3039",
+    "email": "mafamcacorp@gmail.com",
+    "website": "https://www.liscanoclinic.com",
+    "recommended_offer": "Tier 1 ($99 Audit) -> Tier 3 ($997 Turnkey Voice & CRM Automation)",
+    "buying_signal": "Bilingual patient triage & consultation scheduling"
+  },
+  {
+    "business_name": "Kuehne Davis Law P.A.",
+    "category": "Law Firm",
+    "neighborhood": "Downtown / Brickell",
+    "address": "100 S.E. 2nd Street, Suite 3105, Miami, FL 33131",
+    "phone": "(305) 789-5989",
+    "email": "ben@kuehnelaw.com",
+    "website": "https://www.kuehnelaw.com",
+    "recommended_offer": "Tier 1 ($99 Audit) -> Tier 2 ($497 Corporate AI Staff Bootcamp)",
+    "buying_signal": "Legal document workflow & intake triage optimization"
+  },
+  {
+    "business_name": "Ruases International Real Estate",
+    "category": "Real Estate & Investments",
+    "neighborhood": "Miami / Coconut Grove",
+    "address": "2950 SW 27 Avenue, Suite 110, Miami, FL 33133",
+    "phone": "(305) 590-5000",
+    "email": "info@ruases.com",
+    "website": "https://www.ruases.com",
+    "recommended_offer": "Tier 1 ($99 Audit) -> Tier 3 ($997 EstateMatch + 24/7 Bilingual Lead Qualifier)",
+    "buying_signal": "LATAM & US investor lead qualification in Spanish/English"
+  },
+  {
+    "business_name": "Residence Realty Inc",
+    "category": "Real Estate Brokerage",
+    "neighborhood": "Miami",
+    "address": "7452 SW 48th St, Miami, FL 33155",
+    "phone": "(305) 778-2252",
+    "email": "resrealtymiami@gmail.com",
+    "website": "https://www.residencerealtyinc.com",
+    "recommended_offer": "Tier 2 ($497 Corporate AI Staff Bootcamp) -> Tier 3 ($297/mo JAss Lead Agent)",
+    "buying_signal": "Agent productivity & instant Zillow/website lead speed-to-lead"
+  },
+  {
+    "business_name": "Casabella Miami Realty Inc",
+    "category": "Real Estate Brokerage",
+    "neighborhood": "Miami",
+    "address": "14285 SW 42nd St, Suite 212, Miami, FL 33175",
+    "phone": "(786) 542-1655",
+    "email": "casabellamiamirealty@gmail.com",
+    "website": "https://www.casabellamiamirealty.com",
+    "recommended_offer": "Tier 2 ($497 Corporate AI Staff Bootcamp) -> Tier 3 ($297/mo JAss Lead Agent)",
+    "buying_signal": "Multi-agent brokerage needing 24/7 bilingual buyer/seller qualification"
+  },
+  {
+    "business_name": "Brokers International Realty",
+    "category": "Real Estate Brokerage",
+    "neighborhood": "Brickell / Coral Way",
+    "address": "2100 Coral Way, Suite PH702, Miami, FL 33145",
+    "phone": "(786) 972-4511",
+    "email": "brokergeorgedaniel@gmail.com",
+    "website": "https://www.zillow.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Prototype) -> Tier 3 ($997 Turnkey AI Agent)",
+    "buying_signal": "High-value Coral Way/Brickell listings requiring 24/7 WhatsApp/phone response"
+  },
+  {
+    "business_name": "Porcelanosa Florida Corp",
+    "category": "Architecture & Design Showroom",
+    "neighborhood": "Doral",
+    "address": "8700 N.W. 13th Terrace, Doral, FL 33172",
+    "phone": "(305) 715-7153",
+    "email": "info@porcelanosa-usa.com",
+    "website": "https://www.porcelanosa-usa.com",
+    "recommended_offer": "Tier 2 ($497 Corporate AI Staff Bootcamp) -> Tier 4 ($4,900 Enterprise AI Workflow)",
+    "buying_signal": "Commercial contractor & showroom quote follow-up automation"
+  },
+  {
+    "business_name": "360 Repair Techs Inc",
+    "category": "General Contractor & Construction",
+    "neighborhood": "Miami",
+    "address": "7316 SW 45th St, Miami, FL 33155",
+    "phone": "(305) 720-7982",
+    "email": "miguelradillo@gmail.com",
+    "website": "https://www.360repairtechs.com",
+    "recommended_offer": "Tier 1 ($99 Audit + Free 48-Hr Prototype) -> Tier 3 ($297/mo JAss Dispatch Agent)",
+    "buying_signal": "Field calls missed while on job sites; 24/7 bilingual estimate booking"
+  },
+  {
+    "business_name": "Miami Construction Brokers Inc",
+    "category": "Construction & Contracting",
+    "neighborhood": "Medley / Doral",
+    "address": "8324 NW 74th Ave, Medley, FL 33166",
+    "phone": "(786) 431-9231",
+    "email": "miamiconstructionbrokers@gmail.com",
+    "website": "https://www.miamiconstructionbrokers.com",
+    "recommended_offer": "Tier 1 ($99 Audit) -> Tier 3 ($997 Turnkey Bidding & Intake AI)",
+    "buying_signal": "Subcontractor & commercial project intake automation"
+  },
+  {
+    "business_name": "Zamora & Associates Inc",
+    "category": "Construction & Engineering",
+    "neighborhood": "Kendall / Miami",
+    "address": "11410 N Kendall Dr, Suite 302, Miami, FL 33176",
+    "phone": "(305) 273-7801",
+    "email": "zamoraassociates@gmail.com",
+    "website": "https://www.constrafor.com",
+    "recommended_offer": "Tier 1 ($99 Audit) -> Tier 2 ($497 Staff AI Bootcamp)",
+    "buying_signal": "Engineering & project documentation efficiency"
+  }
+]
