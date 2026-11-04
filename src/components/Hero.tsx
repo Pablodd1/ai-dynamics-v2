@@ -276,49 +276,65 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Right Column: 3D Translucent Glass Cybernetic Intelligence Entity */}
+          {/* Right Column: Executive AI Command & Telemetry Card (No Red Face) */}
           <div className="lg:col-span-5 relative flex justify-center items-center">
-            {/* Glowing Crimson/Red Circular Halo Backlight */}
-            <div className="absolute w-[360px] h-[360px] sm:w-[460px] sm:h-[460px] rounded-full bg-gradient-to-tr from-red-600/35 via-rose-600/25 to-transparent blur-[90px] pointer-events-none -z-10" />
-
-            {/* Geometric Halo Ring */}
-            <div className="absolute w-[380px] h-[380px] sm:w-[470px] sm:h-[470px] rounded-full border border-red-500/25 pointer-events-none -z-10 animate-pulse" />
-
-            {/* Floating Glass Cybernetic Humanoid Entity */}
             <motion.div
-              animate={{ y: [0, -12, 0] }}
-              transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
-              className="relative w-full max-w-[480px] rounded-3xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-red-500/20 group"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="relative w-full max-w-[460px] rounded-3xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.95)] border border-luxury-gold/30 bg-black/75 backdrop-blur-2xl p-6 sm:p-7"
             >
-              <img
-                src="/images/hero-cyber-humanoid.jpg"
-                alt="AI Dynamic Pro — Autonomous Neural Cybernetic Entity"
-                className="w-full h-auto object-cover object-center scale-105 group-hover:scale-110 transition-transform duration-700"
-              />
-
-              {/* Glass Glare Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
-
-              {/* Floating Live Telemetry Chip */}
-              <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-black/80 backdrop-blur-xl border border-red-500/30 flex items-center justify-between shadow-2xl">
+              <div className="flex items-center justify-between pb-4 mb-5 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
                   </span>
                   <div>
                     <div className="text-xs font-bold text-white font-mono tracking-wide">
-                      NEURAL WORKFORCE CORE
+                      AUTONOMOUS ENTERPRISE ENGINE
                     </div>
                     <div className="text-[10px] text-luxury-silver">
                       Sub-Second Decision Latency • 24/7 Operations
                     </div>
                   </div>
                 </div>
-                <div className="text-right font-mono text-[11px] text-red-400 font-bold shrink-0">
-                  ONLINE
+                <div className="text-right font-mono text-[11px] text-emerald-400 font-bold shrink-0">
+                  ● ONLINE
                 </div>
               </div>
+
+              <div className="space-y-3 mb-5">
+                <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-white">24/7 Bilingual Voice & Chat Intake</div>
+                    <div className="text-[11px] text-luxury-silver">Ring-1 Response • Instant Calendar Booking</div>
+                  </div>
+                  <span className="text-xs font-mono font-bold text-emerald-400">0.4s</span>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-white">Department Payroll & Workflow Audit</div>
+                    <div className="text-[11px] text-luxury-silver">Guaranteed $2,500+/mo Savings or $0</div>
+                  </div>
+                  <span className="text-xs font-mono font-bold text-luxury-gold">$99</span>
+                </div>
+                <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-white">Corporate AI Staff Bootcamp</div>
+                    <div className="text-[11px] text-luxury-silver">1 Employee Produces Output of 5</div>
+                  </div>
+                  <span className="text-xs font-mono font-bold text-sky-400">5X ROI</span>
+                </div>
+              </div>
+
+              <Link
+                to="/booking"
+                className="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-luxury-gold to-amber-500 text-dark font-bold text-xs sm:text-sm flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg"
+              >
+                <span>Schedule Free 15-Min Call or $99 Audit</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </motion.div>
           </div>
         </div>

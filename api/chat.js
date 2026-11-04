@@ -299,6 +299,24 @@ export default async function handler(req, res) {
     // Trigger asynchronous notification if user leaves details or requests staff
     notifyFounderIfHandoff(prompt, history).catch(() => {});
 
+    // 0. Instant Sub-50ms Intent Router for Common Questions & Scheduling
+    const isCommonIntent = /\b(hola|hello|hi|hey|buenas|epale|épale|price|pricing|cost|cuánto|cuanto|precio|tarifa|audit|auditoría|auditoria|\$99|99|book|schedule|appointment|calendar|cita|agendar|reservar|reunión|reunion|call|phone|receptionist|recepcionista|llamada|train|training|bootcamp|entrenamiento|capacitación|app|application|software|desarrollo|aplicación|human|staff|jasmel|persona|ingeniero|service|services|servicios)\b/i.test(prompt || '');
+    if (isCommonIntent && (prompt || '').length < 140) {
+      const matched = matchIntentAndStudioAudio(prompt);
+      return res.status(200).json({
+        text: matched.text,
+        audioUrl: matched.audioUrl,
+        lang: matched.lang,
+        provider: 'jass-instant-router',
+      });
+    }
+
+    const fetchWithTimeout = (url, options, ms = 2400) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), ms);
+      return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+    };
+
     const oaiMessages = [
       { role: 'system', content: SYSTEM_PROMPT },
       ...history.map(h => ({
@@ -313,7 +331,7 @@ export default async function handler(req, res) {
       const grokModels = [process.env.GROK_MODEL, 'grok-3-mini-fast', 'grok-3-mini', 'grok-3-fast'].filter(Boolean);
       for (const grokModel of grokModels) {
         try {
-          const grokRes = await fetch('https://api.x.ai/v1/chat/completions', {
+          const grokRes = await fetchWithTimeout('https://api.x.ai/v1/chat/completions', {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${xaiKey}`,
@@ -322,10 +340,10 @@ export default async function handler(req, res) {
             body: JSON.stringify({
               model: grokModel,
               messages: oaiMessages,
-              max_tokens: 190,
-              temperature: 0.5,
+              max_tokens: 140,
+              temperature: 0.4,
             }),
-          });
+          }, 2200);
           if (grokRes.ok) {
             const data = await grokRes.json();
             const text = (data.choices?.[0]?.message?.content || '')

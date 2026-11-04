@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Check, ArrowRight, Search, Zap, Building2, Users } from 'lucide-react'
+import { Check, ArrowRight } from 'lucide-react'
 import { AnalyticsEvents } from '../lib/analytics'
 
 const Pricing = () => {
@@ -14,7 +14,6 @@ const Pricing = () => {
       duration: '60-Min Audit + ROI Blueprint',
       description:
         'Get in the door first: start with a Free 15-Min Triage Call or lock in our full 60-minute Department AI Audit to pinpoint manual payroll waste.',
-      icon: Search,
       accentColor: 'green',
       isPopular: false,
       cta: 'Book $99 Audit (or Free 15m Call)',
@@ -38,7 +37,6 @@ const Pricing = () => {
       duration: '1 Employee = 5x Output',
       description:
         'Don’t hire more headcount. We train your existing staff in 1 afternoon on role-specific AI workflows so 1 employee produces the output of 5.',
-      icon: Users,
       accentColor: 'amber',
       isPopular: false,
       cta: 'Book $497 Team AI Bootcamp',
@@ -62,7 +60,6 @@ const Pricing = () => {
       duration: '14-Day Turnkey Launch',
       description:
         'We engineer and deploy your custom 24/7 bilingual AI voice/chat receptionist (JAss) or automated back-office workflow so you cut overhead immediately.',
-      icon: Zap,
       accentColor: 'blue',
       isPopular: true,
       cta: 'Deploy Custom AI Solution',
@@ -87,7 +84,6 @@ const Pricing = () => {
       duration: 'Multi-Department Scale',
       description:
         'Complete company-wide automation: custom AI software, computer vision, autonomous multi-agent pipelines, and full workforce transformation.',
-      icon: Building2,
       accentColor: 'purple',
       isPopular: false,
       cta: 'Book Executive Strategy Call',
@@ -201,17 +197,8 @@ const Pricing = () => {
                 </div>
 
                 <div>
-                  {/* Icon */}
-                  <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-5 mt-2 border ${
-                      isPopular ? 'border-luxury-gold/40 bg-luxury-gold/15' : `${accent.border} ${accent.bg}`
-                    }`}
-                  >
-                    <plan.icon className={`w-6 h-6 ${isPopular ? 'text-luxury-gold' : accent.dot}`} />
-                  </div>
-
                   {/* Plan Name */}
-                  <h3 className="text-xl font-bold text-white mb-2 font-serif leading-snug">{plan.name}</h3>
+                  <h3 className="text-xl font-bold text-white mb-2 mt-2 font-serif leading-snug">{plan.name}</h3>
                   <p className="text-luxury-silver text-xs sm:text-sm mb-5 leading-relaxed">{plan.description}</p>
 
                   {/* Price Block */}

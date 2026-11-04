@@ -81,13 +81,34 @@ export async function sendGeminiMessage(
   history: ChatMessage[],
   userMessage: string
 ): Promise<string> {
-  // 1. Call serverless /api/chat endpoint first
-  try {
-    const apiRes = await fetch('/api/chat', {
+  // 0. Instant Zero-Latency Match for Common Pricing, Audit, Booking, Training & Service Questions (<15ms)
+  const lower = (userMessage || '').toLowerCase().trim()
+  const isQuickIntent =
+    lower.length < 130 &&
+    /\b(hola|hello|hi|hey|buenas|epale|épale|price|pricing|cost|cuánto|cuanto|precio|tarifa|audit|auditoría|auditoria|\$99|99|book|schedule|appointment|calendar|cita|agendar|reservar|reunión|reunion|call|phone|receptionist|recepcionista|llamada|train|training|bootcamp|entrenamiento|capacitación|app|application|software|desarrollo|aplicación|human|staff|jasmel|persona|ingeniero|service|services|servicios)\b/i.test(lower)
+
+  if (isQuickIntent) {
+    // Fire background lead/handoff notification without blocking UI
+    fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ history, prompt: userMessage }),
     }).catch(() => null)
+    return getFallbackResponse(userMessage)
+  }
+
+  // 1. Call serverless /api/chat endpoint with 2.5s timeout so chat is never slow
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 2500)
+    const apiRes = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ history, prompt: userMessage }),
+      signal: controller.signal,
+    })
+      .catch(() => null)
+      .finally(() => clearTimeout(timeoutId))
 
     if (apiRes && apiRes.ok) {
       const data = await apiRes.json()
