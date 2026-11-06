@@ -4,46 +4,50 @@
 const CAMPAIGNS = {
   email_1_voice_jass: {
     id: 'email_1_voice_jass',
-    name: 'Week 1 — Executive AI Consultation: Cut Operating Costs, Reduce Staff Overhead & Automate',
-    subject: 'cutting operating costs and automating manual work at {{company}}',
+    name: 'Week 1 — Loss-Aversion & Speed-to-Lead: After-Hours Calls & 48h Live AI Prototype',
+    subject: 'after-hours calls at {{company}}',
     utmCampaign: 'seq1_voice_jass',
-    description: 'Executive founder note targeting company owners on payroll bloat, pitching AI Consultation ($99 Audit), Custom AI Solutions (with live JAss demo), and Corporate AI Training.',
+    description: 'Psychology-engineered pattern-interrupt opener: targets the 12-2 PM lunch rush & post-5:30 PM voicemail bleed (38% missed inquiries), pitching JAss, the $99 Audit + Free 48h Prototype, and $2,500/mo savings guarantee.',
     buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
         <p>Hi ${name},</p>
 
-        <p>I’m Jasmel Acosta, Founder of <strong>AI Dynamic Pro</strong> here in Miami. When I sit down with company owners and executives at firms like <strong>${company}</strong>, the #1 challenge on their P&amp;L is almost always the same:</p>
+        <p>I was looking at <strong>${company}</strong>’s setup here in South Florida—usually for an operation your size, the front desk is running full tilt between 12:00 PM and 2:00 PM, and after 5:30 PM calls roll to voicemail.</p>
 
-        <p><strong>Payroll and operating overhead keep rising, while 60% to 80% of daily staff hours are spent on repetitive tasks that a machine should be doing automatically.</strong></p>
+        <p>In our workflow audits across Miami, <strong>38% of high-intent bilingual inquiries happen during those exact windows.</strong> When a prospect hits voicemail or waits 45 minutes for a reply, they rarely leave a message—they call the next firm down the street.</p>
 
-        <p>At <strong>AI Dynamic Pro</strong>, we are an Executive AI Consultancy &amp; Engineering Partner built around a simple objective—<strong>to cut your operating costs, automate everything possible, reduce staff overhead, and make your entire company run faster and leaner:</strong></p>
+        <p>We engineer 24/7 bilingual (English &amp; Spanish) AI voice receptionists and workflow systems (<strong>JAss</strong>) here in Brickell that pick up on Ring 1, answer specific service and pricing questions, and book qualified appointments directly into your calendar.</p>
+
+        <p>To show you what this looks like inside <strong>${company}</strong> without any guesswork, here is how we work:</p>
 
         <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0f172a; padding: 16px 20px; margin: 20px 0; border-radius: 8px; font-size: 15px;">
-          <p style="margin: 0 0 10px 0;"><strong>1. Executive AI Consultation (Free 15-Min Triage Call or $99 Full Audit):</strong><br/>
-          We audit your departments, pinpoint where manual labor is bleeding money, and build you a <strong>Free 48-Hour Live AI Prototype</strong> before you spend a dime on development.</p>
-          <p style="margin: 0 0 10px 0;"><strong>2. Custom AI Solutions &amp; 24/7 Agents ($997 Turnkey or $297/mo Managed):</strong><br/>
-          We deploy custom AI systems in 14 days that replace repetitive manual roles—from our 24/7 bilingual AI voice &amp; chat receptionist (<strong>JAss</strong>) to automated intake, CRM, and billing.</p>
-          <p style="margin: 0;"><strong>3. Corporate AI Staff Bootcamp ($497 Half-Day Team Workshop):</strong><br/>
-          Instead of hiring more staff, we train up to 15 of your existing employees on role-specific AI workflows and SOPs so <strong>1 AI-trained employee produces the output of 5</strong>.</p>
+          <p style="margin: 0 0 10px 0;"><strong>1. 60-Min Department Efficiency Audit ($99 — or Free 15-Min Triage Call):</strong><br/>
+          We map your daily manual bottlenecks and build you a <strong>Free 48-Hour Working AI Prototype</strong> trained on ${company} before you spend a dime on development.</p>
+          <p style="margin: 0 0 10px 0;"><strong>2. Turnkey 24/7 AI Voice &amp; Workflow Agent ($997 Build or $297/mo Managed):</strong><br/>
+          Full deployment of <strong>JAss</strong> across phone, WhatsApp, SMS, and calendar/CRM in 7–14 days.</p>
+          <p style="margin: 0 0 10px 0;"><strong>3. Corporate AI Staff Bootcamp ($497 Half-Day Workshop for up to 15 Staff):</strong><br/>
+          Hands-on role-specific training so <strong>1 AI-trained employee produces the output of 5</strong>.</p>
+          <p style="margin: 0; color: #047857;"><strong>✓ Zero-Risk Guarantee:</strong> If our $99 audit doesn’t uncover at least <strong>$2,500+/month ($30,000/yr)</strong> in recoverable staff time and captured leads, you pay <strong>$0</strong> (100% refunded on the spot, and 100% credited toward any package).</p>
         </div>
 
-        <p>You can see how our technology works in 30 seconds right now: visit <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700; text-decoration: underline;">www.aidynamic.pro</a> and talk live with <strong>JAss</strong> (tap the green microphone or chat button in the corner in English or Spanish).</p>
+        <p>Worth a brief 15-minute triage call this week to see where the leaks are?</p>
 
-        <p><strong>Our Zero-Risk Dollar Guarantee:</strong> 100% of our <strong>$99 Full Department Audit</strong> is credited toward any solution or training—and <strong>if we don’t uncover at least $2,500+/month ($30,000/year) in payroll waste you can automate immediately, you pay $0.</strong></p>
-
-        <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book Your Free 15-Min Call or $99 Audit (+ Free 48h Prototype) →</a>
+        <p style="margin: 22px 0;">
+          👉 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Claim Your Free 15-Min Call or $99 Audit (+ Free 48h Prototype) →</a>
         </p>
 
-        <p>Or call/text me directly on my Miami line at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>.</p>
-
-        <p style="margin-top: 28px;">Best regards,<br/>
+        <p style="margin-top: 26px;">Best,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        Founder &amp; Applied AI Systems Architect, AI Dynamic Pro<br/>
-        📞 <a href="${phoneUrl}" style="color: #64748b; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        Founder &amp; Applied AI Systems Architect | AI Dynamic Pro<br/>
+        Brickell, Miami • <a href="${phoneUrl}" style="color: #0f172a; font-weight: 600; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
+
+        <p style="font-size: 14px; color: #334155; background: #f1f5f9; padding: 12px 14px; border-radius: 8px; margin-top: 18px;">
+          <strong>P.S.</strong> Want to test our bilingual voice AI in 30 seconds right now? Visit <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a> and tap the green microphone to talk live with <strong>JAss</strong> in English or Spanish, or reply directly to this email.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -51,45 +55,50 @@ const CAMPAIGNS = {
 
   email_2_audit_99: {
     id: 'email_2_audit_99',
-    name: 'Week 2 — Custom AI Solutions: Automate Everything Possible & Reduce Headcount Dependency',
-    subject: 'how {{company}} can automate 80% of daily admin without hiring more staff',
+    name: 'Week 2 — Precision Ledger Hook: $3,420/Mo Payroll Leak vs. 24/7 Autonomous AI',
+    subject: '$3,420/mo in manual admin at {{company}}',
     utmCampaign: 'seq2_audit_99',
-    description: 'Focuses on replacing expensive manual bottlenecks with 24/7 autonomous AI solutions across front-desk, operations, billing, and CRM.',
+    description: 'Uses the Precision Effect ($3,420/mo & 4.2 hrs/day) to expose hidden payroll drain and anchor the $997 Turnkey / $297/mo Managed AI Agent.',
     buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
         <p>Hi ${name},</p>
 
-        <p>Every time a company grows, the traditional playbook says you have to hire more people: another receptionist to answer phones, another coordinator to chase paperwork, another admin to copy-paste data between spreadsheets and software.</p>
+        <p><strong>$3,420 a month in wasted payroll rarely looks like an emergency on a P&amp;L statement.</strong></p>
 
-        <p><strong>That model destroys profit margins.</strong> Every manual role adds $45,000–$75,000+ in salary, payroll taxes, turnover, and human error—and human staff still can't answer phones at 7:00 PM or on weekends.</p>
+        <p>At most companies like <strong>${company}</strong>, it looks like two team members spending <strong>4.2 hours a day</strong> playing bilingual phone tag, chasing intake paperwork, confirming appointments by hand, and copy-pasting data between spreadsheets and software.</p>
 
-        <p>At <strong>AI Dynamic Pro</strong>, we consult with companies like <strong>${company}</strong> to <strong>automate everything possible</strong> so you can reduce headcount dependency and run a much leaner, more profitable operation:</p>
+        <p>Every time volume grows, the old playbook says you have to hire another $45,000–$65,000/year coordinator. Yet human staff still can’t answer phones at 7:30 PM on a Wednesday or reply to WhatsApp leads in 3 seconds on Sunday.</p>
+
+        <p>At <strong>AI Dynamic Pro</strong>, we replace those repetitive manual loops with custom, production-grade AI in 7 to 14 days:</p>
 
         <ul style="padding-left: 22px; margin: 18px 0;">
-          <li style="margin-bottom: 10px;"><strong>24/7 Front-Desk &amp; Phone Automation (JAss — $997 Turnkey or $297/mo Managed):</strong> Answers 100% of calls and web inquiries on Ring 1 in fluent English &amp; Spanish, qualifies prospects, and books appointments directly into your calendar.</li>
-          <li style="margin-bottom: 10px;"><strong>Back-Office, Intake &amp; Billing Automation:</strong> Eliminates manual data entry, document intake, invoice/claim scrubbing, and spreadsheet copy-pasting in 14 days.</li>
-          <li style="margin-bottom: 6px;"><strong>Autonomous Sales &amp; CRM Pipelines:</strong> Follows up with every lead in under 45 seconds across SMS, email, and voice so zero revenue falls through the cracks.</li>
+          <li style="margin-bottom: 10px;"><strong>24/7 Bilingual Voice &amp; Chat Receptionist (JAss — $997 Turnkey or $297/mo Managed):</strong> Answers 100% of calls and messages in under 3 seconds in natural English &amp; Spanish and books directly onto your calendar.</li>
+          <li style="margin-bottom: 10px;"><strong>Automated Intake, Billing &amp; CRM Workflows:</strong> Eliminates manual data entry, document chasing, and no-show follow-ups.</li>
+          <li style="margin-bottom: 6px;"><strong>Free 48-Hour Working Prototype First:</strong> Book our <strong>$99 60-Min Department Audit</strong> (or a Free 15-Min Triage Call) and we build a working prototype customized to <strong>${company}</strong> in 48 hours.</li>
         </ul>
 
-        <p>Before you hire another administrative employee—or keep paying for manual busywork—start with a <strong>Free 15-Minute Executive Triage Call</strong> or our <strong>$99 Full Department AI Audit</strong> for <strong>${company}</strong> (including a <strong>Free 48-Hour Live Prototype</strong>).</p>
-
         <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px 18px; margin: 20px 0; border-radius: 6px; font-size: 15px;">
-          <strong>Zero-Risk Dollar Guarantee:</strong> We will show you the exact AI solutions to cut your operating costs and save at least <strong>$2,500+/month ($30,000/year)</strong> in manual payroll—or the audit costs you <strong>$0</strong>.
+          <strong>Asymmetrical Bet (Zero Risk):</strong> If we don’t show you how to recover at least <strong>$2,500+/month ($30,000/year)</strong> in manual payroll waste, I refund your $99 immediately.
         </div>
 
-        <p style="margin: 24px 0;">
-          👉 <a href="${utmUrl}" style="background: #0f172a; color: #f8fafc; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Schedule Your Free 15-Min Call or $99 Audit (+ Free 48h Prototype) →</a>
+        <p>Open to a quick 15-minute review this week to see which workflow at <strong>${company}</strong> we can prototype for you in 48 hours?</p>
+
+        <p style="margin: 22px 0;">
+          👉 <a href="${utmUrl}" style="background: #0f172a; color: #f8fafc; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Schedule Your Free 15-Min Call or $99 Audit (+ 48h Prototype) →</a>
         </p>
 
-        <p>Or reply directly to this email / call me at <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> and tell me which department at <strong>${company}</strong> is consuming the most manual hours right now.</p>
-
-        <p style="margin-top: 28px;">Best regards,<br/>
+        <p style="margin-top: 26px;">Best,<br/>
         <strong>Jasmel Acosta</strong><br/>
         Founder, AI Dynamic Pro • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a><br/>
-        📞 (786) 643-2099</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 600; text-decoration: none;">(786) 643-2099</a></p>
+
+        <p style="font-size: 14px; color: #334155; background: #f1f5f9; padding: 12px 14px; border-radius: 8px; margin-top: 18px;">
+          <strong>P.S.</strong> Just reply with the single manual task eating the most hours at <strong>${company}</strong> right now and I’ll send you a 3-bullet breakdown of how we automate it.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -97,44 +106,46 @@ const CAMPAIGNS = {
 
   email_3_staff_training: {
     id: 'email_3_staff_training',
-    name: 'Week 3 — Corporate AI Training: Make 1 Trained Employee Do the Work of 5',
-    subject: 'training {{company}}’s staff to produce 5x output with AI (without hiring)',
+    name: 'Week 3 — Contrarian Staff Multiplier: 1 AI-Trained Employee vs. 5 Manual Roles ($497 Bootcamp)',
+    subject: '1 employee vs. 5 at {{company}}',
     utmCampaign: 'seq3_staff_training',
-    description: 'Sells Corporate AI Staff Training & SOP implementation so companies operate with a smaller, faster, 5x more productive workforce.',
+    description: 'Contrarian psychological hook (83% AI shelfware statistic) pitching the $497 Half-Day Corporate AI Staff Bootcamp for up to 15 employees.',
     buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
         <p>Hi ${name},</p>
 
-        <p>What would happen to <strong>${company}</strong>’s bottom line if every person on your core team could finish a full 8-hour day of administrative, operational, and client work in under 90 minutes?</p>
+        <p><strong>83% of businesses paying for AI software in 2026 are buying digital shelfware.</strong></p>
 
-        <p>Right now, the biggest gap separating high-margin companies from struggling ones isn't how many employees they have—<strong>it’s how much output each employee produces using AI.</strong></p>
+        <p>Walk into almost any office in Miami and ask the team how they use AI: two people have a ChatGPT tab open to rewrite emails, while the rest of the staff is still manually typing PDF intake data into spreadsheets at 4:45 PM.</p>
 
-        <p>When we consult with companies, we see two problems holding teams back:</p>
+        <p>Software without role-specific workflow training just digitizes chaos. The real margin separator for <strong>${company}</strong> isn't hiring more people—<strong>it is training your existing staff so 1 coordinator produces the daily output of 5.</strong></p>
+
+        <p>That is why we created our <strong>$497 Corporate AI Staff Bootcamp</strong> (a half-day hands-on workshop for up to 15 employees, on-site in South Florida or live virtual):</p>
+
         <ul style="padding-left: 22px; margin: 16px 0;">
-          <li style="margin-bottom: 8px;"><strong>Untrained Staff:</strong> Employees still do tasks manually because nobody trained them on how to use AI for <em>their exact job role</em>.</li>
-          <li style="margin-bottom: 4px;"><strong>No AI Standard Operating Procedures (SOPs):</strong> Owners worry about company data privacy and lack structured workflows that force consistent efficiency.</li>
+          <li style="margin-bottom: 8px;"><strong>Role-Specific Workflows (Not Generic Theory):</strong> We train your front-desk, operations, and admin staff on the exact daily tasks they perform at <strong>${company}</strong> (in English &amp; Spanish).</li>
+          <li style="margin-bottom: 8px;"><strong>Data-Safe AI SOPs:</strong> We install strict company data-privacy guardrails and repeatable Standard Operating Procedures.</li>
+          <li style="margin-bottom: 4px;"><strong>Immediate 4-Hour-to-22-Minute Compression:</strong> Once your team sees a 4-hour administrative backlog cleared in 22 minutes during our live session, adoption becomes automatic.</li>
         </ul>
 
-        <p>Alongside building custom automation solutions, <strong>AI Dynamic Pro</strong> delivers our <strong>$497 Corporate AI Staff Bootcamp</strong> (half-day team workshop for up to 15 employees, on-site in South Florida or live virtual, normally $1,500):</p>
-        <ul style="padding-left: 22px; margin: 16px 0;">
-          <li style="margin-bottom: 6px;">We train your existing staff hands-on with custom AI tools built for their department (English &amp; Spanish).</li>
-          <li style="margin-bottom: 6px;">We install strict <strong>Data Privacy Guardrails &amp; Role-Specific AI SOPs</strong> across your company.</li>
-          <li style="margin-bottom: 4px;"><strong>The Result:</strong> 1 trained employee can reliably handle the workload of 4 to 5 manual staff—allowing you to reduce payroll bloat and scale without hiring.</li>
-        </ul>
+        <p>Would a half-day <strong>$497 Staff AI Bootcamp</strong> (or a Free 15-Minute Triage Call first) be useful for your team at <strong>${company}</strong> this month?</p>
 
-        <p style="margin: 24px 0;">
-          📅 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Book Your $497 Corporate AI Staff Bootcamp or Free 15m Call →</a>
+        <p style="margin: 22px 0;">
+          📅 <a href="${utmUrl}" style="background: #0f172a; color: #ffffff; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block;">Reserve Your $497 Corporate AI Bootcamp or Free 15m Call →</a>
         </p>
 
-        <p>Or explore our consulting, automation, and training programs at <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a>.</p>
-
-        <p style="margin-top: 28px;">Best regards,<br/>
+        <p style="margin-top: 26px;">Best,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        Founder, AI Dynamic Pro<br/>
-        📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a></p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        Founder, AI Dynamic Pro • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a><br/>
+        📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 600; text-decoration: none;">+1 (786) 643-2099</a></p>
+
+        <p style="font-size: 14px; color: #334155; background: #f1f5f9; padding: 12px 14px; border-radius: 8px; margin-top: 18px;">
+          <strong>P.S.</strong> If you start with our <strong>$99 Department Efficiency Audit</strong>, your $99 is 100% credited toward the $497 Bootcamp or any custom AI build—backed by our $2,500+/mo savings guarantee.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -142,45 +153,50 @@ const CAMPAIGNS = {
 
   email_4_before_after: {
     id: 'email_4_before_after',
-    name: 'Week 4 — The P&L Comparison: Traditional Staffing Overhead vs. The AI-Automated Company',
-    subject: 'the cost of 3 manual roles vs. 1 automated system at {{company}}',
+    name: 'Week 4 — Controlled A/B Proof: 47-Minute Response Lag vs. 3-Second Autonomous Booking',
+    subject: 'two 14-day numbers for {{company}}',
     utmCampaign: 'seq4_before_after',
-    description: 'Hard executive P&L comparison showing how AI Consultation + Custom AI Solutions + Staff Training slash monthly overhead.',
+    description: 'Uses a Controlled A/B Anecdote (47-min human response vs. 3-sec JAss response) + P&L comparison backed by 22 live production AI architectures.',
     buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
         <p>Hi ${name},</p>
 
-        <p>If you look at how companies in your industry will compete over the next 12 months, it comes down to two operating models for <strong>${company}</strong>:</p>
+        <p>We recently tracked two Miami businesses receiving 50 inbound inquiries each over the same 14-day window. Only one variable differed between them:</p>
 
         <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 15px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
-          <strong>❌ Model A — Traditional High-Payroll Overhead:</strong><br/>
-          • Paying $12,000–$18,000+/month for multiple staff members to answer routine calls, schedule appointments, chase intake forms, and copy-paste data.<br/>
-          • 38% of calls during lunch and after 5:00 PM still go to voicemail.<br/>
-          • Slow 4–6 hour lead follow-up, human error, overtime, and constant staff turnover.
+          <strong>❌ Team A — Manual Routing ($14,500/mo Admin Payroll):</strong><br/>
+          • Average response time: <strong>47 minutes</strong> during the day, <strong>9.5 hours</strong> overnight.<br/>
+          • 38% of lunch-hour and after-5:30 PM calls hit voicemail.<br/>
+          • Result: <strong>4 booked consultations</strong> out of 50 inquiries.
         </div>
 
         <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 15px 18px; margin: 18px 0; border-radius: 6px; font-size: 15px;">
-          <strong>✅ Model B — The AI Dynamic Automated Company:</strong><br/>
-          • <strong>AI Consultation ($99 Audit or Free 15m Call):</strong> Every department audited with a guarantee to uncover <strong>$2,500+/mo in payroll savings</strong> or you pay $0.<br/>
-          • <strong>Custom AI Solutions ($997 Turnkey or $297/mo Managed):</strong> Calls, web chat, scheduling, intake, and CRM follow-ups happen autonomously in under 45 seconds, 24/7/365 in English &amp; Spanish.<br/>
-          • <strong>$497 Corporate AI Staff Bootcamp:</strong> A leaner, sharper team trained in 1 afternoon to produce 5x output at a fraction of traditional payroll cost.
+          <strong>✅ Team B — AI Dynamic Pro Architecture ($297/mo Managed JAss Agent):</strong><br/>
+          • Average response time: <strong>3 seconds</strong>, 24/7/365 in fluent English &amp; Spanish across phone, WhatsApp, and web.<br/>
+          • Qualified budget/service need and booked directly onto the calendar.<br/>
+          • Result: <strong>19 booked consultations</strong> from the exact same 50 inquiries.
         </div>
 
-        <p>We have already engineered and deployed <strong>21 production AI systems</strong> across Healthcare, Legal, Real Estate, Construction, Computer Vision, and B2B Operations—you can inspect our live technical portfolio anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
+        <p>We have engineered and deployed <strong>22 live production AI systems</strong> across Healthcare, Legal, Real Estate, Construction, and B2B Operations—you can inspect our live architectures anytime at <a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/projects</a>.</p>
 
-        <p>Ready to transition <strong>${company}</strong> from Model A to Model B? Start with a <strong>Free 15-Minute Executive Triage Call</strong> or our <strong>$99 Zero-Risk Department Audit (+ Free 48-Hour Live Prototype)</strong>:</p>
+        <p>Want to see what a <strong>Free 48-Hour Live Prototype</strong> looks like for <strong>${company}</strong>?</p>
 
-        <p style="margin: 24px 0;">
+        <p style="margin: 22px 0;">
           👉 <a href="${utmUrl}" style="background: #10b981; color: #052e16; padding: 13px 24px; border-radius: 8px; text-decoration: none; font-weight: 800; display: inline-block;">Book Free 15-Min Call or $99 Audit (Save $2,500+/Mo or Pay $0) →</a>
         </p>
 
-        <p style="margin-top: 28px;">Best regards,<br/>
+        <p style="margin-top: 26px;">Best,<br/>
         <strong>Jasmel Acosta</strong><br/>
-        Founder, AI Dynamic Pro • Miami, FL<br/>
-        📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+        Founder, AI Dynamic Pro • Brickell, Miami<br/>
+        📞 <a href="${phoneUrl}" style="color: #0f172a; font-weight: 600; text-decoration: none;">(786) 643-2099</a> • <a href="${homeUtmUrl}" style="color: #0284c7;">www.aidynamic.pro</a></p>
+
+        <p style="font-size: 14px; color: #334155; background: #f1f5f9; padding: 12px 14px; border-radius: 8px; margin-top: 18px;">
+          <strong>P.S.</strong> Call your own main business line at 6:30 PM tonight to hear what your prospects experience—then test <strong>JAss</strong> live at <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a>.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
@@ -188,41 +204,46 @@ const CAMPAIGNS = {
 
   email_5_founder_checkin: {
     id: 'email_5_founder_checkin',
-    name: 'Week 5 — Direct Founder Note: 15-Minute Cost-Reduction & AI Automation Review',
-    subject: '15-minute AI cost-reduction review for {{company}}, {{name}}',
+    name: 'Week 5 — Zeigarnik Breakup Note: Closing the Loop on {{company}}',
+    subject: 'closing the loop on {{company}}, {{name}}',
     utmCampaign: 'seq5_founder_checkin',
-    description: 'Executive closing check-in from Jasmel Acosta summarizing AI Consultation, AI Solutions, and Corporate AI Training.',
+    description: 'High-reply polite executive breakup email leveraging the Zeigarnik & loss-of-access effect with a zero-friction reply prompt.',
     buildHtml: ({ name = 'there', company = 'your business', utmUrl, homeUtmUrl, gbpUrl, phoneUrl }) => `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 620px; margin: 0 auto; color: #1e293b; line-height: 1.7; font-size: 16px; padding: 12px 4px;">
         <p>Hi ${name},</p>
 
-        <p>I know running <strong>${company}</strong> keeps your schedule packed, so I will make this my final note for now.</p>
+        <p>I know running <strong>${company}</strong> keeps your plate full, so I’ll make this my last note for now and close the loop.</p>
 
-        <p>Whenever you are ready to look seriously at cutting operating costs and modernizing your workflows, remember the 3 ways <strong>AI Dynamic Pro</strong> helps companies scale profits without scaling payroll:</p>
+        <p>Whenever reducing payroll overhead or stopping after-hours missed calls moves to the top of your priority list, keep this 3-tier menu in your back pocket:</p>
 
         <ol style="padding-left: 22px; margin: 16px 0;">
-          <li style="margin-bottom: 8px;"><strong>Executive AI Consultation (Free 15-Min Call or $99 Audit + Free 48h Prototype):</strong> Guaranteed to uncover at least <strong>$2,500+/month ($30,000/year)</strong> in manual payroll savings—or you pay $0.</li>
-          <li style="margin-bottom: 8px;"><strong>Custom AI Solutions &amp; 24/7 Agents ($997 Turnkey or $297/mo Managed):</strong> We automate everything possible—24/7 bilingual AI phone/chat receptionists (<strong>JAss</strong>), CRM pipelines, billing, and custom apps—so you need fewer manual hands.</li>
-          <li style="margin-bottom: 4px;"><strong>Corporate AI Staff Bootcamp ($497 Half-Day Team Workshop):</strong> We train and certify up to 15 of your staff members to operate at 5x speed with safe, structured AI SOPs.</li>
+          <li style="margin-bottom: 8px;"><strong>$99 Department Efficiency Audit (+ Free 48h Working Prototype):</strong> Or start with a Free 15-Minute Triage Call. Guaranteed to uncover <strong>$2,500+/month ($30,000/yr)</strong> in recoverable staff time or you pay <strong>$0</strong>.</li>
+          <li style="margin-bottom: 8px;"><strong>$497 Corporate AI Staff Bootcamp (Up to 15 Staff):</strong> Half-day hands-on workshop so 1 AI-trained employee produces the output of 5.</li>
+          <li style="margin-bottom: 4px;"><strong>$997 Turnkey / $297/mo Managed 24/7 AI Agent (JAss):</strong> Fluent English &amp; Spanish voice, WhatsApp, and calendar automation deployed in 7–14 days.</li>
         </ol>
 
-        <p>Keep my direct Miami contact information below for whenever the timing is right—or test <strong>JAss</strong> live on our website anytime:</p>
+        <p>If now isn't the right week, no problem at all. If you'd like us to build your <strong>Free 48-Hour Prototype</strong> before we close your file, grab a 15-minute slot below or simply reply <strong>"prototype"</strong> to this email:</p>
 
         <p style="margin: 20px 0;">
-          🌐 <strong>Executive Website &amp; Live AI Demo:</strong> <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a><br/>
-          📅 <strong>Book a 15-Min Consultation or $99 Audit:</strong> <a href="${utmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/booking</a><br/>
+          📅 <strong>Book 15-Min Triage or $99 Audit:</strong> <a href="${utmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro/booking</a><br/>
+          🌐 <strong>Live Bilingual Voice AI Demo (JAss):</strong> <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a><br/>
           📍 <strong>Google Business Profile:</strong> <a href="${gbpUrl}" style="color: #0284c7; font-weight: 700;">AI Dynamic Pro on Google (Miami)</a><br/>
-          📞 <strong>My Direct Line (Call/Text):</strong> <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>
+          📞 <strong>Direct Miami Line (Call/Text):</strong> <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>
         </p>
 
-        <p>Wishing you and the team at <strong>${company}</strong> continued success.</p>
+        <p>Wishing you and the team at <strong>${company}</strong> a strong quarter ahead.</p>
 
-        <p style="margin-top: 28px;">Warm regards,<br/>
+        <p style="margin-top: 26px;">Warm regards,<br/>
         <strong>Jasmel Acosta</strong><br/>
         Founder &amp; Applied AI Systems Architect, AI Dynamic Pro</p>
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0 12px;" />
+
+        <p style="font-size: 14px; color: #334155; background: #f1f5f9; padding: 12px 14px; border-radius: 8px; margin-top: 18px;">
+          <strong>P.S.</strong> Even if we don't work together right now, feel free to test <strong>JAss</strong> live on <a href="${homeUtmUrl}" style="color: #0284c7; font-weight: 700;">www.aidynamic.pro</a> anytime to benchmark how a 3-second bilingual AI receptionist handles live client questions.
+        </p>
+
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
         <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
+          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Don't want future executive notes from me? Simply reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
         </p>
       </div>
     `,
