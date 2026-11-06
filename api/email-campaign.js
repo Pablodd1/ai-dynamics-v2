@@ -405,19 +405,21 @@ export default async function handler(req, res) {
 
   try {
     const {
-      action = 'send', // 'send' | 'save_leads_to_list' | 'suspend_external_campaigns' | 'resume_external_campaigns' | 'create_sender'
+      action = 'send', // 'send' | 'purge_blocked_contacts' | 'save_leads_to_list' | 'suspend_external_campaigns' | 'resume_external_campaigns' | 'create_sender'
       externalCampaignIds = [],
       campaignId = 'email_1_voice_jass',
-      mode = 'test', // 'test' | 'custom' | 'miami_gmaps_leads' | 'supabase_leads' | 'brevo_list' | 'all_brevo_contacts'
+      mode = 'all_brevo_contacts', // 'all_brevo_contacts' | 'test' | 'custom' | 'miami_gmaps_leads' | 'supabase_leads' | 'brevo_list'
       brevoListId = 2,
       statusFilter = 'all',
       customRecipients = [],
       customSubject = '',
       scheduledAt = '', // Optional ISO-8601 future timestamp e.g. '2026-11-03T10:15:00-05:00'
-      senderEmail = '', // Optional verified Brevo sender email override
+      senderEmail = 'jasmel@aidynamic.pro', // Verified Brevo sender email
       senderName = 'Jasmel Acosta — AI Dynamic Pro',
       replyToEmail = 'jasmel@aidynamic.pro',
       leadsToSave = [],
+      batchOffset = 0,
+      batchLimit = 0,
     } = req.body || {};
 
     if (!BREVO_API_KEY) {
@@ -666,8 +668,9 @@ export default async function handler(req, res) {
 
     const campaign = CAMPAIGNS[campaignId] || CAMPAIGNS.email_1_voice_jass;
 
-    // Fetch global Brevo transactional blocklist so we NEVER email an unsubscribed/blocked contact (CAN-SPAM strict compliance)
+    // Fetch global Brevo transactional blocklist + blacklisted contacts and ERASE them from Brevo lists & Supabase CRM
     const blockedSet = new Set();
+    const erasedBlockedEmails = [];
     try {
       const blkRes = await fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=100', {
         headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
@@ -680,6 +683,56 @@ export default async function handler(req, res) {
       }
     } catch {
       // Non-blocking if IP-restricted on serverless
+    }
+
+    // Helper to permanently erase blocked/blacklisted emails from Brevo Contacts & Supabase CRM
+    const eraseBlockedContacts = async (emailsToErase) => {
+      const uniqueEmails = [...new Set(emailsToErase.map((e) => (e || '').trim().toLowerCase()).filter(Boolean))];
+      await Promise.all(
+        uniqueEmails.map(async (blockedEmail) => {
+          erasedBlockedEmails.push(blockedEmail);
+          // 1. Delete from Brevo Contacts (removes from all lists)
+          await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(blockedEmail)}`, {
+            method: 'DELETE',
+            headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
+          }).catch(() => null);
+          // 2. Delete from Supabase CRM aidynamic_leads if present
+          if (SUPABASE_KEY) {
+            await fetch(
+              `${SUPABASE_URL}/rest/v1/aidynamic_leads?email=eq.${encodeURIComponent(blockedEmail)}`,
+              {
+                method: 'DELETE',
+                headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+              }
+            ).catch(() => null);
+          }
+        })
+      );
+    };
+
+    if (action === 'purge_blocked_contacts') {
+      for (const offset of [0, 500, 1000, 1500]) {
+        const allRes = await fetch(
+          `https://api.brevo.com/v3/contacts?limit=500&offset=${offset}`,
+          { headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY } }
+        ).catch(() => null);
+        if (!allRes || !allRes.ok) break;
+        const allData = await allRes.json();
+        const batch = allData.contacts || [];
+        for (const c of batch) {
+          if (c.emailBlacklisted && c.email) {
+            blockedSet.add(c.email.trim().toLowerCase());
+          }
+        }
+        if (batch.length < 500) break;
+      }
+      await eraseBlockedContacts([...blockedSet]);
+      return res.status(200).json({
+        success: true,
+        erasedCount: erasedBlockedEmails.length,
+        erasedEmails: erasedBlockedEmails,
+        message: `Permanently erased ${erasedBlockedEmails.length} blocked/blacklisted contact(s) from Brevo lists and Supabase CRM.`,
+      });
     }
 
     let recipients = [];
@@ -741,6 +794,7 @@ export default async function handler(req, res) {
           if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
           seen.add(cleanEmail);
           if (c.emailBlacklisted || blockedSet.has(cleanEmail)) {
+            blockedSet.add(cleanEmail);
             skippedUnsubscribed++;
             continue;
           }
@@ -794,6 +848,7 @@ export default async function handler(req, res) {
           if (!cleanEmail || !cleanEmail.includes('@') || seen.has(cleanEmail)) continue;
           seen.add(cleanEmail);
           if (c.emailBlacklisted || blockedSet.has(cleanEmail)) {
+            blockedSet.add(cleanEmail);
             skippedUnsubscribed++;
             continue;
           }
@@ -837,13 +892,26 @@ export default async function handler(req, res) {
       }
     }
 
+    // Automatically erase any blocked/blacklisted contacts discovered during recipient resolution
+    if (blockedSet.size > 0) {
+      await eraseBlockedContacts([...blockedSet]);
+    }
+
+    const totalEligibleRecipients = recipients.length;
+    if (Number(batchLimit) > 0) {
+      const startIdx = Math.max(0, Number(batchOffset) || 0);
+      recipients = recipients.slice(startIdx, startIdx + Number(batchLimit));
+    }
+
     if (recipients.length === 0) {
-      return res.status(400).json({
-        error:
-          skippedUnsubscribed > 0
-            ? `No eligible recipients left after filtering ${skippedUnsubscribed} unsubscribed/blacklisted contact(s).`
-            : 'No valid recipients found for this campaign dispatch.',
+      return res.status(200).json({
+        success: true,
+        sentCount: 0,
+        totalAttempted: 0,
+        totalEligibleRecipients,
         skippedUnsubscribed,
+        erasedBlockedEmails,
+        message: 'No remaining recipients in this batch window.',
       });
     }
 
@@ -890,61 +958,70 @@ export default async function handler(req, res) {
     const errors = [];
     const renderedPayloads = [];
 
-    for (const recipient of recipients) {
-      const utmUrl = `https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=${campaign.utmCampaign}`;
-      const homeUtmUrl = `https://www.aidynamic.pro/?utm_source=brevo&utm_medium=email&utm_campaign=${campaign.utmCampaign}`;
-      const gbpUrl = GBP_REVIEW_URL;
-      const phoneUrl = 'tel:+17866432099';
+    // Process sends in parallel chunks of 25 for fast high-volume execution across all lists
+    const CONCURRENCY = 25;
+    for (let i = 0; i < recipients.length; i += CONCURRENCY) {
+      const chunk = recipients.slice(i, i + CONCURRENCY);
+      await Promise.all(
+        chunk.map(async (recipient) => {
+          const utmUrl = `https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=${campaign.utmCampaign}`;
+          const homeUtmUrl = `https://www.aidynamic.pro/?utm_source=brevo&utm_medium=email&utm_campaign=${campaign.utmCampaign}`;
+          const gbpUrl = GBP_REVIEW_URL;
+          const phoneUrl = 'tel:+17866432099';
 
-      const personalizedSubject = (customSubject || campaign.subject)
-        .replace(/\{\{company\}\}/g, recipient.company || 'your business')
-        .replace(/\{\{name\}\}/g, recipient.name || 'there');
+          const personalizedSubject = (customSubject || campaign.subject)
+            .replace(/\{\{company\}\}/g, recipient.company || 'your business')
+            .replace(/\{\{name\}\}/g, recipient.name || 'there');
 
-      const htmlContent = campaign.buildHtml({
-        name: recipient.name,
-        company: recipient.company,
-        utmUrl,
-        homeUtmUrl,
-        gbpUrl,
-        phoneUrl,
-      });
+          const htmlContent = campaign.buildHtml({
+            name: recipient.name,
+            company: recipient.company,
+            utmUrl,
+            homeUtmUrl,
+            gbpUrl,
+            phoneUrl,
+          });
 
-      const brevoPayload = {
-        sender: { name: resolvedSenderName, email: resolvedSenderEmail },
-        to: [{ email: recipient.email, name: recipient.name }],
-        replyTo: { email: resolvedReplyTo, name: resolvedSenderName },
-        subject: personalizedSubject,
-        htmlContent,
-        ...(scheduledAt ? { scheduledAt } : {}),
-        headers: {
-          'List-Unsubscribe': `<mailto:${resolvedReplyTo}?subject=Unsubscribe>`,
-          'X-Entity-Ref-ID': `aidynamic-${campaign.utmCampaign}-${Date.now()}`,
-        },
-        tags: [campaign.utmCampaign, 'aidynamic_sequence'],
-      };
+          const brevoPayload = {
+            sender: { name: resolvedSenderName, email: resolvedSenderEmail },
+            to: [{ email: recipient.email, name: recipient.name }],
+            replyTo: { email: resolvedReplyTo, name: resolvedSenderName },
+            subject: personalizedSubject,
+            htmlContent,
+            ...(scheduledAt ? { scheduledAt } : {}),
+            headers: {
+              'List-Unsubscribe': `<mailto:${resolvedReplyTo}?subject=Unsubscribe>`,
+              'X-Entity-Ref-ID': `aidynamic-${campaign.utmCampaign}-${Date.now()}`,
+            },
+            tags: [campaign.utmCampaign, 'aidynamic_sequence'],
+          };
 
-      renderedPayloads.push(brevoPayload);
+          if (renderedPayloads.length < 50) {
+            renderedPayloads.push(brevoPayload);
+          }
 
-      try {
-        const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'api-key': BREVO_API_KEY,
-          },
-          body: JSON.stringify(brevoPayload),
-        });
+          try {
+            const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'api-key': BREVO_API_KEY,
+              },
+              body: JSON.stringify(brevoPayload),
+            });
 
-        if (brevoRes.ok) {
-          sentCount++;
-        } else {
-          const errText = await brevoRes.text().catch(() => 'Unknown error');
-          errors.push({ email: recipient.email, error: errText });
-        }
-      } catch (sendErr) {
-        errors.push({ email: recipient.email, error: sendErr.message });
-      }
+            if (brevoRes.ok) {
+              sentCount++;
+            } else {
+              const errText = await brevoRes.text().catch(() => 'Unknown error');
+              errors.push({ email: recipient.email, error: errText });
+            }
+          } catch (sendErr) {
+            errors.push({ email: recipient.email, error: sendErr.message });
+          }
+        })
+      );
     }
 
     return res.status(200).json({
@@ -956,7 +1033,10 @@ export default async function handler(req, res) {
       replyToUsed: resolvedReplyTo,
       sentCount,
       totalAttempted: recipients.length,
+      totalEligibleRecipients,
       skippedUnsubscribed,
+      erasedBlockedCount: erasedBlockedEmails.length,
+      erasedBlockedEmails,
       renderedPayloads: sentCount === 0 ? renderedPayloads : [],
       errors: errors.slice(0, 5),
     });

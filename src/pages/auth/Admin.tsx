@@ -93,8 +93,9 @@ export default function Admin() {
   const [gbpPosts, setGbpPosts] = useState<GbpPost[]>([])
   const [brevoConnected, setBrevoConnected] = useState(true)
   const [selectedCampaignId, setSelectedCampaignId] = useState('email_1_voice_jass')
-  const [dispatchMode, setDispatchMode] = useState<'test' | 'all_brevo_contacts' | 'supabase_leads' | 'brevo_list' | 'miami_gmaps_leads' | 'custom'>('miami_gmaps_leads')
+  const [dispatchMode, setDispatchMode] = useState<'test' | 'all_brevo_contacts' | 'supabase_leads' | 'brevo_list' | 'miami_gmaps_leads' | 'custom'>('all_brevo_contacts')
   const [syncingMiamiLeads, setSyncingMiamiLeads] = useState(false)
+  const [purgingBlocked, setPurgingBlocked] = useState(false)
   const [dispatchStatusFilter, setDispatchStatusFilter] = useState<LeadStatus | 'all'>('all')
   const [brevoLists, setBrevoLists] = useState<BrevoListMeta[]>([])
   const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
@@ -209,6 +210,34 @@ export default function Admin() {
       console.warn('Could not sync Miami leads:', err)
     } finally {
       setSyncingMiamiLeads(false)
+    }
+  }
+
+  const handlePurgeBlockedContacts = async () => {
+    setPurgingBlocked(true)
+    setCampaignResult(null)
+    try {
+      const res = await fetch('/api/email-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'purge_blocked_contacts' }),
+      })
+      const data = await res.json()
+      if (data && data.success) {
+        setCampaignResult({
+          success: true,
+          message: data.message || `Erased ${data.erasedCount || 0} blocked/blacklisted contact(s).`,
+        })
+        await runBrevoAudit()
+        await fetchLeads()
+      }
+    } catch (err: any) {
+      setCampaignResult({
+        success: false,
+        message: err.message || 'Could not purge blocked contacts.',
+      })
+    } finally {
+      setPurgingBlocked(false)
     }
   }
 
@@ -1039,6 +1068,13 @@ export default function Admin() {
                   >
                     {suspendingExternal ? 'Updating...' : '▶️ Resume MBMB Sending'}
                   </button>
+                  <button
+                    onClick={handlePurgeBlockedContacts}
+                    disabled={purgingBlocked}
+                    className="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-xs font-bold text-red-300 transition-all"
+                  >
+                    {purgingBlocked ? 'Erasing Blocked...' : '🗑️ Erase Blocked Contacts'}
+                  </button>
                 </div>
               </div>
 
@@ -1276,16 +1312,16 @@ export default function Admin() {
                   <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-2.5">
                     {[
                       {
+                        id: 'all_brevo_contacts',
+                        label: '1. ALL Available Emails',
+                        desc: 'Every active Brevo + CRM contact (Blocked erased)',
+                      },
+                      {
                         id: 'miami_gmaps_leads',
-                        label: '1. Miami G-Maps List',
+                        label: '2. Miami G-Maps List',
                         desc: '16 verified Miami B2B leads',
                       },
-                      { id: 'test', label: '2. Test Preview', desc: 'jasmelacosta@gmail.com' },
-                      {
-                        id: 'all_brevo_contacts',
-                        label: '3. ALL Available Emails',
-                        desc: 'Every active Brevo + CRM contact',
-                      },
+                      { id: 'test', label: '3. Test Preview', desc: 'jasmelacosta@gmail.com' },
                       {
                         id: 'brevo_list',
                         label: '4. By Brevo List',
