@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1080" height="1920" viewBox="0 0 1080 1920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1080" y2="1920" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#060a12"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#050811"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="82" y1="460" x2="998" y2="1350" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0.09)"/>
+      <stop offset="100%" stop-color="rgba(15,23,42,0.55)"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ambient Dark Executive Background -->
+  <rect width="1080" height="1920" fill="url(#bgGrad)"/>
+  <circle cx="540" cy="360" r="360" fill="#f59e0b" fill-opacity="0.11"/>
+  <circle cx="820" cy="1280" r="420" fill="#38bdf8" fill-opacity="0.09"/>
+
+  <!-- Top Hook Headline -->
+  <rect x="380" y="175" width="140" height="64" rx="16" fill="url(#amberGrad)"/>
+  <text x="450" y="218" text-anchor="middle" fill="#090d16" font-family="Inter, Arial, sans-serif" font-weight="900" font-size="30">AI PRO</text>
+  <text x="565" y="236" fill="#ffffff" stroke="#000000" stroke-width="8" font-family="Inter, Arial, sans-serif" font-style="italic" font-weight="900" font-size="104">6</text>
+
+  <text x="540" y="310" text-anchor="middle" fill="#ffffff" stroke="#000000" stroke-width="8" font-family="Inter, Arial, sans-serif" font-style="italic" font-weight="900" font-size="50">AI systems we build &amp; train</text>
+  <text x="540" y="372" text-anchor="middle" fill="#ffffff" stroke="#000000" stroke-width="8" font-family="Inter, Arial, sans-serif" font-style="italic" font-weight="900" font-size="50">inside your company this week</text>
+
+  <!-- Center VisionOS Frosted Glass Card -->
+  <rect x="82" y="460" width="916" height="880" rx="48" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.38)" stroke-width="2.5"/>
+
+  <!-- Segmented 6-Step Progress Bar -->
+  <rect x="310" y="502" width="64" height="9" rx="4.5" fill="url(#amberGrad)" />
+<rect x="390" y="502" width="64" height="9" rx="4.5" fill="rgba(255,255,255,0.22)" />
+<rect x="470" y="502" width="64" height="9" rx="4.5" fill="rgba(255,255,255,0.22)" />
+<rect x="550" y="502" width="64" height="9" rx="4.5" fill="rgba(255,255,255,0.22)" />
+<rect x="630" y="502" width="64" height="9" rx="4.5" fill="rgba(255,255,255,0.22)" />
+<rect x="710" y="502" width="64" height="9" rx="4.5" fill="rgba(255,255,255,0.22)" />
+
+  <!-- Pill: System 0X of 6 -->
+  <rect x="146" y="565" width="240" height="58" rx="29" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.28)" stroke-width="1.5"/>
+  <text x="266" y="603" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="600" font-size="26">System 01 of 6</text>
+
+  <!-- Thin Architectural Index Number -->
+  <text x="930" y="638" text-anchor="end" fill="rgba(255,255,255,0.85)" font-family="Inter, Arial, sans-serif" font-weight="200" font-size="112">01</text>
+
+  <!-- 3D App Icon Box + Title -->
+  <rect x="146" y="695" width="118" height="118" rx="30" fill="url(#iconGrad)" stroke="rgba(255,255,255,0.45)" stroke-width="2"/>
+  <text x="205" y="775" text-anchor="middle" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif" font-size="56">📞</text>
+  <text x="298" y="774" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="56">JAss Voice Agent</text>
+
+  <!-- Outcome Description -->
+  <text x="146" y="890" fill="rgba(255,255,255,0.95)" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="38">Picks up the phone in 3 seconds in English &</text>
+  <text x="146" y="946" fill="rgba(255,255,255,0.95)" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="38">Spanish, answers questions, and books the</text>
+  <text x="146" y="1002" fill="rgba(255,255,255,0.95)" font-family="Inter, Arial, sans-serif" font-weight="500" font-size="38">appointment so zero calls get missed.</text>
+
+  <!-- SETUP Section -->
+  <text x="146" y="1115" fill="rgba(255,255,255,0.60)" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="24" letter-spacing="2">SETUP</text>
+
+  <!-- Pill 1 -->
+  <rect x="146" y="1140" width="260" height="58" rx="18" fill="rgba(15,23,42,0.68)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <text x="276" y="1178" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="600" font-size="25">✴️ JAss Voice AI</text>
+
+  <text x="425" y="1178" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="28">+</text>
+
+  <!-- Pill 2 -->
+  <rect x="452" y="1140" width="265" height="58" rx="18" fill="rgba(15,23,42,0.68)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <text x="584" y="1178" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="600" font-size="25">Bilingual EN / ES</text>
+
+  <!-- Pill 3 (Second Row) -->
+  <text x="156" y="1254" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="28">+</text>
+  <rect x="186" y="1215" width="330" height="58" rx="18" fill="rgba(15,23,42,0.68)" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <text x="351" y="1253" text-anchor="middle" fill="#fbbf24" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="25">Live Calendar Sync</text>
+
+  <!-- Footer Watermark -->
+  <text x="540" y="1850" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="26">AI DYNAMIC PRO • aidynamic.pro • (786) 643-2099</text>
+</svg>

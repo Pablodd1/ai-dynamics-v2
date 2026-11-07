@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { AnalyticsEvents, GA4_MEASUREMENT_ID } from '../../lib/analytics'
+import VisionGlassReelStudio from '../../components/VisionGlassReelStudio'
 
 type LeadStatus = 'new' | 'contacted' | 'qualified' | 'converted' | 'lost'
 type AdminTab = 'leads' | 'campaigns' | 'google_hub'
@@ -1640,6 +1641,9 @@ export default function Admin() {
                 </div>
               </div>
             </div>
+
+            {/* Automated VisionOS Frosted-Glass Reel & Carousel Studio */}
+            <VisionGlassReelStudio />
 
             {/* Ready-to-Post Google Business Profile Updates */}
             <div className="bg-dark-50/50 border border-white/10 rounded-2xl p-6">

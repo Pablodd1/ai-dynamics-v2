@@ -2,6 +2,7 @@ import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import SEO from './components/SEO'
 import TrustBadges from './components/TrustBadges'
+import VisionGlassSystemsDeck from './components/VisionGlassSystemsDeck'
 import LiveCallSimulator from './components/LiveCallSimulator'
 import IndustryTabs from './components/IndustryTabs'
 import FeaturedProjects from './components/FeaturedProjects'
@@ -30,6 +31,7 @@ function LandingPage() {
       <main>
         <Hero />
         <TrustBadges />
+        <VisionGlassSystemsDeck />
         <LiveCallSimulator />
         <IndustryTabs />
         <FeaturedProjects />
