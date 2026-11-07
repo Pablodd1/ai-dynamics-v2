@@ -12,22 +12,22 @@ const DEFAULT_BUFFER_TOKEN =
 const DEFAULT_ORG_ID = '6ae611610f74184c45cd3ec7'
 
 const VISION_DECK_CAROUSEL = {
-  title: '7-SLIDE VISION-GLASS CAROUSEL — Comment "BUILD" • 6 AI Systems We Build & Train Inside Your Company',
-  text: `Comment "BUILD" ✴️ 6 AI Systems We Build & Train Inside Your Company This Week
+  title: 'AI DYNAMIC PRO — Six Production AI Architectures Engineered Inside Your Company (7-Slide Obsidian & Gold Deck)',
+  text: `Comment "SCALE" — Six Production AI Architectures Engineered Inside Your Company.
 
-Most CEOs & business owners are losing $3,420+/month on missed after-hours calls and slow manual office workflows.
+Every week a CEO delays AI integration, manual payroll and missed calls quietly drain $3,420+ per department.
 
-As hands-on AI Developers & Creators, we walk into your industry, engineer custom AI applications, and stay side-by-side training your staff so 1 employee produces the output of 5:
+At AI Dynamic Pro, we do not sell generic software subscriptions. As hands-on AI Developers and Creators, we walk into your operation, engineer custom production architectures around your workflows in 48 hours, and stay on-site training your staff until 1 employee produces the output of 5:
 
-01 — JAss 24/7 Voice Agent: Picks up in 3s in English & Spanish, answers questions & books appointments ($997 Turnkey / $297/mo).
-02 — WhatsApp & SMS Closer: Replies to every WhatsApp, IG DM & web message in 30 seconds and books the consultation.
-03 — Back-Office Payroll Saver: $99 60-Min Department Efficiency Audit eliminating manual intake & billing data entry.
-04 — Cold Email & Outbound Machine: Finds local B2B decision-makers, sends executive sequences & routes hot replies.
-05 — 48-Hr Custom AI App Prototype: We build a working prototype in 48 hours—guaranteed to find $2,500+/mo ($30K/yr) in savings or you pay $0.
-06 — On-Site Staff AI Bootcamp: We train up to 15 employees hands-on ($497) so 1 AI-trained staff member = 5.
+01 / CLINICAL & HEALTHCARE AI — Ambient SOAP charting, automated 837 claim scrubbing, and bilingual patient intake (-45% admin overhead).
+02 / COMPUTER VISION & SPATIAL AI — YOLOv8 + DINOv2 macro authentication, 12-class property defect vision, and 3D LiDAR digital twins.
+03 / AUTONOMOUS REVOPS & VOICE (JAss) — 3-second Ring-1 bilingual voice and sub-minute multi-channel CRM conversion ($997 Turnkey / $297/mo).
+04 / PRIVATE RAG & DEAL INTELLIGENCE — Sovereign legal contract screening, escrow deadline telemetry, and vector real estate deal matching.
+05 / BIOMECHANICS & AGENTIC WEB — 33-joint markerless kinematics, daily biometric adaptation, and self-learning Agentic Websites built for LLM Answer Engines.
+06 / ON-SITE WORKFORCE MULTIPLICATION — $99 60-Min Department Efficiency Audit + Free 48-Hr Prototype (guaranteed to uncover $2,500+/mo in savings or you pay $0) + $497 Corporate Staff Bootcamp.
 
-💬 Comment "BUILD" and we'll send you the full blueprint + book your 48-hour prototype at https://www.aidynamic.pro/booking
-📞 Call JAss Live 24/7: (786) 643-2099`,
+Comment "SCALE" or schedule your $99 Audit / 48-Hour Prototype directly at https://www.aidynamic.pro/booking
+Direct Executive Line: +1 (786) 643-2099`,
   slides: [
     'https://www.aidynamic.pro/social/vision-deck/vision_slide_01.png',
     'https://www.aidynamic.pro/social/vision-deck/vision_slide_02.png',

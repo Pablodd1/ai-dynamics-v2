@@ -1,166 +1,86 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import {
-  PhoneCall,
-  MessageSquare,
-  FileSpreadsheet,
-  Mail,
-  GraduationCap,
-  Cpu,
-  Play,
-  Pause,
-  Sparkles,
-  ArrowRight,
-  CheckCircle2,
-  ShieldCheck,
-  Zap,
-} from 'lucide-react'
 
-export interface VisionSystemCard {
+export interface VisionArchitectureCard {
   index: string
   stepNumber: number
+  sectorTag: string
   title: string
-  subtitle: string
-  description: string
-  metricBadge: string
-  iconBg: string
-  iconType: 'phone' | 'whatsapp' | 'billing' | 'email' | 'bootcamp' | 'prototype'
-  setupPills: {
-    label: string
-    accent?: string
-    dotColor?: string
-  }[]
+  executiveThesis: string
+  financialImpact: string
+  architectureStack: string[]
   ctaKeyword: string
 }
 
-export const EXECUTIVE_VISION_SYSTEMS: VisionSystemCard[] = [
+export const EXECUTIVE_ARCHITECTURE_DECK: VisionArchitectureCard[] = [
   {
     index: '01',
     stepNumber: 1,
-    title: 'JAss 24/7 Voice Agent',
-    subtitle: 'System 01 of 6',
-    description:
-      'Picks up the phone in 3 seconds in English & Spanish, answers every client question, and books appointments directly into your calendar so zero calls go to voicemail.',
-    metricBadge: 'Recovers 38% Missed Calls • $997 Turnkey or $297/mo',
-    iconBg: 'from-emerald-400 to-green-600',
-    iconType: 'phone',
-    setupPills: [
-      { label: 'JAss Voice AI', accent: 'text-amber-300', dotColor: 'bg-amber-400' },
-      { label: 'Bilingual EN / ES' },
-      { label: 'Live Calendar & CRM Sync', dotColor: 'bg-emerald-400' },
-    ],
-    ctaKeyword: 'JASS',
+    sectorTag: 'ARCHITECTURE 01 / 06 — CLINICAL & HEALTHCARE AI',
+    title: 'Clinical Operations & Revenue Intelligence',
+    executiveThesis:
+      'We walk into medical practices and engineer ambient clinical charting, automated 837 claim scrubbing, and bilingual patient intake—cutting 45% of front-desk and billing payroll while training your clinical staff to process 4x patient volume.',
+    financialImpact: '-45% Clinical Admin Overhead • $30,000+/yr Saved',
+    architectureStack: ['Ambient Clinical Scribe', '837 Claim Scrubbing Engine', 'On-Site Staff Training'],
+    ctaKeyword: 'AUDIT',
   },
   {
     index: '02',
     stepNumber: 2,
-    title: 'WhatsApp & SMS Closer',
-    subtitle: 'System 02 of 6',
-    description:
-      'Answers every incoming WhatsApp, Instagram DM, and web chat message on your real business number in under 30 seconds, qualifies the lead, and books the consultation.',
-    metricBadge: '47-Min Human Delay → 3-Sec AI Response',
-    iconBg: 'from-green-500 to-emerald-700',
-    iconType: 'whatsapp',
-    setupPills: [
-      { label: 'JAss Omnichannel', accent: 'text-emerald-300', dotColor: 'bg-emerald-400' },
-      { label: '30-Sec Qualification Skill' },
-      { label: 'WhatsApp + Web + IG Direct' },
-    ],
-    ctaKeyword: 'WHATSAPP',
+    sectorTag: 'ARCHITECTURE 02 / 06 — COMPUTER VISION & SPATIAL AI',
+    title: 'Computer Vision, Macro ID & 3D LiDAR Systems',
+    executiveThesis:
+      'Replace slow human inspections with 3-second neural vision. We build custom YOLOv8 and DINOv2 vision models for macro luxury authentication, 12-class property defect detection, and millimeter-accurate 3D LiDAR floorplan generation.',
+    financialImpact: '3-Second Neural Inspection • 99.4% Precision',
+    architectureStack: ['YOLOv8 + DINOv2 Vision', 'LiDAR 3D Digital Twin', 'Automated PDF Certification'],
+    ctaKeyword: 'VISION',
   },
   {
     index: '03',
     stepNumber: 3,
-    title: 'Back-Office Payroll Saver',
-    subtitle: 'System 03 of 6',
-    description:
-      'We walk into your company, map your slowest department, and automate repetitive intake forms, billing codes, and CRM data entry that currently waste $3,420/month in payroll.',
-    metricBadge: '$99 60-Min Department Efficiency Audit',
-    iconBg: 'from-sky-400 to-blue-600',
-    iconType: 'billing',
-    setupPills: [
-      { label: 'On-Site Workflow Audit', accent: 'text-sky-300', dotColor: 'bg-sky-400' },
-      { label: 'Zero Manual Copy-Paste' },
-      { label: '$2,500+/mo Savings Guarantee' },
-    ],
-    ctaKeyword: 'AUDIT',
+    sectorTag: 'ARCHITECTURE 03 / 06 — AUTONOMOUS REVOPS & VOICE',
+    title: '24/7 Bilingual Voice & Sub-Minute RevOps',
+    executiveThesis:
+      '38% of inbound calls hang up on voicemail and 47-minute human follow-ups kill 78% of deals. Our JAss bilingual voice and multi-channel CRM architecture answers on Ring 1 and locks retainers onto your calendar in 3 seconds.',
+    financialImpact: '3-Second Ring-1 Answer • 3.4x More Retainers Booked',
+    architectureStack: ['JAss Bilingual Voice AI', 'Sub-Minute CRM Routing', 'Zero Missed Revenue'],
+    ctaKeyword: 'JASS',
   },
   {
     index: '04',
     stepNumber: 4,
-    title: 'B2B Outbound & Inbox Engine',
-    subtitle: 'System 04 of 6',
-    description:
-      'Finds high-intent B2B decision-makers in your industry, sends executive outreach sequences, triages your morning inbox, and hands you hot replies ready to close.',
-    metricBadge: 'Automated Pipeline + Executive Morning Brief',
-    iconBg: 'from-indigo-400 to-blue-700',
-    iconType: 'email',
-    setupPills: [
-      { label: 'AI Dynamic Lead Engine', accent: 'text-indigo-300', dotColor: 'bg-indigo-400' },
-      { label: 'Brevo + CRM Sync' },
-      { label: 'Daily CEO Morning Brief' },
-    ],
-    ctaKeyword: 'PIPELINE',
+    sectorTag: 'ARCHITECTURE 04 / 06 — LEGAL, REAL ESTATE & ADVISORY',
+    title: 'Private RAG Contract Intelligence & Deal Matching',
+    executiveThesis:
+      'Eliminate 15+ hours a week of paralegal and brokerage bottlenecks. We deploy sovereign document RAG that screens agreements for risk clauses in seconds, orchestrates escrow deadlines, and matches off-market investor mandates.',
+    financialImpact: '-15 Hrs/Wk Legal & Broker Admin • Zero Missed Cutoffs',
+    architectureStack: ['Private Document RAG', 'Vector Deal Matchmaker', 'Escrow & Court Telemetry'],
+    ctaKeyword: 'LEGAL',
   },
   {
     index: '05',
     stepNumber: 5,
-    title: '48-Hour Custom AI App Build',
-    subtitle: 'System 05 of 6',
-    description:
-      'Tell us your biggest operational bottleneck and our AI Developers & Creators will engineer a working custom AI application using your real company workflow in 48 hours.',
-    metricBadge: 'Free 48-Hr Prototype • $30,000/yr Savings Guarantee',
-    iconBg: 'from-amber-400 to-orange-600',
-    iconType: 'prototype',
-    setupPills: [
-      { label: 'AI Dynamic Engineers', accent: 'text-amber-300', dotColor: 'bg-amber-400' },
-      { label: 'Custom Full-Stack App' },
-      { label: 'Pay $0 If Under $2.5K/mo ROI' },
-    ],
+    sectorTag: 'ARCHITECTURE 05 / 06 — BIOMECHANICS & AGENTIC WEB',
+    title: '33-Joint Kinematics & Self-Learning Web Platforms',
+    executiveThesis:
+      'From smartphone-based 33-joint gait biomechanics and daily HRV coaching to self-learning Agentic Websites engineered for Google and LLM Answer Engines, we build proprietary software that turns your company into an industry category leader.',
+    financialImpact: '5–10 Day Production Launch • Full AEO Authority',
+    architectureStack: ['33-Joint Pose Vision', 'Agentic Web Architecture', 'Schema.org LLM Graph'],
     ctaKeyword: 'BUILD',
   },
   {
     index: '06',
     stepNumber: 6,
-    title: 'On-Site Staff AI Bootcamp',
-    subtitle: 'System 06 of 6',
-    description:
-      'We do not just hand you software and disappear. We stay side-by-side with your team and train up to 15 employees hands-on so 1 AI-trained staff member produces the output of 5.',
-    metricBadge: '$497 Half-Day Corporate Staff Bootcamp (Up to 15 Staff)',
-    iconBg: 'from-purple-500 to-fuchsia-600',
-    iconType: 'bootcamp',
-    setupPills: [
-      { label: 'Hands-On Staff Training', accent: 'text-purple-300', dotColor: 'bg-purple-400' },
-      { label: 'Role-Specific Prompt Playbooks' },
-      { label: '1 Employee = 5x Output' },
-    ],
-    ctaKeyword: 'TRAIN',
+    sectorTag: 'ARCHITECTURE 06 / 06 — WORKFORCE MULTIPLICATION',
+    title: 'On-Site Corporate AI Bootcamp & 48-Hr Prototype',
+    executiveThesis:
+      '83% of corporate AI fails because teams are handed software without training. We build a working prototype in 48 hours—guaranteed to uncover $2,500+/month in savings or you pay $0—and stay on-site training your staff so 1 employee produces the output of 5.',
+    financialImpact: '$99 Dept Audit • $497 Staff Bootcamp (1 Staff = 5x)',
+    architectureStack: ['48-Hour Live Prototype', '$2,500+/mo Guarantee', 'On-Site Staff Bootcamp'],
+    ctaKeyword: 'SCALE',
   },
 ]
-
-function SystemAppIcon({ type, bg }: { type: VisionSystemCard['iconType']; bg: string }) {
-  const IconComponent =
-    type === 'phone'
-      ? PhoneCall
-      : type === 'whatsapp'
-      ? MessageSquare
-      : type === 'billing'
-      ? FileSpreadsheet
-      : type === 'email'
-      ? Mail
-      : type === 'prototype'
-      ? Cpu
-      : GraduationCap
-
-  return (
-    <div
-      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${bg} flex items-center justify-center shadow-[0_10px_25px_rgba(0,0,0,0.45),inset_0_1px_2px_rgba(255,255,255,0.45)] border border-white/25 shrink-0`}
-    >
-      <IconComponent className="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow" />
-    </div>
-  )
-}
 
 export default function VisionGlassSystemsDeck() {
   const [activeIndex, setActiveIndex] = useState(0)
@@ -173,82 +93,70 @@ export default function VisionGlassSystemsDeck() {
       if (showFinalCta) {
         setShowFinalCta(false)
         setActiveIndex(0)
-      } else if (activeIndex === EXECUTIVE_VISION_SYSTEMS.length - 1) {
+      } else if (activeIndex === EXECUTIVE_ARCHITECTURE_DECK.length - 1) {
         setShowFinalCta(true)
       } else {
         setActiveIndex((prev) => prev + 1)
       }
-    }, 3200)
+    }, 3600)
     return () => clearInterval(timer)
   }, [isPlaying, activeIndex, showFinalCta])
 
-  const activeSystem = EXECUTIVE_VISION_SYSTEMS[activeIndex]
+  const activeSystem = EXECUTIVE_ARCHITECTURE_DECK[activeIndex]
 
   return (
     <section
       id="ai-systems-deck"
-      className="relative py-20 sm:py-28 overflow-hidden bg-gradient-to-b from-dark via-[#070b14] to-dark border-y border-white/10"
+      className="relative py-24 sm:py-32 overflow-hidden bg-dark border-y border-white/10"
     >
-      {/* Ambient Background Lighting */}
+      {/* Signature Luxury Gold & Electric Cyan Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[780px] h-[420px] rounded-full bg-amber-500/10 blur-[135px]" />
-        <div className="absolute bottom-0 right-10 w-[460px] h-[460px] rounded-full bg-sky-500/10 blur-[130px]" />
+        <div className="absolute -top-36 left-1/2 -translate-x-1/2 w-[820px] h-[420px] rounded-full bg-luxury-gold/[0.07] blur-[150px]" />
+        <div className="absolute bottom-0 right-12 w-[480px] h-[480px] rounded-full bg-accent/[0.06] blur-[140px]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md text-xs sm:text-sm font-semibold text-amber-300 mb-4">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span>Interactive Executive Blueprint • 6 Turnkey AI Systems</span>
+        {/* Minimalist Executive Header (Zero Icons, Pure Editorial Typography) */}
+        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
+          <div className="inline-block px-4 py-1.5 rounded-full border border-luxury-gold/35 bg-luxury-gold/[0.06] text-[11px] font-mono uppercase tracking-[0.24em] text-luxury-gold mb-5">
+            AI DYNAMIC PRO • PROPRIETARY ENGINEERING &amp; WORKFORCE MULTIPLICATION
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-            6 AI Systems We Build Inside Your Company{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400">
-              &amp; Train Your Staff To Run
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-[1.1]">
+            Six Production AI Architectures{' '}
+            <span className="text-luxury-gold font-normal italic">
+              Engineered Inside Your Company
             </span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-luxury-silver leading-relaxed">
-            As hands-on <strong className="text-white">AI Developers &amp; Creators</strong>, we walk into your industry, engineer custom applications, and stay side-by-side training your team so you cut costs, save payroll, and move 5x faster right away.
+          <p className="mt-5 text-base sm:text-lg text-luxury-silver leading-relaxed">
+            We do not sell generic templates. As hands-on <strong className="text-white">AI Developers &amp; Creators</strong>, we walk into your industry, engineer custom production systems in 48 hours, and stay side-by-side training your staff until one employee produces the output of five.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: VisionOS Frosted-Glass Reel Card Stage */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Left Column: Minimalist Obsidian & Champagne-Gold Frosted Glass Stage */}
           <div className="lg:col-span-7 flex flex-col items-center">
-            <div className="relative w-full max-w-[540px] rounded-[36px] overflow-hidden border border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.85)] bg-[#0b101b]">
-              {/* Ambient Executive Office Background Image + Motion Overlay */}
+            <div className="relative w-full max-w-[560px] rounded-[32px] overflow-hidden border border-luxury-gold/30 shadow-[0_35px_100px_rgba(0,0,0,0.9)] bg-[#07070c]">
+              {/* Photorealistic Executive Background with Deep Obsidian Vignette */}
               <img
                 src="/social/week1-consulting.jpg"
-                alt="AI Dynamic Pro Executive Consulting Environment"
-                className="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-[0.42] contrast-110 saturate-110 transition-transform duration-1000"
+                alt="AI Dynamic Pro Executive Engineering Suite"
+                className="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-[0.34] contrast-115 saturate-90"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/75" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#07070c]/80 via-[#07070c]/35 to-[#07070c]/90" />
 
-              {/* Stage Content Container */}
-              <div className="relative z-10 p-5 sm:p-8 flex flex-col justify-between min-h-[540px] sm:min-h-[590px]">
-                {/* Top Hook Headline (Exact Olli Rasmussen Reel Hook Style) */}
-                <div className="text-center pt-1 pb-4">
-                  <div className="inline-flex items-center justify-center gap-2.5 mb-1">
-                    <span className="px-2.5 py-1 rounded-lg bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black text-xs uppercase tracking-wider shadow-lg">
-                      AI DYNAMIC
-                    </span>
-                    <span className="text-3xl sm:text-4xl font-black text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.9)] italic">
-                      6
-                    </span>
+              <div className="relative z-10 p-6 sm:p-10 flex flex-col justify-between min-h-[560px] sm:min-h-[610px]">
+                {/* Top Minimalist Editorial Header */}
+                <div className="text-center pb-5 border-b border-white/10">
+                  <div className="text-[10px] font-mono uppercase tracking-[0.28em] text-luxury-gold mb-2">
+                    AI DYNAMIC PRO — EXECUTIVE ARCHITECTURE DECK
                   </div>
-                  <div
-                    className="text-lg sm:text-xl font-black text-white tracking-tight leading-snug drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
-                    style={{ textShadow: '0 2px 12px rgba(0,0,0,0.95)' }}
-                  >
-                    AI systems we deploy &amp; train
-                    <br />
-                    inside your company this week
+                  <div className="text-xl sm:text-2xl font-serif font-bold text-white tracking-tight">
+                    Six Custom AI Architectures Built for Immediate ROI
                   </div>
 
-                  {/* Segmented 6-Bar Progress Indicator */}
-                  <div className="flex items-center justify-center gap-2 mt-4 max-w-[260px] mx-auto">
-                    {EXECUTIVE_VISION_SYSTEMS.map((sys, idx) => {
+                  {/* Segmented 6-Bar Champagne-Gold Progress Bar */}
+                  <div className="flex items-center justify-center gap-2.5 mt-5 max-w-[280px] mx-auto">
+                    {EXECUTIVE_ARCHITECTURE_DECK.map((sys, idx) => {
                       const isActive = !showFinalCta && idx === activeIndex
                       const isCompleted = showFinalCta || idx < activeIndex
                       return (
@@ -258,13 +166,13 @@ export default function VisionGlassSystemsDeck() {
                             setShowFinalCta(false)
                             setActiveIndex(idx)
                           }}
-                          aria-label={`View System ${sys.index}`}
-                          className={`h-1.5 rounded-full transition-all duration-300 ${
+                          aria-label={`Select Architecture ${sys.index}`}
+                          className={`h-1 rounded-full transition-all duration-300 ${
                             isActive
-                              ? 'w-11 bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_10px_rgba(251,191,36,0.8)]'
+                              ? 'w-12 bg-luxury-gold shadow-[0_0_12px_rgba(201,169,110,0.85)]'
                               : isCompleted
-                              ? 'w-6 bg-white/60'
-                              : 'w-6 bg-white/25 hover:bg-white/40'
+                              ? 'w-6 bg-luxury-champagne/60'
+                              : 'w-6 bg-white/20 hover:bg-white/35'
                           }`}
                         />
                       )
@@ -272,62 +180,55 @@ export default function VisionGlassSystemsDeck() {
                   </div>
                 </div>
 
-                {/* Center VisionOS Frosted Glass HUD Card */}
-                <div className="my-auto">
+                {/* Center Frosted Glass Architectural Card (Zero Icons, Pure Typography) */}
+                <div className="my-auto py-4">
                   <AnimatePresence mode="wait">
                     {!showFinalCta ? (
                       <motion.div
                         key={activeSystem.index}
-                        initial={{ opacity: 0, y: 14, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -14, scale: 0.97 }}
-                        transition={{ duration: 0.28 }}
-                        className="rounded-[28px] p-6 sm:p-7 backdrop-blur-2xl bg-white/[0.11] border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.35)]"
+                        initial={{ opacity: 0, y: 12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -12 }}
+                        transition={{ duration: 0.26 }}
+                        className="rounded-[24px] p-7 sm:p-8 backdrop-blur-2xl bg-[#0d0d14]/75 border border-luxury-gold/35 shadow-[0_25px_60px_rgba(0,0,0,0.75),inset_0_1px_1px_rgba(247,231,206,0.22)]"
                       >
-                        {/* Card Top Row: Pill + Thin Architectural Number */}
-                        <div className="flex items-center justify-between mb-5">
-                          <span className="px-3.5 py-1.5 rounded-full bg-white/[0.12] border border-white/20 text-xs font-semibold text-white/90 tracking-wide">
-                            {activeSystem.subtitle}
-                          </span>
-                          <span className="text-4xl sm:text-5xl font-extralight text-white/80 tracking-tighter leading-none">
+                        {/* Top Row: Sector Tag + Architectural Index */}
+                        <div className="flex items-start justify-between gap-4 mb-6 pb-4 border-b border-white/10">
+                          <div>
+                            <div className="text-[10px] font-mono uppercase tracking-[0.22em] text-luxury-gold mb-1">
+                              {activeSystem.sectorTag}
+                            </div>
+                            <div className="text-xs font-mono text-accent font-semibold">
+                              {activeSystem.financialImpact}
+                            </div>
+                          </div>
+                          <span className="text-4xl sm:text-5xl font-serif font-light text-luxury-champagne/85 leading-none tracking-tight">
                             {activeSystem.index}
                           </span>
                         </div>
 
-                        {/* Card Middle Row: 3D App Icon + Bold System Title */}
-                        <div className="flex items-center gap-4 mb-4">
-                          <SystemAppIcon type={activeSystem.iconType} bg={activeSystem.iconBg} />
-                          <div>
-                            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
-                              {activeSystem.title}
-                            </h3>
-                            <span className="inline-block mt-1 text-xs font-bold text-amber-300">
-                              {activeSystem.metricBadge}
-                            </span>
-                          </div>
-                        </div>
+                        {/* Title & Concise Executive Thesis */}
+                        <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight leading-snug mb-3.5">
+                          {activeSystem.title}
+                        </h3>
 
-                        {/* Plain-English Outcome Copy */}
-                        <p className="text-sm sm:text-base text-white/95 font-medium leading-relaxed mb-6">
-                          {activeSystem.description}
+                        <p className="text-sm sm:text-base text-luxury-platinum/90 font-normal leading-relaxed mb-7">
+                          {activeSystem.executiveThesis}
                         </p>
 
-                        {/* SETUP Stack Pills Row */}
+                        {/* Minimalist Architecture Stack Spec */}
                         <div>
-                          <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/60 mb-2.5">
-                            SETUP &amp; EXECUTION
+                          <div className="text-[10px] font-mono uppercase tracking-[0.24em] text-luxury-silver mb-2.5">
+                            PRODUCTION ARCHITECTURE &amp; DEPLOYMENT
                           </div>
                           <div className="flex flex-wrap items-center gap-2">
-                            {activeSystem.setupPills.map((pill, pIdx) => (
-                              <div key={pill.label} className="flex items-center gap-2">
-                                {pIdx > 0 && (
-                                  <span className="text-white/60 font-bold text-sm select-none">+</span>
+                            {activeSystem.architectureStack.map((item, idx) => (
+                              <div key={item} className="flex items-center gap-2">
+                                {idx > 0 && (
+                                  <span className="text-luxury-gold font-mono text-xs select-none">/</span>
                                 )}
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/45 border border-white/15 text-xs font-semibold text-white shadow-inner">
-                                  {pill.dotColor && (
-                                    <span className={`w-2 h-2 rounded-full ${pill.dotColor}`} />
-                                  )}
-                                  <span className={pill.accent || 'text-white'}>{pill.label}</span>
+                                <span className="px-3 py-1.5 rounded-lg bg-black/60 border border-white/15 text-[11px] font-mono uppercase tracking-wider text-luxury-champagne">
+                                  {item}
                                 </span>
                               </div>
                             ))}
@@ -336,75 +237,74 @@ export default function VisionGlassSystemsDeck() {
                       </motion.div>
                     ) : (
                       <motion.div
-                        key="cta-slide"
-                        initial={{ opacity: 0, scale: 0.95 }}
+                        key="executive-cta"
+                        initial={{ opacity: 0, scale: 0.97 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.28 }}
-                        className="rounded-[28px] p-8 sm:p-9 text-center backdrop-blur-2xl bg-white/[0.13] border border-amber-400/40 shadow-[0_20px_60px_rgba(0,0,0,0.7),inset_0_1px_2px_rgba(255,255,255,0.4)]"
+                        exit={{ opacity: 0, scale: 0.97 }}
+                        transition={{ duration: 0.26 }}
+                        className="rounded-[24px] p-8 sm:p-10 text-center backdrop-blur-2xl bg-[#0d0d14]/85 border border-luxury-gold/60 shadow-[0_25px_70px_rgba(0,0,0,0.85)]"
                       >
-                        <div className="text-sm font-semibold text-white/85 mb-3 flex items-center justify-center gap-1.5">
-                          <span>💬 Ready to cut costs &amp; move 5x faster?</span>
+                        <div className="text-[11px] font-mono uppercase tracking-[0.26em] text-luxury-gold mb-3">
+                          EXECUTIVE DECISION PROTOCOL
                         </div>
-                        <div className="inline-block px-7 py-3 rounded-2xl bg-gradient-to-r from-amber-500/80 to-orange-600/80 border border-amber-300/60 shadow-[0_10px_30px_rgba(245,158,11,0.45)] mb-4">
-                          <span className="text-2xl sm:text-3xl font-black text-white tracking-wider">
-                            &ldquo;BUILD&rdquo;
-                          </span>
+                        <div className="inline-block px-8 py-3.5 rounded-xl bg-luxury-gold text-dark font-serif font-bold text-2xl sm:text-3xl tracking-wider mb-5 shadow-[0_10px_30px_rgba(201,169,110,0.35)]">
+                          &ldquo;SCALE&rdquo;
                         </div>
-                        <p className="text-base sm:text-lg font-bold text-white max-w-sm mx-auto leading-snug mb-5">
-                          Pick one system above and we&apos;ll engineer a live 48-hour prototype for your company + train your staff.
+                        <p className="text-base sm:text-lg font-serif text-white max-w-md mx-auto leading-relaxed mb-6">
+                          We engineer a live 48-hour AI prototype for your company—guaranteed to uncover $2,500+/month in savings or you pay $0—and stay to train your staff.
                         </p>
                         <Link
-                          to="/booking?utm_source=website&utm_medium=vision_glass_deck&utm_campaign=6_systems_card"
-                          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-slate-950 font-extrabold text-sm hover:bg-amber-300 transition-colors shadow-lg"
+                          to="/booking?utm_source=website&utm_medium=vision_architecture_deck&utm_campaign=ceo_decision"
+                          className="inline-block px-7 py-3.5 rounded-xl bg-white text-dark font-mono uppercase tracking-wider font-bold text-xs hover:bg-luxury-champagne transition-colors"
                         >
-                          Claim Your 48-Hr Prototype or $99 Audit
-                          <ArrowRight className="w-4 h-4" />
+                          Schedule $99 Department Audit or 48-Hr Prototype →
                         </Link>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
-                {/* Bottom Playback Controls Bar */}
-                <div className="pt-4 flex items-center justify-between text-xs text-white/75">
+                {/* Bottom Minimalist Bar */}
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-luxury-silver">
                   <button
                     onClick={() => setIsPlaying((p) => !p)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 font-semibold text-white transition-colors"
+                    className="px-3.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-white transition-colors"
                   >
-                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                    {isPlaying ? 'Auto-Cycling (Pause)' : 'Resume Deck'}
+                    {isPlaying ? 'Pause Sequence' : 'Resume Sequence'}
                   </button>
 
                   <button
                     onClick={() => setShowFinalCta((prev) => !prev)}
-                    className="px-3 py-1.5 rounded-full bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 text-amber-200 font-bold transition-colors"
+                    className="px-3.5 py-1.5 rounded-lg bg-luxury-gold/15 hover:bg-luxury-gold/25 border border-luxury-gold/40 text-luxury-gold transition-colors"
                   >
-                    {showFinalCta ? '← Back to 6 Systems' : 'View "BUILD" Offer →'}
+                    {showFinalCta ? 'Return to Architectures' : 'Executive Mandate →'}
                   </button>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Interactive Executive Selector + 3-Pillar CEO Guarantee */}
+          {/* Right Column: Minimalist Architectural Index Selector */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="p-5 rounded-2xl bg-white/[0.04] border border-white/10 mb-4">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">
-                <ShieldCheck className="w-4 h-4" />
-                <span>Our 3-Pillar Executive Guarantee</span>
+            <div className="p-6 rounded-2xl bg-[#0d0d14] border border-luxury-gold/30 mb-4">
+              <div className="text-[11px] font-mono uppercase tracking-[0.22em] text-luxury-gold mb-2">
+                THE CEO MANDATE — THREE NON-NEGOTIABLE PILLARS
               </div>
-              <p className="text-xs sm:text-sm text-luxury-silver leading-relaxed">
-                1️⃣ <strong className="text-white">We walk into your company</strong> &amp; find <strong className="text-emerald-400">$2,500+/mo ($30K/yr)</strong> in savings or you pay $0.
-                <br />
-                2️⃣ <strong className="text-white">We build custom AI apps &amp; JAss 24/7 agents</strong> in 48 hours.
-                <br />
-                3️⃣ <strong className="text-white">We stay with you &amp; train your staff</strong> ($497 Bootcamp) so 1 employee = 5.
-              </p>
+              <div className="space-y-2 text-xs sm:text-sm text-luxury-silver leading-relaxed">
+                <p>
+                  <strong className="text-white font-mono">01 / AUDIT &amp; PROTOTYPE:</strong> We walk into your operation, audit your slowest department ($99), and build a working prototype in 48 hours—guaranteed to uncover <strong className="text-luxury-champagne">$2,500+/mo ($30K/yr)</strong> in savings or you pay $0.
+                </p>
+                <p>
+                  <strong className="text-white font-mono">02 / PROPRIETARY AI APPS:</strong> From Computer Vision and Clinical AI to 24/7 Bilingual Voice (JAss), we engineer custom software around your exact workflow.
+                </p>
+                <p>
+                  <strong className="text-white font-mono">03 / ON-SITE STAFF TRAINING:</strong> We stay with your team ($497 Bootcamp for up to 15 staff) until <strong className="text-luxury-champagne">1 AI-trained employee produces the output of 5</strong>.
+                </p>
+              </div>
             </div>
 
-            <div className="space-y-2.5">
-              {EXECUTIVE_VISION_SYSTEMS.map((sys, idx) => {
+            <div className="space-y-2">
+              {EXECUTIVE_ARCHITECTURE_DECK.map((sys, idx) => {
                 const selected = !showFinalCta && idx === activeIndex
                 return (
                   <button
@@ -414,34 +314,38 @@ export default function VisionGlassSystemsDeck() {
                       setActiveIndex(idx)
                       setIsPlaying(false)
                     }}
-                    className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between gap-4 ${
+                    className={`w-full text-left px-5 py-3.5 rounded-xl border transition-all flex items-center justify-between gap-4 ${
                       selected
-                        ? 'bg-white/[0.10] border-amber-400/60 shadow-[0_10px_30px_rgba(0,0,0,0.4)]'
-                        : 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06]'
+                        ? 'bg-luxury-gold/[0.12] border-luxury-gold shadow-[0_10px_30px_rgba(0,0,0,0.5)]'
+                        : 'bg-white/[0.02] border-white/10 hover:border-luxury-gold/30'
                     }`}
                   >
-                    <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="flex items-center gap-4 min-w-0">
                       <span
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono text-xs font-extrabold shrink-0 ${
-                          selected
-                            ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-black'
-                            : 'bg-white/10 text-white/70'
+                        className={`font-serif text-lg font-bold shrink-0 ${
+                          selected ? 'text-luxury-gold' : 'text-luxury-silver/60'
                         }`}
                       >
                         {sys.index}
                       </span>
                       <div className="truncate">
-                        <div className="text-sm sm:text-base font-bold text-white truncate">
+                        <div className="text-sm font-serif font-bold text-white truncate">
                           {sys.title}
                         </div>
-                        <div className="text-xs text-luxury-silver truncate">{sys.metricBadge}</div>
+                        <div className="text-[11px] font-mono text-luxury-silver truncate">
+                          {sys.financialImpact}
+                        </div>
                       </div>
                     </div>
-                    <CheckCircle2
-                      className={`w-5 h-5 shrink-0 transition-colors ${
-                        selected ? 'text-amber-400' : 'text-white/20'
+                    <span
+                      className={`text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded border ${
+                        selected
+                          ? 'border-luxury-gold text-luxury-gold bg-luxury-gold/10'
+                          : 'border-white/10 text-white/30'
                       }`}
-                    />
+                    >
+                      {sys.ctaKeyword}
+                    </span>
                   </button>
                 )
               })}
@@ -449,18 +353,16 @@ export default function VisionGlassSystemsDeck() {
 
             <div className="pt-3 flex flex-col sm:flex-row gap-3">
               <Link
-                to="/booking?utm_source=website&utm_medium=vision_glass_deck&utm_campaign=ceo_fast_action"
-                className="flex-1 py-3.5 px-5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg hover:brightness-110 transition-all"
+                to="/booking?utm_source=website&utm_medium=vision_architecture_deck&utm_campaign=ceo_fast_action"
+                className="flex-1 py-4 px-6 rounded-xl bg-luxury-gold text-dark font-mono uppercase tracking-wider font-extrabold text-xs text-center hover:bg-luxury-champagne transition-all shadow-lg"
               >
-                <Zap className="w-4 h-4" />
-                Book $99 Audit or Free 48-Hr Prototype
+                Book $99 Audit or 48-Hr Prototype →
               </Link>
               <a
                 href="tel:+17866432099"
-                className="py-3.5 px-5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all"
+                className="py-4 px-6 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/15 text-white font-mono text-xs uppercase tracking-wider font-bold text-center transition-all"
               >
-                <PhoneCall className="w-4 h-4 text-emerald-400" />
-                (786) 643-2099
+                +1 (786) 643-2099
               </a>
             </div>
           </div>

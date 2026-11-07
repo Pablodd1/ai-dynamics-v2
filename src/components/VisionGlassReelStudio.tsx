@@ -1,15 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
-import { Download, Play, Sparkles, Layers, Film, Copy, Check, Send, ExternalLink, CheckCircle2 } from 'lucide-react'
 
 export interface GlassSlideSpec {
   id: string
   stepNumber: number
   totalSteps: number
   indexLabel: string
+  sectorHeader: string
   title: string
   description: string
-  iconEmoji: string
-  iconGradient: [string, string]
+  roiMetric: string
   setupPills: string[]
   isCtaSlide?: boolean
   ctaKeyword?: string
@@ -19,7 +18,7 @@ export interface GlassSlideSpec {
 export interface WeeklyGlassDeckTheme {
   id: string
   weekLabel: string
-  hookNumber: string
+  topKicker: string
   hookTextLine1: string
   hookTextLine2: string
   bgImage: string
@@ -30,215 +29,114 @@ export interface WeeklyGlassDeckTheme {
 export const WEEKLY_GLASS_DECKS: WeeklyGlassDeckTheme[] = [
   {
     id: 'week1_6_systems',
-    weekLabel: 'Master Reel & Carousel #1 — 6 AI Systems We Build & Train Inside Your Company',
-    hookNumber: '6',
-    hookTextLine1: 'AI systems we build & train',
-    hookTextLine2: 'inside your company this week',
+    weekLabel: 'Architecture Deck 01 — Six Production AI Systems Engineered Inside Your Company',
+    topKicker: 'AI DYNAMIC PRO • EXECUTIVE ARCHITECTURE',
+    hookTextLine1: 'Six Production AI Architectures',
+    hookTextLine2: 'Engineered Inside Your Company',
     bgImage: '/social/week1-consulting.jpg',
-    caption: `Comment "BUILD" ✴️ 6 AI Systems We Deploy & Train Inside Your Company
+    caption: `Comment "SCALE" — Six Production AI Architectures Engineered Inside Your Company.
 
-Most CEOs & business owners are bleeding $3,420+/month on missed calls and slow manual admin work.
+Every week a CEO delays AI integration, manual payroll and missed calls quietly drain $3,420+ per department.
 
-As hands-on AI Developers & Creators, we walk into your industry, engineer custom AI applications, and stay side-by-side training your staff so 1 employee produces the output of 5:
+At AI Dynamic Pro, we do not sell generic software subscriptions. As hands-on AI Developers and Creators, we walk into your operation, engineer custom production architectures around your workflows in 48 hours, and stay on-site training your staff until 1 employee produces the output of 5:
 
-01 — JAss 24/7 Voice Agent ($997 Turnkey / $297/mo)
-02 — WhatsApp & SMS Instant Closer (30-sec response)
-03 — Back-Office Payroll & Billing Automator ($99 Audit)
-04 — B2B Outbound Lead & Cold Email Machine
-05 — 48-Hour Custom AI Application Prototype
-06 — On-Site Corporate Staff AI Bootcamp ($497 for up to 15 staff)
+01 / CLINICAL & HEALTHCARE AI — Ambient SOAP charting, automated 837 claim scrubbing, and bilingual patient intake (-45% admin overhead).
+02 / COMPUTER VISION & SPATIAL AI — YOLOv8 + DINOv2 macro authentication, 12-class property defect vision, and 3D LiDAR digital twins.
+03 / AUTONOMOUS REVOPS & VOICE (JAss) — 3-second Ring-1 bilingual voice and sub-minute multi-channel CRM conversion ($997 Turnkey / $297/mo).
+04 / PRIVATE RAG & DEAL INTELLIGENCE — Sovereign legal contract screening, escrow deadline telemetry, and vector real estate deal matching.
+05 / BIOMECHANICS & AGENTIC WEB — 33-joint markerless kinematics, daily biometric adaptation, and self-learning Agentic Websites built for LLM Answer Engines.
+06 / ON-SITE WORKFORCE MULTIPLICATION — $99 60-Min Department Efficiency Audit + Free 48-Hr Prototype (guaranteed to uncover $2,500+/mo in savings or you pay $0) + $497 Corporate Staff Bootcamp.
 
-💬 Comment "BUILD" or book your $99 60-Min Efficiency Audit / Free 48-Hr Prototype at https://www.aidynamic.pro/booking
-📞 Call JAss Live 24/7: (786) 643-2099`,
+Comment "SCALE" or schedule your $99 Audit / 48-Hour Prototype directly at https://www.aidynamic.pro/booking
+Direct Executive Line: +1 (786) 643-2099`,
     slides: [
       {
         id: 's1',
         stepNumber: 1,
         totalSteps: 6,
         indexLabel: '01',
-        title: 'JAss Voice Agent',
+        sectorHeader: 'ARCHITECTURE 01 OF 06 • HEALTHCARE & CLINICAL',
+        title: 'Clinical & RCM Intelligence',
         description:
-          'Picks up the phone in 3 seconds in English & Spanish, answers every client question, and books the appointment so zero calls get missed.',
-        iconEmoji: '📞',
-        iconGradient: ['#34d399', '#059669'],
-        setupPills: ['✴️ JAss Voice AI', 'Bilingual EN/ES', 'Live Calendar Sync'],
+          'We engineer ambient physician charting, automated 837 claim scrubbing, and insurance OCR intake—cutting 45% of clinical admin payroll while training your staff to handle 4x volume.',
+        roiMetric: '-45% CLINICAL ADMIN OVERHEAD • ZERO MANUAL DATA ENTRY',
+        setupPills: ['AMBIENT SOAP SCRIBE', '837 CLAIM ENGINE', 'ON-SITE STAFF TRAINING'],
       },
       {
         id: 's2',
         stepNumber: 2,
         totalSteps: 6,
         indexLabel: '02',
-        title: 'WhatsApp & SMS Agent',
+        sectorHeader: 'ARCHITECTURE 02 OF 06 • COMPUTER VISION & 3D',
+        title: 'Neural Vision & Spatial AI',
         description:
-          'Answers every message on your business WhatsApp, IG DM & web chat in 30 seconds, qualifies the budget, and books the client in.',
-        iconEmoji: '💬',
-        iconGradient: ['#22c55e', '#15803d'],
-        setupPills: ['✴️ JAss Chat', '30-Sec Closer Skill', 'WhatsApp + CRM'],
+          'Replace slow human inspections with 3-second computer vision. Custom YOLOv8 + DINOv2 macro luxury authentication, 12-class property defect detection, and 3D LiDAR floorplans.',
+        roiMetric: '3-SECOND NEURAL INSPECTION • MILLIMETER LIDAR PRECISION',
+        setupPills: ['YOLOv8 + DINOv2 CV', '3D LIDAR DIGITAL TWIN', 'AUTO PDF CERTIFICATION'],
       },
       {
         id: 's3',
         stepNumber: 3,
         totalSteps: 6,
         indexLabel: '03',
-        title: 'Payroll & Admin Saver',
+        sectorHeader: 'ARCHITECTURE 03 OF 06 • AUTONOMOUS REVOPS',
+        title: 'JAss Voice & CRM Pipeline',
         description:
-          'We audit your slowest department ($99) and automate intake forms, billing codes, and manual data entry that waste $3,420/month.',
-        iconEmoji: '⚡',
-        iconGradient: ['#38bdf8', '#2563eb'],
-        setupPills: ['✴️ $99 On-Site Audit', 'Zero Copy-Paste', '$2.5K/mo ROI Guarantee'],
+          '38% of callers hang up on voicemail and 47-minute human replies kill 78% of deals. JAss answers on Ring 1 in English and Spanish and books retainers into your CRM in 3 seconds.',
+        roiMetric: '3-SECOND RING-1 ANSWER • $997 TURNKEY OR $297/MO',
+        setupPills: ['JASS BILINGUAL VOICE', 'SUB-MINUTE REVOPS', 'LIVE CALENDAR SYNC'],
       },
       {
         id: 's4',
         stepNumber: 4,
         totalSteps: 6,
         indexLabel: '04',
-        title: 'Cold Email Machine',
+        sectorHeader: 'ARCHITECTURE 04 OF 06 • LEGAL & REAL ESTATE',
+        title: 'Private RAG & Deal Matching',
         description:
-          'Finds B2B decision-makers in your industry, writes and sends executive outreach sequences, and routes hot replies to your calendar.',
-        iconEmoji: '✉️',
-        iconGradient: ['#60a5fa', '#1d4ed8'],
-        setupPills: ['✴️ AI Dynamic Engine', 'Brevo + CRM Sync', 'Verified B2B Leads'],
+          'Eliminate 15+ hours a week of paralegal and brokerage admin. Sovereign document RAG screens contracts in seconds, tracks escrow cutoffs, and matches off-market mandates.',
+        roiMetric: '-15 HRS/WK PARALEGAL & BROKER ADMIN • ZERO MISSED CUTOFFS',
+        setupPills: ['SOVEREIGN DOCUMENT RAG', 'VECTOR DEAL MATCH', 'ESCROW TELEMETRY'],
       },
       {
         id: 's5',
         stepNumber: 5,
         totalSteps: 6,
         indexLabel: '05',
-        title: '48-Hr Custom AI App',
+        sectorHeader: 'ARCHITECTURE 05 OF 06 • KINEMATICS & AGENTIC WEB',
+        title: 'Biomechanics & Agentic Web',
         description:
-          'Give us your #1 bottleneck and our AI Developers engineer a working custom application in 48 hours—or you pay $0.',
-        iconEmoji: '🛠️',
-        iconGradient: ['#fbbf24', '#ea580c'],
-        setupPills: ['✴️ Custom Code Build', '48-Hour Prototype', '$30K/yr Guarantee'],
+          'From 33-joint smartphone gait kinematics and daily HRV coaching to self-learning Agentic Websites structured for Google and ChatGPT citations, we build category-defining platforms.',
+        roiMetric: '33-JOINT POSE VISION • 5-10 DAY PRODUCTION LAUNCH',
+        setupPills: ['33-JOINT KINEMATICS', 'SELF-LEARNING WEB UX', 'SCHEMA.ORG LLM GRAPH'],
       },
       {
         id: 's6',
         stepNumber: 6,
         totalSteps: 6,
         indexLabel: '06',
-        title: 'Staff AI Bootcamp',
+        sectorHeader: 'ARCHITECTURE 06 OF 06 • WORKFORCE MULTIPLICATION',
+        title: '48-Hr Build & Staff Bootcamp',
         description:
-          'We stay with your company and train up to 15 employees hands-on ($497) so 1 AI-trained staff member produces the output of 5.',
-        iconEmoji: '🎓',
-        iconGradient: ['#a855f7', '#c026d3'],
-        setupPills: ['✴️ On-Site Training', 'Role Playbooks', '1 Staff = 5x Output'],
+          'We build a working AI prototype in 48 hours—guaranteed to uncover $2,500+/month ($30K/yr) in savings or you pay $0—and stay on-site training your staff so 1 employee equals 5.',
+        roiMetric: '$99 60-MIN AUDIT • $497 CORPORATE BOOTCAMP (1 STAFF = 5X)',
+        setupPills: ['48-HOUR LIVE PROTOTYPE', '$30,000/YR GUARANTEE', 'ON-SITE TEAM TRAINING'],
       },
       {
         id: 's7_cta',
         stepNumber: 6,
         totalSteps: 6,
-        indexLabel: 'CTA',
-        title: 'Comment "BUILD"',
-        description: 'and we will build a live 48-hour AI prototype for your company + train your team 🔗',
-        iconEmoji: '💬',
-        iconGradient: ['#f59e0b', '#ea580c'],
-        setupPills: ['aidynamic.pro/booking', '(786) 643-2099'],
+        indexLabel: 'MANDATE',
+        sectorHeader: 'EXECUTIVE DECISION PROTOCOL',
+        title: 'Comment "SCALE"',
+        description:
+          'We will walk into your company, engineer a live 48-hour AI prototype guaranteed to save $2,500+/month—or you pay $0—and train your staff.',
+        roiMetric: 'AIDYNAMIC.PRO/BOOKING • +1 (786) 643-2099',
+        setupPills: ['AIDYNAMIC.PRO/BOOKING', '+1 (786) 643-2099'],
         isCtaSlide: true,
-        ctaKeyword: '"BUILD"',
-        ctaSubtext: "and we'll build a live 48-hour AI prototype for your company 🔗",
-      },
-    ],
-  },
-  {
-    id: 'week2_payroll_leaks',
-    weekLabel: 'Master Reel & Carousel #2 — 6 Hidden Payroll Leaks CEOs Eliminate With AI',
-    hookNumber: '6',
-    hookTextLine1: 'Payroll leaks CEOs eliminate',
-    hookTextLine2: 'in 48 hours with custom AI',
-    bgImage: '/social/week2-workflow.jpg',
-    caption: `Comment "AUDIT" ✴️ 6 Hidden Payroll Leaks CEOs Eliminate in 48 Hours
-
-Why pay staff $22–$35/hr to copy-paste spreadsheets, chase unconfirmed appointments, and miss 38% of after-hours calls?
-
-For $99, our AI Developers walk into your company, map your slowest department in 60 minutes, and guarantee to uncover $2,500+/month ($30,000/yr) in immediate savings—or we refund your $99 on the spot.
-
-💬 Comment "AUDIT" or book at https://www.aidynamic.pro/booking`,
-    slides: [
-      {
-        id: 'w2_1',
-        stepNumber: 1,
-        totalSteps: 6,
-        indexLabel: '01',
-        title: 'After-Hours Voicemail',
-        description:
-          '38% of high-ticket callers hang up on voicemail. JAss answers in 3 seconds 24/7 in English & Spanish and locks in the booking.',
-        iconEmoji: '📵',
-        iconGradient: ['#ef4444', '#b91c1c'],
-        setupPills: ['✴️ JAss 24/7 Voice', 'Zero Missed Calls', '$997 Turnkey'],
-      },
-      {
-        id: 'w2_2',
-        stepNumber: 2,
-        totalSteps: 6,
-        indexLabel: '02',
-        title: '47-Min Lead Follow-Up',
-        description:
-          'Waiting 47 minutes to reply to a web form kills 78% of deals. Our AI texts & calls every new lead back within 3 seconds.',
-        iconEmoji: '⏱️',
-        iconGradient: ['#f59e0b', '#d97706'],
-        setupPills: ['✴️ Instant Speed-to-Lead', 'SMS + Voice Call', '3.4x More Bookings'],
-      },
-      {
-        id: 'w2_3',
-        stepNumber: 3,
-        totalSteps: 6,
-        indexLabel: '03',
-        title: 'Manual Intake & PDFs',
-        description:
-          'Re-typing client PDFs into your CRM wastes 9 hrs/week ($1,170/mo). Our custom extractor syncs intake forms in 4 seconds.',
-        iconEmoji: '📄',
-        iconGradient: ['#38bdf8', '#0284c7'],
-        setupPills: ['✴️ Document AI', 'Auto CRM Entry', 'Saves $1,170/mo'],
-      },
-      {
-        id: 'w2_4',
-        stepNumber: 4,
-        totalSteps: 6,
-        indexLabel: '04',
-        title: 'No-Show Appointments',
-        description:
-          'Automated bilingual voice & WhatsApp confirmations reschedule conflicts automatically and cut calendar no-shows by 64%.',
-        iconEmoji: '📅',
-        iconGradient: ['#10b981', '#047857'],
-        setupPills: ['✴️ Smart Reminders', 'Auto-Reschedule', '-64% No-Shows'],
-      },
-      {
-        id: 'w2_5',
-        stepNumber: 5,
-        totalSteps: 6,
-        indexLabel: '05',
-        title: 'Untrained Staff Bottlenecks',
-        description:
-          '83% of AI tools fail because staff never learn them. Our $497 Corporate Bootcamp trains 15 employees so 1 staff = 5.',
-        iconEmoji: '🚀',
-        iconGradient: ['#a855f7', '#7e22ce'],
-        setupPills: ['✴️ $497 Staff Bootcamp', 'Hands-On Coaching', '5x Team Output'],
-      },
-      {
-        id: 'w2_6',
-        stepNumber: 6,
-        totalSteps: 6,
-        indexLabel: '06',
-        title: ' CEO Morning Blindness',
-        description:
-          'Wake up to an automated 7:00 AM executive brief showing every call answered, lead booked, and invoice processed overnight.',
-        iconEmoji: '📊',
-        iconGradient: ['#fbbf24', '#b45309'],
-        setupPills: ['✴️ CEO Command Brief', 'Live ROI Ledger', 'Full Visibility'],
-      },
-      {
-        id: 'w2_cta',
-        stepNumber: 6,
-        totalSteps: 6,
-        indexLabel: 'CTA',
-        title: 'Comment "AUDIT"',
-        description: 'and we will find $2,500+/mo in payroll savings inside your company or you pay $0 🔗',
-        iconEmoji: '💬',
-        iconGradient: ['#f59e0b', '#ea580c'],
-        setupPills: ['aidynamic.pro/booking', '$99 60-Min Audit'],
-        isCtaSlide: true,
-        ctaKeyword: '"AUDIT"',
-        ctaSubtext: "and we'll uncover $2,500+/mo in savings or you pay $0 🔗",
+        ctaKeyword: '"SCALE"',
+        ctaSubtext:
+          'We will engineer a live 48-hour AI prototype for your company—guaranteed to uncover $2,500+/mo in savings or you pay $0—and train your team.',
       },
     ],
   },
@@ -312,8 +210,8 @@ export function renderVisionGlassSlideToCanvas(
   const ctx = canvas.getContext('2d')
   if (!ctx) return
 
-  // 1. Background Image or Dark Executive Gradient
-  ctx.fillStyle = '#070b14'
+  // 1. Deep Obsidian Luxury Background (#07070c)
+  ctx.fillStyle = '#07070c'
   ctx.fillRect(0, 0, W, H)
 
   if (bgImg && bgImg.complete && bgImg.naturalWidth > 0) {
@@ -333,264 +231,221 @@ export function renderVisionGlassSlideToCanvas(
       offsetY = -(drawH - H) / 2
     }
     ctx.save()
-    ctx.filter = 'brightness(0.45) contrast(1.08) saturate(1.1)'
+    ctx.filter = 'brightness(0.32) contrast(1.15) saturate(0.85)'
     ctx.drawImage(bgImg, offsetX, offsetY, drawW, drawH)
     ctx.restore()
   }
 
-  // Dark vignette overlay
+  // Obsidian & Champagne-Gold Architectural Vignette
   const grad = ctx.createLinearGradient(0, 0, 0, H)
-  grad.addColorStop(0, 'rgba(5, 8, 18, 0.72)')
-  grad.addColorStop(0.45, 'rgba(5, 8, 18, 0.35)')
-  grad.addColorStop(1, 'rgba(5, 8, 18, 0.85)')
+  grad.addColorStop(0, 'rgba(7, 7, 12, 0.88)')
+  grad.addColorStop(0.45, 'rgba(10, 10, 15, 0.48)')
+  grad.addColorStop(1, 'rgba(5, 5, 10, 0.94)')
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, W, H)
 
-  // 2. Top Hook Header (Exact Olli Rasmussen style)
-  const topY = aspect === '9:16' ? 250 : 120
+  // 2. Editorial Top Header (Zero Cartoon Icons, Pure Luxury Gold + Playfair Serif)
+  const topY = aspect === '9:16' ? 210 : 95
 
-  // Pixel Robot / Brand Badge + Big Number "6"
   ctx.save()
-  drawRoundedRect(ctx, W / 2 - 145, topY - 68, 128, 66, 16)
-  const badgeGrad = ctx.createLinearGradient(W / 2 - 145, topY - 68, W / 2 - 17, topY)
-  badgeGrad.addColorStop(0, '#f59e0b')
-  badgeGrad.addColorStop(1, '#ea580c')
-  ctx.fillStyle = badgeGrad
-  ctx.fill()
+  ctx.fillStyle = '#c9a96e'
+  ctx.font = '600 22px Inter, system-ui, sans-serif'
+  const kickerW = ctx.measureText(deck.topKicker).width
+  ctx.fillText(deck.topKicker, (W - kickerW) / 2, topY)
 
-  ctx.fillStyle = '#090d16'
-  ctx.font = '900 30px Inter, system-ui, sans-serif'
-  ctx.fillText('AI PRO', W / 2 - 128, topY - 24)
+  // Thin Gold Horizontal Rule
+  ctx.fillStyle = 'rgba(201, 169, 110, 0.45)'
+  ctx.fillRect(W / 2 - 90, topY + 20, 180, 1.5)
 
-  ctx.font = 'italic 900 104px Inter, system-ui, sans-serif'
+  ctx.font = '700 54px Georgia, "Playfair Display", serif'
   ctx.fillStyle = '#ffffff'
-  ctx.lineWidth = 10
-  ctx.strokeStyle = '#000000'
-  ctx.strokeText(deck.hookNumber, W / 2 + 12, topY - 4)
-  ctx.fillText(deck.hookNumber, W / 2 + 12, topY - 4)
-  ctx.restore()
-
-  // Hook Lines with thick black stroke + white fill
-  ctx.save()
-  ctx.font = 'italic 900 50px Inter, system-ui, sans-serif'
-  ctx.lineWidth = 11
-  ctx.strokeStyle = 'rgba(0,0,0,0.92)'
-  ctx.fillStyle = '#ffffff'
-
   const l1W = ctx.measureText(deck.hookTextLine1).width
-  ctx.strokeText(deck.hookTextLine1, (W - l1W) / 2, topY + 64)
-  ctx.fillText(deck.hookTextLine1, (W - l1W) / 2, topY + 64)
+  ctx.fillText(deck.hookTextLine1, (W - l1W) / 2, topY + 86)
 
+  ctx.font = 'italic 400 50px Georgia, "Playfair Display", serif'
+  ctx.fillStyle = '#f7e7ce'
   const l2W = ctx.measureText(deck.hookTextLine2).width
-  ctx.strokeText(deck.hookTextLine2, (W - l2W) / 2, topY + 126)
-  ctx.fillText(deck.hookTextLine2, (W - l2W) / 2, topY + 126)
+  ctx.fillText(deck.hookTextLine2, (W - l2W) / 2, topY + 148)
   ctx.restore()
 
-  // 3. Center VisionOS Frosted-Glass HUD Card
-  const cardX = 82
-  const cardY = aspect === '9:16' ? 460 : 310
-  const cardW = W - 164 // 916px
-  const cardH = aspect === '9:16' ? 890 : 840
+  // 3. Center Obsidian & Champagne-Gold Frosted Glass Card
+  const cardX = 76
+  const cardY = aspect === '9:16' ? 445 : 295
+  const cardW = W - 152 // 928px
+  const cardH = aspect === '9:16' ? 940 : 870
 
-  // Blurred glass backdrop inside the card
   ctx.save()
-  drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 48)
+  drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 36)
   ctx.clip()
   if (bgImg && bgImg.complete && bgImg.naturalWidth > 0) {
-    ctx.filter = 'blur(28px) brightness(0.55) saturate(1.25)'
+    ctx.filter = 'blur(34px) brightness(0.38)'
     ctx.drawImage(bgImg, 0, 0, W, H)
     ctx.filter = 'none'
   }
   const glassFill = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH)
-  glassFill.addColorStop(0, 'rgba(255, 255, 255, 0.17)')
-  glassFill.addColorStop(0.5, 'rgba(255, 255, 255, 0.10)')
-  glassFill.addColorStop(1, 'rgba(15, 23, 42, 0.42)')
+  glassFill.addColorStop(0, 'rgba(26, 26, 36, 0.84)')
+  glassFill.addColorStop(0.5, 'rgba(15, 15, 22, 0.78)')
+  glassFill.addColorStop(1, 'rgba(10, 10, 15, 0.90)')
   ctx.fillStyle = glassFill
   ctx.fillRect(cardX, cardY, cardW, cardH)
   ctx.restore()
 
-  // Glass Specular Border
+  // Champagne-Gold Specular Border
   ctx.save()
-  drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 48)
-  ctx.lineWidth = 2.5
-  const borderGrad = ctx.createLinearGradient(cardX, cardY, cardX, cardY + cardH)
-  borderGrad.addColorStop(0, 'rgba(255, 255, 255, 0.48)')
-  borderGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.18)')
-  borderGrad.addColorStop(1, 'rgba(255, 255, 255, 0.32)')
+  drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 36)
+  ctx.lineWidth = 2
+  const borderGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH)
+  borderGrad.addColorStop(0, 'rgba(201, 169, 110, 0.65)')
+  borderGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.15)')
+  borderGrad.addColorStop(1, 'rgba(201, 169, 110, 0.45)')
   ctx.strokeStyle = borderGrad
   ctx.stroke()
   ctx.restore()
 
-  // Segmented 6-Step Progress Bar at top inside of Glass Card
+  // Segmented 6-Step Champagne-Gold Progress Bar
   const totalBars = slide.totalSteps || 6
   const barGap = 16
-  const barAreaW = 460
+  const barAreaW = 480
   const singleBarW = (barAreaW - barGap * (totalBars - 1)) / totalBars
   const barStartX = W / 2 - barAreaW / 2
-  const barY = cardY + 42
+  const barY = cardY + 46
 
   for (let i = 0; i < totalBars; i++) {
     const bx = barStartX + i * (singleBarW + barGap)
-    drawRoundedRect(ctx, bx, barY, singleBarW, 9, 5)
+    drawRoundedRect(ctx, bx, barY, singleBarW, 6, 3)
     if (slide.isCtaSlide || i + 1 === slide.stepNumber) {
-      const pGrad = ctx.createLinearGradient(bx, barY, bx + singleBarW, barY)
-      pGrad.addColorStop(0, '#fbbf24')
-      pGrad.addColorStop(1, '#ea580c')
-      ctx.fillStyle = pGrad
+      ctx.fillStyle = '#c9a96e'
     } else if (i + 1 < slide.stepNumber) {
-      ctx.fillStyle = 'rgba(255,255,255,0.65)'
+      ctx.fillStyle = 'rgba(247, 231, 206, 0.55)'
     } else {
-      ctx.fillStyle = 'rgba(255,255,255,0.22)'
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.16)'
     }
     ctx.fill()
   }
 
   if (!slide.isCtaSlide) {
-    // 4A. Standard System Card Layout (01 to 06)
-    const innerX = cardX + 64
-    const innerRight = cardX + cardW - 64
+    const innerX = cardX + 68
+    const innerRight = cardX + cardW - 68
 
-    // Pill: "System 01 of 6"
-    const pillY = cardY + 105
-    drawRoundedRect(ctx, innerX, pillY, 235, 58, 29)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.14)'
-    ctx.fill()
-    ctx.lineWidth = 1.5
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)'
-    ctx.stroke()
+    // Sector Kicker + Large Serif Architectural Index ("01")
+    const topRowY = cardY + 130
+    ctx.fillStyle = '#c9a96e'
+    ctx.font = '600 21px Inter, system-ui, sans-serif'
+    ctx.fillText(slide.sectorHeader, innerX, topRowY)
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'
-    ctx.font = '600 26px Inter, system-ui, sans-serif'
-    ctx.fillText(`System ${slide.indexLabel} of ${slide.totalSteps}`, innerX + 26, pillY + 38)
+    ctx.fillStyle = '#22d3ee'
+    ctx.font = '600 20px Inter, system-ui, sans-serif'
+    ctx.fillText(slide.roiMetric, innerX, topRowY + 34)
 
-    // Thin Architectural Number "01" on top right
     ctx.save()
-    ctx.font = '200 112px Inter, system-ui, sans-serif'
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.85)'
+    ctx.font = '300 116px Georgia, "Playfair Display", serif'
+    ctx.fillStyle = 'rgba(247, 231, 206, 0.88)'
     const numW = ctx.measureText(slide.indexLabel).width
-    ctx.fillText(slide.indexLabel, innerRight - numW, pillY + 72)
+    ctx.fillText(slide.indexLabel, innerRight - numW, topRowY + 42)
     ctx.restore()
 
-    // 3D App Icon Box + Bold Title
-    const iconY = cardY + 235
-    const iconSize = 118
-    ctx.save()
-    drawRoundedRect(ctx, innerX, iconY, iconSize, iconSize, 30)
-    const icGrad = ctx.createLinearGradient(innerX, iconY, innerX + iconSize, iconY + iconSize)
-    icGrad.addColorStop(0, slide.iconGradient[0])
-    icGrad.addColorStop(1, slide.iconGradient[1])
-    ctx.fillStyle = icGrad
-    ctx.fill()
-    ctx.lineWidth = 2
-    ctx.strokeStyle = 'rgba(255,255,255,0.4)'
-    ctx.stroke()
+    // Thin Divider Line
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.12)'
+    ctx.fillRect(innerX, topRowY + 68, cardW - 136, 1)
 
-    ctx.font = '56px Inter, system-ui, sans-serif'
-    const emW = ctx.measureText(slide.iconEmoji).width
-    ctx.fillText(slide.iconEmoji, innerX + (iconSize - emW) / 2, iconY + 78)
-    ctx.restore()
-
-    // Title next to Icon
+    // System Title (Editorial Serif, No Icons)
     ctx.fillStyle = '#ffffff'
-    ctx.font = '800 58px Inter, system-ui, sans-serif'
-    ctx.fillText(slide.title, innerX + iconSize + 34, iconY + 78)
+    ctx.font = '700 62px Georgia, "Playfair Display", serif'
+    ctx.fillText(slide.title, innerX, topRowY + 156)
 
-    // Plain-English Description (2-3 crisp lines)
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)'
-    ctx.font = '500 39px Inter, system-ui, sans-serif'
-    wrapCanvasText(ctx, slide.description, innerX, iconY + 195, cardW - 128, 54, false)
+    // Concise Executive Thesis Copy
+    ctx.fillStyle = 'rgba(232, 232, 232, 0.94)'
+    ctx.font = '400 36px Inter, system-ui, sans-serif'
+    wrapCanvasText(ctx, slide.description, innerX, topRowY + 235, cardW - 136, 52, false)
 
-    // SETUP Label
-    const setupY = cardY + cardH - 225
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.60)'
-    ctx.font = '700 24px Inter, system-ui, sans-serif'
-    ctx.fillText('SETUP', innerX, setupY)
+    // PRODUCTION ARCHITECTURE Stack Row
+    const setupY = cardY + cardH - 215
+    ctx.fillStyle = 'rgba(160, 160, 168, 0.85)'
+    ctx.font = '600 20px Inter, system-ui, sans-serif'
+    ctx.fillText('PRODUCTION ARCHITECTURE & DEPLOYMENT', innerX, setupY)
 
-    // SETUP Pills with "+" Connectors
     let pillCursorX = innerX
     let pillCursorY = setupY + 24
-    ctx.font = '600 27px Inter, system-ui, sans-serif'
+    ctx.font = '600 23px Inter, system-ui, sans-serif'
 
     slide.setupPills.forEach((pillText, idx) => {
       if (idx > 0) {
-        const plusW = 34
-        if (pillCursorX + plusW > innerRight) {
+        const sepW = 28
+        if (pillCursorX + sepW > innerRight) {
           pillCursorX = innerX
-          pillCursorY += 74
+          pillCursorY += 68
         }
-        ctx.fillStyle = 'rgba(255,255,255,0.85)'
-        ctx.fillText('+', pillCursorX + 6, pillCursorY + 41)
-        pillCursorX += plusW
+        ctx.fillStyle = '#c9a96e'
+        ctx.fillText('/', pillCursorX + 8, pillCursorY + 36)
+        pillCursorX += sepW
       }
 
       const textW = ctx.measureText(pillText).width
-      const boxW = textW + 44
+      const boxW = textW + 40
       if (pillCursorX + boxW > innerRight && pillCursorX > innerX) {
         pillCursorX = innerX
-        pillCursorY += 74
+        pillCursorY += 68
       }
 
-      drawRoundedRect(ctx, pillCursorX, pillCursorY, boxW, 58, 18)
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.62)'
+      drawRoundedRect(ctx, pillCursorX, pillCursorY, boxW, 52, 10)
+      ctx.fillStyle = 'rgba(7, 7, 12, 0.85)'
       ctx.fill()
-      ctx.lineWidth = 1.5
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.24)'
+      ctx.lineWidth = 1.2
+      ctx.strokeStyle =
+        idx === 2 ? 'rgba(201, 169, 110, 0.65)' : 'rgba(255, 255, 255, 0.20)'
       ctx.stroke()
 
-      ctx.fillStyle = '#ffffff'
-      ctx.fillText(pillText, pillCursorX + 22, pillCursorY + 39)
-      pillCursorX += boxW + 12
+      ctx.fillStyle = idx === 2 ? '#f7e7ce' : '#ffffff'
+      ctx.fillText(pillText, pillCursorX + 20, pillCursorY + 34)
+      pillCursorX += boxW + 10
     })
   } else {
-    // 4B. Final Comment-Gate CTA Slide ("BUILD" / "AUDIT")
-    const centerY = cardY + cardH / 2 - 40
+    // Minimalist Executive CTA Card ("SCALE")
+    const centerY = cardY + cardH / 2 - 50
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.92)'
-    ctx.font = '600 42px Inter, system-ui, sans-serif'
-    const cLabel = '💬 Comment'
+    ctx.fillStyle = '#c9a96e'
+    ctx.font = '600 24px Inter, system-ui, sans-serif'
+    const cLabel = 'EXECUTIVE DECISION PROTOCOL — COMMENT BELOW'
     const cLabelW = ctx.measureText(cLabel).width
-    ctx.fillText(cLabel, (W - cLabelW) / 2, centerY - 95)
+    ctx.fillText(cLabel, (W - cLabelW) / 2, centerY - 105)
 
-    // Glowing Orange/Amber Pill Box with "BUILD"
-    const kw = slide.ctaKeyword || '"BUILD"'
-    ctx.font = '900 74px Inter, system-ui, sans-serif'
+    const kw = slide.ctaKeyword || '"SCALE"'
+    ctx.font = '700 82px Georgia, "Playfair Display", serif'
     const kwW = ctx.measureText(kw).width
-    const boxW = kwW + 130
-    const boxH = 135
+    const boxW = kwW + 140
+    const boxH = 140
     const boxX = (W - boxW) / 2
-    const boxY = centerY - 55
+    const boxY = centerY - 65
 
-    drawRoundedRect(ctx, boxX, boxY, boxW, boxH, 32)
+    drawRoundedRect(ctx, boxX, boxY, boxW, boxH, 20)
     const ctaGrad = ctx.createLinearGradient(boxX, boxY, boxX + boxW, boxY + boxH)
-    ctaGrad.addColorStop(0, 'rgba(245, 158, 11, 0.72)')
-    ctaGrad.addColorStop(1, 'rgba(234, 88, 12, 0.72)')
+    ctaGrad.addColorStop(0, '#c9a96e')
+    ctaGrad.addColorStop(1, '#a0894e')
     ctx.fillStyle = ctaGrad
     ctx.fill()
-    ctx.lineWidth = 3
-    ctx.strokeStyle = 'rgba(253, 224, 71, 0.75)'
-    ctx.stroke()
+
+    ctx.fillStyle = '#07070c'
+    ctx.fillText(kw, (W - kwW) / 2, boxY + 96)
 
     ctx.fillStyle = '#ffffff'
-    ctx.fillText(kw, (W - kwW) / 2, boxY + 92)
-
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)'
-    ctx.font = '600 38px Inter, system-ui, sans-serif'
+    ctx.font = '400 36px Inter, system-ui, sans-serif'
     wrapCanvasText(
       ctx,
-      slide.ctaSubtext || "and we'll build a live 48-hour AI prototype for your company 🔗",
+      slide.ctaSubtext ||
+        'We will engineer a live 48-hour AI prototype for your company—guaranteed to uncover $2,500+/mo in savings or you pay $0—and train your team.',
       W / 2,
-      boxY + boxH + 78,
-      cardW - 160,
+      boxY + boxH + 74,
+      cardW - 150,
       52,
       true
     )
   }
 
-  // 5. Subtle Executive Watermark Footer
-  const footerY = H - 70
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.75)'
-  ctx.font = '700 26px Inter, system-ui, sans-serif'
-  const footerText = 'AI DYNAMIC PRO • aidynamic.pro • (786) 643-2099'
+  // 5. Minimalist Luxury Footer
+  const footerY = H - 68
+  ctx.fillStyle = 'rgba(201, 169, 110, 0.88)'
+  ctx.font = '600 23px Inter, system-ui, sans-serif'
+  const footerText = 'AI DYNAMIC PRO   |   AIDYNAMIC.PRO   |   +1 (786) 643-2099'
   const fW = ctx.measureText(footerText).width
   ctx.fillText(footerText, (W - fW) / 2, footerY)
 }
@@ -607,6 +462,10 @@ export default function VisionGlassReelStudio() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const bgImageRef = useRef<HTMLImageElement | null>(null)
+
+  const currentDeck =
+    WEEKLY_GLASS_DECKS.find((d) => d.id === selectedDeckId) || WEEKLY_GLASS_DECKS[0]
+  const currentSlide = currentDeck.slides[activeSlideIdx] || currentDeck.slides[0]
 
   useEffect(() => {
     fetch('/api/social-publish')
@@ -635,14 +494,14 @@ export default function VisionGlassReelStudio() {
       const data = await res.json()
       if (data.success && Array.isArray(data.publishedTo) && data.publishedTo.length > 0) {
         setBufferStatusMsg(
-          `✓ Published ${postType.toUpperCase()} directly to ${data.publishedTo
+          `Published ${postType.toUpperCase()} directly to ${data.publishedTo
             .map((p: any) => p.channel)
-            .join(', ')}!`
+            .join(', ')}.`
         )
       } else if (data.needsChannelAuthorization) {
         setBufferStatusMsg(data.message)
       } else {
-        setBufferStatusMsg(data.error || 'Synced to Buffer Ideas workspace.')
+        setBufferStatusMsg(data.error || 'Synced to Buffer workspace.')
       }
     } catch (e: any) {
       setBufferStatusMsg(e.message || 'Network error connecting to Buffer API.')
@@ -650,10 +509,6 @@ export default function VisionGlassReelStudio() {
       setPublishingBuffer(false)
     }
   }
-
-  const currentDeck =
-    WEEKLY_GLASS_DECKS.find((d) => d.id === selectedDeckId) || WEEKLY_GLASS_DECKS[0]
-  const currentSlide = currentDeck.slides[activeSlideIdx] || currentDeck.slides[0]
 
   useEffect(() => {
     const img = new Image()
@@ -728,7 +583,7 @@ export default function VisionGlassReelStudio() {
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = `${currentDeck.id}_vision_reel.webm`
+        a.download = `${currentDeck.id}_executive_reel.webm`
         a.click()
         setRecordingVideo(false)
       }
@@ -752,89 +607,79 @@ export default function VisionGlassReelStudio() {
   }
 
   return (
-    <div className="bg-dark-50/60 border border-white/15 rounded-2xl p-6 space-y-6">
+    <div className="bg-[#0d0d14] border border-luxury-gold/30 rounded-2xl p-6 space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-extrabold uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            Automated VisionOS Frosted-Glass Reel &amp; Carousel Studio
+          <span className="inline-block px-3 py-1 rounded-full bg-luxury-gold/15 border border-luxury-gold/40 text-luxury-gold text-[10px] font-mono uppercase tracking-[0.2em] mb-2">
+            AI DYNAMIC PRO — BESPOKE ARCHITECTURAL REEL &amp; CAROUSEL STUDIO
           </span>
-          <h3 className="text-xl font-extrabold text-white">
-            1-Click Instagram Reel &amp; LinkedIn Glass-Card Generator (@olli.rasmussen Style)
+          <h3 className="text-xl font-serif font-bold text-white">
+            Minimalist Obsidian &amp; Champagne-Gold Executive Studio (Zero Icons)
           </h3>
           <p className="text-xs text-luxury-silver mt-1">
-            Automatically renders high-converting 1080×1920 Reels and 1080×1350 Carousels with segmented progress bars, 3D system icons, and SETUP stack pills.
+            Original AI Dynamic Pro typography and color architecture (#0a0a0f Obsidian, #c9a96e Champagne Gold, #06b6d4 Cyan) showcasing our 6 industry platforms.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => downloadSingleSlidePng(activeSlideIdx)}
-            className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono uppercase tracking-wider font-bold"
           >
-            <Download className="w-4 h-4 text-amber-400" />
-            Download Current Slide (PNG)
+            Download Slide (PNG)
           </button>
           <button
             onClick={downloadAllCarouselSlides}
-            className="px-4 py-2 rounded-xl bg-amber-400 text-slate-950 hover:bg-amber-300 text-xs font-extrabold flex items-center gap-1.5 shadow-lg"
+            className="px-4 py-2 rounded-xl bg-luxury-gold text-dark hover:bg-luxury-champagne text-xs font-mono uppercase tracking-wider font-extrabold shadow-lg"
           >
-            <Layers className="w-4 h-4" />
-            Download All 7 Slides (Batch)
+            Download All 7 Slides
           </button>
           <button
             onClick={recordFullReelVideo}
             disabled={recordingVideo}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 to-green-500 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 shadow-lg disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-white text-dark font-mono uppercase tracking-wider font-extrabold text-xs shadow-lg disabled:opacity-50"
           >
-            <Film className="w-4 h-4" />
-            {recordingVideo ? 'Recording 14s Reel...' : 'Auto-Record 14s Reel Video'}
+            {recordingVideo ? 'Recording 14s Reel...' : 'Record 14s Reel Video'}
           </button>
           <button
             onClick={() => handlePublishToBuffer('carousel')}
             disabled={publishingBuffer}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-400 to-blue-600 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-lg disabled:opacity-50"
+            className="px-4 py-2 rounded-xl bg-accent text-dark font-mono uppercase tracking-wider font-extrabold text-xs shadow-lg disabled:opacity-50"
           >
-            <Send className="w-3.5 h-3.5" />
             {publishingBuffer
               ? 'Syncing Buffer...'
-              : `Auto-Publish to Buffer (${bufferConnectedChannels} Channels)`}
+              : `Publish to Buffer (${bufferConnectedChannels} Channels)`}
           </button>
         </div>
       </div>
 
       {/* Live Buffer API Connection Banner */}
-      <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 text-xs">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span className="text-white font-semibold">
-            Buffer API Key Connected (<code className="text-emerald-300">aimedicalassistance@gmail.com</code> • Org <code className="text-amber-300">6ae611610f74184c45cd3ec7</code>) — 7-Slide VisionOS Carousel &amp; 15s Reel Loaded!
-          </span>
+      <div className="p-4 rounded-xl bg-luxury-gold/10 border border-luxury-gold/30 flex flex-wrap items-center justify-between gap-3">
+        <div className="text-xs text-white font-mono">
+          BUFFER API CONNECTED (<span className="text-luxury-gold">aimedicalassistance@gmail.com</span>) — 7-SLIDE ARCHITECTURAL DECK &amp; 15S REEL READY
         </div>
         <a
           href="https://publish.buffer.com/channels"
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-400 text-slate-950 font-extrabold text-xs hover:bg-emerald-300 transition-colors"
+          className="px-3.5 py-1.5 rounded-lg bg-luxury-gold text-dark font-mono uppercase tracking-wider font-extrabold text-xs hover:bg-luxury-champagne transition-colors"
         >
-          Link IG &amp; LinkedIn Channels ({bufferConnectedChannels}/3)
-          <ExternalLink className="w-3.5 h-3.5" />
+          Authorize IG, LinkedIn &amp; Google Business ({bufferConnectedChannels}/3) →
         </a>
       </div>
 
       {bufferStatusMsg && (
-        <div className="p-3.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-xs text-amber-200 font-semibold">
+        <div className="p-3.5 rounded-xl bg-white/5 border border-luxury-gold/40 text-xs text-luxury-champagne font-mono">
           {bufferStatusMsg}
         </div>
       )}
 
       <div className="grid lg:grid-cols-12 gap-6 items-start">
-        {/* Left Controls */}
         <div className="lg:col-span-7 space-y-4">
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-luxury-silver mb-1.5">
-                Select Campaign Deck Template
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-luxury-silver mb-1.5">
+                Architecture Deck
               </label>
               <select
                 value={selectedDeckId}
@@ -842,7 +687,7 @@ export default function VisionGlassReelStudio() {
                   setSelectedDeckId(e.target.value)
                   setActiveSlideIdx(0)
                 }}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/50 border border-white/15 text-xs font-semibold text-white"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-black/60 border border-white/15 text-xs font-mono text-white"
               >
                 {WEEKLY_GLASS_DECKS.map((d) => (
                   <option key={d.id} value={d.id}>
@@ -853,38 +698,37 @@ export default function VisionGlassReelStudio() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-luxury-silver mb-1.5">
-                Format / Aspect Ratio
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-luxury-silver mb-1.5">
+                Output Dimensions
               </label>
               <div className="flex gap-2">
                 <button
                   onClick={() => setAspect('9:16')}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold border ${
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-mono font-bold border ${
                     aspect === '9:16'
-                      ? 'bg-amber-400 text-black border-amber-400'
+                      ? 'bg-luxury-gold text-dark border-luxury-gold'
                       : 'bg-black/40 text-white border-white/15'
                   }`}
                 >
-                  9:16 Instagram Reel (1080×1920)
+                  9:16 Reel (1080×1920)
                 </button>
                 <button
                   onClick={() => setAspect('4:5')}
-                  className={`flex-1 py-2.5 rounded-xl text-xs font-bold border ${
+                  className={`flex-1 py-2.5 rounded-xl text-xs font-mono font-bold border ${
                     aspect === '4:5'
-                      ? 'bg-amber-400 text-black border-amber-400'
+                      ? 'bg-luxury-gold text-dark border-luxury-gold'
                       : 'bg-black/40 text-white border-white/15'
                   }`}
                 >
-                  4:5 Feed Carousel (1080×1350)
+                  4:5 Feed (1080×1350)
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Slide Selector Buttons */}
           <div>
-            <div className="text-xs font-bold text-luxury-silver mb-2">
-              Click Any Slide to Preview or Download ({currentDeck.slides.length} Total Cards):
+            <div className="text-[11px] font-mono uppercase tracking-wider text-luxury-silver mb-2">
+              Select Slide Card ({currentDeck.slides.length} Total):
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {currentDeck.slides.map((s, idx) => (
@@ -893,24 +737,23 @@ export default function VisionGlassReelStudio() {
                   onClick={() => setActiveSlideIdx(idx)}
                   className={`p-2.5 rounded-xl border text-left transition-all ${
                     idx === activeSlideIdx
-                      ? 'bg-amber-400/20 border-amber-400 text-white'
+                      ? 'bg-luxury-gold/20 border-luxury-gold text-white'
                       : 'bg-black/40 border-white/10 text-luxury-silver hover:text-white'
                   }`}
                 >
-                  <div className="text-[10px] font-mono uppercase text-amber-300">
-                    Slide {idx + 1} • {s.indexLabel}
+                  <div className="text-[10px] font-mono uppercase text-luxury-gold">
+                    SLIDE 0{idx + 1} • {s.indexLabel}
                   </div>
-                  <div className="text-xs font-bold truncate mt-0.5">{s.title}</div>
+                  <div className="text-xs font-serif font-bold truncate mt-0.5">{s.title}</div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Synchronized Caption Box */}
-          <div className="p-4 rounded-xl bg-black/45 border border-white/10 space-y-2">
+          <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-white">
-                Synchronized Instagram &amp; LinkedIn Caption (Comment-Gate Hook)
+              <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
+                Omnichannel Executive Caption (IG • LinkedIn • Google Business)
               </span>
               <button
                 onClick={() => {
@@ -918,10 +761,9 @@ export default function VisionGlassReelStudio() {
                   setCopiedCaption(true)
                   setTimeout(() => setCopiedCaption(false), 2000)
                 }}
-                className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-amber-300 flex items-center gap-1"
+                className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-luxury-champagne"
               >
-                {copiedCaption ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                {copiedCaption ? 'Copied!' : 'Copy Caption'}
+                {copiedCaption ? 'COPIED' : 'COPY CAPTION'}
               </button>
             </div>
             <pre className="text-xs text-luxury-silver whitespace-pre-wrap font-sans leading-relaxed max-h-48 overflow-y-auto">
@@ -930,17 +772,12 @@ export default function VisionGlassReelStudio() {
           </div>
         </div>
 
-        {/* Right Live High-Res Canvas Preview */}
         <div className="lg:col-span-5 flex flex-col items-center">
-          <div className="w-full max-w-[300px] rounded-3xl overflow-hidden border-2 border-white/20 shadow-2xl bg-black">
-            <canvas
-              ref={canvasRef}
-              className="w-full h-auto block"
-            />
+          <div className="w-full max-w-[300px] rounded-2xl overflow-hidden border border-luxury-gold/40 shadow-2xl bg-black">
+            <canvas ref={canvasRef} className="w-full h-auto block" />
           </div>
-          <div className="mt-2 text-[11px] text-luxury-silver flex items-center gap-1.5">
-            <Play className="w-3.5 h-3.5 text-amber-400" />
-            Live 1080p Canvas Render • Ready for Instagram Reels &amp; LinkedIn
+          <div className="mt-2 text-[10px] font-mono uppercase tracking-widest text-luxury-gold">
+            Bespoke Obsidian &amp; Champagne-Gold 1080p Render
           </div>
         </div>
       </div>

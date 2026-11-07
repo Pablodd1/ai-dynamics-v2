@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Renders the 7-Slide VisionOS Frosted-Glass Deck (01..06 + CTA "BUILD")
- * over our photorealistic executive background into 1080x1920 PNGs using headless Chrome,
- * and compiles a 14-second 1080x1920 MP4 Reel via FFmpeg.
+ * Renders the Bespoke AI Dynamic Pro 7-Slide Obsidian & Champagne-Gold Architectural Deck
+ * (#07070c Obsidian, #c9a96e Luxury Gold, #f7e7ce Champagne, #06b6d4 Cyan — ZERO icons/emojis)
+ * into 1080x1920 PNGs via headless Chrome and compiles a 15s MP4 Reel via FFmpeg.
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -26,87 +26,63 @@ const SLIDES = [
   {
     step: 1,
     index: '01',
-    title: 'JAss Voice Agent',
-    desc: 'Picks up the phone in 3 seconds in English & Spanish, answers the questions and books the appointment, so no call gets missed.',
-    iconEmoji: '📞',
-    iconBg: 'linear-gradient(135deg, #34d399 0%, #059669 100%)',
-    pills: [
-      { icon: '✴️', text: 'JAss Voice AI', accent: '#fcd34d' },
-      { icon: '🌐', text: 'Bilingual EN / ES' },
-      { icon: '📅', text: 'Live Calendar & CRM Sync' },
-    ],
+    sector: 'ARCHITECTURE 01 OF 06 • HEALTHCARE & CLINICAL',
+    metric: '-45% CLINICAL ADMIN OVERHEAD • ZERO MANUAL DATA ENTRY',
+    title: 'Clinical & RCM Intelligence',
+    desc: 'We walk into medical practices and engineer ambient physician charting, automated 837 claim scrubbing, and insurance OCR intake—cutting 45% of admin payroll while training your staff to handle 4x volume.',
+    pills: ['AMBIENT SOAP SCRIBE', '837 CLAIM ENGINE', 'ON-SITE STAFF TRAINING'],
   },
   {
     step: 2,
     index: '02',
-    title: 'WhatsApp Agent',
-    desc: 'Answers every message on your business WhatsApp, IG DM & web chat in 30 seconds, qualifies the budget, then books the client in.',
-    iconEmoji: '💬',
-    iconBg: 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)',
-    pills: [
-      { icon: '✴️', text: 'JAss Omnichannel', accent: '#6ee7b7' },
-      { icon: '⚡', text: '30-Sec Closer Skill' },
-      { icon: '📲', text: 'WhatsApp + IG + Web' },
-    ],
+    sector: 'ARCHITECTURE 02 OF 06 • COMPUTER VISION & 3D',
+    metric: '3-SECOND NEURAL INSPECTION • MILLIMETER LIDAR PRECISION',
+    title: 'Neural Vision & Spatial AI',
+    desc: 'Replace slow human inspections with 3-second computer vision. We engineer custom YOLOv8 and DINOv2 models for macro luxury authentication, 12-class property defect vision, and 3D LiDAR floorplans.',
+    pills: ['YOLOv8 + DINOv2 VISION', '3D LIDAR DIGITAL TWIN', 'AUTO PDF CERTIFICATION'],
   },
   {
     step: 3,
     index: '03',
-    title: 'Payroll & Admin Saver',
-    desc: 'We walk into your company ($99 Audit) and automate intake forms, billing codes, and manual copy-pasting wasting $3,420/month.',
-    iconEmoji: '⚡',
-    iconBg: 'linear-gradient(135deg, #38bdf8 0%, #2563eb 100%)',
-    pills: [
-      { icon: '✴️', text: '$99 On-Site Audit', accent: '#7dd3fc' },
-      { icon: '🧾', text: 'Zero Manual Data Entry' },
-      { icon: '💰', text: '$2,500+/mo ROI Guarantee' },
-    ],
+    sector: 'ARCHITECTURE 03 OF 06 • AUTONOMOUS REVOPS',
+    metric: '3-SECOND RING-1 ANSWER • $997 TURNKEY OR $297/MO',
+    title: 'JAss Voice & CRM Pipeline',
+    desc: '38% of callers hang up on voicemail and 47-minute human replies kill 78% of deals. Our JAss bilingual voice and CRM architecture answers on Ring 1 in English and Spanish and books retainers in 3 seconds.',
+    pills: ['JASS BILINGUAL VOICE', 'SUB-MINUTE REVOPS', 'LIVE CALENDAR SYNC'],
   },
   {
     step: 4,
     index: '04',
-    title: 'Cold Email Machine',
-    desc: 'Finds B2B decision-makers in your industry, writes and sends executive outreach sequences, then drafts the hot replies for you.',
-    iconEmoji: '✉️',
-    iconBg: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)',
-    pills: [
-      { icon: '✴️', text: 'AI Dynamic Lead Engine', accent: '#93c5fd' },
-      { icon: '📬', text: 'Brevo + CRM Sync' },
-      { icon: '🎯', text: 'Verified Miami & US Leads' },
-    ],
+    sector: 'ARCHITECTURE 04 OF 06 • LEGAL & REAL ESTATE',
+    metric: '-15 HRS/WK PARALEGAL & BROKER ADMIN • ZERO MISSED CUTOFFS',
+    title: 'Private RAG & Deal Matching',
+    desc: 'Eliminate 15+ hours a week of paralegal and brokerage bottlenecks. Sovereign document RAG screens agreements for risk clauses in seconds, tracks escrow cutoffs, and matches off-market investor mandates.',
+    pills: ['SOVEREIGN DOCUMENT RAG', 'VECTOR DEAL MATCH', 'ESCROW TELEMETRY'],
   },
   {
     step: 5,
     index: '05',
-    title: '48-Hr Custom AI App',
-    desc: 'Give us your #1 bottleneck and our AI Developers engineer a working custom application in 48 hours—or you pay $0.',
-    iconEmoji: '🛠️',
-    iconBg: 'linear-gradient(135deg, #fbbf24 0%, #ea580c 100%)',
-    pills: [
-      { icon: '✴️', text: 'AI Dynamic Engineers', accent: '#fcd34d' },
-      { icon: '🚀', text: '48-Hour Live Prototype' },
-      { icon: '🛡️', text: '$30,000/yr Savings Guarantee' },
-    ],
+    sector: 'ARCHITECTURE 05 OF 06 • KINEMATICS & AGENTIC WEB',
+    metric: '33-JOINT POSE VISION • 5-10 DAY PRODUCTION LAUNCH',
+    title: 'Biomechanics & Agentic Web',
+    desc: 'From 33-joint smartphone gait kinematics and daily biometric adaptation to self-learning Agentic Websites structured for Google and ChatGPT citations, we build category-defining proprietary software.',
+    pills: ['33-JOINT KINEMATICS', 'SELF-LEARNING WEB UX', 'SCHEMA.ORG LLM GRAPH'],
   },
   {
     step: 6,
     index: '06',
-    title: 'Staff AI Bootcamp',
-    desc: 'We stay with your company and train up to 15 employees hands-on ($497) so 1 AI-trained staff member produces the output of 5.',
-    iconEmoji: '🎓',
-    iconBg: 'linear-gradient(135deg, #a855f7 0%, #c026d3 100%)',
-    pills: [
-      { icon: '✴️', text: 'On-Site Corporate Training', accent: '#d8b4fe' },
-      { icon: '📘', text: 'Department Playbooks' },
-      { icon: '🔥', text: '1 Employee = 5x Output' },
-    ],
+    sector: 'ARCHITECTURE 06 OF 06 • WORKFORCE MULTIPLICATION',
+    metric: '$99 60-MIN AUDIT • $497 CORPORATE BOOTCAMP (1 STAFF = 5X)',
+    title: '48-Hr Build & Staff Bootcamp',
+    desc: 'We build a working AI prototype in 48 hours—guaranteed to uncover $2,500+/month ($30K/yr) in savings or you pay $0—and stay on-site training your staff until 1 employee produces the output of 5.',
+    pills: ['48-HOUR LIVE PROTOTYPE', '$30,000/YR GUARANTEE', 'ON-SITE TEAM TRAINING'],
   },
   {
     step: 6,
-    index: 'CTA',
+    index: 'MANDATE',
     isCta: true,
-    ctaWord: '"BUILD"',
-    ctaSub: 'and we will engineer a live 48-hour AI prototype for your company + train your team 🔗',
+    ctaWord: '"SCALE"',
+    ctaSub: 'We will walk into your company, engineer a live 48-hour AI prototype—guaranteed to uncover $2,500+/month in savings or you pay $0—and train your staff.',
   },
 ]
 
@@ -116,71 +92,74 @@ function buildHtml(slide) {
       const active = slide.isCta || b === slide.step
       const done = b < slide.step
       const bg = active
-        ? 'linear-gradient(90deg, #fbbf24, #ea580c)'
+        ? '#c9a96e'
         : done
-        ? 'rgba(255,255,255,0.68)'
-        : 'rgba(255,255,255,0.22)'
-      return `<div style="width:66px;height:9px;border-radius:99px;background:${bg};box-shadow:${
-        active ? '0 0 14px rgba(251,191,36,0.75)' : 'none'
+        ? 'rgba(247, 231, 206, 0.55)'
+        : 'rgba(255, 255, 255, 0.16)'
+      return `<div style="width:68px;height:5px;border-radius:99px;background:${bg};box-shadow:${
+        active ? '0 0 14px rgba(201,169,110,0.85)' : 'none'
       };"></div>`
     })
     .join('')
 
   const cardInner = !slide.isCta
     ? `
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:44px;">
-        <div style="padding:14px 28px;border-radius:999px;background:rgba(255,255,255,0.13);border:1.5px solid rgba(255,255,255,0.25);font-size:26px;font-weight:600;color:rgba(255,255,255,0.92);">
-          System ${slide.index} of 6
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:34px;margin-bottom:42px;border-bottom:1px solid rgba(255,255,255,0.12);">
+        <div>
+          <div style="font-size:20px;font-weight:600;letter-spacing:3.2px;color:#c9a96e;margin-bottom:12px;">
+            ${slide.sector}
+          </div>
+          <div style="font-size:19px;font-weight:600;letter-spacing:1.8px;color:#22d3ee;">
+            ${slide.metric}
+          </div>
         </div>
-        <div style="font-size:108px;font-weight:200;color:rgba(255,255,255,0.85);line-height:0.9;letter-spacing:-3px;">
+        <div style="font-family:Georgia, 'Playfair Display', serif;font-size:112px;font-weight:300;color:rgba(247,231,206,0.92);line-height:0.82;letter-spacing:-3px;">
           ${slide.index}
         </div>
       </div>
 
-      <div style="display:flex;align-items:center;gap:32px;margin-bottom:38px;">
-        <div style="width:118px;height:118px;border-radius:30px;background:${slide.iconBg};display:flex;align-items:center;justify-content:center;font-size:58px;box-shadow:0 18px 35px rgba(0,0,0,0.45), inset 0 2px 3px rgba(255,255,255,0.45);border:2px solid rgba(255,255,255,0.35);flex-shrink:0;">
-          ${slide.iconEmoji}
-        </div>
-        <div style="font-size:58px;font-weight:800;color:#ffffff;letter-spacing:-1.2px;line-height:1.08;">
-          ${slide.title}
-        </div>
+      <div style="font-family:Georgia, 'Playfair Display', serif;font-size:62px;font-weight:700;color:#ffffff;letter-spacing:-1px;line-height:1.1;margin-bottom:34px;">
+        ${slide.title}
       </div>
 
-      <div style="font-size:39px;font-weight:500;color:rgba(255,255,255,0.96);line-height:1.38;margin-bottom:54px;">
+      <div style="font-size:36px;font-weight:400;color:rgba(232,232,232,0.94);line-height:1.46;margin-bottom:54px;">
         ${slide.desc}
       </div>
 
       <div style="margin-top:auto;">
-        <div style="font-size:23px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,0.58);margin-bottom:22px;">
-          SETUP
+        <div style="font-size:19px;font-weight:600;letter-spacing:3.5px;color:rgba(160,160,168,0.85);margin-bottom:22px;">
+          PRODUCTION ARCHITECTURE &amp; DEPLOYMENT
         </div>
         <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;">
-          <div style="padding:14px 24px;border-radius:18px;background:rgba(15,23,42,0.58);border:1.5px solid rgba(255,255,255,0.22);font-size:27px;font-weight:600;color:${slide.pills[0].accent || '#fff'};">
-            ${slide.pills[0].icon} ${slide.pills[0].text}
+          <div style="padding:14px 24px;border-radius:10px;background:rgba(7,7,12,0.88);border:1.2px solid rgba(255,255,255,0.22);font-size:22px;font-weight:600;letter-spacing:1.5px;color:#ffffff;">
+            ${slide.pills[0]}
           </div>
-          <span style="font-size:30px;font-weight:700;color:rgba(255,255,255,0.8);">+</span>
-          <div style="padding:14px 24px;border-radius:18px;background:rgba(15,23,42,0.58);border:1.5px solid rgba(255,255,255,0.22);font-size:27px;font-weight:600;color:#ffffff;">
-            ${slide.pills[1].icon} ${slide.pills[1].text}
+          <span style="font-size:26px;font-weight:600;color:#c9a96e;">/</span>
+          <div style="padding:14px 24px;border-radius:10px;background:rgba(7,7,12,0.88);border:1.2px solid rgba(255,255,255,0.22);font-size:22px;font-weight:600;letter-spacing:1.5px;color:#ffffff;">
+            ${slide.pills[1]}
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;margin-top:16px;">
-          <span style="font-size:30px;font-weight:700;color:rgba(255,255,255,0.8);padding-left:6px;">+</span>
-          <div style="padding:14px 24px;border-radius:18px;background:rgba(15,23,42,0.58);border:1.5px solid rgba(255,255,255,0.22);font-size:27px;font-weight:600;color:#fde68a;">
-            ${slide.pills[2].icon} ${slide.pills[2].text}
+          <span style="font-size:26px;font-weight:600;color:#c9a96e;padding-left:4px;">/</span>
+          <div style="padding:14px 26px;border-radius:10px;background:rgba(201,169,110,0.12);border:1.2px solid rgba(201,169,110,0.65);font-size:22px;font-weight:600;letter-spacing:1.5px;color:#f7e7ce;">
+            ${slide.pills[2]}
           </div>
         </div>
       </div>
     `
     : `
       <div style="margin:auto 0;text-align:center;">
-        <div style="font-size:42px;font-weight:600;color:rgba(255,255,255,0.92);margin-bottom:32px;">
-          💬 Comment
+        <div style="font-size:22px;font-weight:600;letter-spacing:4px;color:#c9a96e;margin-bottom:36px;">
+          EXECUTIVE DECISION PROTOCOL — COMMENT BELOW
         </div>
-        <div style="display:inline-block;padding:28px 74px;border-radius:30px;background:linear-gradient(135deg, rgba(245,158,11,0.72), rgba(234,88,12,0.72));border:2.5px solid rgba(253,224,71,0.75);box-shadow:0 20px 50px rgba(245,158,11,0.4);font-size:78px;font-weight:900;color:#ffffff;letter-spacing:2px;margin-bottom:40px;">
+        <div style="display:inline-block;padding:30px 84px;border-radius:18px;background:linear-gradient(135deg, #c9a96e 0%, #a0894e 100%);box-shadow:0 24px 60px rgba(201,169,110,0.35);font-family:Georgia, 'Playfair Display', serif;font-size:80px;font-weight:700;color:#07070c;letter-spacing:3px;margin-bottom:46px;">
           ${slide.ctaWord}
         </div>
-        <div style="font-size:40px;font-weight:600;color:#ffffff;line-height:1.38;max-width:680px;margin:0 auto;">
+        <div style="font-size:36px;font-weight:400;color:#ffffff;line-height:1.48;max-width:720px;margin:0 auto 38px auto;">
           ${slide.ctaSub}
+        </div>
+        <div style="display:inline-block;padding:14px 32px;border-radius:10px;border:1px solid rgba(201,169,110,0.5);background:rgba(7,7,12,0.8);font-size:21px;font-weight:600;letter-spacing:2.5px;color:#f7e7ce;">
+          AIDYNAMIC.PRO/BOOKING   •   $99 AUDIT / 48-HR PROTOTYPE
         </div>
       </div>
     `
@@ -195,8 +174,8 @@ function buildHtml(slide) {
     width: 1080px;
     height: 1920px;
     overflow: hidden;
-    font-family: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #070b14;
+    font-family: Inter, 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #07070c;
     position: relative;
   }
   .bg {
@@ -205,72 +184,65 @@ function buildHtml(slide) {
     background-image: url('${bgBase64}');
     background-size: cover;
     background-position: center;
-    filter: brightness(0.46) contrast(1.08) saturate(1.12);
+    filter: brightness(0.32) contrast(1.15) saturate(0.85);
     transform: scale(1.04);
   }
   .vignette {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(5,8,18,0.68) 0%, rgba(5,8,18,0.22) 45%, rgba(5,8,18,0.82) 100%);
+    background: linear-gradient(180deg, rgba(7,7,12,0.88) 0%, rgba(10,10,15,0.45) 45%, rgba(5,5,10,0.94) 100%);
   }
   .hook {
     position: absolute;
-    top: 175px;
+    top: 170px;
     left: 0;
     right: 0;
     text-align: center;
     z-index: 10;
   }
-  .hook-top {
-    display: inline-flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 10px;
+  .kicker {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    color: #c9a96e;
+    margin-bottom: 18px;
   }
-  .robot-badge {
-    padding: 10px 22px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #fbbf24, #ea580c);
-    color: #090d16;
-    font-weight: 900;
-    font-size: 30px;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-    border: 3px solid #000;
+  .gold-rule {
+    width: 180px;
+    height: 1.5px;
+    background: rgba(201, 169, 110, 0.5);
+    margin: 0 auto 24px auto;
   }
-  .big-six {
-    font-size: 108px;
-    font-weight: 900;
-    font-style: italic;
+  .hook-line-1 {
+    font-family: Georgia, 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
     color: #ffffff;
-    line-height: 0.9;
-    -webkit-text-stroke: 7px #000000;
-    paint-order: stroke fill;
-    text-shadow: 0 6px 18px rgba(0,0,0,0.85);
+    line-height: 1.15;
+    letter-spacing: -0.5px;
   }
-  .hook-line {
+  .hook-line-2 {
+    font-family: Georgia, 'Playfair Display', serif;
     font-size: 52px;
-    font-weight: 900;
     font-style: italic;
-    color: #ffffff;
-    line-height: 1.16;
-    -webkit-text-stroke: 8px #000000;
-    paint-order: stroke fill;
-    text-shadow: 0 4px 14px rgba(0,0,0,0.9);
+    font-weight: 400;
+    color: #f7e7ce;
+    line-height: 1.2;
+    margin-top: 4px;
   }
   .glass-card {
     position: absolute;
-    top: 475px;
-    left: 82px;
-    width: 916px;
-    height: 890px;
-    border-radius: 52px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.19) 0%, rgba(255,255,255,0.10) 55%, rgba(15,23,42,0.48) 100%);
-    backdrop-filter: blur(32px) saturate(140%);
-    -webkit-backdrop-filter: blur(32px) saturate(140%);
-    border: 2.5px solid rgba(255,255,255,0.34);
-    box-shadow: 0 35px 90px rgba(0,0,0,0.65), inset 0 2px 2px rgba(255,255,255,0.42);
-    padding: 46px 64px 58px 64px;
+    top: 445px;
+    left: 76px;
+    width: 928px;
+    height: 940px;
+    border-radius: 36px;
+    background: linear-gradient(145deg, rgba(26,26,36,0.84) 0%, rgba(15,15,22,0.78) 55%, rgba(10,10,15,0.92) 100%);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    border: 2px solid rgba(201,169,110,0.52);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.85), inset 0 1px 1px rgba(247,231,206,0.28);
+    padding: 46px 68px 62px 68px;
     display: flex;
     flex-direction: column;
     z-index: 10;
@@ -280,7 +252,7 @@ function buildHtml(slide) {
     align-items: center;
     justify-content: center;
     gap: 16px;
-    margin-bottom: 42px;
+    margin-bottom: 48px;
   }
   .footer {
     position: absolute;
@@ -288,12 +260,11 @@ function buildHtml(slide) {
     left: 0;
     right: 0;
     text-align: center;
-    font-size: 26px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.78);
-    letter-spacing: 1px;
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(201,169,110,0.88);
+    letter-spacing: 3.5px;
     z-index: 10;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.9);
   }
 </style>
 </head>
@@ -302,12 +273,10 @@ function buildHtml(slide) {
   <div class="vignette"></div>
 
   <div class="hook">
-    <div class="hook-top">
-      <span class="robot-badge">AI PRO</span>
-      <span class="big-six">6</span>
-    </div>
-    <div class="hook-line">AI systems we build &amp; train</div>
-    <div class="hook-line">inside your company this week</div>
+    <div class="kicker">AI DYNAMIC PRO • EXECUTIVE ARCHITECTURE</div>
+    <div class="gold-rule"></div>
+    <div class="hook-line-1">Six Production AI Architectures</div>
+    <div class="hook-line-2">Engineered Inside Your Company</div>
   </div>
 
   <div class="glass-card">
@@ -315,7 +284,7 @@ function buildHtml(slide) {
     ${cardInner}
   </div>
 
-  <div class="footer">AI DYNAMIC PRO • aidynamic.pro • (786) 643-2099</div>
+  <div class="footer">AI DYNAMIC PRO &nbsp;|&nbsp; AIDYNAMIC.PRO &nbsp;|&nbsp; +1 (786) 643-2099</div>
 </body>
 </html>`
 }
@@ -325,7 +294,7 @@ for (let i = 0; i < SLIDES.length; i++) {
   const htmlPath = path.join(OUT_DIR, `temp_slide_${i + 1}.html`)
   const pngName = `vision_slide_0${i + 1}.png`
   const pngPath = path.join(OUT_DIR, pngName)
-  const artifactPngPath = path.join(ARTIFACT_DIR, pngName)
+  const artifactPngPath = path.join(ARTIFACT_DIR, `bespoke_${pngName}`)
 
   fs.writeFileSync(htmlPath, buildHtml(slide), 'utf8')
 
@@ -340,5 +309,5 @@ for (let i = 0; i < SLIDES.length; i++) {
 
   fs.copyFileSync(pngPath, artifactPngPath)
   fs.unlinkSync(htmlPath)
-  console.log(`Rendered PNG: ${pngPath}`)
+  console.log(`Rendered Bespoke PNG: ${pngPath}`)
 }
