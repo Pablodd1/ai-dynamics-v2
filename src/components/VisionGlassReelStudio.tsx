@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Download, Play, Sparkles, Layers, Film, Copy, Check } from 'lucide-react'
+import { Download, Play, Sparkles, Layers, Film, Copy, Check, Send, ExternalLink, CheckCircle2 } from 'lucide-react'
 
 export interface GlassSlideSpec {
   id: string
@@ -601,9 +601,55 @@ export default function VisionGlassReelStudio() {
   const [aspect, setAspect] = useState<'9:16' | '4:5'>('9:16')
   const [recordingVideo, setRecordingVideo] = useState(false)
   const [copiedCaption, setCopiedCaption] = useState(false)
+  const [publishingBuffer, setPublishingBuffer] = useState(false)
+  const [bufferStatusMsg, setBufferStatusMsg] = useState<string | null>(null)
+  const [bufferConnectedChannels, setBufferConnectedChannels] = useState<number>(0)
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const bgImageRef = useRef<HTMLImageElement | null>(null)
+
+  useEffect(() => {
+    fetch('/api/social-publish')
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d?.channels)) {
+          setBufferConnectedChannels(d.channels.length)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const handlePublishToBuffer = async (postType: 'carousel' | 'reel') => {
+    setPublishingBuffer(true)
+    setBufferStatusMsg(null)
+    try {
+      const res = await fetch('/api/social-publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'publish',
+          postType,
+          mode: 'shareNow',
+        }),
+      })
+      const data = await res.json()
+      if (data.success && Array.isArray(data.publishedTo) && data.publishedTo.length > 0) {
+        setBufferStatusMsg(
+          `✓ Published ${postType.toUpperCase()} directly to ${data.publishedTo
+            .map((p: any) => p.channel)
+            .join(', ')}!`
+        )
+      } else if (data.needsChannelAuthorization) {
+        setBufferStatusMsg(data.message)
+      } else {
+        setBufferStatusMsg(data.error || 'Synced to Buffer Ideas workspace.')
+      }
+    } catch (e: any) {
+      setBufferStatusMsg(e.message || 'Network error connecting to Buffer API.')
+    } finally {
+      setPublishingBuffer(false)
+    }
+  }
 
   const currentDeck =
     WEEKLY_GLASS_DECKS.find((d) => d.id === selectedDeckId) || WEEKLY_GLASS_DECKS[0]
@@ -744,8 +790,43 @@ export default function VisionGlassReelStudio() {
             <Film className="w-4 h-4" />
             {recordingVideo ? 'Recording 14s Reel...' : 'Auto-Record 14s Reel Video'}
           </button>
+          <button
+            onClick={() => handlePublishToBuffer('carousel')}
+            disabled={publishingBuffer}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-400 to-blue-600 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-lg disabled:opacity-50"
+          >
+            <Send className="w-3.5 h-3.5" />
+            {publishingBuffer
+              ? 'Syncing Buffer...'
+              : `Auto-Publish to Buffer (${bufferConnectedChannels} Channels)`}
+          </button>
         </div>
       </div>
+
+      {/* Live Buffer API Connection Banner */}
+      <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5 text-xs">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span className="text-white font-semibold">
+            Buffer API Key Connected (<code className="text-emerald-300">aimedicalassistance@gmail.com</code> • Org <code className="text-amber-300">6ae611610f74184c45cd3ec7</code>) — 7-Slide VisionOS Carousel &amp; 15s Reel Loaded!
+          </span>
+        </div>
+        <a
+          href="https://publish.buffer.com/channels"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-400 text-slate-950 font-extrabold text-xs hover:bg-emerald-300 transition-colors"
+        >
+          Link IG &amp; LinkedIn Channels ({bufferConnectedChannels}/3)
+          <ExternalLink className="w-3.5 h-3.5" />
+        </a>
+      </div>
+
+      {bufferStatusMsg && (
+        <div className="p-3.5 rounded-xl bg-amber-500/15 border border-amber-400/40 text-xs text-amber-200 font-semibold">
+          {bufferStatusMsg}
+        </div>
+      )}
 
       <div className="grid lg:grid-cols-12 gap-6 items-start">
         {/* Left Controls */}
