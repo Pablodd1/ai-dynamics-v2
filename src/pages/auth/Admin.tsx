@@ -41,6 +41,7 @@ interface GbpPost {
   title: string
   ctaButton: string
   ctaUrl: string
+  imageUrl?: string
   content: string
 }
 
@@ -1645,53 +1646,139 @@ export default function Admin() {
             {/* Automated VisionOS Frosted-Glass Reel & Carousel Studio */}
             <VisionGlassReelStudio />
 
-            {/* Ready-to-Post Google Business Profile Updates */}
-            <div className="bg-dark-50/50 border border-white/10 rounded-2xl p-6">
-              <h3 className="text-base font-bold text-white mb-1">
-                Ready-to-Publish Google Business Profile ("Google Buz") Posts
-              </h3>
-              <p className="text-xs text-luxury-silver mb-4">
-                Copy any update below into your Google Business Profile ("Add Update" / "Add Offer") to boost local Miami Map Pack rankings and drive tracked clicks into Google Analytics:
-              </p>
+            {/* Complete From-Scratch Google Business Profile ("Google Buz") Blueprint & 7-Post Suite */}
+            <div className="bg-[#0d0d14] border border-luxury-gold/35 rounded-2xl p-6 space-y-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div>
+                  <span className="inline-block px-3 py-1 rounded-full bg-luxury-gold/15 border border-luxury-gold/40 text-luxury-gold text-[10px] font-mono uppercase tracking-[0.2em] mb-2">
+                    COMPLETE FROM-SCRATCH GOOGLE BUSINESS PROFILE ARCHITECTURE
+                  </span>
+                  <h3 className="text-xl font-serif font-bold text-white">
+                    Google Business Profile Master Setup &amp; 7-Post Executive Suite
+                  </h3>
+                  <p className="text-xs text-luxury-silver mt-1">
+                    Copy-and-paste your exact 748-char Description, Categories, 6 Service Tiers, 5 Seed Q&amp;As, and all 7 Architecture Posts paired with our bespoke Obsidian &amp; Gold visuals.
+                  </p>
+                </div>
+                <a
+                  href="https://business.google.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 rounded-xl bg-luxury-gold text-dark font-mono uppercase tracking-wider font-extrabold text-xs hover:bg-luxury-champagne transition-colors"
+                >
+                  Open Google Business Manager →
+                </a>
+              </div>
 
-              <div className="grid md:grid-cols-3 gap-4">
-                {gbpPosts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col justify-between space-y-4"
-                  >
+              {/* Core Profile Identity & 750-Char Description */}
+              <div className="grid lg:grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
+                      01 / Official 748-Char Google Business Description
+                    </span>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          'AI Dynamic Pro is an executive AI engineering, custom software development, and corporate staff training firm headquartered in Miami, Florida (+1 786-643-2099). Unlike generic software agencies, our AI Developers and Creators walk directly into your company, audit your slowest department ($99 60-Min Efficiency Audit), and engineer a working AI prototype in 48 hours—guaranteed to uncover $2,500+/month ($30,000/yr) in payroll and operating savings, or you pay $0. We deploy six production AI architectures across Healthcare & Clinical RCM, Computer Vision & 3D LiDAR, Legal & Real Estate RAG, Agentic Websites, and 24/7 Bilingual Voice (JAss)—and stay on-site training your staff ($497 Bootcamp) so 1 employee produces the output of 5.',
+                          'gbp_desc_750'
+                        )
+                      }
+                      className="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-[11px] font-mono text-luxury-champagne"
+                    >
+                      {copiedId === 'gbp_desc_750' ? 'COPIED' : 'COPY DESCRIPTION'}
+                    </button>
+                  </div>
+                  <p className="text-xs text-luxury-silver leading-relaxed">
+                    AI Dynamic Pro is an executive AI engineering, custom software development, and corporate staff training firm headquartered in Miami, Florida (+1 786-643-2099). Unlike generic software agencies, our AI Developers and Creators walk directly into your company, audit your slowest department ($99 60-Min Efficiency Audit), and engineer a working AI prototype in 48 hours—guaranteed to uncover $2,500+/month ($30,000/yr) in payroll and operating savings, or you pay $0. We deploy six production AI architectures across Healthcare &amp; Clinical RCM, Computer Vision &amp; 3D LiDAR, Legal &amp; Real Estate RAG, Agentic Websites, and 24/7 Bilingual Voice (JAss)—and stay on-site training your staff ($497 Bootcamp) so 1 employee produces the output of 5.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-2">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
+                    02 / Categories, Service Areas &amp; Attributes Checklist
+                  </span>
+                  <div className="text-xs text-luxury-silver space-y-1.5 leading-relaxed">
                     <div>
-                      <span className="inline-block px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 text-[10px] font-bold uppercase tracking-wider mb-2">
-                        {post.type}
-                      </span>
-                      <h4 className="text-sm font-bold text-white mb-2">{post.title}</h4>
-                      <pre className="text-xs text-luxury-silver whitespace-pre-wrap font-sans leading-relaxed">
-                        {post.content}
-                      </pre>
+                      <strong className="text-white font-mono">Primary Category:</strong> Software Company <span className="text-luxury-gold">(or Business Management Consultant)</span>
                     </div>
-
-                    <div className="pt-3 border-t border-white/10 space-y-2">
-                      <div className="text-[11px] text-emerald-400 font-mono truncate">
-                        Button ({post.ctaButton}): {post.ctaUrl}
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => copyToClipboard(post.content, post.id)}
-                          className="flex-1 py-2 rounded-lg bg-accent text-dark font-bold text-xs flex items-center justify-center gap-1"
-                        >
-                          {copiedId === post.id ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                          {copiedId === post.id ? 'Copied Post' : 'Copy Post Text'}
-                        </button>
-                        <button
-                          onClick={() => copyToClipboard(post.ctaUrl, `${post.id}_url`)}
-                          className="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold"
-                        >
-                          {copiedId === `${post.id}_url` ? 'Copied URL' : 'Copy URL'}
-                        </button>
-                      </div>
+                    <div>
+                      <strong className="text-white font-mono">Additional Categories:</strong> Computer Consultant •Website Designer • Corporate Training • Marketing Consultant • Automation Company
+                    </div>
+                    <div>
+                      <strong className="text-white font-mono">Service Areas (20):</strong> Miami, Brickell, Coral Gables, Doral, Miami Beach, Wynwood, Aventura, Key Biscayne, Coconut Grove, Sunny Isles, Fort Lauderdale, Boca Raton, West Palm Beach, South Florida.
+                    </div>
+                    <div>
+                      <strong className="text-white font-mono">Hours &amp; Languages:</strong> Open 24 Hours (JAss Bilingual AI Line) • English &amp; Spanish • On-Site &amp; Online Appointments.
                     </div>
                   </div>
-                ))}
+                </div>
+              </div>
+
+              {/* 7 Ready-to-Publish Google Business Posts with Bespoke Slide Previews */}
+              <div>
+                <h4 className="text-sm font-mono uppercase tracking-wider text-luxury-gold mb-3">
+                  03 / All 7 Ready-to-Publish Google Business Updates &amp; Offers (Zero Icons • Paired With Obsidian-Gold Visuals)
+                </h4>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {gbpPosts.map((post) => (
+                    <div
+                      key={post.id}
+                      className="p-4 rounded-xl bg-black/60 border border-white/10 hover:border-luxury-gold/40 flex flex-col justify-between space-y-4 transition-all"
+                    >
+                      <div>
+                        {post.imageUrl && (
+                          <div className="mb-3 rounded-lg overflow-hidden border border-white/10 bg-black h-44 flex items-center justify-center">
+                            <img
+                              src={post.imageUrl}
+                              alt={post.title}
+                              className="h-full w-auto object-contain"
+                            />
+                          </div>
+                        )}
+                        <span className="inline-block px-2.5 py-0.5 rounded bg-luxury-gold/15 text-luxury-gold text-[10px] font-mono font-bold uppercase tracking-wider mb-2">
+                          {post.type}
+                        </span>
+                        <h4 className="text-sm font-serif font-bold text-white mb-2">{post.title}</h4>
+                        <pre className="text-xs text-luxury-silver whitespace-pre-wrap font-sans leading-relaxed max-h-48 overflow-y-auto">
+                          {post.content}
+                        </pre>
+                      </div>
+
+                      <div className="pt-3 border-t border-white/10 space-y-2">
+                        <div className="text-[10px] text-luxury-champagne font-mono truncate">
+                          CTA ({post.ctaButton}): {post.ctaUrl}
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => copyToClipboard(post.content, post.id)}
+                            className="flex-1 py-2 rounded-lg bg-luxury-gold text-dark font-mono uppercase tracking-wider font-extrabold text-[11px] flex items-center justify-center gap-1"
+                          >
+                            {copiedId === post.id ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                            {copiedId === post.id ? 'Copied Post' : 'Copy Post'}
+                          </button>
+                          <button
+                            onClick={() => copyToClipboard(post.ctaUrl, `${post.id}_url`)}
+                            className="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[11px] font-mono font-bold"
+                          >
+                            {copiedId === `${post.id}_url` ? 'Copied' : 'URL'}
+                          </button>
+                          {post.imageUrl && (
+                            <a
+                              href={post.imageUrl}
+                              download
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-luxury-gold text-[11px] font-mono font-bold"
+                            >
+                              PNG
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
