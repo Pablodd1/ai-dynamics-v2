@@ -167,13 +167,46 @@ export default async function handler(req, res) {
         const gbpSuite = [
           {
             mode: 'shareNow',
+            googleType: 'whats_new',
+            img: 'https://www.aidynamic.pro/social/gbp-logos/gbp_official_logo_square.png?v=logo2',
+            btn: 'book',
+            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_official_logo',
+            txt: `AI DYNAMIC PRO — MIAMI & SOUTH FLORIDA OFFICIAL AI DEVELOPERS, CUSTOM APP CREATORS & CORPORATE STAFF TRAINERS (EN / ES).
+
+We come directly into your business, audit your workflows ($99 60-Min Audit), build a working custom AI prototype in 48 hours, and stay with your staff to train them until 1 employee produces the output of 5.
+
+01. 22+ Proven Systems for Medical & Dental Clinics, Law Firms, Real Estate Brokers, Contractors, and Retail.
+02. JAss 24/7 Bilingual (English/Spanish) AI Phone & WhatsApp Receptionist ($997 turnkey).
+03. On-Site Corporate Staff AI Bootcamp ($497 flat for up to 15 staff members).
+04. $2,500+/Month ($30,000/yr) Savings Guarantee — or you pay $0.
+
+Hablamos Español: Automatización con IA, aplicaciones a medida y capacitación de personal en tu empresa en Miami y el Sur de la Florida.`,
+          },
+          {
+            mode: 'shareNow',
+            googleType: 'whats_new',
+            img: 'https://www.aidynamic.pro/social/gbp-logos/gbp_official_cover_1920x1080.png?v=logo2',
+            btn: 'book',
+            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_official_cover',
+            txt: `WE COME INTO YOUR BUSINESS, BUILD CUSTOM AI IN 48 HOURS & TRAIN YOUR STAFF — Save $2,500+/Mo in Payroll & Time or You Pay $0.
+
+Why South Florida CEOs, Clinic Owners, Attorneys, Real Estate Brokers, and Contractors choose AI Dynamic Pro:
+
+01. $99 60-Min Executive Audit + Free 48-Hour Live Custom AI Prototype built around your exact operations.
+02. $497 On-Site Corporate AI Staff Bootcamp — we stay with your team and train them step-by-step so 1 employee performs like 5.
+03. JAss 24/7 Bilingual (EN/ES) Voice & WhatsApp Receptionist ($997 turnkey) that answers every lead on Ring 1 and books your calendar automatically.
+
+Click Book Below to claim your $99 Audit + Free 48-Hr Custom AI Prototype.`,
+          },
+          {
+            mode: 'shareNow',
             googleType: 'offer',
             offerTitle: '$99 CEO AI Audit + Free 48-Hr Custom AI Prototype',
             offerCode: 'SCALE99',
             offerTerms: 'Guaranteed to uncover at least $2,500/month ($30,000/yr) in payroll and time savings for your business or we refund your $99 immediately. Includes a working 48-hour AI prototype built for your company.',
             startDate: '2026-11-09T12:00:00Z',
             endDate: '2026-12-31T23:59:00Z',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_06.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_06.png?v=logo2',
             btn: 'book',
             link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_offer_scale99',
             txt: `FOR MIAMI & SOUTH FLORIDA CEOS & BUSINESS OWNERS: Stop overpaying for slow manual work and missed calls.
@@ -190,7 +223,7 @@ EN ESPAÑOL: Vamos a tu empresa en Miami y el Sur de la Florida, creamos tu prot
           {
             mode: 'shareNow',
             googleType: 'whats_new',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_03.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_03.png?v=logo2',
             btn: 'book',
             link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_ceo_vision',
             txt: `WHY SOUTH FLORIDA BUSINESS OWNERS CHOOSE AI DYNAMIC PRO — We Don't Just Sell Software. We Build Your Vision & Train Your Team.
@@ -206,9 +239,9 @@ Whether you run a Medical Clinic, Law Firm, Real Estate Brokerage, Construction/
 Make the decision today. Click Book Below to claim your $99 Audit + Free 48-Hour Prototype.`,
           },
           {
-            mode: 'addToQueue',
+            mode: 'shareNow',
             googleType: 'whats_new',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_01.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_01.png?v=logo2',
             btn: 'learn_more',
             link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_medical_dental',
             txt: `FOR MEDICAL CLINICS, DENTAL PRACTICES & MEDSPAS IN MIAMI — Cut Front-Desk & Billing Overhead by 45%.
@@ -226,7 +259,7 @@ EN ESPAÑOL: Automatización con IA y entrenamiento de personal para clínicas m
           {
             mode: 'shareNow',
             googleType: 'whats_new',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_04.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_04.png?v=logo2',
             btn: 'book',
             link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_legal_realestate',
             txt: `FOR LAW FIRMS, REAL ESTATE BROKERS & PROPERTY MANAGERS — Close More Retainers & Deals in Under 3 Minutes.
@@ -244,7 +277,7 @@ Click Book Below to schedule your $99 60-Min Department Efficiency Audit.`,
           {
             mode: 'shareNow',
             googleType: 'whats_new',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_02.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_02.png?v=logo2',
             btn: 'learn_more',
             link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_contractors_retail',
             txt: `FOR CONTRACTORS, HOME SERVICES, LOGISTICS & LUXURY RETAIL — Custom AI Apps That Turn Photos & Calls Into Instant Quotes.
@@ -262,7 +295,7 @@ Click Learn More to see our 22 live systems or book your $99 Audit + Free 48-Hr 
           {
             mode: 'shareNow',
             googleType: 'whats_new',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_05.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_05.png?v=logo2',
             btn: 'learn_more',
             link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_agentic_web',
             txt: `NEED A NEW WEBSITE OR CUSTOM APP IN 5 TO 10 DAYS? We Build Self-Selling AI Websites That Rank on Google & ChatGPT.
@@ -280,7 +313,7 @@ Click Learn More or book your $99 Audit to see a live 48-hour prototype for your
           {
             mode: 'shareNow',
             googleType: 'whats_new',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_07.png',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_07.png?v=logo2',
             btn: 'signup',
             link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_staff_bootcamp',
             txt: `ON-SITE CORPORATE AI STAFF TRAINING BOOTCAMP ($497) — Turn 1 Existing Employee Into the Output of 5.

@@ -1502,6 +1502,71 @@ export default function Admin() {
                 </div>
               </div>
 
+              {/* Official Google Business Profile Square Logo (1080x1080) & Cover Photo (1920x1080) */}
+              <div className="p-5 rounded-xl bg-black/60 border border-luxury-gold/40 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold font-bold">
+                      02.5 / Official Google Business Profile Square Logo (1080×1080) &amp; 16:9 Cover Banner (1920×1080)
+                    </span>
+                    <p className="text-xs text-luxury-silver mt-0.5">
+                      Rendered with our official Champagne-Gold Hexagonal AI Circuit Crest. Published directly onto your Google Business feed and ready for 1-click upload under <strong className="text-white">business.google.com → Add Photo → Logo / Cover photo</strong>.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-[#07070c] border border-white/10 flex items-center gap-4">
+                    <img
+                      src="/social/gbp-logos/gbp_official_logo_square.png"
+                      alt="AI Dynamic Pro Official Google Business Logo (1080x1080)"
+                      className="w-24 h-24 rounded-xl border border-luxury-gold/40 object-cover shrink-0"
+                    />
+                    <div className="space-y-2">
+                      <div className="text-sm font-serif font-bold text-white">
+                        Official Square Profile Logo (1:1 • 1080×1080)
+                      </div>
+                      <p className="text-[11px] text-luxury-silver">
+                        Centered inside Google’s circular avatar safe-zone so zero text or crest edges are cropped on Google Maps.
+                      </p>
+                      <a
+                        href="/social/gbp-logos/gbp_official_logo_square.png"
+                        download="AI_Dynamic_Pro_GBP_Logo_1080x1080.png"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block px-3 py-1.5 rounded-lg bg-luxury-gold text-dark font-mono text-[11px] font-extrabold uppercase tracking-wider"
+                      >
+                        Download 1080×1080 Logo PNG
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-[#07070c] border border-white/10 flex items-center gap-4">
+                    <img
+                      src="/social/gbp-logos/gbp_official_cover_1920x1080.png"
+                      alt="AI Dynamic Pro Official Google Business Cover Banner (1920x1080)"
+                      className="w-36 h-24 rounded-xl border border-luxury-gold/40 object-cover shrink-0"
+                    />
+                    <div className="space-y-2">
+                      <div className="text-sm font-serif font-bold text-white">
+                        Official 16:9 Cover Photo Banner (1920×1080)
+                      </div>
+                      <p className="text-[11px] text-luxury-silver">
+                        Highlights your $99 CEO Audit, $497 Staff Bootcamp, JAss Bilingual AI, and $2,500+/mo Guarantee.
+                      </p>
+                      <a
+                        href="/social/gbp-logos/gbp_official_cover_1920x1080.png"
+                        download="AI_Dynamic_Pro_GBP_Cover_1920x1080.png"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block px-3 py-1.5 rounded-lg bg-luxury-gold text-dark font-mono text-[11px] font-extrabold uppercase tracking-wider"
+                      >
+                        Download 1920×1080 Cover PNG
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* 7 Ready-to-Publish Google Business Posts with Bespoke Slide Previews */}
               <div>
                 <h4 className="text-sm font-mono uppercase tracking-wider text-luxury-gold mb-3">
