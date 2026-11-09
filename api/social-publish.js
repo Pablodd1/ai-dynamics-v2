@@ -7,6 +7,9 @@
 const DEFAULT_BUFFER_TOKEN =
   process.env.BUFFER_API_TOKEN ||
   process.env.BUFFER_ACCESS_TOKEN ||
+  process.env.BUFFER_KEY ||
+  process.env.BUFFER_TOKEN ||
+  process.env.VITE_BUFFER_API_TOKEN ||
   ''
 
 const DEFAULT_ORG_ID = '6ae611610f74184c45cd3ec7'

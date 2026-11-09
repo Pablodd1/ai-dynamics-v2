@@ -343,7 +343,14 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '';
+  // Prefer BREVO_API_KEY (must start with xkeysib- for Brevo v3 REST API)
+  const rawBrevoKey = process.env.BREVO_API_KEY || process.env.BREVO_KEY || '';
+  const rawViteBrevoKey = process.env.VITE_BREVO_API_KEY || '';
+  const BREVO_API_KEY = rawBrevoKey.startsWith('xkeysib-')
+    ? rawBrevoKey.trim()
+    : rawViteBrevoKey.startsWith('xkeysib-')
+      ? rawViteBrevoKey.trim()
+      : (rawBrevoKey || rawViteBrevoKey).trim();
   const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co';
   const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
   const GBP_REVIEW_URL =
@@ -388,7 +395,17 @@ export default async function handler(req, res) {
           ipBlocked,
           brevoStatus: accountRes ? accountRes.status : null,
           brevoError,
-          keyLength: BREVO_API_KEY ? BREVO_API_KEY.length : 0,
+          keyDiagnostics: {
+            hasBrevoApiKey: Boolean(rawBrevoKey),
+            brevoApiKeyLength: rawBrevoKey.length,
+            brevoApiKeyStartsWithXkeysib: rawBrevoKey.startsWith('xkeysib-'),
+            hasViteBrevoApiKey: Boolean(rawViteBrevoKey),
+            viteBrevoApiKeyLength: rawViteBrevoKey.length,
+            viteBrevoApiKeyStartsWithXkeysib: rawViteBrevoKey.startsWith('xkeysib-'),
+            matchingEnvKeys: Object.keys(process.env).filter((k) =>
+              /BREVO|BUFFER|SMTP/i.test(k)
+            ),
+          },
           account: account
             ? {
                 email: account.email,
