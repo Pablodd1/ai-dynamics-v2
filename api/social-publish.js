@@ -168,7 +168,7 @@ export default async function handler(req, res) {
           {
             mode: 'shareNow',
             googleType: 'offer',
-            offerTitle: '$99 CEO AI Audit + Free 48-Hr Custom Prototype (Save $2,500+/mo or Pay $0)',
+            offerTitle: '$99 CEO AI Audit + Free 48-Hr Custom AI Prototype',
             offerCode: 'SCALE99',
             offerTerms: 'Guaranteed to uncover at least $2,500/month ($30,000/yr) in payroll and time savings for your business or we refund your $99 immediately. Includes a working 48-hour AI prototype built for your company.',
             startDate: '2026-11-09T12:00:00Z',
@@ -224,7 +224,7 @@ We come into your clinic, build custom healthcare AI around your practice, and t
 EN ESPAÑOL: Automatización con IA y entrenamiento de personal para clínicas médicas, dentales y estéticas en Miami. Reserva tu Auditoría de $99 hoy.`,
           },
           {
-            mode: 'addToQueue',
+            mode: 'shareNow',
             googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_04.png',
             btn: 'book',
@@ -242,7 +242,7 @@ We engineer custom private AI systems for South Florida law firms, title compani
 Click Book Below to schedule your $99 60-Min Department Efficiency Audit.`,
           },
           {
-            mode: 'addToQueue',
+            mode: 'shareNow',
             googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_02.png',
             btn: 'learn_more',
@@ -260,7 +260,7 @@ As AI Developers & Creators, we build custom applications tailored to your exact
 Click Learn More to see our 22 live systems or book your $99 Audit + Free 48-Hr Prototype.`,
           },
           {
-            mode: 'addToQueue',
+            mode: 'shareNow',
             googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_05.png',
             btn: 'learn_more',
@@ -278,7 +278,7 @@ What we build and launch for your business in 5 to 10 days:
 Click Learn More or book your $99 Audit to see a live 48-hour prototype for your brand.`,
           },
           {
-            mode: 'saveToDraft',
+            mode: 'shareNow',
             googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_07.png',
             btn: 'signup',
