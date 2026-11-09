@@ -115,7 +115,17 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
-      const { action, channelIds, postType = 'carousel', mode = 'shareNow' } = req.body || {}
+      const {
+        action,
+        channelIds,
+        postType = 'carousel',
+        mode = 'shareNow',
+        dueAt,
+        customText,
+        customImageUrl,
+        customButton = 'book',
+        customLink = 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=buffer_vision_deck',
+      } = req.body || {}
 
       // Fetch active channels if not explicitly passed
       const chQuery = `
@@ -208,14 +218,45 @@ export default async function handler(req, res) {
 
       for (const ch of targetChannels) {
         const isReel = postType === 'reel'
-        const assets = isReel
-          ? [{ video: { url: VISION_DECK_CAROUSEL.reelUrl, metadata: { title: '6 AI Systems We Build & Train Inside Your Company' } } }]
-          : VISION_DECK_CAROUSEL.slides.map((url, i) => ({
+        let assets = []
+        if (customImageUrl) {
+          assets = [
+            {
               image: {
-                url,
-                metadata: { altText: `AI Dynamic Pro System Slide 0${i + 1}` },
+                url: customImageUrl,
+                metadata: { altText: 'AI Dynamic Pro Executive Architecture Slide' },
               },
-            }))
+            },
+          ]
+        } else if (ch.service === 'googlebusiness') {
+          // Google Business Profile accepts a single high-impact visual per What's New post
+          assets = [
+            {
+              image: {
+                url: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_06.png',
+                metadata: {
+                  altText: 'AI Dynamic Pro — $99 60-Min Department Efficiency Audit & 48-Hr Live Prototype',
+                },
+              },
+            },
+          ]
+        } else if (isReel) {
+          assets = [
+            {
+              video: {
+                url: VISION_DECK_CAROUSEL.reelUrl,
+                metadata: { title: '6 AI Systems We Build & Train Inside Your Company' },
+              },
+            },
+          ]
+        } else {
+          assets = VISION_DECK_CAROUSEL.slides.map((url, i) => ({
+            image: {
+              url,
+              metadata: { altText: `AI Dynamic Pro System Slide 0${i + 1}` },
+            },
+          }))
+        }
 
         const metadata = {}
         if (ch.service === 'instagram') {
@@ -229,27 +270,34 @@ export default async function handler(req, res) {
           metadata.google = {
             type: 'whats_new',
             detailsWhatsNew: {
-              button: 'book',
-              link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=buffer_vision_deck',
+              button: customButton,
+              link: customLink,
             },
           }
         }
 
+        const postInput = {
+          channelId: ch.id,
+          schedulingType: 'automatic',
+          mode,
+          text: customText || VISION_DECK_CAROUSEL.text,
+          assets,
+          metadata,
+        }
+        if (dueAt && mode === 'customScheduled') {
+          postInput.dueAt = dueAt
+        }
+
         const postRes = await bufferGraphQL(
           createPostMutation,
-          {
-            input: {
-              channelId: ch.id,
-              schedulingType: 'automatic',
-              mode,
-              text: VISION_DECK_CAROUSEL.text,
-              assets,
-              metadata,
-            },
-          },
+          { input: postInput },
           token
         )
-        results.push({ channel: ch.name, service: ch.service, response: postRes?.data?.createPost })
+        results.push({
+          channel: ch.name,
+          service: ch.service,
+          response: postRes?.data?.createPost || postRes?.errors || postRes,
+        })
       }
 
       return res.status(200).json({
