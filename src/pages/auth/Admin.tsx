@@ -278,63 +278,6 @@ export default function Admin() {
         setAuditingBrevo(false)
         return
       }
-
-      // Client-IP Fallback if Vercel serverless AWS IP is blocked by Brevo Authorised IPs
-      const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (clientKey) {
-        const headers = { Accept: 'application/json', 'api-key': clientKey }
-        const [accR, listR, campR, blkR, sdrR] = await Promise.all([
-          fetch('https://api.brevo.com/v3/account', { headers }).catch(() => null),
-          fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null),
-          fetch('https://api.brevo.com/v3/emailCampaigns?limit=25', { headers }).catch(() => null),
-          fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=50', { headers }).catch(() => null),
-          fetch('https://api.brevo.com/v3/senders', { headers }).catch(() => null),
-        ])
-        if (accR && accR.ok) {
-          const acc = await accR.json()
-          setBrevoAccountEmail(acc.email || 'jasmelacosta@gmail.com')
-        }
-        if (listR && listR.ok) {
-          const ld = await listR.json()
-          const mappedLists = (ld.lists || []).map((l: any) => ({
-            id: l.id,
-            name: l.name,
-            totalSubscribers: l.totalSubscribers || l.uniqueSubscribers || 0,
-            totalBlacklisted: l.totalBlacklisted || 0,
-          }))
-          setBrevoLists(mappedLists)
-          if (mappedLists.length > 0) setSelectedBrevoListId(mappedLists[0].id)
-        }
-        if (campR && campR.ok) {
-          const cd = await campR.json()
-          setExternalCampaigns(
-            (cd.campaigns || []).map((c: any) => ({
-              id: c.id,
-              name: c.name,
-              subject: c.subject,
-              status: c.status,
-              scheduledAt: c.scheduledAt || null,
-            }))
-          )
-        }
-        if (blkR && blkR.ok) {
-          const bd = await blkR.json()
-          setBlockedContactsCount(bd.count || (bd.contacts || []).length || 0)
-        }
-        if (sdrR && sdrR.ok) {
-          const sd = await sdrR.json()
-          const mappedSenders: BrevoSenderMeta[] = (sd.senders || []).map((s: any) => ({
-            id: s.id,
-            name: s.name,
-            email: s.email,
-            active: Boolean(s.active),
-          }))
-          setBrevoSenders(mappedSenders)
-          if (!selectedSenderEmail && mappedSenders.length > 0) {
-            setSelectedSenderEmail(pickBestActiveSender(mappedSenders))
-          }
-        }
-      }
     } catch (err) {
       console.warn('Brevo audit error:', err)
     } finally {
@@ -369,41 +312,10 @@ export default function Admin() {
         setCreatingSender(false)
         return
       }
-
-      // Client-side fallback if Vercel serverless IP is restricted in Brevo
-      const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (clientKey) {
-        const directRes = await fetch('https://api.brevo.com/v3/senders', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'api-key': clientKey,
-          },
-          body: JSON.stringify({
-            name: customSenderName || 'Jasmel Acosta — AI Dynamic Pro',
-            email: targetEmail,
-          }),
-        })
-        if (directRes.ok) {
-          setCampaignResult({
-            success: true,
-            message: `✅ Brevo verification email sent to ${targetEmail}! Open your inbox and click "Confirm my email address", then click "Audit Brevo".`,
-          })
-          await runBrevoAudit()
-        } else {
-          const errTxt = await directRes.text().catch(() => 'Could not add sender')
-          setCampaignResult({
-            success: false,
-            message: `Brevo response for ${targetEmail}: ${errTxt}`,
-          })
-        }
-      } else {
-        setCampaignResult({
-          success: false,
-          message: data?.message || 'Could not create sender in Brevo.',
-        })
-      }
+      setCampaignResult({
+        success: false,
+        message: data?.message || 'Could not create sender in Brevo. Verify BREVO_API_KEY in server environment.',
+      })
     } catch (err: any) {
       setCampaignResult({
         success: false,
@@ -436,39 +348,14 @@ export default function Admin() {
         }),
       })
       const data = await res.json()
-
-      // Client-IP fallback if needed
-      const clientKey = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (targetIds.length > 0 && (!data.updatedIds || data.updatedIds.length === 0) && clientKey) {
-        let clientUpdated = 0
-        for (const cid of targetIds) {
-          const putR = await fetch(`https://api.brevo.com/v3/emailCampaigns/${cid}/status`, {
-            method: 'PUT',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'api-key': clientKey,
-            },
-            body: JSON.stringify({ status: isResume ? 'queued' : 'suspended' }),
-          }).catch(() => null)
-          if (putR && (putR.ok || putR.status === 204)) clientUpdated++
-        }
-        setCampaignResult({
-          success: true,
-          message: isResume
-            ? `Resumed ${clientUpdated} external (MBMB) campaign(s) in Brevo.`
-            : `Paused ${clientUpdated} active external (MBMB) campaign(s) in Brevo.`,
-        })
-      } else {
-        setCampaignResult({
-          success: true,
-          message:
-            data.message ||
-            (isResume
-              ? 'MBMB Brevo connection is active and ready to resume sending.'
-              : 'Verified: 0 active or scheduled external (MBMB) campaigns are queued in Brevo.'),
-        })
-      }
+      setCampaignResult({
+        success: true,
+        message:
+          data.message ||
+          (isResume
+            ? 'MBMB Brevo connection is active and ready to resume sending.'
+            : 'Verified: 0 active or scheduled external (MBMB) campaigns are queued in Brevo.'),
+      })
       await runBrevoAudit()
     } catch (err: any) {
       setCampaignResult({
@@ -518,7 +405,7 @@ export default function Admin() {
     setSendingCampaign(true)
     setCampaignResult(null)
     try {
-      let customRecipients =
+      const customRecipients =
         dispatchMode === 'custom'
           ? customEmailsInput
               .split(/[\n,;]+/)
@@ -526,60 +413,6 @@ export default function Admin() {
               .filter((e) => e.includes('@'))
               .map((email) => ({ email, name: email.split('@')[0], company: 'your business' }))
           : []
-
-      // If dispatching to a Brevo Contact List or ALL Brevo Contacts and client key is available, pre-fetch contacts client-side in case Vercel IP is restricted
-      const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (dispatchMode === 'all_brevo_contacts' && clientBrevoKey) {
-        const seen = new Set<string>()
-        const merged: { email: string; name: string; company: string }[] = []
-        for (const offset of [0, 500, 1000, 1500]) {
-          const allR = await fetch(`https://api.brevo.com/v3/contacts?limit=500&offset=${offset}`, {
-            headers: { Accept: 'application/json', 'api-key': clientBrevoKey },
-          }).catch(() => null)
-          if (!allR || !allR.ok) break
-          const allD = await allR.json()
-          const batch = allD.contacts || []
-          for (const c of batch) {
-            const clean = (c?.email || '').trim().toLowerCase()
-            if (!clean || !clean.includes('@') || seen.has(clean) || c.emailBlacklisted) continue
-            seen.add(clean)
-            merged.push({
-              email: clean,
-              name: c.attributes?.FIRSTNAME || c.attributes?.NAME || clean.split('@')[0],
-              company: c.attributes?.COMPANY || 'your business',
-            })
-          }
-          if (batch.length < 500) break
-        }
-        for (const l of leads) {
-          const clean = (l.email || '').trim().toLowerCase()
-          if (!clean || !clean.includes('@') || seen.has(clean) || l.status === 'lost') continue
-          seen.add(clean)
-          merged.push({
-            email: clean,
-            name: l.name || clean.split('@')[0],
-            company: l.company || 'your business',
-          })
-        }
-        customRecipients = merged
-      } else if (dispatchMode === 'brevo_list' && clientBrevoKey) {
-        const listRes = await fetch(
-          `https://api.brevo.com/v3/contacts/lists/${selectedBrevoListId}/contacts?limit=500`,
-          {
-            headers: { Accept: 'application/json', 'api-key': clientBrevoKey },
-          }
-        ).catch(() => null)
-        if (listRes && listRes.ok) {
-          const listData = await listRes.json()
-          customRecipients = (listData.contacts || [])
-            .filter((c: any) => c && c.email && !c.emailBlacklisted)
-            .map((c: any) => ({
-              email: c.email.trim().toLowerCase(),
-              name: c.attributes?.FIRSTNAME || c.attributes?.NAME || c.email.split('@')[0],
-              company: c.attributes?.COMPANY || 'your business',
-            }))
-        }
-      }
 
       const isoSchedule = scheduledAtInput ? new Date(scheduledAtInput).toISOString() : ''
       const effectiveSenderEmail = selectedSenderEmail || pickBestActiveSender(brevoSenders)
@@ -591,10 +424,7 @@ export default function Admin() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           campaignId: selectedCampaignId,
-          mode:
-            (dispatchMode === 'brevo_list' || dispatchMode === 'all_brevo_contacts') && customRecipients.length > 0
-              ? 'custom'
-              : dispatchMode,
+          mode: dispatchMode,
           brevoListId: selectedBrevoListId,
           statusFilter: dispatchStatusFilter,
           customRecipients,
@@ -607,30 +437,7 @@ export default function Admin() {
       })
 
       const data = await res.json()
-      let finalSentCount = data.sentCount || 0
-
-      // Automatic Client-IP Fallback if Brevo blocks Vercel's rotating AWS IP
-      if (finalSentCount === 0 && Array.isArray(data.renderedPayloads) && data.renderedPayloads.length > 0 && clientBrevoKey) {
-        for (const payload of data.renderedPayloads) {
-          const updatedPayload = {
-            ...payload,
-            sender: { name: effectiveSenderName, email: effectiveSenderEmail },
-            replyTo: { name: effectiveSenderName, email: effectiveReplyTo },
-          }
-          const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'api-key': clientBrevoKey,
-            },
-            body: JSON.stringify(updatedPayload),
-          })
-          if (directRes.ok) {
-            finalSentCount++
-          }
-        }
-      }
+      const finalSentCount = data.sentCount || 0
 
       if (finalSentCount > 0) {
         AnalyticsEvents.emailCampaignSent(selectedCampaignId, finalSentCount)
@@ -680,27 +487,7 @@ export default function Admin() {
       })
       if (res.ok) {
         const data = await res.json()
-        let sent = data.sentCount || 0
-        const clientBrevoKey = import.meta.env.VITE_BREVO_API_KEY || ''
-        if (sent === 0 && Array.isArray(data.renderedPayloads) && clientBrevoKey) {
-          for (const payload of data.renderedPayloads) {
-            const updatedPayload = {
-              ...payload,
-              sender: { name: effectiveSenderName, email: effectiveSenderEmail },
-              replyTo: { name: effectiveSenderName, email: effectiveReplyTo },
-            }
-            const directRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'api-key': clientBrevoKey,
-              },
-              body: JSON.stringify(updatedPayload),
-            })
-            if (directRes.ok) sent++
-          }
-        }
+        const sent = data.sentCount || 0
         if (sent > 0) {
           AnalyticsEvents.emailCampaignSent(campaignId, 1)
           updateStatus(lead.id, 'contacted')

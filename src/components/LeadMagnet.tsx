@@ -21,7 +21,7 @@ const LeadMagnet = () => {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch('/api/lead', {
+      await fetch('/api/lead', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -33,25 +33,6 @@ const LeadMagnet = () => {
           interest: 'Workflow Automation Guide',
         }),
       }).catch(() => null)
-
-      // Fallback direct Brevo call if in local dev with env
-      const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY || ''
-      if (!response && BREVO_API_KEY) {
-        await fetch('https://api.brevo.com/v3/contacts', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'api-key': BREVO_API_KEY,
-          },
-          body: JSON.stringify({
-            email: email,
-            listIds: [1],
-            attributes: { SOURCE: 'AI Dynamics - Lead Magnet' },
-            updateEnabled: true,
-          }),
-        }).catch(() => null)
-      }
 
       AnalyticsEvents.downloadPlaybook(email)
       setIsSubmitted(true)
