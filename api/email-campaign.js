@@ -365,7 +365,15 @@ export default async function handler(req, res) {
           fetch('https://api.brevo.com/v3/smtp/blockedContacts?limit=50', { headers }).catch(() => null),
         ]);
 
-        const account = accountRes && accountRes.ok ? await accountRes.json() : null;
+        let account = null;
+        let brevoError = null;
+        if (accountRes) {
+          if (accountRes.ok) {
+            account = await accountRes.json();
+          } else {
+            brevoError = await accountRes.json().catch(() => ({ status: accountRes.status }));
+          }
+        }
         const listsData = listsRes && listsRes.ok ? await listsRes.json() : { lists: [] };
         const campaignsData = campaignsRes && campaignsRes.ok ? await campaignsRes.json() : { campaigns: [] };
         const sendersData = sendersRes && sendersRes.ok ? await sendersRes.json() : { senders: [] };
@@ -378,6 +386,9 @@ export default async function handler(req, res) {
         return res.status(200).json({
           success: Boolean(account || (listsData.lists && listsData.lists.length > 0)),
           ipBlocked,
+          brevoStatus: accountRes ? accountRes.status : null,
+          brevoError,
+          keyLength: BREVO_API_KEY ? BREVO_API_KEY.length : 0,
           account: account
             ? {
                 email: account.email,
