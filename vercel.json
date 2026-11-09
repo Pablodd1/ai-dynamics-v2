@@ -3,11 +3,66 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/projects/watchfacts-luxury-intelligence",
+      "destination": "/projects/luxury-watch-computer-vision-ai",
+      "permanent": true
+    },
+    {
+      "source": "/projects/unitec-commerce-system",
+      "destination": "/projects/adaptive-ai-marketplace",
+      "permanent": true
+    },
+    {
+      "source": "/search",
+      "destination": "/projects",
+      "permanent": true
     }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/projects", "destination": "/index.html" },
+    { "source": "/projects/jmm-jas-miami-method", "destination": "/index.html" },
+    { "source": "/projects/runform-running-biomechanics", "destination": "/index.html" },
+    { "source": "/projects/cycling-bike-fit-analysis", "destination": "/index.html" },
+    { "source": "/projects/clinical-movement-ataxia-assessment", "destination": "/index.html" },
+    { "source": "/projects/remote-patient-monitoring", "destination": "/index.html" },
+    { "source": "/projects/remote-therapeutic-monitoring", "destination": "/index.html" },
+    { "source": "/projects/ai-medical-scribe-pocketscribe", "destination": "/index.html" },
+    { "source": "/projects/medical-billing-rcm-automation", "destination": "/index.html" },
+    { "source": "/projects/luxury-watch-computer-vision-ai", "destination": "/index.html" },
+    { "source": "/projects/adaptive-ai-marketplace", "destination": "/index.html" },
+    { "source": "/projects/ai-voice-receptionist", "destination": "/index.html" },
+    { "source": "/projects/ai-chatbots-digital-assistants", "destination": "/index.html" },
+    { "source": "/projects/crm-revenue-automation", "destination": "/index.html" },
+    { "source": "/projects/agentic-self-learning-websites", "destination": "/index.html" },
+    { "source": "/projects/ai-seo-aeo-search-optimization", "destination": "/index.html" },
+    { "source": "/projects/rapid-digital-launch-urgent-web", "destination": "/index.html" },
+    { "source": "/projects/room-defect-monitoring-ai", "destination": "/index.html" },
+    { "source": "/projects/3d-room-mapping-spatial-ai", "destination": "/index.html" },
+    { "source": "/projects/estate-match-real-estate-ai", "destination": "/index.html" },
+    { "source": "/projects/ai-market-business-research", "destination": "/index.html" },
+    { "source": "/projects/zero-g-business-simulation", "destination": "/index.html" },
+    { "source": "/booking", "destination": "/index.html" },
+    { "source": "/process", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/founders", "destination": "/index.html" },
+    { "source": "/blog", "destination": "/index.html" },
+    { "source": "/blog/ai-phone-receptionist-miami", "destination": "/index.html" },
+    { "source": "/blog/medical-clinic-automation", "destination": "/index.html" },
+    { "source": "/blog/legal-intake-automation", "destination": "/index.html" },
+    { "source": "/agentic-website", "destination": "/index.html" },
+    { "source": "/ai-seo", "destination": "/index.html" },
+    { "source": "/zero-g", "destination": "/index.html" },
+    { "source": "/simulation", "destination": "/index.html" },
+    { "source": "/research", "destination": "/index.html" },
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/signup", "destination": "/index.html" },
+    { "source": "/dashboard", "destination": "/index.html" },
+    { "source": "/profile", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" }
   ],
   "headers": [
     {

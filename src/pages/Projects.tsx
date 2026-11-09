@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { useSearchParams, useParams, useNavigate, Link } from 'react-router-dom'
+import { useSearchParams, useParams, useNavigate, Link, Navigate } from 'react-router-dom'
 import {
   Search,
   ArrowRight,
@@ -156,6 +156,10 @@ export default function Projects() {
       }
     }
   }, [activeProject])
+
+  if (slug && !activeProject) {
+    return <Navigate to="/projects" replace />
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white selection:bg-luxury-gold selection:text-dark">

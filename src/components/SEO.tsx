@@ -79,9 +79,6 @@ export function SEO({
       // Microsoft
       'msapplication-TileColor': '#0a0a0f',
       'msapplication-config': '/browserconfig.xml',
-
-      // Canonical
-      ...(canonical ? { 'canonical': canonical } : {})
     }
 
     // Update or create meta tags
@@ -270,7 +267,7 @@ export const websiteSchema = {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://www.aidynamic.pro/search?q={search_term_string}"
+      "urlTemplate": "https://www.aidynamic.pro/projects?q={search_term_string}"
     },
     "query-input": "required name=search_term_string"
   },
