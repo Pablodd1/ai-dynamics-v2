@@ -12,7 +12,8 @@ const DEFAULT_BUFFER_TOKEN =
   process.env.VITE_BUFFER_API_TOKEN ||
   ''
 
-const DEFAULT_ORG_ID = '6ae611610f74184c45cd3ec7'
+const DEFAULT_ORG_ID =
+  process.env.BUFFER_ORG_ID || '6af1e3f0aede2cd4287eac43'
 
 const VISION_DECK_CAROUSEL = {
   title: 'AI DYNAMIC PRO — Six Production AI Architectures Engineered Inside Your Company (7-Slide Obsidian & Gold Deck)',
@@ -90,16 +91,25 @@ export default async function handler(req, res) {
           }
         }
       `
-      const data = await bufferGraphQL(
+      let data = await bufferGraphQL(
         q,
         { orgInput: { organizationId: DEFAULT_ORG_ID } },
         token
       )
+      const detectedOrgId =
+        data?.data?.account?.organizations?.[0]?.id || DEFAULT_ORG_ID
+      if (detectedOrgId !== DEFAULT_ORG_ID) {
+        data = await bufferGraphQL(
+          q,
+          { orgInput: { organizationId: detectedOrgId } },
+          token
+        )
+      }
       return res.status(200).json({
         connected: Boolean(data?.data?.account?.id),
         account: data?.data?.account || null,
         channels: data?.data?.channels || [],
-        organizationId: DEFAULT_ORG_ID,
+        organizationId: detectedOrgId,
         visionDeck: VISION_DECK_CAROUSEL,
       })
     }
