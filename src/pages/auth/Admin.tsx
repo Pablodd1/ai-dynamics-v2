@@ -1462,12 +1462,12 @@ export default function Admin() {
                 <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-2.5">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
-                      01 / Official 748-Char Google Business Description
+                      01 / Target-Population Adapted 746-Char Description (EN / ES)
                     </span>
                     <button
                       onClick={() =>
                         copyToClipboard(
-                          'AI Dynamic Pro is an executive AI engineering, custom software development, and corporate staff training firm headquartered in Miami, Florida (+1 786-643-2099). Unlike generic software agencies, our AI Developers and Creators walk directly into your company, audit your slowest department ($99 60-Min Efficiency Audit), and engineer a working AI prototype in 48 hours—guaranteed to uncover $2,500+/month ($30,000/yr) in payroll and operating savings, or you pay $0. We deploy six production AI architectures across Healthcare & Clinical RCM, Computer Vision & 3D LiDAR, Legal & Real Estate RAG, Agentic Websites, and 24/7 Bilingual Voice (JAss)—and stay on-site training your staff ($497 Bootcamp) so 1 employee produces the output of 5.',
+                          'AI Dynamic Pro is Miami’s hands-on AI Developer, Custom App Creator & Staff Training firm for CEOs, medical clinics, law firms, real estate brokers, and contractors. We come directly into your business, audit your workflows ($99 60-Min Audit), and build a working custom AI prototype in 48 hours—guaranteed to uncover $2,500+/mo in payroll savings or you pay $0. We deploy 22+ proven systems—including JAss 24/7 Bilingual (English/Spanish) Phone & WhatsApp Receptionists ($997 turnkey), automated medical billing, legal contract AI, photo-to-quote apps, and self-selling websites—and stay on-site training your staff ($497 Bootcamp) so 1 employee performs like 5. Hablamos Español: Automatización con IA y capacitación en tu empresa.',
                           'gbp_desc_750'
                         )
                       }
@@ -1477,26 +1477,26 @@ export default function Admin() {
                     </button>
                   </div>
                   <p className="text-xs text-luxury-silver leading-relaxed">
-                    AI Dynamic Pro is an executive AI engineering, custom software development, and corporate staff training firm headquartered in Miami, Florida (+1 786-643-2099). Unlike generic software agencies, our AI Developers and Creators walk directly into your company, audit your slowest department ($99 60-Min Efficiency Audit), and engineer a working AI prototype in 48 hours—guaranteed to uncover $2,500+/month ($30,000/yr) in payroll and operating savings, or you pay $0. We deploy six production AI architectures across Healthcare &amp; Clinical RCM, Computer Vision &amp; 3D LiDAR, Legal &amp; Real Estate RAG, Agentic Websites, and 24/7 Bilingual Voice (JAss)—and stay on-site training your staff ($497 Bootcamp) so 1 employee produces the output of 5.
+                    AI Dynamic Pro is Miami’s hands-on AI Developer, Custom App Creator &amp; Staff Training firm for CEOs, medical clinics, law firms, real estate brokers, and contractors. We come directly into your business, audit your workflows ($99 60-Min Audit), and build a working custom AI prototype in 48 hours—guaranteed to uncover $2,500+/mo in payroll savings or you pay $0. We deploy 22+ proven systems—including JAss 24/7 Bilingual (English/Spanish) Phone &amp; WhatsApp Receptionists ($997 turnkey), automated medical billing, legal contract AI, photo-to-quote apps, and self-selling websites—and stay on-site training your staff ($497 Bootcamp) so 1 employee performs like 5. Hablamos Español: Automatización con IA y capacitación en tu empresa.
                   </p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-2">
                   <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold">
-                    02 / Categories, Service Areas &amp; Attributes Checklist
+                    02 / Categories, Target Sectors &amp; Bilingual Attributes Checklist
                   </span>
                   <div className="text-xs text-luxury-silver space-y-1.5 leading-relaxed">
                     <div>
                       <strong className="text-white font-mono">Primary Category:</strong> Software Company <span className="text-luxury-gold">(or Business Management Consultant)</span>
                     </div>
                     <div>
-                      <strong className="text-white font-mono">Additional Categories:</strong> Computer Consultant •Website Designer • Corporate Training • Marketing Consultant • Automation Company
+                      <strong className="text-white font-mono">Additional Categories:</strong> Computer Consultant • Website Designer • Corporate Training • Marketing Agency • Automation Company
                     </div>
                     <div>
-                      <strong className="text-white font-mono">Service Areas (20):</strong> Miami, Brickell, Coral Gables, Doral, Miami Beach, Wynwood, Aventura, Key Biscayne, Coconut Grove, Sunny Isles, Fort Lauderdale, Boca Raton, West Palm Beach, South Florida.
+                      <strong className="text-white font-mono">Target Population &amp; Areas (20):</strong> CEOs, Clinic Owners, Attorneys, Real Estate &amp; Contractors across Miami, Brickell, Coral Gables, Doral, Hialeah, Kendall, Miami Beach, Aventura, Fort Lauderdale, Boca Raton.
                     </div>
                     <div>
-                      <strong className="text-white font-mono">Hours &amp; Languages:</strong> Open 24 Hours (JAss Bilingual AI Line) • English &amp; Spanish • On-Site &amp; Online Appointments.
+                      <strong className="text-white font-mono">Hours &amp; Languages:</strong> Open 24 Hours (JAss Bilingual AI Line) • English &amp; Español • On-Site Business Visits &amp; Online Appointments.
                     </div>
                   </div>
                 </div>

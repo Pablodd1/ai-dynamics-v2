@@ -167,122 +167,133 @@ export default async function handler(req, res) {
         const gbpSuite = [
           {
             mode: 'shareNow',
+            googleType: 'offer',
+            offerTitle: '$99 CEO AI Audit + Free 48-Hr Custom Prototype (Save $2,500+/mo or Pay $0)',
+            offerCode: 'SCALE99',
+            offerTerms: 'Guaranteed to uncover at least $2,500/month ($30,000/yr) in payroll and time savings for your business or we refund your $99 immediately. Includes a working 48-hour AI prototype built for your company.',
+            startDate: '2026-11-09T12:00:00Z',
+            endDate: '2026-12-31T23:59:00Z',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_06.png',
             btn: 'book',
-            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_post_1_audit_offer',
-            txt: `DECISION BRIEFING FOR SOUTH FLORIDA CEOS & FOUNDERS — Six Production AI Architectures Engineered Inside Your Company.
+            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_offer_scale99',
+            txt: `FOR MIAMI & SOUTH FLORIDA CEOS & BUSINESS OWNERS: Stop overpaying for slow manual work and missed calls.
 
-Every week your team spends on manual intake, repetitive quoting, clinical charting, or contract review is payroll you never recover.
+As hands-on AI Developers & Creators, we come directly into your business, show you how to make your company faster and more profitable, build custom AI applications around your workflow in 48 hours, and stay with your staff to train them until 1 employee produces the output of 5.
 
-As hands-on AI Developers and Creators, AI Dynamic Pro walks into your operation, audits one department in 60 minutes ($99), and builds a live custom AI prototype for your business in 48 hours:
+WHAT YOU GET FOR $99 (USE CODE SCALE99):
+01. 60-Min On-Site or Executive Department Efficiency Audit.
+02. Free 48-Hour Live Custom AI Prototype built for your exact business.
+03. $2,500+/Month ($30,000/yr) Savings Guarantee — or you pay $0.
 
-01 / WE AUDIT & PROTOTYPE — Guaranteed to uncover at least $2,500/mo ($30,000/yr) in wasted payroll and software bloat, or you pay $0.
-02 / WE ENGINEER CUSTOM AI — 22+ deployed production systems across Clinical SOAP & 837 Claim Scrubbing, YOLOv8 + DINOv2 Computer Vision, 3D LiDAR Digital Twins, Sovereign Legal RAG, Self-Learning Agentic Websites, and JAss 24/7 Bilingual Voice & CRM ($997 turnkey).
-03 / WE TRAIN YOUR STAFF ON-SITE — Our $497 Corporate AI Staff Bootcamp turns 1 existing employee into the output of 5.
-
-Click Book Below to lock in your $99 60-Min Department Efficiency Audit and Free 48-Hour Live Prototype at aidynamic.pro/booking`,
+EN ESPAÑOL: Vamos a tu empresa en Miami y el Sur de la Florida, creamos tu prototipo de Inteligencia Artificial en 48 horas y entrenamos a tu personal paso a paso para reducir costos y multiplicar tu productividad (1 empleado = 5).`,
           },
           {
-            mode: 'addToQueue',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_01.png',
-            btn: 'learn_more',
-            link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_post_2_clinical_rcm',
-            txt: `ARCHITECTURE 01 // CLINICAL & RCM INTELLIGENCE
-
-Medical practices and surgical centers lose thousands per week to post-visit charting fatigue and preventable insurance claim denials.
-
-AI Dynamic Pro engineers autonomous clinical operations that cut administrative overhead by 45% without adding headcount:
-
-01. Ambient Consultation Capture: Multi-speaker dialogue converted directly into structured SOAP notes and ICD-10/CPT codes in seconds.
-02. Pre-Submission 837 Claim Scrubbing: Automated detection of payer-specific denial triggers and missing modifiers prior to clearinghouse dispatch.
-03. Instant Insurance OCR Intake: Sub-second mobile card capture with real-time eligibility verification before the patient enters the exam room.
-
-We deploy the architecture and train your front-desk and billing staff on-site ($497 Corporate Bootcamp). Click Learn More to start with our $99 60-Min Department Efficiency Audit.`,
-          },
-          {
-            mode: 'addToQueue',
-            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_02.png',
-            btn: 'learn_more',
-            link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_post_3_neural_vision',
-            txt: `ARCHITECTURE 02 // NEURAL VISION & SPATIAL AI
-
-Real-Time Computer Vision, Automated Property Defect Inspection, and 3D LiDAR Digital Twins.
-
-We engineer production computer vision systems that inspect physical assets, properties, and high-value inventory with sub-millimeter precision:
-
-01. YOLOv8 + DINOv2 Surface Authentication: Micro-surface anomaly detection, serial OCR, and counterfeit verification in under 800ms.
-02. 12-Class Property Defect Vision: Instant structural, roofing, moisture, and finish defect classification with automated repair cost estimation.
-03. 3D LiDAR & WebGL Spatial Twins: Interactive volumetric floorplans and virtual architectural staging rendered directly in the browser.
-
-Click Learn More to explore our 22 live architectures or book a $99 60-Min Efficiency Audit.`,
-          },
-          {
-            mode: 'addToQueue',
+            mode: 'shareNow',
+            googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_03.png',
             btn: 'book',
-            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_post_4_jass_voice',
-            txt: `ARCHITECTURE 03 // JASS VOICE & CRM PIPELINE
+            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_ceo_vision',
+            txt: `WHY SOUTH FLORIDA BUSINESS OWNERS CHOOSE AI DYNAMIC PRO — We Don't Just Sell Software. We Build Your Vision & Train Your Team.
 
-78% of high-ticket contracts go to the company that responds in under 5 minutes. Every missed call after 5:00 PM is revenue handed to your competitor.
+Every week a business owner waits to automate, manual payroll and slow 47-minute lead replies quietly cost $3,420+ per department.
 
-We deploy JAss—your autonomous 24/7 Bilingual (EN/ES) Voice & Multi-Channel Intake Engine ($997 Turnkey Setup | $297/mo Managed):
+Whether you run a Medical Clinic, Law Firm, Real Estate Brokerage, Construction/Service Company, or Retail Brand, our AI Developers come to your business to:
 
-01. 3-Second Ring-1 Voice Pickup: Natural English and Spanish phone reception that qualifies urgency, budget, and scope without hold music.
-02. Sub-Minute Multi-Channel Sync: Unified autonomous response across SMS, WhatsApp, Instagram DM, and Web Chat in under 60 seconds.
-03. Direct Calendar & CRM Lock: Real-time slot verification, automated confirmation, and instant pipeline write-back.
+01. BUILD CUSTOM AI APPS & AUTOMATION: From 24/7 Bilingual (English/Spanish) AI Phone & WhatsApp Receptionists (JAss — $997 turnkey) to automated quoting, billing, and custom web apps.
+02. CUT PAYROLL WASTE IMMEDIATELY: Eliminate repetitive data entry, missed after-hours calls, and slow follow-ups.
+03. TRAIN YOUR STAFF ON-SITE ($497 Bootcamp): We stay with your team and teach them how to use every tool daily so 1 trained employee performs like 5.
 
-Click Book Below to claim your $99 Audit + Free 48-Hr Live Prototype.`,
+Make the decision today. Click Book Below to claim your $99 Audit + Free 48-Hour Prototype.`,
           },
           {
             mode: 'addToQueue',
+            googleType: 'whats_new',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_01.png',
+            btn: 'learn_more',
+            link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_medical_dental',
+            txt: `FOR MEDICAL CLINICS, DENTAL PRACTICES & MEDSPAS IN MIAMI — Cut Front-Desk & Billing Overhead by 45%.
+
+Doctors and clinic owners should not spend evenings finishing charts or losing revenue to preventable insurance claim denials and missed patient calls.
+
+We come into your clinic, build custom healthcare AI around your practice, and train your front-desk and billing staff step-by-step:
+
+01. 24/7 Bilingual (EN/ES) Patient Scheduling: Answers every call on Ring 1, verifies insurance cards via mobile photo, and books appointments automatically.
+02. Automated Clinical Notes & Billing Review: Turns patient visits into structured notes and flags billing errors before claims are sent.
+03. Hands-On Staff Training ($497 Bootcamp): Your existing receptionists and billers handle 4x the patient volume with zero burnout.
+
+EN ESPAÑOL: Automatización con IA y entrenamiento de personal para clínicas médicas, dentales y estéticas en Miami. Reserva tu Auditoría de $99 hoy.`,
+          },
+          {
+            mode: 'addToQueue',
+            googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_04.png',
             btn: 'book',
-            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_post_5_private_rag',
-            txt: `ARCHITECTURE 04 // PRIVATE RAG & DEAL MATCHING
+            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_legal_realestate',
+            txt: `FOR LAW FIRMS, REAL ESTATE BROKERS & PROPERTY MANAGERS — Close More Retainers & Deals in Under 3 Minutes.
 
-Zero-Training Sovereign Legal Document RAG & Vector Real Estate Deal Matching.
+78% of clients hire the first firm that responds. If a high-value legal inquiry or property buyer calls at 7:00 PM and hits voicemail, that deal goes to your competitor.
 
-Law firms, escrow agencies, and real estate brokerages cannot upload sensitive contracts to public consumer AI models. We deploy isolated, zero-training RAG pipelines inside your own cloud perimeter:
+We engineer custom private AI systems for South Florida law firms, title companies, and real estate teams:
 
-01. Contract Risk & Clause Screening: Instant citation-backed redlining across 100+ page agreements, leases, and compliance disclosures.
-02. Escrow & Deadline Telemetry: Automated extraction of contingencies, inspection windows, and statutory filing deadlines.
-03. Vector Deal Matching: Semantic matching between buyer mandates, off-market property data, and zoning parameters.
+01. 24/7 Bilingual (English/Spanish) Client Intake: Qualifies cases and buyers in under 3 seconds across phone, SMS, WhatsApp, and Instagram, and books consultations directly into your calendar.
+02. Instant Private Contract & Lease Review: Screens 100+ page agreements, inspection deadlines, and escrow contingencies in seconds inside your own secure private cloud.
+03. On-Site Team Training: We teach your paralegals, agents, and coordinators how to save 15+ hours every week.
 
-Click Book Below for a $99 60-Min Department Efficiency Audit.`,
+Click Book Below to schedule your $99 60-Min Department Efficiency Audit.`,
           },
           {
             mode: 'addToQueue',
+            googleType: 'whats_new',
+            img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_02.png',
+            btn: 'learn_more',
+            link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_contractors_retail',
+            txt: `FOR CONTRACTORS, HOME SERVICES, LOGISTICS & LUXURY RETAIL — Custom AI Apps That Turn Photos & Calls Into Instant Quotes.
+
+Your estimators and sales managers waste hours driving to unqualified jobs or manually checking inventory and property photos.
+
+As AI Developers & Creators, we build custom applications tailored to your exact industry:
+
+01. Instant Photo Inspection & Quoting: Customers upload a photo or room scan from their phone, and your custom AI detects defects, estimates repair/project costs, and generates a branded PDF quote in seconds.
+02. 3D Virtual Showrooms & Property Walkthroughs: Let buyers explore spaces and inventory from their browser 24/7.
+03. Automated Dispatch & Follow-Up: JAss follows up with every unpaid estimate in English and Spanish until the job is booked.
+
+Click Learn More to see our 22 live systems or book your $99 Audit + Free 48-Hr Prototype.`,
+          },
+          {
+            mode: 'addToQueue',
+            googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_05.png',
             btn: 'learn_more',
-            link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_post_6_agentic_web',
-            txt: `ARCHITECTURE 05 // BIOMECHANICS & AGENTIC WEB
+            link: 'https://www.aidynamic.pro/projects?utm_source=google_business&utm_medium=gbp_agentic_web',
+            txt: `NEED A NEW WEBSITE OR CUSTOM APP IN 5 TO 10 DAYS? We Build Self-Selling AI Websites That Rank on Google & ChatGPT.
 
-Self-Learning Agentic Websites, AI Search Optimization (AEO), and 33-Joint Kinematic Vision.
+Most company websites are static brochures that visitors leave in 8 seconds. In 2026, your website must actively talk to visitors, answer their questions in English and Spanish, and book appointments automatically.
 
-Static brochures do not convert in 2026. When executives search on ChatGPT, Perplexity, Gemini, or Google, your digital infrastructure must dynamically adapt and capture the lead:
+What we build and launch for your business in 5 to 10 days:
 
-01. Self-Learning Agentic Websites: Interfaces that dynamically rewrite hero propositions and CTAs based on visitor industry and scroll velocity.
-02. AI Citation & Schema Graphs (AEO): Deep JSON-LD entity architecture engineered so LLMs cite and recommend your firm first.
-03. 33-Joint Markerless Kinematics: Sub-millimeter biomechanical gait and posture tracking from standard smartphone video.
+01. Self-Adapting AI Websites & Custom Web Apps: Tailors the message to each visitor and captures leads 24/7.
+02. Google Maps & AI Search Optimization (ChatGPT / Gemini / Perplexity): Structured so when local customers ask AI who the best company in Miami is, your business gets recommended first.
+03. Built-In Voice & Chat Assistant: Turns website traffic into confirmed calendar bookings day and night.
 
-Click Learn More to inspect our 22 deployed systems or book a $99 60-Min Efficiency Audit.`,
+Click Learn More or book your $99 Audit to see a live 48-hour prototype for your brand.`,
           },
           {
-            mode: 'addToQueue',
+            mode: 'saveToDraft',
+            googleType: 'whats_new',
             img: 'https://www.aidynamic.pro/social/vision-deck/vision_slide_07.png',
             btn: 'signup',
-            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_post_7_staff_bootcamp',
-            txt: `ARCHITECTURE 06 // ON-SITE CORPORATE AI STAFF BOOTCAMP ($497)
+            link: 'https://www.aidynamic.pro/booking?utm_source=google_business&utm_medium=gbp_staff_bootcamp',
+            txt: `ON-SITE CORPORATE AI STAFF TRAINING BOOTCAMP ($497) — Turn 1 Existing Employee Into the Output of 5.
 
-Software alone fails if your team reverts to old habits on Monday morning. 1 Trained Employee = 5.
+The #1 reason businesses fail with AI is simple: someone buys a tool, nobody trains the staff, and by Monday morning everyone goes back to slow manual work.
 
-We do not hand you a login and disappear. As AI Developers and Creators, we stay inside your operation to train your executives, operations managers, and front-desk staff on the exact custom workflows we engineer for you:
+At AI Dynamic Pro, we stay with you inside your company until your team is fast, confident, and self-sufficient:
 
-01. Prompt Engineering & Custom SOPs tailored to your industry.
-02. Supervising JAss Voice/CRM Pipelines and Automated Dispatch.
-03. Quality Control, Exception Handling, and Daily AI Output Multiplication.
+01. Half-Day On-Site or Live Virtual Bootcamp ($497 flat for up to 15 staff members).
+02. Custom AI Playbooks & Daily Checklists built specifically for your receptionists, sales reps, operations managers, and executives.
+03. Immediate Productivity Multiplication: Cut 10 to 15 hours of busywork per employee every single week.
 
-Click Sign Up to reserve your On-Site or Virtual Corporate Staff Bootcamp ($497) or start with the $99 60-Min Department Audit.`,
+EN ESPAÑOL: Entrenamiento práctico de Inteligencia Artificial para tu equipo en inglés y español ($497). Haz clic en Registrarse para reservar tu fecha.`,
           },
         ]
 
@@ -304,33 +315,53 @@ Click Sign Up to reserve your On-Site or Virtual Corporate Staff Bootcamp ($497)
         `
         const gbpResults = []
         for (const item of gbpSuite) {
-          const r = await bufferGraphQL(
-            createPostMutation,
-            {
-              input: {
-                channelId: gbpChannelId,
-                schedulingType: 'automatic',
-                mode: item.mode,
-                text: item.txt,
-                assets: [
-                  {
-                    image: {
-                      url: item.img,
-                      metadata: { altText: 'AI Dynamic Pro Executive Architecture Slide' },
-                    },
+          const isDraft = item.mode === 'saveToDraft'
+          const googleMeta =
+            item.googleType === 'offer'
+              ? {
+                  type: 'offer',
+                  detailsOffer: {
+                    title: item.offerTitle,
+                    code: item.offerCode,
+                    terms: item.offerTerms,
+                    link: item.link,
+                    startDate: item.startDate,
+                    endDate: item.endDate,
                   },
-                ],
-                metadata: {
-                  google: {
-                    type: 'whats_new',
-                    detailsWhatsNew: {
-                      button: item.btn,
-                      link: item.link,
-                    },
+                }
+              : {
+                  type: 'whats_new',
+                  detailsWhatsNew: {
+                    button: item.btn,
+                    link: item.link,
                   },
+                }
+
+          const postInput = {
+            channelId: gbpChannelId,
+            schedulingType: 'automatic',
+            text: item.txt,
+            assets: [
+              {
+                image: {
+                  url: item.img,
+                  metadata: { altText: 'AI Dynamic Pro — Miami Business AI & Staff Training' },
                 },
               },
+            ],
+            metadata: {
+              google: googleMeta,
             },
+          }
+          if (isDraft) {
+            postInput.saveToDraft = true
+          } else {
+            postInput.mode = item.mode
+          }
+
+          const r = await bufferGraphQL(
+            createPostMutation,
+            { input: postInput },
             token
           )
           gbpResults.push(r?.data?.createPost || r?.errors || r)
