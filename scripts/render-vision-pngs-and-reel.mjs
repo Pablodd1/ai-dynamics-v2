@@ -21,8 +21,21 @@ for (const d of [OUT_DIR, LOGO_DIR]) {
   if (!fs.existsSync(d)) fs.mkdirSync(d, { recursive: true })
 }
 
-const bgFile = path.resolve(ROOT, 'public/social/week1-consulting.jpg')
-const bgBase64 = `data:image/jpeg;base64,${fs.readFileSync(bgFile).toString('base64')}`
+function toDataUri(relPath) {
+  const fullPath = path.resolve(ROOT, relPath)
+  const ext = path.extname(fullPath).toLowerCase()
+  const mime = ext === '.png' ? 'image/png' : 'image/jpeg'
+  return `data:${mime};base64,${fs.readFileSync(fullPath).toString('base64')}`
+}
+
+const BG_MIAMI_BOARDROOM = toDataUri('public/social/week1-consulting.jpg')
+const BG_MIAMI_SKYLINE_CUBE = toDataUri('public/miami-ai-neural-cube.jpg')
+const BG_HEALTHCARE = toDataUri('public/images/projects/healthcare-clinical.jpg')
+const BG_SPATIAL_3D = toDataUri('public/images/projects/room-defect-vision.jpg')
+const BG_VOICE_AI = toDataUri('public/images/projects/digital-assistants.jpg')
+const BG_EXEC_SOLUTIONS = toDataUri('public/images/projects/executive-solutions.jpg')
+const BG_EXEC_BOARDROOM = toDataUri('public/images/projects/executive-boardroom.jpg')
+const BG_CORP_TRAINING = toDataUri('public/images/projects/corporate-training.jpg')
 
 const AI_LOGO_SVG = (size = 84) => `
 <svg width="${size}" height="${size}" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +74,7 @@ function buildSquareLogoHtml() {
     width: 1080px;
     height: 1080px;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 42%, #171726 0%, #090910 58%, #050509 100%);
+    background: #0b0d17;
     font-family: Inter, 'Segoe UI', sans-serif;
     display: flex;
     flex-direction: column;
@@ -69,20 +82,35 @@ function buildSquareLogoHtml() {
     justify-content: center;
     position: relative;
   }
+  .bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('${BG_MIAMI_SKYLINE_CUBE}');
+    background-size: auto 152%;
+    background-position: center 44%;
+    filter: brightness(0.96) contrast(1.08) saturate(1.18);
+  }
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 48%, rgba(8, 10, 20, 0.25) 0%, rgba(8, 10, 20, 0.52) 100%);
+  }
   .ring-outer {
     position: absolute;
     width: 940px;
     height: 940px;
     border-radius: 50%;
-    border: 2px solid rgba(201, 169, 110, 0.35);
-    box-shadow: 0 0 90px rgba(201, 169, 110, 0.14), inset 0 0 70px rgba(201, 169, 110, 0.08);
+    border: 2.5px solid rgba(247, 231, 206, 0.58);
+    background: rgba(12, 15, 26, 0.46);
+    backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65), inset 0 0 70px rgba(201, 169, 110, 0.14);
   }
   .ring-inner {
     position: absolute;
     width: 880px;
     height: 880px;
     border-radius: 50%;
-    border: 1px solid rgba(247, 231, 206, 0.18);
+    border: 1.5px solid rgba(247, 231, 206, 0.28);
   }
   .crest-wrap {
     z-index: 10;
@@ -92,22 +120,23 @@ function buildSquareLogoHtml() {
     text-align: center;
   }
   .brand-name {
-    margin-top: 34px;
+    margin-top: 28px;
     font-family: Georgia, 'Playfair Display', serif;
     font-size: 76px;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: -0.5px;
     line-height: 1.05;
+    text-shadow: 0 6px 24px rgba(0,0,0,0.85);
   }
   .brand-name span {
-    color: #c9a96e;
+    color: #f7e7ce;
   }
   .rule {
-    width: 220px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #c9a96e, transparent);
-    margin: 22px auto 18px auto;
+    width: 240px;
+    height: 2.5px;
+    background: linear-gradient(90deg, transparent, #f7e7ce, transparent);
+    margin: 20px auto 16px auto;
   }
   .tagline {
     font-size: 23px;
@@ -115,22 +144,26 @@ function buildSquareLogoHtml() {
     letter-spacing: 5.5px;
     color: #f7e7ce;
     text-transform: uppercase;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.85);
   }
   .sub-city {
     margin-top: 12px;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 19px;
+    font-weight: 700;
     letter-spacing: 4px;
     color: #22d3ee;
     text-transform: uppercase;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.85);
   }
 </style>
 </head>
 <body>
+  <div class="bg"></div>
+  <div class="vignette"></div>
   <div class="ring-outer"></div>
   <div class="ring-inner"></div>
   <div class="crest-wrap">
-    ${AI_LOGO_SVG(430)}
+    ${AI_LOGO_SVG(420)}
     <div class="brand-name">AI Dynamic<span>.PRO</span></div>
     <div class="rule"></div>
     <div class="tagline">AI DEVELOPERS &bull; APPS &bull; TRAINING</div>
@@ -152,31 +185,31 @@ function buildCoverPhotoHtml() {
     width: 1920px;
     height: 1080px;
     overflow: hidden;
-    background: #07070c;
+    background: #0d101d;
     font-family: Inter, 'Segoe UI', sans-serif;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 84px 110px;
+    padding: 76px 96px;
   }
   .bg {
     position: absolute;
     inset: 0;
-    background-image: url('${bgBase64}');
+    background-image: url('${BG_MIAMI_BOARDROOM}');
     background-size: cover;
-    background-position: center;
-    filter: brightness(0.26) contrast(1.18) saturate(0.85);
+    background-position: center 44%;
+    filter: brightness(0.96) contrast(1.06) saturate(1.15);
   }
   .vignette {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(7,7,12,0.96) 0%, rgba(7,7,12,0.82) 58%, rgba(10,10,18,0.92) 100%);
+    background: linear-gradient(90deg, rgba(10,13,24,0.68) 0%, rgba(10,13,24,0.34) 55%, rgba(10,13,24,0.45) 100%);
   }
   .border-frame {
     position: absolute;
-    inset: 34px;
-    border: 1.5px solid rgba(201,169,110,0.42);
+    inset: 28px;
+    border: 2px solid rgba(247,231,206,0.52);
     border-radius: 28px;
     pointer-events: none;
     z-index: 5;
@@ -185,34 +218,42 @@ function buildCoverPhotoHtml() {
     position: relative;
     z-index: 10;
     max-width: 1080px;
+    padding: 44px 48px;
+    border-radius: 30px;
+    background: rgba(12, 15, 26, 0.52);
+    backdrop-filter: blur(16px) saturate(140%);
+    border: 1.5px solid rgba(247, 231, 206, 0.42);
+    box-shadow: 0 28px 70px rgba(0,0,0,0.48);
   }
   .logo-bar {
     display: flex;
     align-items: center;
     gap: 24px;
-    margin-bottom: 36px;
+    margin-bottom: 28px;
   }
   .logo-title {
     font-family: Georgia, 'Playfair Display', serif;
     font-size: 46px;
     font-weight: 700;
     color: #ffffff;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.7);
   }
-  .logo-title span { color: #c9a96e; }
+  .logo-title span { color: #f7e7ce; }
   .logo-sub {
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 4px;
-    color: #c9a96e;
+    color: #f7e7ce;
     margin-top: 4px;
   }
   .headline {
     font-family: Georgia, 'Playfair Display', serif;
-    font-size: 64px;
+    font-size: 58px;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.12;
-    margin-bottom: 26px;
+    margin-bottom: 22px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.75);
   }
   .headline em {
     color: #f7e7ce;
@@ -220,45 +261,47 @@ function buildCoverPhotoHtml() {
     font-weight: 400;
   }
   .subtext {
-    font-size: 27px;
-    color: rgba(232,232,238,0.92);
+    font-size: 25px;
+    color: #ffffff;
     line-height: 1.45;
-    margin-bottom: 42px;
+    margin-bottom: 34px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.75);
   }
   .pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 14px;
   }
   .pill {
-    padding: 16px 28px;
+    padding: 14px 24px;
     border-radius: 12px;
-    background: rgba(201,169,110,0.14);
-    border: 1.5px solid rgba(201,169,110,0.6);
-    color: #f7e7ce;
-    font-size: 20px;
+    background: rgba(201,169,110,0.24);
+    border: 1.5px solid rgba(247,231,206,0.75);
+    color: #ffffff;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.4px;
   }
   .pill-cyan {
-    padding: 16px 28px;
+    padding: 14px 24px;
     border-radius: 12px;
-    background: rgba(34,211,238,0.1);
-    border: 1.5px solid rgba(34,211,238,0.55);
-    color: #22d3ee;
-    font-size: 20px;
+    background: rgba(34,211,238,0.2);
+    border: 1.5px solid rgba(34,211,238,0.75);
+    color: #67e8f9;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.4px;
   }
   .right-card {
     position: relative;
     z-index: 10;
-    width: 520px;
-    padding: 48px 42px;
+    width: 510px;
+    padding: 46px 40px;
     border-radius: 30px;
-    background: linear-gradient(145deg, rgba(24,24,36,0.92) 0%, rgba(10,10,16,0.96) 100%);
-    border: 2px solid rgba(201,169,110,0.58);
-    box-shadow: 0 36px 90px rgba(0,0,0,0.85);
+    background: rgba(14, 17, 29, 0.56);
+    backdrop-filter: blur(18px) saturate(145%);
+    border: 2px solid rgba(247,231,206,0.68);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.55);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -269,7 +312,7 @@ function buildCoverPhotoHtml() {
     font-size: 17px;
     font-weight: 700;
     letter-spacing: 3.5px;
-    color: #c9a96e;
+    color: #f7e7ce;
   }
   .right-guarantee {
     margin-top: 18px;
@@ -278,11 +321,12 @@ function buildCoverPhotoHtml() {
     font-weight: 700;
     color: #ffffff;
     line-height: 1.25;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.75);
   }
   .right-es {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,0.14);
+    border-top: 1px solid rgba(255,255,255,0.24);
     font-size: 19px;
     color: #f7e7ce;
     line-height: 1.4;
@@ -355,6 +399,10 @@ const SLIDES = [
   {
     step: 1,
     index: '01',
+    bgUri: BG_HEALTHCARE,
+    bgSize: 'auto 164%',
+    bgPos: '42% 45%',
+    bgFilter: 'brightness(0.96) contrast(1.06) saturate(1.16)',
     sector: 'HEALTHCARE, DENTAL & MEDSPAS • EN / ES',
     metric: '-45% FRONT-DESK & BILLING OVERHEAD • ZERO MANUAL ENTRY',
     title: 'Clinical & RCM Intelligence',
@@ -364,6 +412,10 @@ const SLIDES = [
   {
     step: 2,
     index: '02',
+    bgUri: BG_SPATIAL_3D,
+    bgSize: 'auto 142%',
+    bgPos: '50% 44%',
+    bgFilter: 'brightness(1.04) contrast(1.10) saturate(1.24)',
     sector: 'CONTRACTORS, PROPERTY & LUXURY RETAIL',
     metric: '3-SECOND PHOTO-TO-QUOTE • 3D VIRTUAL WALKTHROUGHS',
     title: 'Custom Vision & Spatial Apps',
@@ -373,6 +425,10 @@ const SLIDES = [
   {
     step: 3,
     index: '03',
+    bgUri: BG_VOICE_AI,
+    bgSize: 'auto 148%',
+    bgPos: '50% 42%',
+    bgFilter: 'brightness(1.02) contrast(1.08) saturate(1.18)',
     sector: '24/7 BILINGUAL PHONE & WHATSAPP RECEPTIONIST',
     metric: '3-SECOND RING-1 PICKUP • $997 TURNKEY OR $297/MO',
     title: 'JAss Voice & CRM Pipeline',
@@ -382,6 +438,10 @@ const SLIDES = [
   {
     step: 4,
     index: '04',
+    bgUri: BG_EXEC_SOLUTIONS,
+    bgSize: 'auto 144%',
+    bgPos: '50% 44%',
+    bgFilter: 'brightness(0.96) contrast(1.06) saturate(1.15)',
     sector: 'LAW FIRMS, REAL ESTATE BROKERS & TITLE',
     metric: '-15 HRS/WK ADMIN • 100-PAGE CONTRACT REVIEW IN SECONDS',
     title: 'Private Legal & Deal AI',
@@ -391,6 +451,10 @@ const SLIDES = [
   {
     step: 5,
     index: '05',
+    bgUri: BG_MIAMI_SKYLINE_CUBE,
+    bgSize: 'auto 154%',
+    bgPos: '50% 44%',
+    bgFilter: 'brightness(1.00) contrast(1.08) saturate(1.22)',
     sector: 'SELF-SELLING WEBSITES & AI SEARCH (5-10 DAYS)',
     metric: 'RANK ON GOOGLE MAPS, CHATGPT & GEMINI • 24/7 CONVERSION',
     title: 'Agentic Websites & Custom Apps',
@@ -400,6 +464,10 @@ const SLIDES = [
   {
     step: 6,
     index: '06',
+    bgUri: BG_MIAMI_BOARDROOM,
+    bgSize: 'auto 148%',
+    bgPos: '50% 44%',
+    bgFilter: 'brightness(0.96) contrast(1.06) saturate(1.16)',
     sector: 'ON-SITE AUDIT, 48-HR PROTOTYPE & STAFF BOOTCAMP',
     metric: '$99 60-MIN AUDIT • $497 STAFF BOOTCAMP (1 EMPLOYEE = 5)',
     title: '48-Hr Build & Staff Training',
@@ -409,6 +477,10 @@ const SLIDES = [
   {
     step: 6,
     index: 'MANDATE',
+    bgUri: BG_CORP_TRAINING,
+    bgSize: 'auto 144%',
+    bgPos: '50% 44%',
+    bgFilter: 'brightness(0.96) contrast(1.06) saturate(1.16)',
     isCta: true,
     ctaWord: 'CODE: SCALE99',
     ctaSub: 'We come into your business, build a working 48-hour AI prototype—guaranteed to uncover $2,500+/mo in payroll savings or you pay $0—and train your staff (English & Español).',
@@ -421,56 +493,56 @@ function buildSlideHtml(slide) {
       const active = slide.isCta || b === slide.step
       const done = b < slide.step
       const bg = active
-        ? '#c9a96e'
+        ? '#f7e7ce'
         : done
-        ? 'rgba(247, 231, 206, 0.55)'
-        : 'rgba(255, 255, 255, 0.16)'
+        ? 'rgba(247, 231, 206, 0.65)'
+        : 'rgba(255, 255, 255, 0.25)'
       return `<div style="width:68px;height:5px;border-radius:99px;background:${bg};box-shadow:${
-        active ? '0 0 14px rgba(201,169,110,0.85)' : 'none'
+        active ? '0 0 14px rgba(247,231,206,0.95)' : 'none'
       };"></div>`
     })
     .join('')
 
   const cardInner = !slide.isCta
     ? `
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:30px;margin-bottom:36px;border-bottom:1px solid rgba(255,255,255,0.12);">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:30px;margin-bottom:36px;border-bottom:1px solid rgba(255,255,255,0.22);">
         <div>
-          <div style="font-size:20px;font-weight:700;letter-spacing:3px;color:#c9a96e;margin-bottom:12px;">
+          <div style="font-size:20px;font-weight:700;letter-spacing:3px;color:#f7e7ce;margin-bottom:12px;text-shadow:0 2px 10px rgba(0,0,0,0.75);">
             ${slide.sector}
           </div>
-          <div style="font-size:19px;font-weight:700;letter-spacing:1.6px;color:#22d3ee;">
+          <div style="font-size:19px;font-weight:700;letter-spacing:1.6px;color:#67e8f9;text-shadow:0 2px 10px rgba(0,0,0,0.75);">
             ${slide.metric}
           </div>
         </div>
-        <div style="font-family:Georgia, 'Playfair Display', serif;font-size:106px;font-weight:300;color:rgba(247,231,206,0.92);line-height:0.82;letter-spacing:-3px;">
+        <div style="font-family:Georgia, 'Playfair Display', serif;font-size:106px;font-weight:300;color:#f7e7ce;line-height:0.82;letter-spacing:-3px;text-shadow:0 4px 18px rgba(0,0,0,0.75);">
           ${slide.index}
         </div>
       </div>
 
-      <div style="font-family:Georgia, 'Playfair Display', serif;font-size:60px;font-weight:700;color:#ffffff;letter-spacing:-1px;line-height:1.1;margin-bottom:30px;">
+      <div style="font-family:Georgia, 'Playfair Display', serif;font-size:60px;font-weight:700;color:#ffffff;letter-spacing:-1px;line-height:1.1;margin-bottom:30px;text-shadow:0 4px 20px rgba(0,0,0,0.85);">
         ${slide.title}
       </div>
 
-      <div style="font-size:35px;font-weight:400;color:rgba(232,232,232,0.94);line-height:1.45;margin-bottom:46px;">
+      <div style="font-size:35px;font-weight:500;color:#ffffff;line-height:1.45;margin-bottom:46px;text-shadow:0 2px 14px rgba(0,0,0,0.85);">
         ${slide.desc}
       </div>
 
       <div style="margin-top:auto;">
-        <div style="font-size:18px;font-weight:700;letter-spacing:3.2px;color:rgba(201,169,110,0.85);margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:700;letter-spacing:3.2px;color:#f7e7ce;margin-bottom:20px;text-shadow:0 2px 10px rgba(0,0,0,0.75);">
           DEPLOYED INSIDE YOUR COMPANY &bull; HABLAMOS ESPA&Ntilde;OL
         </div>
         <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;">
-          <div style="padding:14px 24px;border-radius:10px;background:rgba(7,7,12,0.88);border:1.2px solid rgba(255,255,255,0.22);font-size:21px;font-weight:600;letter-spacing:1.5px;color:#ffffff;">
+          <div style="padding:14px 24px;border-radius:12px;background:rgba(12,15,26,0.62);border:1.5px solid rgba(255,255,255,0.38);font-size:21px;font-weight:700;letter-spacing:1.5px;color:#ffffff;">
             ${slide.pills[0]}
           </div>
-          <span style="font-size:26px;font-weight:600;color:#c9a96e;">/</span>
-          <div style="padding:14px 24px;border-radius:10px;background:rgba(7,7,12,0.88);border:1.2px solid rgba(255,255,255,0.22);font-size:21px;font-weight:600;letter-spacing:1.5px;color:#ffffff;">
+          <span style="font-size:26px;font-weight:700;color:#f7e7ce;">/</span>
+          <div style="padding:14px 24px;border-radius:12px;background:rgba(12,15,26,0.62);border:1.5px solid rgba(255,255,255,0.38);font-size:21px;font-weight:700;letter-spacing:1.5px;color:#ffffff;">
             ${slide.pills[1]}
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:14px;margin-top:16px;">
-          <span style="font-size:26px;font-weight:600;color:#c9a96e;padding-left:4px;">/</span>
-          <div style="padding:14px 26px;border-radius:10px;background:rgba(201,169,110,0.14);border:1.2px solid rgba(201,169,110,0.68);font-size:21px;font-weight:700;letter-spacing:1.5px;color:#f7e7ce;">
+          <span style="font-size:26px;font-weight:700;color:#f7e7ce;padding-left:4px;">/</span>
+          <div style="padding:14px 26px;border-radius:12px;background:rgba(201,169,110,0.28);border:1.5px solid rgba(247,231,206,0.85);font-size:21px;font-weight:700;letter-spacing:1.5px;color:#ffffff;">
             ${slide.pills[2]}
           </div>
         </div>
@@ -481,16 +553,16 @@ function buildSlideHtml(slide) {
         <div style="display:flex;justify-content:center;margin-bottom:24px;">
           ${AI_LOGO_SVG(128)}
         </div>
-        <div style="font-size:21px;font-weight:700;letter-spacing:4px;color:#c9a96e;margin-bottom:28px;">
+        <div style="font-size:21px;font-weight:700;letter-spacing:4px;color:#f7e7ce;margin-bottom:28px;text-shadow:0 2px 12px rgba(0,0,0,0.85);">
           MIAMI &amp; SOUTH FLORIDA CEO OFFER
         </div>
-        <div style="display:inline-block;padding:26px 68px;border-radius:18px;background:linear-gradient(135deg, #c9a96e 0%, #a0894e 100%);box-shadow:0 24px 60px rgba(201,169,110,0.35);font-family:Georgia, 'Playfair Display', serif;font-size:66px;font-weight:700;color:#07070c;letter-spacing:2px;margin-bottom:38px;">
+        <div style="display:inline-block;padding:26px 68px;border-radius:18px;background:linear-gradient(135deg, #f7e7ce 0%, #c9a96e 100%);box-shadow:0 24px 60px rgba(201,169,110,0.45);font-family:Georgia, 'Playfair Display', serif;font-size:66px;font-weight:700;color:#07070c;letter-spacing:2px;margin-bottom:38px;">
           ${slide.ctaWord}
         </div>
-        <div style="font-size:34px;font-weight:400;color:#ffffff;line-height:1.45;max-width:740px;margin:0 auto 34px auto;">
+        <div style="font-size:34px;font-weight:500;color:#ffffff;line-height:1.45;max-width:740px;margin:0 auto 34px auto;text-shadow:0 2px 14px rgba(0,0,0,0.85);">
           ${slide.ctaSub}
         </div>
-        <div style="display:inline-block;padding:14px 32px;border-radius:10px;border:1px solid rgba(201,169,110,0.55);background:rgba(7,7,12,0.85);font-size:21px;font-weight:700;letter-spacing:2.5px;color:#f7e7ce;">
+        <div style="display:inline-block;padding:14px 32px;border-radius:12px;border:1.5px solid rgba(247,231,206,0.8);background:rgba(12,15,26,0.68);font-size:21px;font-weight:700;letter-spacing:2.5px;color:#f7e7ce;">
           AIDYNAMIC.PRO/BOOKING &bull; $99 AUDIT + 48-HR PROTOTYPE
         </div>
       </div>
@@ -507,22 +579,22 @@ function buildSlideHtml(slide) {
     height: 1920px;
     overflow: hidden;
     font-family: Inter, 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #07070c;
+    background: #0d111e;
     position: relative;
   }
   .bg {
     position: absolute;
     inset: 0;
-    background-image: url('${bgBase64}');
-    background-size: cover;
-    background-position: center;
-    filter: brightness(0.30) contrast(1.16) saturate(0.85);
-    transform: scale(1.04);
+    background-image: url('${slide.bgUri}');
+    background-size: ${slide.bgSize};
+    background-position: ${slide.bgPos};
+    background-repeat: no-repeat;
+    filter: ${slide.bgFilter};
   }
   .vignette {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(7,7,12,0.92) 0%, rgba(10,10,15,0.48) 45%, rgba(5,5,10,0.95) 100%);
+    background: linear-gradient(180deg, rgba(10,13,24,0.42) 0%, rgba(10,13,24,0.12) 45%, rgba(10,13,24,0.48) 100%);
   }
   .brand-header {
     position: absolute;
@@ -533,9 +605,11 @@ function buildSlideHtml(slide) {
     align-items: center;
     justify-content: space-between;
     padding: 18px 30px;
-    border-radius: 20px;
-    background: rgba(10, 10, 16, 0.82);
-    border: 1.5px solid rgba(201, 169, 110, 0.48);
+    border-radius: 22px;
+    background: rgba(14, 17, 29, 0.54);
+    backdrop-filter: blur(16px) saturate(140%);
+    border: 1.5px solid rgba(247, 231, 206, 0.58);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
     z-index: 12;
   }
   .brand-left {
@@ -549,9 +623,10 @@ function buildSlideHtml(slide) {
     font-weight: 700;
     color: #ffffff;
     letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.75);
   }
   .brand-wordmark span {
-    color: #c9a96e;
+    color: #f7e7ce;
   }
   .brand-tag {
     font-size: 14px;
@@ -563,48 +638,56 @@ function buildSlideHtml(slide) {
   .brand-badge {
     padding: 10px 20px;
     border-radius: 99px;
-    background: rgba(201, 169, 110, 0.16);
-    border: 1px solid rgba(201, 169, 110, 0.55);
+    background: rgba(201, 169, 110, 0.28);
+    border: 1.5px solid rgba(247, 231, 206, 0.75);
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 2.5px;
-    color: #c9a96e;
+    color: #ffffff;
   }
   .hook {
     position: absolute;
-    top: 248px;
-    left: 0;
-    right: 0;
+    top: 244px;
+    left: 76px;
+    right: 76px;
+    padding: 20px 28px;
+    border-radius: 22px;
+    background: rgba(12, 15, 26, 0.46);
+    backdrop-filter: blur(12px) saturate(135%);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     text-align: center;
     z-index: 10;
   }
   .hook-line-1 {
     font-family: Georgia, 'Playfair Display', serif;
-    font-size: 52px;
+    font-size: 48px;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.14;
     letter-spacing: -0.5px;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.85);
   }
   .hook-line-2 {
     font-family: Georgia, 'Playfair Display', serif;
-    font-size: 46px;
+    font-size: 42px;
     font-style: italic;
     font-weight: 400;
     color: #f7e7ce;
     line-height: 1.2;
     margin-top: 6px;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.85);
   }
   .glass-card {
     position: absolute;
-    top: 430px;
+    top: 438px;
     left: 76px;
     width: 928px;
-    height: 980px;
+    height: 970px;
     border-radius: 36px;
-    background: linear-gradient(145deg, rgba(26,26,36,0.88) 0%, rgba(15,15,22,0.82) 55%, rgba(10,10,15,0.94) 100%);
-    border: 2px solid rgba(201,169,110,0.55);
-    box-shadow: 0 40px 100px rgba(0,0,0,0.85), inset 0 1px 1px rgba(247,231,206,0.28);
+    background: linear-gradient(145deg, rgba(18, 22, 36, 0.56) 0%, rgba(12, 15, 26, 0.62) 100%);
+    backdrop-filter: blur(18px) saturate(145%);
+    border: 2px solid rgba(247, 231, 206, 0.68);
+    box-shadow: 0 36px 90px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.35);
     padding: 44px 64px 56px 64px;
     display: flex;
     flex-direction: column;
@@ -619,16 +702,21 @@ function buildSlideHtml(slide) {
   }
   .footer {
     position: absolute;
-    bottom: 64px;
+    bottom: 60px;
     left: 76px;
     right: 76px;
+    padding: 16px 28px;
+    border-radius: 18px;
+    background: rgba(12, 15, 26, 0.56);
+    backdrop-filter: blur(14px) saturate(140%);
+    border: 1.5px solid rgba(247, 231, 206, 0.48);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 16px;
     font-size: 21px;
     font-weight: 700;
-    color: rgba(247,231,206,0.92);
+    color: #ffffff;
     letter-spacing: 3px;
     z-index: 10;
   }
