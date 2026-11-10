@@ -231,16 +231,16 @@ export function renderVisionGlassSlideToCanvas(
       offsetY = -(drawH - H) / 2
     }
     ctx.save()
-    ctx.filter = 'brightness(0.32) contrast(1.15) saturate(0.85)'
+    ctx.filter = 'brightness(0.95) contrast(1.06) saturate(1.16)'
     ctx.drawImage(bgImg, offsetX, offsetY, drawW, drawH)
     ctx.restore()
   }
 
-  // Obsidian & Champagne-Gold Architectural Vignette
+  // Breathable Frosted-Glass Vignette so Background Photography Shines Through
   const grad = ctx.createLinearGradient(0, 0, 0, H)
-  grad.addColorStop(0, 'rgba(7, 7, 12, 0.88)')
-  grad.addColorStop(0.45, 'rgba(10, 10, 15, 0.48)')
-  grad.addColorStop(1, 'rgba(5, 5, 10, 0.94)')
+  grad.addColorStop(0, 'rgba(10, 13, 24, 0.42)')
+  grad.addColorStop(0.45, 'rgba(10, 13, 24, 0.14)')
+  grad.addColorStop(1, 'rgba(10, 13, 24, 0.48)')
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, W, H)
 
@@ -278,14 +278,14 @@ export function renderVisionGlassSlideToCanvas(
   drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 36)
   ctx.clip()
   if (bgImg && bgImg.complete && bgImg.naturalWidth > 0) {
-    ctx.filter = 'blur(34px) brightness(0.38)'
+    ctx.filter = 'blur(22px) brightness(0.76) saturate(1.35)'
     ctx.drawImage(bgImg, 0, 0, W, H)
     ctx.filter = 'none'
   }
   const glassFill = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH)
-  glassFill.addColorStop(0, 'rgba(26, 26, 36, 0.84)')
-  glassFill.addColorStop(0.5, 'rgba(15, 15, 22, 0.78)')
-  glassFill.addColorStop(1, 'rgba(10, 10, 15, 0.90)')
+  glassFill.addColorStop(0, 'rgba(18, 22, 36, 0.56)')
+  glassFill.addColorStop(0.5, 'rgba(14, 17, 29, 0.52)')
+  glassFill.addColorStop(1, 'rgba(12, 15, 26, 0.62)')
   ctx.fillStyle = glassFill
   ctx.fillRect(cardX, cardY, cardW, cardH)
   ctx.restore()
