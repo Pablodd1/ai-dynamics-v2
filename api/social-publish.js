@@ -84,10 +84,32 @@ export default async function handler(req, res) {
           channels(input: $orgInput) {
             id
             name
+            displayName
             service
+            serviceId
             type
             avatar
             isDisconnected
+            externalLink
+          }
+          posts(input: { organizationId: "6af1e3f0aede2cd4287eac43", filter: { channelIds: ["6af1e6aa62b70b94b0d12fb2"] } }, first: 12) {
+            edges {
+              node {
+                id
+                status
+                sentAt
+                createdAt
+                externalLink
+                text
+                assets {
+                  ... on ImageAsset {
+                    image {
+                      url
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       `
@@ -109,6 +131,8 @@ export default async function handler(req, res) {
         connected: Boolean(data?.data?.account?.id),
         account: data?.data?.account || null,
         channels: data?.data?.channels || [],
+        gbpPosts: data?.data?.posts?.edges?.map((e) => e.node) || [],
+        rawErrors: data?.errors || null,
         organizationId: detectedOrgId,
         visionDeck: VISION_DECK_CAROUSEL,
       })
