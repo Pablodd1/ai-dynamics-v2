@@ -101,13 +101,6 @@ export default async function handler(req, res) {
                 createdAt
                 externalLink
                 text
-                assets {
-                  ... on ImageAsset {
-                    image {
-                      url
-                    }
-                  }
-                }
               }
             }
           }
