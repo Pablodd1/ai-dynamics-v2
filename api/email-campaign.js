@@ -1,251 +1,328 @@
 // Serverless API Endpoint: /api/email-campaign
-// 5-Email Human Continuation Sequence (Brevo) + Google Analytics (GA4) UTM Tracking + Google Business Profile ("Google Buz") Hub
+// Minimalistic 5-Option Mid-Email Direct Connect Hub Architecture (Brevo + GA4 UTM + /connect Fast-Action Card)
+
+const PROJECT_DOMAIN = 'https://www.aidynamic.pro';
+const PROJECT_PHONE_DISPLAY = '(786) 643-2099';
+const PROJECT_PHONE_E164 = '+17866432099';
+
+function buildDirectConnectHubLetter({
+  firstName = 'there',
+  emailParam = '{{ contact.EMAIL }}',
+  segment = 'ceo',
+  utmCampaign = 'direct_connect_hub',
+  openingPara1,
+  openingPara2,
+  closingPara1,
+  closingPara2 = '',
+  isBrevoCampaignDraft = false,
+}) {
+  const qsTail = `&segment=${encodeURIComponent(segment)}&utm_campaign=${encodeURIComponent(utmCampaign)}`;
+  const callMeUrl = `${PROJECT_DOMAIN}/connect?mode=call&email=${emailParam}${qsTail}`;
+  const textMeUrl = `${PROJECT_DOMAIN}/connect?mode=text&email=${emailParam}${qsTail}`;
+  // CRITICAL GMAIL FIX: Never put raw sms: in HTML emails — route via /connect?mode=open-sms
+  const openSmsUrl = `${PROJECT_DOMAIN}/connect?mode=open-sms&email=${emailParam}${qsTail}`;
+  const virtualUrl = `${PROJECT_DOMAIN}/connect?mode=virtual&email=${emailParam}${qsTail}`;
+  const homeUrl = `${PROJECT_DOMAIN}/?utm_source=brevo&utm_medium=email&utm_campaign=${encodeURIComponent(utmCampaign)}`;
+
+  const unsubLinkHtml = isBrevoCampaignDraft
+    ? `<a href="{{ unsubscribe }}" style="color: #64748b; text-decoration: underline;">unsubscribe here</a>`
+    : `<a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Dynamic Pro</title>
+  <style>
+    @media only screen and (max-width: 520px) {
+      .hub-col {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 10px !important;
+      }
+      .hub-card {
+        padding: 14px !important;
+      }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #ffffff; color: #1e293b; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif; max-width: 580px; margin: 0 auto; padding: 18px 14px 24px; color: #1e293b; font-size: 15px; line-height: 1.65;">
+
+    <!-- 1. TOP STRIP: Minimalistic compact brand mark + company name (zero heavy banner) -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
+      <tr>
+        <td style="vertical-align: middle;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td style="background-color: #0a0a0f; border: 1px solid #c9a96e; border-radius: 6px; width: 26px; height: 26px; text-align: center; vertical-align: middle; font-family: Georgia, serif; font-size: 11px; font-weight: 700; color: #f7e7ce;">
+                AI
+              </td>
+              <td style="padding-left: 9px; font-size: 13px; font-weight: 700; color: #0f172a; letter-spacing: 0.2px;">
+                AI Dynamic Pro <span style="font-weight: 400; color: #64748b;">· Miami</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 2. OPENING: 2 short, plain-spoken paragraphs -->
+    <p style="margin: 0 0 14px; color: #0f172a;">Hi ${firstName},</p>
+
+    <p style="margin: 0 0 14px; color: #1e293b;">${openingPara1}</p>
+
+    <p style="margin: 0 0 18px; color: #1e293b;">${openingPara2}</p>
+
+    <!-- 3. CENTERPIECE: Minimalistic 5-Option Mid-Email Direct Connect Hub -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 20px 0;">
+      <tr>
+        <td class="hub-card" style="padding: 16px;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; margin-bottom: 12px;">
+            Pick how you&rsquo;d rather connect (takes 10 seconds):
+          </div>
+
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <!-- ROW 1: Phone Call Pair (Solid Primary Gold + Solid Dark-Contrast Obsidian) -->
+            <tr>
+              <td width="50%" class="hub-col" style="padding: 0 5px 10px 0; vertical-align: top;">
+                <a href="${callMeUrl}" style="display: block; background-color: #c9a96e; border: 1.5px solid #b89352; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
+                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0a0a0f; line-height: 1.25;">📞 You Call Me &rarr;</span>
+                  <span style="display: block; font-size: 11px; font-weight: 500; color: #27272a; margin-top: 3px; line-height: 1.25;">Drop your name &amp; direct number</span>
+                </a>
+              </td>
+              <td width="50%" class="hub-col" style="padding: 0 0 10px 5px; vertical-align: top;">
+                <a href="tel:${PROJECT_PHONE_E164}" style="display: block; background-color: #0a0a0f; border: 1.5px solid #0a0a0f; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
+                  <span style="display: block; font-size: 14px; font-weight: 700; color: #ffffff; line-height: 1.25;">📲 I&rsquo;ll Call You</span>
+                  <span style="display: block; font-size: 11px; font-weight: 400; color: #f7e7ce; margin-top: 3px; line-height: 1.25;">Tap to dial ${PROJECT_PHONE_DISPLAY}</span>
+                </a>
+              </td>
+            </tr>
+
+            <!-- ROW 2: Text / SMS Pair (Crisp #ffffff Outlined Buttons) -->
+            <tr>
+              <td width="50%" class="hub-col" style="padding: 0 5px 10px 0; vertical-align: top;">
+                <a href="${textMeUrl}" style="display: block; background-color: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
+                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.25;">💬 You Text Me &rarr;</span>
+                  <span style="display: block; font-size: 11px; font-weight: 400; color: #64748b; margin-top: 3px; line-height: 1.25;">Leave your cell for a quick text</span>
+                </a>
+              </td>
+              <td width="50%" class="hub-col" style="padding: 0 0 10px 5px; vertical-align: top;">
+                <a href="${openSmsUrl}" style="display: block; background-color: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
+                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.25;">✉️ I&rsquo;ll Text You</span>
+                  <span style="display: block; font-size: 11px; font-weight: 400; color: #64748b; margin-top: 3px; line-height: 1.25;">Text ${PROJECT_PHONE_DISPLAY} right now</span>
+                </a>
+              </td>
+            </tr>
+
+            <!-- ROW 3: Slim Full-Span Virtual Consultation Bar (Pixel-Aligned Outer Edges + Soft Brand Tint) -->
+            <tr>
+              <td colspan="2" style="padding: 0; vertical-align: top;">
+                <a href="${virtualUrl}" style="display: block; background-color: #faf5eb; border: 1.5px solid #d4b87a; border-radius: 8px; padding: 12px 12px; text-decoration: none; text-align: center;">
+                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0a0a0f; line-height: 1.3;">🗓️ Make an Appointment &mdash; Free 15-Min Virtual Consultation &rarr;</span>
+                  <span style="display: block; font-size: 11px; font-weight: 500; color: #6b5327; margin-top: 3px; line-height: 1.25;">Pick a day &amp; time on your calendar &middot; Video or Phone</span>
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 4. CLOSING: Transparent pricing / risk-reversal + human founder sign-off -->
+    <p style="margin: 0 0 14px; color: #1e293b;">${closingPara1}</p>
+    ${closingPara2 ? `<p style="margin: 0 0 16px; color: #1e293b;">${closingPara2}</p>` : ''}
+
+    <p style="margin: 18px 0 0; color: #0f172a; line-height: 1.55;">
+      Talk soon,<br/>
+      <strong>Jasmel Acosta</strong><br/>
+      <span style="font-size: 13px; color: #475569;">Founder &amp; AI Developer, AI Dynamic Pro</span><br/>
+      <span style="font-size: 13px; color: #64748b;">Brickell, Miami &middot; <a href="tel:${PROJECT_PHONE_E164}" style="color: #0f172a; text-decoration: none; font-weight: 600;">${PROJECT_PHONE_DISPLAY}</a> &middot; <a href="${homeUrl}" style="color: #9a7b3e; text-decoration: none; font-weight: 600;">aidynamic.pro</a></span>
+    </p>
+
+    <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 24px 0 12px;" />
+    <p style="margin: 0; font-size: 11px; color: #94a3b8; line-height: 1.5;">
+      AI Dynamic Pro &middot; Brickell Financial District, Miami, FL 33131 &middot; Hablamos Espa&ntilde;ol.<br/>
+      Don&rsquo;t want notes from me? Reply &ldquo;unsubscribe&rdquo; anytime or ${unsubLinkHtml}.
+    </p>
+  </div>
+</body>
+</html>`;
+}
 
 const CAMPAIGNS = {
   email_1_voice_jass: {
     id: 'email_1_voice_jass',
-    name: 'Week 1 — Executive P&L Mandate: Eliminate Missed Calls & Manual Payroll at {{company}}',
-    subject: 'after-hours calls and wasted payroll at {{company}}',
-    utmCampaign: 'seq1_voice_jass',
-    description: 'Minimalist, zero-icon executive brief combining behavioral loss-aversion (38% missed calls) with our 6 proprietary AI architectures and on-site staff training.',
-    buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: Georgia, 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; max-width: 620px; margin: 0 auto; color: #0f172a; line-height: 1.72; font-size: 16px; padding: 16px 6px;">
-        <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a0894e; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 22px;">
-          AI DYNAMIC PRO &nbsp;|&nbsp; EXECUTIVE MEMORANDUM
-        </div>
+    name: 'Segment 1 — South Florida Business Owners & CEOs (5-Option Direct Connect Hub)',
+    subject: 'quick question on missed calls & manual admin at {{company}}',
+    utmCampaign: 'hub_seg1_ceo_owners',
+    segment: 'ceo_owners',
+    targetListIds: [36],
+    description: 'Plain-spoken founder note to Miami CEOs & owners featuring our Minimalistic 5-Option Direct Connect Hub ($99 Audit + Free 48-Hr Prototype).',
+    buildHtml: ({ name = 'there', email = '', company = 'your business', isBrevoCampaignDraft = false }) => {
+      const firstName = isBrevoCampaignDraft
+        ? '{{ contact.FIRSTNAME | default: "there" }}'
+        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
+      const comp = isBrevoCampaignDraft
+        ? '{{ contact.COMPANY | default: "your business" }}'
+        : company && company !== 'your company'
+        ? company
+        : 'your business';
+      const emailParam = isBrevoCampaignDraft
+        ? '{{ contact.EMAIL }}'
+        : encodeURIComponent(email || '');
 
-        <p>${name},</p>
-
-        <p>Every week an owner delays engineering automation inside <strong>${company}</strong>, two quiet liabilities compound on the P&amp;L:</p>
-
-        <p><strong>01 / You pay human salaries for repetitive data entry, intake, and manual follow-ups that custom AI executes in three seconds.<br/>
-        02 / Between 12:00 PM–2:00 PM and after 5:30 PM, 38% of your high-intent callers hit voicemail and retain your competitor.</strong></p>
-
-        <p>I am Jasmel Acosta, Founder of <strong>AI Dynamic Pro</strong> in Miami. We do not sell generic software templates. As hands-on <strong>AI Developers, Creators, and Systems Engineers</strong>, we walk directly into your industry, build proprietary AI architectures around your operation, and stay on-site until your team masters them:</p>
-
-        <div style="background: #0a0a0f; color: #f8fafc; border-left: 3px solid #c9a96e; padding: 20px 24px; margin: 24px 0; border-radius: 4px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px; line-height: 1.65;">
-          <p style="margin: 0 0 12px 0;"><strong style="color: #c9a96e; letter-spacing: 1px;">01 / ON-SITE AUDIT &amp; 48-HOUR LIVE PROTOTYPE ($99 AUDIT OR FREE 15-MIN TRIAGE):</strong><br/>
-          We map your slowest department and engineer a working AI prototype tailored to <strong>${company}</strong> within 48 hours—guaranteed to uncover at least <strong>$2,500+/month ($30,000/yr)</strong> in payroll and operating savings, or you pay <strong>$0</strong>.</p>
-          <p style="margin: 0 0 12px 0;"><strong style="color: #c9a96e; letter-spacing: 1px;">02 / SIX PROPRIETARY PRODUCTION ARCHITECTURES:</strong><br/>
-          Whether your mandate requires <strong>Clinical &amp; RCM Automation</strong> (-45% admin overhead), <strong>Computer Vision &amp; 3D LiDAR Inspection</strong>, <strong>Private Legal/Real Estate Document RAG</strong>, <strong>Agentic Websites</strong>, or our 24/7 bilingual voice &amp; CRM system (<strong>JAss</strong> — $997 Turnkey or $297/mo), we deploy it in 7 to 14 days.</p>
-          <p style="margin: 0;"><strong style="color: #c9a96e; letter-spacing: 1px;">03 / ON-SITE WORKFORCE MULTIPLICATION ($497 CORPORATE BOOTCAMP):</strong><br/>
-          We stay side-by-side with up to 15 of your employees and train them hands-on until <strong>1 AI-trained staff member produces the output of 5</strong>.</p>
-        </div>
-
-        <p><strong>Decisive CEOs do not wait another quarter to stop bleeding margin.</strong> Schedule your 15-minute executive call or $99 Department Audit below and let us build your 48-hour prototype this week:</p>
-
-        <p style="margin: 26px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif;">
-          <a href="${utmUrl}" style="background: #0a0a0f; color: #f7e7ce; border: 1px solid #c9a96e; padding: 14px 28px; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block;">Schedule $99 Audit or 48-Hour Prototype →</a>
-        </p>
-
-        <p style="margin-top: 28px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong>Jasmel Acosta</strong><br/>
-          Founder, AI Developer &amp; Systems Creator &nbsp;|&nbsp; AI Dynamic Pro<br/>
-          Brickell Financial District, Miami &nbsp;|&nbsp; <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a> &nbsp;|&nbsp; <a href="${homeUtmUrl}" style="color: #a0894e; font-weight: 700;">aidynamic.pro</a>
-        </p>
-
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 13px; color: #334155; background: #f8fafc; border-left: 2px solid #94a3b8; padding: 12px 16px; margin-top: 20px;">
-          <strong>P.S.</strong> Inspect all 22 of our live production architectures and test <strong>JAss</strong> in English or Spanish right now at <a href="${homeUtmUrl}" style="color: #0f172a; font-weight: 700;">www.aidynamic.pro</a>, or call me directly at <strong>+1 (786) 643-2099</strong>.
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • To opt out of future executive memorandums, reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here</a>.
-        </p>
-      </div>
-    `,
+      return buildDirectConnectHubLetter({
+        firstName,
+        emailParam,
+        segment: 'ceo_owners',
+        utmCampaign: 'hub_seg1_ceo_owners',
+        isBrevoCampaignDraft,
+        openingPara1: `Most owners I visit here in Miami aren't short on demand—they're losing roughly <strong>$3,420 a month per department</strong> paying good people to copy-paste intake data, chase follow-ups, and return voicemails from callers who hung up between noon and 2pm or after 5:30pm.`,
+        openingPara2: `I'm Jasmel, a local AI developer in Brickell. Instead of pitching you a bloated software contract, my team comes directly into <strong>${comp}</strong> for a <strong>$99 60-minute workflow audit</strong> and builds a <strong>working custom AI prototype in 48 hours</strong> around your slowest daily bottleneck.`,
+        closingPara1: `Everything we do is flat and transparent: if that 48-hour prototype doesn't show you a clear path to saving at least <strong>$2,500+/month</strong> in payroll and wasted hours, I refund your $99 on the spot. And when you're ready, we stay on-site to train your staff ($497 half-day bootcamp for up to 15 people, English &amp; Español) so 1 employee handles the workload of 5.`,
+      });
+    },
   },
 
   email_2_audit_99: {
     id: 'email_2_audit_99',
-    name: 'Week 2 — Precision Cost Ledger: Eliminating $3,420/Mo in Manual Payroll at {{company}}',
-    subject: '$3,420/mo in manual payroll at {{company}}',
-    utmCampaign: 'seq2_audit_99',
-    description: 'Minimalist P&L cost ledger ($3,420/mo & 4.2 hrs/day wasted) demonstrating how custom AI architectures and staff training permanently lower overhead.',
-    buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: Georgia, 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; max-width: 620px; margin: 0 auto; color: #0f172a; line-height: 1.72; font-size: 16px; padding: 16px 6px;">
-        <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a0894e; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 22px;">
-          AI DYNAMIC PRO &nbsp;|&nbsp; COST &amp; PAYROLL LEDGER
-        </div>
+    name: 'Segment 2 — Medical Clinics, Dental Practices & MedSpas (5-Option Direct Connect Hub)',
+    subject: 'front-desk calls & claim denials at {{company}}',
+    utmCampaign: 'hub_seg2_medical_dental',
+    segment: 'medical_dental',
+    targetListIds: [29, 36],
+    description: 'Tailored to Miami doctors, dental practices, and MedSpas (front-desk bilingual scheduling, mobile insurance intake & pre-claim scrubbing).',
+    buildHtml: ({ name = 'there', email = '', company = 'your practice', isBrevoCampaignDraft = false }) => {
+      const firstName = isBrevoCampaignDraft
+        ? '{{ contact.FIRSTNAME | default: "there" }}'
+        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
+      const comp = isBrevoCampaignDraft
+        ? '{{ contact.COMPANY | default: "your practice" }}'
+        : company && company !== 'your company'
+        ? company
+        : 'your practice';
+      const emailParam = isBrevoCampaignDraft
+        ? '{{ contact.EMAIL }}'
+        : encodeURIComponent(email || '');
 
-        <p>${name},</p>
-
-        <p><strong>$3,420 a month in wasted payroll rarely announces itself as an emergency—until you see the 12-month loss on your balance sheet ($41,040).</strong></p>
-
-        <p>Across operations like <strong>${company}</strong>, capable staff spend <strong>4.2 hours every day</strong> on manual intake, document verification, appointment chasing, and copy-pasting data across disconnected software tabs.</p>
-
-        <p>At <strong>AI Dynamic Pro</strong>, our AI Developers walk directly into <strong>${company}</strong> and replace manual friction with proprietary production architectures:</p>
-
-        <div style="background: #0a0a0f; color: #f8fafc; border-left: 3px solid #c9a96e; padding: 20px 24px; margin: 24px 0; border-radius: 4px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px; line-height: 1.65;">
-          <p style="margin: 0 0 10px 0;"><strong style="color: #c9a96e;">01 / CUSTOM SECTOR ARCHITECTURES:</strong> From automated medical claim scrubbing, legal contract RAG, and 3-second computer vision inspections to 24/7 bilingual voice &amp; CRM pipelines (<strong>JAss</strong>), we engineer the exact system your company requires.</p>
-          <p style="margin: 0 0 10px 0;"><strong style="color: #c9a96e;">02 / ON-SITE STAFF TRAINING ($497 BOOTCAMP):</strong> We stay with your team and train up to 15 staff hands-on so your workforce operates at 5x daily output.</p>
-          <p style="margin: 0;"><strong style="color: #c9a96e;">03 / THE $2,500+/MO GUARANTEE ($99 AUDIT + 48H PROTOTYPE):</strong> We build a working prototype in 48 hours and guarantee to uncover at least <strong>$2,500+/month ($30,000/yr)</strong> in immediate savings—or we refund your $99 on the spot.</p>
-        </div>
-
-        <p>Stop paying human salaries for machine work. Claim your 48-hour prototype or $99 Department Audit today:</p>
-
-        <p style="margin: 26px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif;">
-          <a href="${utmUrl}" style="background: #0a0a0f; color: #f7e7ce; border: 1px solid #c9a96e; padding: 14px 28px; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block;">Claim $99 Audit &amp; 48-Hour Prototype →</a>
-        </p>
-
-        <p style="margin-top: 28px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong>Jasmel Acosta</strong><br/>
-          Founder, AI Developer &amp; Systems Creator &nbsp;|&nbsp; AI Dynamic Pro<br/>
-          <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a> &nbsp;|&nbsp; <a href="${homeUtmUrl}" style="color: #a0894e; font-weight: 700;">aidynamic.pro</a>
-        </p>
-
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 13px; color: #334155; background: #f8fafc; border-left: 2px solid #94a3b8; padding: 12px 16px; margin-top: 20px;">
-          <strong>P.S.</strong> Reply directly to this email with the single slowest workflow inside <strong>${company}</strong>—I will personally outline the architecture to automate it in 48 hours.
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here</a> to opt out.
-        </p>
-      </div>
-    `,
+      return buildDirectConnectHubLetter({
+        firstName,
+        emailParam,
+        segment: 'medical_dental',
+        utmCampaign: 'hub_seg2_medical_dental',
+        isBrevoCampaignDraft,
+        openingPara1: `Across Miami clinics, dental offices, and MedSpas, two leaks eat margin every single week: <strong>38% of new-patient calls during lunch or after 5pm hit voicemail and book elsewhere</strong>, while doctors and billers lose evenings to manual charting and preventable claim denials.`,
+        openingPara2: `I build custom clinical &amp; front-desk AI right here in Miami. For a flat <strong>$99 60-minute practice audit</strong>, I'll map your front desk and build a <strong>working 48-hour prototype</strong> for <strong>${comp}</strong>—covering Ring-1 English/Spanish phone &amp; WhatsApp scheduling, mobile insurance card capture, or pre-submission claim checks.`,
+        closingPara1: `No long-term retainers and zero guesswork: if our 48-hour prototype doesn't uncover at least <strong>$2,500+/month</strong> in recovered appointments and admin time, you pay <strong>$0</strong>. Our turnkey bilingual receptionist starts at $997 ($297/mo managed), and our $497 on-site staff bootcamp gets your receptionists and billers comfortable on day one.`,
+      });
+    },
   },
 
   email_3_staff_training: {
     id: 'email_3_staff_training',
-    name: 'Week 3 — Workforce Multiplication: 1 Trained Employee Producing the Output of 5 ($497 Bootcamp)',
-    subject: '1 employee producing the output of 5 at {{company}}',
-    utmCampaign: 'seq3_staff_training',
-    description: 'Resolves the #1 executive bottleneck (83% shelfware failure) by combining custom AI engineering with our $497 On-Site Corporate Staff Bootcamp.',
-    buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: Georgia, 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; max-width: 620px; margin: 0 auto; color: #0f172a; line-height: 1.72; font-size: 16px; padding: 16px 6px;">
-        <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a0894e; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 22px;">
-          AI DYNAMIC PRO &nbsp;|&nbsp; WORKFORCE MULTIPLICATION
-        </div>
+    name: 'Segment 3 — Contractors, Construction & Property Services (5-Option Direct Connect Hub)',
+    subject: 'faster job quotes & missed field calls at {{company}}',
+    utmCampaign: 'hub_seg3_contractors_gc',
+    segment: 'contractors_gc',
+    targetListIds: [31, 36],
+    description: 'Tailored to General Contractors, trades, and property firms (smartphone photo-to-quote AI + 24/7 bilingual job intake & estimate follow-up).',
+    buildHtml: ({ name = 'there', email = '', company = 'your crew', isBrevoCampaignDraft = false }) => {
+      const firstName = isBrevoCampaignDraft
+        ? '{{ contact.FIRSTNAME | default: "there" }}'
+        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
+      const comp = isBrevoCampaignDraft
+        ? '{{ contact.COMPANY | default: "your company" }}'
+        : company && company !== 'your company'
+        ? company
+        : 'your company';
+      const emailParam = isBrevoCampaignDraft
+        ? '{{ contact.EMAIL }}'
+        : encodeURIComponent(email || '');
 
-        <p>${name},</p>
-
-        <p><strong>83% of companies that purchase AI software fail to capture a return for one reason: nobody stayed on-site to train their workforce how to execute with it.</strong></p>
-
-        <p>As the decision-maker at <strong>${company}</strong>, you do not need another unused subscription. You need lower operating costs, faster turnaround times, and a team that accomplishes five times more without expanding headcount.</p>
-
-        <p>That is our mandate at <strong>AI Dynamic Pro</strong>. We engineer the technology and stay with your staff until it is second nature:</p>
-
-        <div style="background: #0a0a0f; color: #f8fafc; border-left: 3px solid #c9a96e; padding: 20px 24px; margin: 24px 0; border-radius: 4px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px; line-height: 1.65;">
-          <p style="margin: 0 0 10px 0;"><strong style="color: #c9a96e;">01 / $497 HALF-DAY CORPORATE STAFF BOOTCAMP (UP TO 15 STAFF):</strong> We come on-site (or live virtual) and train your operations, clinical, legal, or front-desk staff on the exact workflows they run daily at <strong>${company}</strong>.</p>
-          <p style="margin: 0 0 10px 0;"><strong style="color: #c9a96e;">02 / FOUR HOURS COMPRESSED INTO 22 MINUTES:</strong> We install role-specific prompt playbooks and data-security SOPs so <strong>1 AI-trained employee reliably delivers the output of 5</strong>.</p>
-          <p style="margin: 0;"><strong style="color: #c9a96e;">03 / FULL-STACK AUTOMATION WHERE HUMANS SHOULD NOT TOUCH IT:</strong> Everything else is handled autonomously by our custom AI applications and 24/7 bilingual voice system (<strong>JAss</strong>).</p>
-        </div>
-
-        <p>Equip your team to operate at 5x speed this week:</p>
-
-        <p style="margin: 26px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif;">
-          <a href="${utmUrl}" style="background: #0a0a0f; color: #f7e7ce; border: 1px solid #c9a96e; padding: 14px 28px; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block;">Reserve $497 Staff Bootcamp or $99 Audit →</a>
-        </p>
-
-        <p style="margin-top: 28px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong>Jasmel Acosta</strong><br/>
-          Founder, AI Developer &amp; Systems Creator &nbsp;|&nbsp; AI Dynamic Pro<br/>
-          <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a> &nbsp;|&nbsp; <a href="${homeUtmUrl}" style="color: #a0894e; font-weight: 700;">aidynamic.pro</a>
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here</a> to opt out.
-        </p>
-      </div>
-    `,
+      return buildDirectConnectHubLetter({
+        firstName,
+        emailParam,
+        segment: 'contractors_gc',
+        utmCampaign: 'hub_seg3_contractors_gc',
+        isBrevoCampaignDraft,
+        openingPara1: `When you're on a jobsite in South Florida, two things quietly kill good bids: estimators burning 12+ hours a week driving out to tire-kickers, and inbound calls or WhatsApp leads going unanswered for an hour while the homeowner hires whoever picked up first.`,
+        openingPara2: `I'm a Miami AI developer who builds practical field tools for contractors and property operators. For a flat <strong>$99 60-minute audit</strong>, we'll build a <strong>working 48-hour custom prototype</strong> for <strong>${comp}</strong>—from instant smartphone photo-to-quote estimating to a 24/7 English/Spanish voice &amp; WhatsApp coordinator that answers on Ring 1 and chases every open estimate.`,
+        closingPara1: `If the 48-hour prototype doesn't show you at least <strong>$2,500+/month</strong> in saved estimator hours and captured jobs, I hand your $99 right back. Plus, we run a <strong>$497 on-site bootcamp</strong> (English &amp; Español) so your office and field coordinators actually use the tools every day.`,
+      });
+    },
   },
 
   email_4_before_after: {
     id: 'email_4_before_after',
-    name: 'Week 4 — Empirical P&L Proof: 4 Retainers vs. 19 Retainers Across 22 Deployed Systems',
-    subject: 'two 14-day P&L numbers for {{company}}',
-    utmCampaign: 'seq4_before_after',
-    description: 'Minimalist A/B benchmark (47-min human delay vs. 3-sec AI execution) backed by our portfolio of 22 production AI architectures.',
-    buildHtml: ({ name = 'there', company = 'your company', utmUrl, homeUtmUrl, phoneUrl }) => `
-      <div style="font-family: Georgia, 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; max-width: 620px; margin: 0 auto; color: #0f172a; line-height: 1.72; font-size: 16px; padding: 16px 6px;">
-        <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a0894e; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 22px;">
-          AI DYNAMIC PRO &nbsp;|&nbsp; EMPIRICAL P&amp;L BENCHMARK
-        </div>
+    name: 'Segment 4 — Law Firms, Real Estate Brokerages & Title (5-Option Direct Connect Hub)',
+    subject: '3-second client intake & contract screening at {{company}}',
+    utmCampaign: 'hub_seg4_legal_realestate',
+    segment: 'legal_realestate',
+    targetListIds: [24, 16, 36],
+    description: 'Tailored to attorneys, brokers, and title teams (3-second bilingual intake + private cloud contract & escrow deadline review).',
+    buildHtml: ({ name = 'there', email = '', company = 'your firm', isBrevoCampaignDraft = false }) => {
+      const firstName = isBrevoCampaignDraft
+        ? '{{ contact.FIRSTNAME | default: "there" }}'
+        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
+      const comp = isBrevoCampaignDraft
+        ? '{{ contact.COMPANY | default: "your firm" }}'
+        : company && company !== 'your company'
+        ? company
+        : 'your firm';
+      const emailParam = isBrevoCampaignDraft
+        ? '{{ contact.EMAIL }}'
+        : encodeURIComponent(email || '');
 
-        <p>${name},</p>
-
-        <p>Compare the 14-day ledger from two South Florida firms that each received 50 inbound client inquiries:</p>
-
-        <div style="background: #f8fafc; border-left: 3px solid #64748b; padding: 16px 20px; margin: 18px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong>MODEL A — MANUAL OPERATIONS ONLY ($14,500/MO ADMIN OVERHEAD):</strong><br/>
-          • Mean response time: <strong>47 minutes</strong> daytime, <strong>9.5 hours</strong> after-hours.<br/>
-          • 38% of lunch and post-5:30 PM calls abandoned on voicemail.<br/>
-          • Outcome: <strong>4 booked retainers</strong> out of 50 inquiries.
-        </div>
-
-        <div style="background: #0a0a0f; color: #f8fafc; border-left: 3px solid #c9a96e; padding: 18px 22px; margin: 18px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong style="color: #c9a96e;">MODEL B — AI DYNAMIC PRO ARCHITECTURE + TRAINED STAFF ($297/MO MANAGED JASS):</strong><br/>
-          • Mean response time: <strong>3 seconds</strong>, 24/7 in English &amp; Spanish across phone, WhatsApp, and web.<br/>
-          • Every inquiry triaged, qualified, and booked onto the calendar automatically.<br/>
-          • Outcome: <strong>19 booked retainers</strong> from the same 50 inquiries.
-        </div>
-
-        <p>Whether your vision for <strong>${company}</strong> requires computer vision inspection, clinical claim automation, sovereign legal RAG, or 24/7 bilingual voice and CRM pipelines, <strong>we have already engineered 22 production AI architectures</strong> (<a href="https://www.aidynamic.pro/projects?utm_source=brevo&utm_medium=email&utm_campaign=seq4_before_after" style="color: #a0894e; font-weight: 700;">inspect our portfolio at aidynamic.pro/projects</a>)—and we stay on-site until your staff runs them effortlessly.</p>
-
-        <p style="margin: 26px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif;">
-          <a href="${utmUrl}" style="background: #0a0a0f; color: #f7e7ce; border: 1px solid #c9a96e; padding: 14px 28px; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; display: inline-block;">Transition ${company} to Model B →</a>
-        </p>
-
-        <p style="margin-top: 28px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong>Jasmel Acosta</strong><br/>
-          Founder, AI Developer &amp; Systems Creator &nbsp;|&nbsp; AI Dynamic Pro<br/>
-          <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a> &nbsp;|&nbsp; <a href="${homeUtmUrl}" style="color: #a0894e; font-weight: 700;">aidynamic.pro</a>
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here</a> to opt out.
-        </p>
-      </div>
-    `,
+      return buildDirectConnectHubLetter({
+        firstName,
+        emailParam,
+        segment: 'legal_realestate',
+        utmCampaign: 'hub_seg4_legal_realestate',
+        isBrevoCampaignDraft,
+        openingPara1: `78% of legal inquiries and property buyers sign with the first firm that responds. When daytime follow-ups take 47 minutes—or a 7:00pm call goes to voicemail—high-value retainers and listings quietly walk across the street, while paralegals and coordinators spend 15+ hours a week reviewing routine agreements by hand.`,
+        openingPara2: `My team at AI Dynamic Pro in Brickell builds private AI systems for South Florida law firms, brokerages, and title teams. Starting with a <strong>$99 60-minute intake &amp; workflow audit</strong>, we build a <strong>working 48-hour prototype</strong> for <strong>${comp}</strong>—handling 3-second 24/7 English/Spanish intake across phone/WhatsApp/IG and instant private-cloud contract or escrow deadline screening.`,
+        closingPara1: `Simple guarantee: if that 48-hour prototype doesn't uncover at least <strong>$2,500+/month</strong> in saved admin time and captured retainers, you pay <strong>$0</strong>. No bloated consulting decks—just working software and hands-on training ($497 team bootcamp) for your staff.`,
+      });
+    },
   },
 
   email_5_founder_checkin: {
     id: 'email_5_founder_checkin',
-    name: 'Week 5 — Final Executive Mandate: 48-Hour Live Prototype & Staff Multiplication at {{company}}',
-    subject: 'final note on cutting costs at {{company}}, {{name}}',
-    utmCampaign: 'seq5_founder_checkin',
-    description: 'Concise, authoritative founder close-out challenging the CEO to authorize a 48-hour live prototype backed by our $30,000/yr savings guarantee.',
-    buildHtml: ({ name = 'there', company = 'your business', utmUrl, homeUtmUrl, gbpUrl, phoneUrl }) => `
-      <div style="font-family: Georgia, 'Playfair Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', serif; max-width: 620px; margin: 0 auto; color: #0f172a; line-height: 1.72; font-size: 16px; padding: 16px 6px;">
-        <div style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a0894e; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 22px;">
-          AI DYNAMIC PRO &nbsp;|&nbsp; FINAL EXECUTIVE MANDATE
-        </div>
+    name: 'Segment 5 — On-Site Staff AI Bootcamp ($497 Workforce Multiplier · Direct Connect Hub)',
+    subject: 'training your existing team at {{company}} (1 employee = 5)',
+    utmCampaign: 'hub_seg5_staff_bootcamp',
+    segment: 'staff_bootcamp',
+    targetListIds: [36, 31],
+    description: 'Focused on our $497 Half-Day On-Site Corporate AI Bootcamp (up to 15 staff, English & Español) with the 5-Option Direct Connect Hub.',
+    buildHtml: ({ name = 'there', email = '', company = 'your company', isBrevoCampaignDraft = false }) => {
+      const firstName = isBrevoCampaignDraft
+        ? '{{ contact.FIRSTNAME | default: "there" }}'
+        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
+      const comp = isBrevoCampaignDraft
+        ? '{{ contact.COMPANY | default: "your company" }}'
+        : company && company !== 'your company'
+        ? company
+        : 'your company';
+      const emailParam = isBrevoCampaignDraft
+        ? '{{ contact.EMAIL }}'
+        : encodeURIComponent(email || '');
 
-        <p>${name},</p>
-
-        <p>Running <strong>${company}</strong> demands your full attention, so I will keep this final note brief.</p>
-
-        <p>If your mandate this quarter is to <strong>cut operating overhead, eliminate manual payroll waste, and multiply your team's output by 5x</strong>, waiting another six months only compounds the cost. Here is our exact commitment when we step into <strong>${company}</strong>:</p>
-
-        <div style="background: #0a0a0f; color: #f8fafc; border-left: 3px solid #c9a96e; padding: 20px 24px; margin: 24px 0; border-radius: 4px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px; line-height: 1.65;">
-          <p style="margin: 0 0 10px 0;"><strong style="color: #c9a96e;">01 / WE WALK INTO YOUR COMPANY ($99 AUDIT + 48H PROTOTYPE):</strong> We audit your workflows and build a working prototype in 48 hours—guaranteed to uncover <strong>$2,500+/month ($30,000/yr)</strong> in savings, or you pay <strong>$0</strong>.</p>
-          <p style="margin: 0 0 10px 0;"><strong style="color: #c9a96e;">02 / WE ENGINEER PROPRIETARY AI ARCHITECTURES:</strong> From Clinical AI, Computer Vision, and Legal RAG to 24/7 Bilingual Voice (<strong>JAss</strong> — $997 Turnkey / $297/mo), we build the exact software your industry requires.</p>
-          <p style="margin: 0;"><strong style="color: #c9a96e;">03 / WE STAY &amp; TRAIN YOUR STAFF ($497 BOOTCAMP):</strong> We train up to 15 employees on-site until <strong>1 staff member produces the output of 5</strong>.</p>
-        </div>
-
-        <p>Reply <strong>"SCALE"</strong> directly to this email or select your 15-minute slot below to begin your 48-hour prototype today:</p>
-
-        <p style="margin: 22px 0; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px; line-height: 1.9;">
-          <strong>01 / Schedule Audit or 48-Hr Prototype:</strong> <a href="${utmUrl}" style="color: #a0894e; font-weight: 700;">aidynamic.pro/booking</a><br/>
-          <strong>02 / Production Portfolio &amp; Live JAss Demo:</strong> <a href="${homeUtmUrl}" style="color: #a0894e; font-weight: 700;">aidynamic.pro</a><br/>
-          <strong>03 / Google Business Profile (Miami):</strong> <a href="${gbpUrl}" style="color: #a0894e; font-weight: 700;">AI Dynamic Pro on Google</a><br/>
-          <strong>04 / Direct Executive Line:</strong> <a href="${phoneUrl}" style="color: #0f172a; font-weight: 700; text-decoration: none;">+1 (786) 643-2099</a>
-        </p>
-
-        <p style="margin-top: 28px; font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 14px;">
-          <strong>Jasmel Acosta</strong><br/>
-          Founder, AI Developer &amp; Systems Creator &nbsp;|&nbsp; AI Dynamic Pro
-        </p>
-
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 26px 0 12px;" />
-        <p style="font-family: 'Segoe UI', Inter, Arial, sans-serif; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-          AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • Reply "unsubscribe" or <a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here</a> to opt out.
-        </p>
-      </div>
-    `,
+      return buildDirectConnectHubLetter({
+        firstName,
+        emailParam,
+        segment: 'staff_bootcamp',
+        utmCampaign: 'hub_seg5_staff_bootcamp',
+        isBrevoCampaignDraft,
+        openingPara1: `83% of businesses that buy AI subscriptions never see a dime of return for one simple reason: nobody sits down next to their staff to show them how to cut their actual daily busywork with it, so by Monday morning everyone goes back to doing things the slow way.`,
+        openingPara2: `Instead of selling you another login that collects dust, my team comes on-site to <strong>${comp}</strong> (or live virtual) for a <strong>$497 Half-Day Practical AI Staff Bootcamp</strong> for up to 15 employees—or starts with a <strong>$99 60-minute audit + free 48-hour custom AI prototype</strong>.`,
+        closingPara1: `We build role-specific daily playbooks in plain English and Spanish for your receptionists, coordinators, estimators, and managers—turning 4 hours of repetitive admin into 22 minutes so <strong>1 trained employee reliably produces the output of 5</strong>.`,
+      });
+    },
   },
 };
 
@@ -445,13 +522,15 @@ export default async function handler(req, res) {
     return res.status(200).json({
       brevoConfigured: Boolean(BREVO_API_KEY),
       ga4MeasurementId: 'G-M1RHKRVS9M',
-      campaigns: Object.values(CAMPAIGNS).map(({ id, name, subject, utmCampaign, description }) => ({
+      campaigns: Object.values(CAMPAIGNS).map(({ id, name, subject, utmCampaign, segment, targetListIds, description }) => ({
         id,
         name,
         subject,
         utmCampaign,
+        segment,
+        targetListIds,
         description,
-        trackedBookingUrl: `https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=${utmCampaign}`,
+        trackedBookingUrl: `https://www.aidynamic.pro/connect?mode=virtual&utm_source=brevo&utm_medium=email&utm_campaign=${utmCampaign}`,
       })),
       googleBusinessPosts: GOOGLE_BUSINESS_POSTS,
       miamiGmapsLeads: MIAMI_GMAPS_LEADS,
@@ -728,6 +807,126 @@ export default async function handler(req, res) {
           : updatedIds.length > 0
           ? `Paused ${updatedIds.length} active/queued external (MBMB) campaign(s) in Brevo.`
           : 'Verified: 0 active or queued external (MBMB) campaigns are currently scheduled to send.',
+      });
+    }
+
+    // ACTION: Stage the 5-Option Direct Connect Hub segment campaigns as SAFE DRAFTS in Brevo (DO NOT SEND)
+    if (action === 'stage_brevo_drafts') {
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'api-key': BREVO_API_KEY,
+      };
+
+      // Resolve active verified Brevo sender
+      let draftSenderEmail = (senderEmail || 'jasmel@aidynamic.pro').trim().toLowerCase();
+      let draftSenderName = 'Jasmel Acosta - AI Dynamic Pro';
+      try {
+        const sdrRes = await fetch('https://api.brevo.com/v3/senders', { headers }).catch(() => null);
+        if (sdrRes && sdrRes.ok) {
+          const sdrData = await sdrRes.json();
+          const activeSenders = (sdrData.senders || []).filter((s) => s && s.active && s.email);
+          const exact = activeSenders.find((s) => s.email.trim().toLowerCase() === draftSenderEmail);
+          const domainMatch = activeSenders.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'));
+          const chosen = exact || domainMatch || activeSenders[0];
+          if (chosen) {
+            draftSenderEmail = chosen.email.trim().toLowerCase();
+            if (chosen.name) draftSenderName = chosen.name;
+          }
+        }
+      } catch {}
+
+      // Inspect existing Brevo draft campaigns so we update in-place instead of creating duplicates
+      const existingDraftMap = new Map();
+      try {
+        const listRes = await fetch('https://api.brevo.com/v3/emailCampaigns?type=classic&status=draft&limit=50', {
+          headers,
+        }).catch(() => null);
+        if (listRes && listRes.ok) {
+          const listData = await listRes.json();
+          for (const dc of listData.campaigns || []) {
+            if (dc.name) existingDraftMap.set(dc.name.trim(), dc.id);
+          }
+        }
+      } catch {}
+
+      const stagedDrafts = [];
+      const draftErrors = [];
+
+      for (const c of Object.values(CAMPAIGNS)) {
+        const draftCampaignName = `[Direct Connect Hub] ${c.name}`;
+        const draftSubject = c.subject
+          .replace(/\{\{company\}\}/g, '{{ contact.COMPANY | default: "your company" }}')
+          .replace(/\{\{name\}\}/g, '{{ contact.FIRSTNAME | default: "there" }}');
+
+        const htmlContent = c.buildHtml({
+          isBrevoCampaignDraft: true,
+        });
+
+        const payload = {
+          name: draftCampaignName,
+          subject: draftSubject,
+          sender: { name: draftSenderName, email: draftSenderEmail },
+          replyTo: 'jasmel@aidynamic.pro',
+          type: 'classic',
+          htmlContent,
+          recipients: { listIds: Array.isArray(c.targetListIds) && c.targetListIds.length > 0 ? c.targetListIds : [36] },
+        };
+
+        const existingId = existingDraftMap.get(draftCampaignName);
+        if (existingId) {
+          const putRes = await fetch(`https://api.brevo.com/v3/emailCampaigns/${existingId}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(payload),
+          }).catch(() => null);
+          if (putRes && (putRes.ok || putRes.status === 204)) {
+            stagedDrafts.push({
+              brevoCampaignId: existingId,
+              campaignKey: c.id,
+              name: draftCampaignName,
+              subject: draftSubject,
+              segment: c.segment,
+              listIds: payload.recipients.listIds,
+              status: 'draft',
+              operation: 'updated_existing_draft',
+            });
+          } else {
+            const errTxt = putRes ? await putRes.text().catch(() => 'PUT error') : 'Network error';
+            draftErrors.push({ campaignKey: c.id, error: errTxt });
+          }
+        } else {
+          const postRes = await fetch('https://api.brevo.com/v3/emailCampaigns', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload),
+          }).catch(() => null);
+          if (postRes && postRes.ok) {
+            const created = await postRes.json().catch(() => ({}));
+            stagedDrafts.push({
+              brevoCampaignId: created.id,
+              campaignKey: c.id,
+              name: draftCampaignName,
+              subject: draftSubject,
+              segment: c.segment,
+              listIds: payload.recipients.listIds,
+              status: 'draft',
+              operation: 'created_new_draft',
+            });
+          } else {
+            const errTxt = postRes ? await postRes.text().catch(() => 'POST error') : 'Network error';
+            draftErrors.push({ campaignKey: c.id, error: errTxt });
+          }
+        }
+      }
+
+      return res.status(200).json({
+        success: stagedDrafts.length > 0,
+        senderUsed: { name: draftSenderName, email: draftSenderEmail },
+        stagedCount: stagedDrafts.length,
+        stagedDrafts,
+        draftErrors,
+        message: `Staged ${stagedDrafts.length} Direct Connect Hub campaign(s) as SAFE DRAFTS in Brevo (status: draft — NOT sent).`,
       });
     }
 
@@ -1040,6 +1239,7 @@ export default async function handler(req, res) {
 
           const htmlContent = campaign.buildHtml({
             name: recipient.name,
+            email: recipient.email,
             company: recipient.company,
             utmUrl,
             homeUtmUrl,

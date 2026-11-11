@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { initAttributionTracking } from './lib/analytics'
 import LandingPage from './LandingPage'
+import DirectConnect from './pages/DirectConnect'
 import TermsOfService from './pages/TermsOfService'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import OurProcess from './pages/OurProcess'
@@ -26,6 +27,12 @@ import Admin from './pages/auth/Admin'
 import NotFound from './pages/NotFound'
 import EcosystemWidget from './components/EcosystemWidget'
 
+function ConditionalEcosystemWidget() {
+  const { pathname } = useLocation()
+  if (pathname === '/connect' || pathname === '/call-me') return null
+  return <EcosystemWidget currentSiteId="ai-dynamics" />
+}
+
 function App() {
   useEffect(() => {
     initAttributionTracking()
@@ -36,6 +43,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/connect" element={<DirectConnect />} />
+          <Route path="/call-me" element={<DirectConnect />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<Projects />} />
           <Route path="/booking" element={<Booking />} />
@@ -61,7 +70,7 @@ function App() {
           {/* Catch-all 404 Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <EcosystemWidget currentSiteId="ai-dynamics" />
+        <ConditionalEcosystemWidget />
       </BrowserRouter>
     </AuthProvider>
   )
