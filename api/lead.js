@@ -1,5 +1,11 @@
 // Serverless API Endpoint: /api/lead
-// Captures leads, logs them to Supabase & Brevo, and returns the Playbook PDF
+// Captures Playbook leads, logs them to Supabase & Brevo List #36, sends Playbook + 5-Option Direct Connect Hub email, and alerts founder
+
+import {
+  buildDirectConnectHubLetter,
+  buildFounderFastActionAlertHtml,
+  resolveVerifiedBrevoSender,
+} from './_directConnectEmail.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,13 +21,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, name, source = 'AI Dynamics - Lead Magnet', interest = 'Workflow Automation Guide' } = req.body || {};
+    const { email, name, phone = '', source = 'AI Dynamics - Lead Magnet', interest = 'Workflow Automation Guide' } = req.body || {};
 
     if (!email || !email.includes('@')) {
       return res.status(400).json({ error: 'Valid email address is required' });
     }
 
-    const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '';
+    const cleanEmail = email.trim().toLowerCase();
+    const displayName = (name || cleanEmail.split('@')[0]).trim();
+    const firstName = displayName.split(/\s+/)[0] || 'there';
+
+    const BREVO_API_KEY = (process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '').trim();
     const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co';
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
@@ -32,16 +42,17 @@ export default async function handler(req, res) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Prefer': 'return=minimal',
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            Prefer: 'return=minimal',
           },
           body: JSON.stringify({
-            name: name || email.split('@')[0],
-            email: email.trim().toLowerCase(),
+            name: displayName,
+            email: cleanEmail,
+            phone: phone || null,
             service_interest: [interest],
             status: 'new',
-            source: source,
+            source,
             notes: 'Downloaded 2026 AI Automation Playbook',
           }),
         });
@@ -50,90 +61,93 @@ export default async function handler(req, res) {
       }
     }
 
-    // 2. If Brevo API key is present, forward contact to Brevo
+    // 2. Upsert into Brevo List #36 (AI Dynamic Pro — Miami B2B Leads) + send Direct Connect Hub Playbook email
     if (BREVO_API_KEY) {
       try {
-        const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+        await fetch('https://api.brevo.com/v3/contacts', {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
-            email: email.trim().toLowerCase(),
+            email: cleanEmail,
             attributes: {
-              ...(name ? { FIRSTNAME: name } : {}),
+              FIRSTNAME: displayName,
+              NAME: displayName,
               SOURCE: source,
               INTEREST: interest,
             },
-            listIds: [1],
+            listIds: [36],
             updateEnabled: true,
           }),
+        }).catch(() => null);
+
+        const resolvedSender = await resolveVerifiedBrevoSender(BREVO_API_KEY);
+
+        const playbookHtml = buildDirectConnectHubLetter({
+          firstName,
+          emailParam: encodeURIComponent(cleanEmail),
+          segment: 'playbook_download',
+          utmCampaign: 'playbook_welcome_hub',
+          openingPara1: `Here is your direct copy of our <strong><a href="https://www.aidynamic.pro/AI-Automation-Playbook-2026.pdf" style="color: #9a7b3e; text-decoration: underline;">2026 AI Automation Playbook (PDF)</a></strong>—no hoops, you can open or save it anytime.`,
+          openingPara2: `Most business owners who grab the playbook are trying to fix one of two headaches: missed phone/WhatsApp inquiries or staff spending 15+ hours a week on repetitive admin. For a flat <strong>$99</strong>, my team runs a 60-minute workflow audit and builds a <strong>working custom AI prototype for your company in 48 hours</strong>.`,
+          closingPara1: `If the audit doesn't uncover at least <strong>$2,500/month ($30,000/year)</strong> in hard time and payroll savings, I refund your $99 on the spot. Pick whichever option above is easiest if you want us to map your workflow this week.`,
         });
 
-        const brevoData = await brevoRes.json().catch(() => ({}));
-        console.log('[Lead API] Brevo Response:', brevoRes.status, brevoData);
-
-        // Send automated Playbook delivery + $99 Audit welcome email with GA4 UTM tracking
-        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro';
-        try {
-          const sdrR = await fetch('https://api.brevo.com/v3/senders', {
-            headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
-          }).catch(() => null);
-          if (sdrR && sdrR.ok) {
-            const sdrD = await sdrR.json();
-            const active = (sdrD.senders || []).filter((s) => s && s.active && s.email);
-            const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'));
-            const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com');
-            if (aiDyn) resolvedSender = aiDyn.email;
-            else if (gmail) resolvedSender = gmail.email;
-            else if (active.length > 0) resolvedSender = active[0].email;
-          }
-        } catch {}
-
-        const utmBookingUrl = 'https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=playbook_welcome_audit99';
         await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
             sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: resolvedSender },
-            replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta — AI Dynamic Pro' },
-            to: [{ email: email.trim().toLowerCase(), name: name || email.split('@')[0] }],
-            subject: 'Your 2026 AI Automation Playbook + $99 Workflow Audit Special',
-            htmlContent: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #f8fafc; padding: 28px; border-radius: 12px;">
-                <h2 style="color: #c9a96e; margin-top: 0;">Here is Your 2026 AI Automation Playbook</h2>
-                <p>Hi ${name || 'there'},</p>
-                <p>Thank you for downloading the <strong>AI Dynamic Pro Automation Playbook</strong>. You can access your copy anytime here:</p>
-                <p><a href="https://www.aidynamic.pro/AI-Automation-Playbook-2026.pdf" style="color: #38bdf8; font-weight: bold;">Download the 2026 AI Automation Playbook (PDF)</a></p>
-                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 20px 0;" />
-                <p><strong>Want us to audit your business workflows directly?</strong></p>
-                <p>Claim our <strong>$99 AI Workflow & Feasibility Audit</strong>—we map your manual bottlenecks, build custom app & voice AI solutions, and train your staff to operate at 5x speed.</p>
-                <p style="margin: 24px 0;">
-                  <a href="${utmBookingUrl}" style="background: #c9a96e; color: #0a0a0f; padding: 12px 22px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block;">
-                    Book Your $99 Workflow Audit →
-                  </a>
-                </p>
-                <p style="font-size: 13px; color: #94a3b8;">Direct Miami Line: +1 (786) 643-2099 • www.aidynamic.pro</p>
-                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 20px 0 12px;" />
-                <p style="font-size: 11px; color: #64748b; line-height: 1.5;">
-                  AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • You are receiving this email because you requested the 2026 AI Automation Playbook at aidynamic.pro. To opt out of future emails, reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #94a3b8; text-decoration: underline;">click here to unsubscribe</a>.
-                </p>
-              </div>
-            `,
+            replyTo: { email: 'jasmel@aidynamic.pro', name: 'Jasmel Acosta — AI Dynamic Pro' },
+            to: [{ email: cleanEmail, name: displayName }],
+            subject: 'your 2026 AI playbook (pdf inside) + quick question',
+            htmlContent: playbookHtml,
+            tags: ['playbook_welcome_hub', 'direct_connect_hub'],
           }),
         });
+
+        // Instant founder alert
+        const alertHtml = buildFounderFastActionAlertHtml({
+          badge: 'PLAYBOOK LEAD',
+          headline: `${displayName} downloaded the 2026 AI Playbook`,
+          name: displayName,
+          phone,
+          email: cleanEmail,
+          detailRows: [
+            { label: 'Interest', value: interest },
+            { label: 'Source', value: source },
+          ],
+          mode: 'text',
+          topic: '$99 Audit + 48-Hr Prototype',
+        });
+
+        await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            sender: { name: 'AI Dynamic Pro — Lead Alert', email: resolvedSender },
+            replyTo: { email: cleanEmail, name: displayName },
+            to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
+            subject: `📥 Playbook Lead: ${displayName} (${cleanEmail})`,
+            htmlContent: alertHtml,
+          }),
+        }).catch(() => null);
       } catch (brevoErr) {
         console.warn('[Lead API] Brevo forward failed (non-critical):', brevoErr.message);
       }
     }
 
-    // 3. Return success with exact case-sensitive guide download asset link
     return res.status(200).json({
       success: true,
       message: 'Lead registered successfully',

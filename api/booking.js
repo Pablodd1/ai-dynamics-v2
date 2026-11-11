@@ -1,3 +1,12 @@
+// Serverless API Endpoint: /api/booking
+// Records consultation bookings in Supabase + Google Calendar + Brevo List #36, sends Instant Founder Mobile Alert + Split-Letter Direct Connect Hub confirmation
+
+import {
+  buildDirectConnectHubLetter,
+  buildFounderFastActionAlertHtml,
+  resolveVerifiedBrevoSender,
+} from './_directConnectEmail.js'
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
@@ -7,7 +16,6 @@ export default async function handler(req, res) {
     return res.status(200).end()
   }
 
-  // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -19,7 +27,7 @@ export default async function handler(req, res) {
   const company = body.company || ''
   const phone = body.phone || ''
   const message = body.message || body.challenge || body.interest || ''
-  
+
   let date = body.date
   let time = body.time
 
@@ -34,7 +42,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing required fields: name and email are required.' })
   }
 
-  const brevoApiKey = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || ''
+  const cleanEmail = String(email).trim().toLowerCase()
+  const displayName = String(name).trim()
+  const firstName = displayName.split(/\s+/)[0] || 'there'
+
+  const brevoApiKey = (process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '').trim()
   const googleClientId = process.env.GOOGLE_CLIENT_ID
   const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
   const googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN
@@ -48,13 +60,13 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Prefer': 'return=minimal',
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          Prefer: 'return=minimal',
         },
         body: JSON.stringify({
-          name,
-          email: email.trim().toLowerCase(),
+          name: displayName,
+          email: cleanEmail,
           phone: phone || null,
           company: company || null,
           service_interest: [service],
@@ -74,7 +86,6 @@ export default async function handler(req, res) {
   // ─── GOOGLE CALENDAR: Create event + Meet link ───
   if (googleClientId && googleClientSecret && googleRefreshToken && date && time) {
     try {
-      // 1. Get access token from refresh token
       const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -82,54 +93,51 @@ export default async function handler(req, res) {
           client_id: googleClientId,
           client_secret: googleClientSecret,
           refresh_token: googleRefreshToken,
-          grant_type: 'refresh_token'
-        })
+          grant_type: 'refresh_token',
+        }),
       })
 
       const tokenData = await tokenRes.json()
 
       if (tokenData.access_token) {
-        // Parse date + time into ISO format
         const match = time.match(/(\d+):(\d+)\s*(AM|PM)/i)
         const [hourStr, minStr, ampm] = match ? match.slice(1) : ['10', '00', 'AM']
         let hour = parseInt(hourStr)
         if (ampm.toUpperCase() === 'PM' && hour !== 12) hour += 12
         if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0
 
-        // Format clean date string if date is formatted like "YYYY-MM-DD"
         let dateClean = date
         if (body.selected_slot?.start) {
           dateClean = body.selected_slot.start.slice(0, 10)
         }
-        
+
         const startDate = new Date(`${dateClean}T${String(hour).padStart(2, '0')}:${minStr}:00-04:00`)
         const durationMinutes = service.includes('Audit') ? 30 : service.includes('Strategy') ? 45 : 30
         const endDate = new Date(startDate.getTime() + durationMinutes * 60000)
 
-        // 2. Create calendar event with Meet conference
-        const eventRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${tokenData.access_token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            summary: `AI Dynamics Pro — ${service} with ${name}`,
-            description: `Service: ${service}\nClient: ${name}\nEmail: ${email}\nCompany: ${company || 'N/A'}\nPhone: ${phone || 'N/A'}\nNotes: ${message || 'N/A'}`,
-            start: { dateTime: startDate.toISOString(), timeZone: 'America/New_York' },
-            end: { dateTime: endDate.toISOString(), timeZone: 'America/New_York' },
-            attendees: [
-              { email: 'jasmelacosta@gmail.com' },
-              { email }
-            ],
-            conferenceData: {
-              createRequest: {
-                requestId: `aidynamic-${Date.now()}`,
-                conferenceSolutionKey: { type: 'hangoutsMeet' }
-              }
-            }
-          })
-        })
+        const eventRes = await fetch(
+          'https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1',
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${tokenData.access_token}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              summary: `AI Dynamic Pro — ${service} with ${displayName}`,
+              description: `Service: ${service}\nClient: ${displayName}\nEmail: ${cleanEmail}\nCompany: ${company || 'N/A'}\nPhone: ${phone || 'N/A'}\nNotes: ${message || 'N/A'}`,
+              start: { dateTime: startDate.toISOString(), timeZone: 'America/New_York' },
+              end: { dateTime: endDate.toISOString(), timeZone: 'America/New_York' },
+              attendees: [{ email: 'jasmelacosta@gmail.com' }, { email: cleanEmail }],
+              conferenceData: {
+                createRequest: {
+                  requestId: `aidynamic-${Date.now()}`,
+                  conferenceSolutionKey: { type: 'hangoutsMeet' },
+                },
+              },
+            }),
+          }
+        )
 
         const eventData = await eventRes.json()
         if (eventData.id) {
@@ -142,94 +150,100 @@ export default async function handler(req, res) {
     }
   }
 
-  // ─── BREVO EMAILS ───
+  // ─── BREVO EMAILS (Direct Connect Hub Standard) ───
   if (brevoApiKey) {
     try {
-      let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro'
-      try {
-        const sdrR = await fetch('https://api.brevo.com/v3/senders', {
-          headers: { accept: 'application/json', 'api-key': brevoApiKey },
-        }).catch(() => null)
-        if (sdrR && sdrR.ok) {
-          const sdrD = await sdrR.json()
-          const active = (sdrD.senders || []).filter((s) => s && s.active && s.email)
-          const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'))
-          const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com')
-          if (aiDyn) resolvedSender = aiDyn.email
-          else if (gmail) resolvedSender = gmail.email
-          else if (active.length > 0) resolvedSender = active[0].email
-        }
-      } catch {}
-
-      // 1. Notify Jasmel
-      await fetch('https://api.brevo.com/v3/smtp/email', {
+      await fetch('https://api.brevo.com/v3/contacts', {
         method: 'POST',
         headers: {
-          'accept': 'application/json',
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
           'api-key': brevoApiKey,
-          'content-type': 'application/json'
         },
         body: JSON.stringify({
-          sender: { name: 'AI Dynamic Pro', email: resolvedSender },
-          replyTo: { email: email, name: name || email },
-          to: [{ email: 'jasmelacosta@gmail.com' }],
-          subject: `New Booking: ${service} — ${name}`,
-          htmlContent: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #1a1a2e;">New Booking Request</h2>
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Service:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${service}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Date:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${date || 'Not selected'}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Time:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${time || 'Not selected'} EST</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${email}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Company:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${company || 'N/A'}</td></tr>
-                <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${phone || 'N/A'}</td></tr>
-                <tr><td style="padding: 8px;"><strong>Message:</strong></td><td style="padding: 8px;">${message || 'N/A'}</td></tr>
-                ${meetLink ? `<tr><td style="padding: 8px; border-top: 2px solid #c9a96e;" colspan="2"><strong style="color: #c9a96e;">Google Meet:</strong> <a href="${meetLink}">${meetLink}</a></td></tr>` : ''}
-              </table>
-            </div>
-          `
-        })
+          email: cleanEmail,
+          attributes: {
+            FIRSTNAME: displayName,
+            NAME: displayName,
+            ...(company ? { COMPANY: company } : {}),
+          },
+          listIds: [36],
+          updateEnabled: true,
+        }),
+      }).catch(() => null)
+
+      const resolvedSender = await resolveVerifiedBrevoSender(brevoApiKey)
+
+      // 1. Instant Founder Fast-Action Alert (1-tap tel: + Gmail-safe ?admin-sms=)
+      const alertHtml = buildFounderFastActionAlertHtml({
+        badge: 'NEW CONSULTATION BOOKING',
+        headline: `${displayName} booked ${service}`,
+        name: displayName,
+        phone,
+        email: cleanEmail,
+        company,
+        detailRows: [
+          { label: 'Service', value: service },
+          { label: 'Date / Time', value: `${date || 'Pending'} · ${time || 'Pending'} EST` },
+          ...(meetLink ? [{ label: 'Google Meet', value: `<a href="${meetLink}" style="color:#9a7b3e;">${meetLink}</a>` }] : []),
+          ...(message ? [{ label: 'Notes', value: message }] : []),
+        ],
+        mode: 'virtual',
+        topic: `${date || 'upcoming'} ${time || ''}`.trim(),
       })
 
-      // 2. Confirm to client
       await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
-          'accept': 'application/json',
+          accept: 'application/json',
           'api-key': brevoApiKey,
-          'content-type': 'application/json'
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          sender: { name: 'AI Dynamic Pro — Booking Alert', email: resolvedSender },
+          replyTo: { email: cleanEmail, name: displayName },
+          to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
+          subject: `🗓️ New Booking: ${service} — ${displayName}`,
+          htmlContent: alertHtml,
+        }),
+      })
+
+      // 2. Plain-spoken Gmail Primary-safe confirmation with summary box + 5-Option Direct Connect Hub
+      const slotBoxHtml = `
+        <div style="background-color: #faf5eb; border: 1px solid #d4b87a; border-radius: 10px; padding: 14px 16px; margin: 0 0 18px; font-size: 14px; color: #0f172a;">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6b5327; margin-bottom: 6px;">Requested Session Summary</div>
+          <div><strong>Session:</strong> ${service}</div>
+          <div style="margin-top: 4px;"><strong>Date &amp; Time:</strong> ${date || 'Pending confirmation'} &middot; ${time || 'Pending confirmation'} (EST)</div>
+          ${meetLink ? `<div style="margin-top: 6px;"><strong>Video Link:</strong> <a href="${meetLink}" style="color: #9a7b3e; font-weight: 700;">Join Google Meet &rarr;</a></div>` : ''}
+        </div>
+      `
+
+      const clientConfirmHtml = buildDirectConnectHubLetter({
+        firstName,
+        emailParam: encodeURIComponent(cleanEmail),
+        segment: 'booking_confirmation',
+        utmCampaign: 'booking_confirmation_hub',
+        openingPara1: `Got your booking request for <strong>${service}</strong>—I've penciled this onto my calendar and look forward to speaking with you.`,
+        openingPara2: '',
+        extraBoxHtml: slotBoxHtml,
+        closingPara1: `Need to adjust the time, share a quick note ahead of our call, or jump on the phone right away? Use any of the 5 quick options above or reply directly to this email.`,
+      })
+
+      await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'api-key': brevoApiKey,
+          'content-type': 'application/json',
         },
         body: JSON.stringify({
           sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: resolvedSender },
-          replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta — AI Dynamic Pro' },
-          to: [{ email }],
-          subject: `Booking Request Received — ${service}`,
-          htmlContent: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a2e;">
-              <div style="background: linear-gradient(135deg, #0a0a0f 0%, #16213e 100%); padding: 35px; text-align: center; color: #c9a96e;">
-                <h1 style="margin: 0; font-size: 26px;">Booking Received</h1>
-                <p style="margin: 8px 0 0; opacity: 0.9; color: #e2e8f0;">AI Dynamics Pro — Miami, FL</p>
-              </div>
-              <div style="padding: 30px; background: #fafafa;">
-                <h2 style="color: #1a1a2e; margin-top: 0;">Hi ${name},</h2>
-                <p>We received your booking request for <strong>${service}</strong>.</p>
-                <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #c9a96e;">
-                  <p style="margin: 0;"><strong>Service:</strong> ${service}</p>
-                  <p style="margin: 8px 0 0;"><strong>Requested Date:</strong> ${date || 'Pending confirmation'}</p>
-                  <p style="margin: 8px 0 0;"><strong>Requested Time:</strong> ${time || 'Pending confirmation'} (EST)</p>
-                  ${meetLink ? `<p style="margin: 8px 0 0;"><strong>Google Meet:</strong> <a href="${meetLink}" style="color: #c9a96e;">Join Link</a></p>` : ''}
-                </div>
-                <p>Founder Jasmel Acosta will review and confirm your session. If you have an urgent question, call or text us directly at <strong>+1 (786) 643-2099</strong>.</p>
-                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0 12px;" />
-                <p style="font-size: 11px; color: #64748b; line-height: 1.5;">
-                  AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • You are receiving this email because you booked a consultation on aidynamic.pro. Reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a> anytime.
-                </p>
-              </div>
-            </div>
-          `
-        })
+          replyTo: { email: 'jasmel@aidynamic.pro', name: 'Jasmel Acosta — AI Dynamic Pro' },
+          to: [{ email: cleanEmail, name: displayName }],
+          subject: `confirmed: ${service} (${date || 'upcoming'})`,
+          htmlContent: clientConfirmHtml,
+          tags: ['booking_confirmation_hub', 'direct_connect_hub'],
+        }),
       })
     } catch (emailErr) {
       console.error('Email notification failed:', emailErr)
@@ -240,6 +254,6 @@ export default async function handler(req, res) {
     success: true,
     message: 'Booking request confirmed! We will follow up with full meeting details.',
     meet_link: meetLink,
-    calendarEventId
+    calendarEventId,
   })
 }

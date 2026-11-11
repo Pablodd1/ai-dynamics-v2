@@ -98,6 +98,7 @@ export default function Admin() {
   const [dispatchMode, setDispatchMode] = useState<'test' | 'all_brevo_contacts' | 'supabase_leads' | 'brevo_list' | 'miami_gmaps_leads' | 'custom'>('all_brevo_contacts')
   const [syncingMiamiLeads, setSyncingMiamiLeads] = useState(false)
   const [purgingBlocked, setPurgingBlocked] = useState(false)
+  const [syncingHubRollout, setSyncingHubRollout] = useState(false)
   const [dispatchStatusFilter, setDispatchStatusFilter] = useState<LeadStatus | 'all'>('all')
   const [brevoLists, setBrevoLists] = useState<BrevoListMeta[]>([])
   const [selectedBrevoListId, setSelectedBrevoListId] = useState<number>(2)
@@ -240,6 +241,34 @@ export default function Admin() {
       })
     } finally {
       setPurgingBlocked(false)
+    }
+  }
+
+  const handleSyncDirectConnectHub = async (scheduleRollout: boolean) => {
+    setSyncingHubRollout(true)
+    setCampaignResult(null)
+    try {
+      const res = await fetch('/api/email-campaign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: scheduleRollout ? 'schedule_hub_rollout' : 'stage_brevo_drafts',
+          scheduleRollout,
+        }),
+      })
+      const data = await res.json()
+      setCampaignResult({
+        success: Boolean(data?.success),
+        message: data?.message || 'Direct Connect Hub campaigns synced with Brevo.',
+      })
+      await runBrevoAudit()
+    } catch (err: any) {
+      setCampaignResult({
+        success: false,
+        message: err.message || 'Failed to sync Direct Connect Hub campaigns.',
+      })
+    } finally {
+      setSyncingHubRollout(false)
     }
   }
 
@@ -1025,6 +1054,47 @@ export default function Admin() {
                     Verify jasmelacosta@gmail.com
                   </button>
                 </div>
+              </div>
+            </div>
+
+            {/* Minimalistic 5-Option Direct Connect Hub Standard Banner */}
+            <div className="bg-gradient-to-r from-luxury-gold/15 via-dark-50/70 to-emerald-500/10 border border-luxury-gold/40 rounded-2xl p-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="space-y-1 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-luxury-gold/20 border border-luxury-gold/40 text-luxury-champagne text-[11px] font-bold uppercase tracking-wider">
+                  ✓ Active Architecture Moving Forward · 5-Option Direct Connect Hub
+                </div>
+                <h3 className="text-base font-bold text-white">
+                  Plain-Spoken Split-Letter + Mid-Email 5-Option Direct Connect Hub (`/connect`)
+                </h3>
+                <p className="text-xs text-luxury-silver leading-relaxed">
+                  Every outbound segment campaign, Playbook delivery, Contact autoresponder, and Booking confirmation now uses our Gmail Primary-safe 2×2 Grid + Full-Span Virtual Bar (`📞 You Call Me` · `📲 I’ll Call You` · `💬 You Text Me` · `✉️ I’ll Text You` Gmail-safe bridge · `🗓️ 15-Min Virtual`).
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <a
+                  href="/connect?mode=call"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold text-white transition-all"
+                >
+                  Open /connect Card ↗
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handleSyncDirectConnectHub(false)}
+                  disabled={syncingHubRollout}
+                  className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-luxury-gold/40 text-xs font-semibold text-luxury-champagne transition-all disabled:opacity-50"
+                >
+                  {syncingHubRollout ? 'Syncing...' : 'Sync Safe Drafts'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSyncDirectConnectHub(true)}
+                  disabled={syncingHubRollout}
+                  className="px-4 py-2 rounded-xl bg-luxury-gold text-dark text-xs font-bold hover:brightness-110 transition-all disabled:opacity-50"
+                >
+                  {syncingHubRollout ? 'Scheduling...' : '🚀 Schedule Tue/Thu Rollout'}
+                </button>
               </div>
             </div>
 

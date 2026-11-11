@@ -1,5 +1,11 @@
 // Serverless API Endpoint: /api/contact
-// Handles contact inquiries, logs to Supabase, and sends notification via Brevo
+// Handles contact inquiries, logs to Supabase & Brevo List #36, sends Instant Founder Mobile Alert + 5-Option Direct Connect Hub autoresponder
+
+import {
+  buildDirectConnectHubLetter,
+  buildFounderFastActionAlertHtml,
+  resolveVerifiedBrevoSender,
+} from './_directConnectEmail.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,9 +27,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Valid email is required' });
     }
 
-    console.log('[Contact API] Received inquiry:', { name, email, phone, company, message });
+    const cleanEmail = email.trim().toLowerCase();
+    const displayName = (name || cleanEmail.split('@')[0] || 'there').trim();
+    const firstName = displayName.split(/\s+/)[0] || 'there';
 
-    const BREVO_API_KEY = process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '';
+    const BREVO_API_KEY = (process.env.BREVO_API_KEY || process.env.VITE_BREVO_API_KEY || '').trim();
     const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://elpgqgcynmefzjxbzlwb.supabase.co';
     const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 
@@ -34,13 +42,13 @@ export default async function handler(req, res) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Prefer': 'return=minimal',
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+            Prefer: 'return=minimal',
           },
           body: JSON.stringify({
-            name: name || 'Website Visitor',
-            email: email.trim().toLowerCase(),
+            name: displayName,
+            email: cleanEmail,
             phone: phone || null,
             company: company || null,
             service_interest: ['General Inquiry'],
@@ -54,80 +62,83 @@ export default async function handler(req, res) {
       }
     }
 
-    // 2. Send notification email to founder via Brevo if configured
+    // 2. Sync to Brevo List #36 + send Founder Fast-Action Mobile Alert + 5-Option Direct Connect Hub reply
     if (BREVO_API_KEY) {
       try {
-        let resolvedSender = process.env.BREVO_SENDER_EMAIL || 'jasmel@aidynamic.pro';
-        try {
-          const sdrR = await fetch('https://api.brevo.com/v3/senders', {
-            headers: { Accept: 'application/json', 'api-key': BREVO_API_KEY },
-          }).catch(() => null);
-          if (sdrR && sdrR.ok) {
-            const sdrD = await sdrR.json();
-            const active = (sdrD.senders || []).filter((s) => s && s.active && s.email);
-            const aiDyn = active.find((s) => s.email.toLowerCase().endsWith('@aidynamic.pro'));
-            const gmail = active.find((s) => s.email.toLowerCase() === 'jasmelacosta@gmail.com');
-            if (aiDyn) resolvedSender = aiDyn.email;
-            else if (gmail) resolvedSender = gmail.email;
-            else if (active.length > 0) resolvedSender = active[0].email;
-          }
-        } catch {}
-
-        await fetch('https://api.brevo.com/v3/smtp/email', {
+        await fetch('https://api.brevo.com/v3/contacts', {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
-            sender: { name: 'AI Dynamic Pro Web', email: resolvedSender },
-            to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
-            replyTo: { email: email, name: name || email },
-            subject: `🚨 New Lead Inquiry from ${name || 'Website Visitor'} (${company || 'Direct'})`,
-            htmlContent: `
-              <h2>New Contact Form Inquiry</h2>
-              <p><strong>Name:</strong> ${name || 'Not provided'}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-              <p><strong>Company:</strong> ${company || 'Not provided'}</p>
-              <p><strong>Message:</strong></p>
-              <div style="background:#f4f4f5;padding:12px;border-radius:8px;">${message || 'No message'}</div>
-            `,
+            email: cleanEmail,
+            attributes: {
+              FIRSTNAME: displayName,
+              NAME: displayName,
+              ...(company ? { COMPANY: company } : {}),
+            },
+            listIds: [36],
+            updateEnabled: true,
           }),
+        }).catch(() => null);
+
+        const resolvedSender = await resolveVerifiedBrevoSender(BREVO_API_KEY);
+
+        const alertHtml = buildFounderFastActionAlertHtml({
+          badge: 'CONTACT FORM INQUIRY',
+          headline: `New Inquiry from ${displayName}${company ? ` (${company})` : ''}`,
+          name: displayName,
+          phone: phone || '',
+          email: cleanEmail,
+          company: company || '',
+          detailRows: message ? [{ label: 'Message', value: message }] : [],
+          mode: 'call',
+          topic: message ? String(message).slice(0, 60) : '',
         });
 
-        // Send auto-confirmation & $99 Audit CTA to prospect with GA4 UTM link
-        const utmBookingUrl = 'https://www.aidynamic.pro/booking?utm_source=brevo&utm_medium=email&utm_campaign=contact_autoresponder';
         await fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'api-key': BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            sender: { name: 'AI Dynamic Pro — Lead Alert', email: resolvedSender },
+            to: [{ email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta' }],
+            replyTo: { email: cleanEmail, name: displayName },
+            subject: `🚨 New Lead Inquiry from ${displayName}${company ? ` (${company})` : ''}`,
+            htmlContent: alertHtml,
+          }),
+        });
+
+        // Plain-spoken Split-Letter autoresponder with 5-Option Direct Connect Hub
+        const autoReplyHtml = buildDirectConnectHubLetter({
+          firstName,
+          emailParam: encodeURIComponent(cleanEmail),
+          segment: 'contact_inquiry',
+          utmCampaign: 'contact_autoresponder_hub',
+          openingPara1: `Got your note just now—thank you for reaching out to me at AI Dynamic Pro.`,
+          openingPara2: `I personally review every inquiry that comes across my desk. If you don't want to wait on email tag—whether it's about our <strong>$99 60-minute workflow audit + free 48-hour custom AI prototype</strong>, 24/7 bilingual voice &amp; WhatsApp AI, or our <strong>$497 on-site staff bootcamp</strong>—use whichever option below is fastest for you right now:`,
+          closingPara1: `Every $99 workflow audit is backed by a straightforward guarantee: if we don't map at least <strong>$2,500/month ($30,000/year)</strong> in measurable time and payroll savings for ${company || 'your team'}, you pay $0.`,
+        });
+
+        await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             'api-key': BREVO_API_KEY,
           },
           body: JSON.stringify({
             sender: { name: 'Jasmel Acosta — AI Dynamic Pro', email: resolvedSender },
-            replyTo: { email: 'jasmelacosta@gmail.com', name: 'Jasmel Acosta — AI Dynamic Pro' },
-            to: [{ email: email.trim().toLowerCase(), name: name || email }],
-            subject: 'We received your message — AI Dynamic Pro (Miami)',
-            htmlContent: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0f172a; color: #f8fafc; padding: 28px; border-radius: 12px;">
-                <h2 style="color: #c9a96e; margin-top: 0;">Thank You for Reaching Out, ${name || 'there'}!</h2>
-                <p>We received your inquiry at <strong>AI Dynamic Pro</strong> and our team will get back to you shortly.</p>
-                <p>If you'd like to skip the wait and lock in a time on our calendar right now for a <strong>$99 AI Workflow Audit, Custom App Consultation, or Corporate Staff Training</strong>:</p>
-                <p style="margin: 24px 0;">
-                  <a href="${utmBookingUrl}" style="background: #c9a96e; color: #0a0a0f; padding: 12px 22px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block;">
-                    Choose a Time on Our Calendar →
-                  </a>
-                </p>
-                <p style="font-size: 13px; color: #94a3b8;">Need immediate assistance? Call or text us in Miami at <strong>+1 (786) 643-2099</strong> or talk live with <strong>JAss</strong> at www.aidynamic.pro.</p>
-                <hr style="border: 0; border-top: 1px solid #1e293b; margin: 20px 0 12px;" />
-                <p style="font-size: 11px; color: #64748b; line-height: 1.5;">
-                  AI Dynamic Pro • Brickell Financial District, Miami, FL 33131 • You are receiving this confirmation because you submitted an inquiry on aidynamic.pro. Reply "unsubscribe" or <a href="mailto:jasmelacosta@gmail.com?subject=Unsubscribe" style="color: #94a3b8; text-decoration: underline;">click here to opt out</a> anytime.
-                </p>
-              </div>
-            `,
+            replyTo: { email: 'jasmel@aidynamic.pro', name: 'Jasmel Acosta — AI Dynamic Pro' },
+            to: [{ email: cleanEmail, name: displayName }],
+            subject: 'got your note — Jasmel @ AI Dynamic Pro',
+            htmlContent: autoReplyHtml,
+            tags: ['contact_autoresponder_hub', 'direct_connect_hub'],
           }),
         });
       } catch (emailErr) {

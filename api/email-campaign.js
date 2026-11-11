@@ -1,158 +1,7 @@
 // Serverless API Endpoint: /api/email-campaign
 // Minimalistic 5-Option Mid-Email Direct Connect Hub Architecture (Brevo + GA4 UTM + /connect Fast-Action Card)
 
-const PROJECT_DOMAIN = 'https://www.aidynamic.pro';
-const PROJECT_PHONE_DISPLAY = '(786) 643-2099';
-const PROJECT_PHONE_E164 = '+17866432099';
-
-function buildDirectConnectHubLetter({
-  firstName = 'there',
-  emailParam = '{{ contact.EMAIL }}',
-  segment = 'ceo',
-  utmCampaign = 'direct_connect_hub',
-  openingPara1,
-  openingPara2,
-  closingPara1,
-  closingPara2 = '',
-  isBrevoCampaignDraft = false,
-}) {
-  const qsTail = `&segment=${encodeURIComponent(segment)}&utm_campaign=${encodeURIComponent(utmCampaign)}`;
-  const callMeUrl = `${PROJECT_DOMAIN}/connect?mode=call&email=${emailParam}${qsTail}`;
-  const textMeUrl = `${PROJECT_DOMAIN}/connect?mode=text&email=${emailParam}${qsTail}`;
-  // CRITICAL GMAIL FIX: Never put raw sms: in HTML emails — route via /connect?mode=open-sms
-  const openSmsUrl = `${PROJECT_DOMAIN}/connect?mode=open-sms&email=${emailParam}${qsTail}`;
-  const virtualUrl = `${PROJECT_DOMAIN}/connect?mode=virtual&email=${emailParam}${qsTail}`;
-  const homeUrl = `${PROJECT_DOMAIN}/?utm_source=brevo&utm_medium=email&utm_campaign=${encodeURIComponent(utmCampaign)}`;
-
-  const unsubLinkHtml = isBrevoCampaignDraft
-    ? `<a href="{{ unsubscribe }}" style="color: #64748b; text-decoration: underline;">unsubscribe here</a>`
-    : `<a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #64748b; text-decoration: underline;">click here to opt out</a>`;
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Dynamic Pro</title>
-  <style>
-    @media only screen and (max-width: 520px) {
-      .hub-col {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        padding-bottom: 10px !important;
-      }
-      .hub-card {
-        padding: 14px !important;
-      }
-    }
-  </style>
-</head>
-<body style="margin: 0; padding: 0; background-color: #ffffff; color: #1e293b; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
-  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, Helvetica, Arial, sans-serif; max-width: 580px; margin: 0 auto; padding: 18px 14px 24px; color: #1e293b; font-size: 15px; line-height: 1.65;">
-
-    <!-- 1. TOP STRIP: Minimalistic compact brand mark + company name (zero heavy banner) -->
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 18px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
-      <tr>
-        <td style="vertical-align: middle;">
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td style="background-color: #0a0a0f; border: 1px solid #c9a96e; border-radius: 6px; width: 26px; height: 26px; text-align: center; vertical-align: middle; font-family: Georgia, serif; font-size: 11px; font-weight: 700; color: #f7e7ce;">
-                AI
-              </td>
-              <td style="padding-left: 9px; font-size: 13px; font-weight: 700; color: #0f172a; letter-spacing: 0.2px;">
-                AI Dynamic Pro <span style="font-weight: 400; color: #64748b;">· Miami</span>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-
-    <!-- 2. OPENING: 2 short, plain-spoken paragraphs -->
-    <p style="margin: 0 0 14px; color: #0f172a;">Hi ${firstName},</p>
-
-    <p style="margin: 0 0 14px; color: #1e293b;">${openingPara1}</p>
-
-    <p style="margin: 0 0 18px; color: #1e293b;">${openingPara2}</p>
-
-    <!-- 3. CENTERPIECE: Minimalistic 5-Option Mid-Email Direct Connect Hub -->
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; margin: 20px 0;">
-      <tr>
-        <td class="hub-card" style="padding: 16px;">
-          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: #64748b; margin-bottom: 12px;">
-            Pick how you&rsquo;d rather connect (takes 10 seconds):
-          </div>
-
-          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-            <!-- ROW 1: Phone Call Pair (Solid Primary Gold + Solid Dark-Contrast Obsidian) -->
-            <tr>
-              <td width="50%" class="hub-col" style="padding: 0 5px 10px 0; vertical-align: top;">
-                <a href="${callMeUrl}" style="display: block; background-color: #c9a96e; border: 1.5px solid #b89352; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
-                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0a0a0f; line-height: 1.25;">📞 You Call Me &rarr;</span>
-                  <span style="display: block; font-size: 11px; font-weight: 500; color: #27272a; margin-top: 3px; line-height: 1.25;">Drop your name &amp; direct number</span>
-                </a>
-              </td>
-              <td width="50%" class="hub-col" style="padding: 0 0 10px 5px; vertical-align: top;">
-                <a href="tel:${PROJECT_PHONE_E164}" style="display: block; background-color: #0a0a0f; border: 1.5px solid #0a0a0f; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
-                  <span style="display: block; font-size: 14px; font-weight: 700; color: #ffffff; line-height: 1.25;">📲 I&rsquo;ll Call You</span>
-                  <span style="display: block; font-size: 11px; font-weight: 400; color: #f7e7ce; margin-top: 3px; line-height: 1.25;">Tap to dial ${PROJECT_PHONE_DISPLAY}</span>
-                </a>
-              </td>
-            </tr>
-
-            <!-- ROW 2: Text / SMS Pair (Crisp #ffffff Outlined Buttons) -->
-            <tr>
-              <td width="50%" class="hub-col" style="padding: 0 5px 10px 0; vertical-align: top;">
-                <a href="${textMeUrl}" style="display: block; background-color: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
-                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.25;">💬 You Text Me &rarr;</span>
-                  <span style="display: block; font-size: 11px; font-weight: 400; color: #64748b; margin-top: 3px; line-height: 1.25;">Leave your cell for a quick text</span>
-                </a>
-              </td>
-              <td width="50%" class="hub-col" style="padding: 0 0 10px 5px; vertical-align: top;">
-                <a href="${openSmsUrl}" style="display: block; background-color: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 11px 10px; text-decoration: none; text-align: center;">
-                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.25;">✉️ I&rsquo;ll Text You</span>
-                  <span style="display: block; font-size: 11px; font-weight: 400; color: #64748b; margin-top: 3px; line-height: 1.25;">Text ${PROJECT_PHONE_DISPLAY} right now</span>
-                </a>
-              </td>
-            </tr>
-
-            <!-- ROW 3: Slim Full-Span Virtual Consultation Bar (Pixel-Aligned Outer Edges + Soft Brand Tint) -->
-            <tr>
-              <td colspan="2" style="padding: 0; vertical-align: top;">
-                <a href="${virtualUrl}" style="display: block; background-color: #faf5eb; border: 1.5px solid #d4b87a; border-radius: 8px; padding: 12px 12px; text-decoration: none; text-align: center;">
-                  <span style="display: block; font-size: 14px; font-weight: 700; color: #0a0a0f; line-height: 1.3;">🗓️ Make an Appointment &mdash; Free 15-Min Virtual Consultation &rarr;</span>
-                  <span style="display: block; font-size: 11px; font-weight: 500; color: #6b5327; margin-top: 3px; line-height: 1.25;">Pick a day &amp; time on your calendar &middot; Video or Phone</span>
-                </a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-
-    <!-- 4. CLOSING: Transparent pricing / risk-reversal + human founder sign-off -->
-    <p style="margin: 0 0 14px; color: #1e293b;">${closingPara1}</p>
-    ${closingPara2 ? `<p style="margin: 0 0 16px; color: #1e293b;">${closingPara2}</p>` : ''}
-
-    <p style="margin: 18px 0 0; color: #0f172a; line-height: 1.55;">
-      Talk soon,<br/>
-      <strong>Jasmel Acosta</strong><br/>
-      <span style="font-size: 13px; color: #475569;">Founder &amp; AI Developer, AI Dynamic Pro</span><br/>
-      <span style="font-size: 13px; color: #64748b;">Brickell, Miami &middot; <a href="tel:${PROJECT_PHONE_E164}" style="color: #0f172a; text-decoration: none; font-weight: 600;">${PROJECT_PHONE_DISPLAY}</a> &middot; <a href="${homeUrl}" style="color: #9a7b3e; text-decoration: none; font-weight: 600;">aidynamic.pro</a></span>
-    </p>
-
-    <hr style="border: none; border-top: 1px solid #f1f5f9; margin: 24px 0 12px;" />
-    <p style="margin: 0; font-size: 11px; color: #94a3b8; line-height: 1.5;">
-      AI Dynamic Pro &middot; Brickell Financial District, Miami, FL 33131 &middot; Hablamos Espa&ntilde;ol.<br/>
-      Don&rsquo;t want notes from me? Reply &ldquo;unsubscribe&rdquo; anytime or ${unsubLinkHtml}.
-    </p>
-  </div>
-</body>
-</html>`;
-}
+import { buildDirectConnectHubLetter } from './_directConnectEmail.js';
 
 const CAMPAIGNS = {
   email_1_voice_jass: {
@@ -162,6 +11,7 @@ const CAMPAIGNS = {
     utmCampaign: 'hub_seg1_ceo_owners',
     segment: 'ceo_owners',
     targetListIds: [36],
+    rolloutScheduledAt: '2026-11-12T10:15:00-05:00',
     description: 'Plain-spoken founder note to Miami CEOs & owners featuring our Minimalistic 5-Option Direct Connect Hub ($99 Audit + Free 48-Hr Prototype).',
     buildHtml: ({ name = 'there', email = '', company = 'your business', isBrevoCampaignDraft = false }) => {
       const firstName = isBrevoCampaignDraft
@@ -195,7 +45,9 @@ const CAMPAIGNS = {
     subject: 'front-desk calls & claim denials at {{company}}',
     utmCampaign: 'hub_seg2_medical_dental',
     segment: 'medical_dental',
-    targetListIds: [29, 36],
+    targetListIds: [36],
+    dedicatedSegmentListName: 'AI Dynamic Pro — Medical & MedSpa',
+    rolloutScheduledAt: '2026-11-19T10:15:00-05:00',
     description: 'Tailored to Miami doctors, dental practices, and MedSpas (front-desk bilingual scheduling, mobile insurance intake & pre-claim scrubbing).',
     buildHtml: ({ name = 'there', email = '', company = 'your practice', isBrevoCampaignDraft = false }) => {
       const firstName = isBrevoCampaignDraft
@@ -229,7 +81,8 @@ const CAMPAIGNS = {
     subject: 'faster job quotes & missed field calls at {{company}}',
     utmCampaign: 'hub_seg3_contractors_gc',
     segment: 'contractors_gc',
-    targetListIds: [31, 36],
+    targetListIds: [31],
+    rolloutScheduledAt: '2026-11-17T10:15:00-05:00',
     description: 'Tailored to General Contractors, trades, and property firms (smartphone photo-to-quote AI + 24/7 bilingual job intake & estimate follow-up).',
     buildHtml: ({ name = 'there', email = '', company = 'your crew', isBrevoCampaignDraft = false }) => {
       const firstName = isBrevoCampaignDraft
@@ -263,7 +116,9 @@ const CAMPAIGNS = {
     subject: '3-second client intake & contract screening at {{company}}',
     utmCampaign: 'hub_seg4_legal_realestate',
     segment: 'legal_realestate',
-    targetListIds: [24, 16, 36],
+    targetListIds: [36],
+    dedicatedSegmentListName: 'AI Dynamic Pro — Legal & Real Estate',
+    rolloutScheduledAt: '2026-11-24T10:15:00-05:00',
     description: 'Tailored to attorneys, brokers, and title teams (3-second bilingual intake + private cloud contract & escrow deadline review).',
     buildHtml: ({ name = 'there', email = '', company = 'your firm', isBrevoCampaignDraft = false }) => {
       const firstName = isBrevoCampaignDraft
@@ -298,6 +153,7 @@ const CAMPAIGNS = {
     utmCampaign: 'hub_seg5_staff_bootcamp',
     segment: 'staff_bootcamp',
     targetListIds: [36, 31],
+    rolloutScheduledAt: '2026-12-01T10:15:00-05:00',
     description: 'Focused on our $497 Half-Day On-Site Corporate AI Bootcamp (up to 15 staff, English & Español) with the 5-Option Direct Connect Hub.',
     buildHtml: ({ name = 'there', email = '', company = 'your company', isBrevoCampaignDraft = false }) => {
       const firstName = isBrevoCampaignDraft
@@ -810,8 +666,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // ACTION: Stage the 5-Option Direct Connect Hub segment campaigns as SAFE DRAFTS in Brevo (DO NOT SEND)
-    if (action === 'stage_brevo_drafts') {
+    // ACTION: Stage OR Schedule the 5-Option Direct Connect Hub segment campaigns in Brevo (100% AI Dynamic Pro lists only — zero MBMB overlap)
+    if (action === 'stage_brevo_drafts' || action === 'schedule_hub_rollout') {
+      const shouldSchedule = action === 'schedule_hub_rollout' || Boolean(req.body?.scheduleRollout);
       const headers = {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -836,16 +693,81 @@ export default async function handler(req, res) {
         }
       } catch {}
 
-      // Inspect existing Brevo draft campaigns so we update in-place instead of creating duplicates
-      const existingDraftMap = new Map();
+      // Ensure dedicated AI Dynamic Pro vertical Brevo lists exist & are populated cleanly (strictly separate from MBMB)
+      const listByName = new Map();
+      let defaultFolderId = 1;
       try {
-        const listRes = await fetch('https://api.brevo.com/v3/emailCampaigns?type=classic&status=draft&limit=50', {
+        const listsRes = await fetch('https://api.brevo.com/v3/contacts/lists?limit=50', { headers }).catch(() => null);
+        if (listsRes && listsRes.ok) {
+          const listsData = await listsRes.json();
+          for (const l of listsData.lists || []) {
+            if (l.name) listByName.set(l.name.trim(), l.id);
+            if (l.folderId) defaultFolderId = l.folderId;
+          }
+        }
+      } catch {}
+
+      const ensureSegmentList = async (listName, categoryMatcher) => {
+        let lid = listByName.get(listName);
+        if (!lid) {
+          const createRes = await fetch('https://api.brevo.com/v3/contacts/lists', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ name: listName, folderId: defaultFolderId }),
+          }).catch(() => null);
+          if (createRes && createRes.ok) {
+            const created = await createRes.json().catch(() => ({}));
+            if (created.id) {
+              lid = created.id;
+              listByName.set(listName, lid);
+            }
+          }
+        }
+        if (lid) {
+          const matchingLeads = MIAMI_GMAPS_LEADS.filter((item) => categoryMatcher(item.category || ''));
+          for (const item of matchingLeads) {
+            await fetch('https://api.brevo.com/v3/contacts', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({
+                email: item.email.trim().toLowerCase(),
+                attributes: {
+                  FIRSTNAME: item.name,
+                  NAME: item.name,
+                  COMPANY: item.company,
+                },
+                listIds: [lid, 36],
+                updateEnabled: true,
+              }),
+            }).catch(() => null);
+          }
+        }
+        return lid;
+      };
+
+      const medicalListId = await ensureSegmentList(
+        'AI Dynamic Pro — Medical & MedSpa',
+        (cat) => /dental|oral|medspa|medical|clinic/i.test(cat)
+      );
+      const legalReListId = await ensureSegmentList(
+        'AI Dynamic Pro — Legal & Real Estate',
+        (cat) => /real estate|legal|law|broker/i.test(cat)
+      );
+
+      // Inspect existing Brevo campaigns (draft or suspended) so we update in-place instead of creating duplicates
+      const existingHubMap = new Map();
+      try {
+        const listRes = await fetch('https://api.brevo.com/v3/emailCampaigns?type=classic&limit=50', {
           headers,
         }).catch(() => null);
         if (listRes && listRes.ok) {
           const listData = await listRes.json();
           for (const dc of listData.campaigns || []) {
-            if (dc.name) existingDraftMap.set(dc.name.trim(), dc.id);
+            if (dc.name && ['draft', 'suspended', 'queued'].includes(dc.status)) {
+              if (!existingHubMap.has(dc.name.trim())) {
+                existingHubMap.set(dc.name.trim(), { id: dc.id, status: dc.status });
+              }
+            }
           }
         }
       } catch {}
@@ -863,6 +785,13 @@ export default async function handler(req, res) {
           isBrevoCampaignDraft: true,
         });
 
+        let resolvedListIds = Array.isArray(c.targetListIds) && c.targetListIds.length > 0 ? [...c.targetListIds] : [36];
+        if (c.segment === 'medical_dental' && medicalListId) {
+          resolvedListIds = [medicalListId];
+        } else if (c.segment === 'legal_realestate' && legalReListId) {
+          resolvedListIds = [legalReListId];
+        }
+
         const payload = {
           name: draftCampaignName,
           subject: draftSubject,
@@ -870,26 +799,37 @@ export default async function handler(req, res) {
           replyTo: 'jasmel@aidynamic.pro',
           type: 'classic',
           htmlContent,
-          recipients: { listIds: Array.isArray(c.targetListIds) && c.targetListIds.length > 0 ? c.targetListIds : [36] },
+          recipients: { listIds: resolvedListIds },
+          ...(shouldSchedule && c.rolloutScheduledAt ? { scheduledAt: c.rolloutScheduledAt } : {}),
         };
 
-        const existingId = existingDraftMap.get(draftCampaignName);
-        if (existingId) {
-          const putRes = await fetch(`https://api.brevo.com/v3/emailCampaigns/${existingId}`, {
+        const existingEntry = existingHubMap.get(draftCampaignName);
+        if (existingEntry && existingEntry.id) {
+          if (existingEntry.status === 'queued') {
+            await fetch(`https://api.brevo.com/v3/emailCampaigns/${existingEntry.id}/status`, {
+              method: 'PUT',
+              headers,
+              body: JSON.stringify({ status: 'suspended' }),
+            }).catch(() => null);
+          }
+
+          const putRes = await fetch(`https://api.brevo.com/v3/emailCampaigns/${existingEntry.id}`, {
             method: 'PUT',
             headers,
             body: JSON.stringify(payload),
           }).catch(() => null);
+
           if (putRes && (putRes.ok || putRes.status === 204)) {
             stagedDrafts.push({
-              brevoCampaignId: existingId,
+              brevoCampaignId: existingEntry.id,
               campaignKey: c.id,
               name: draftCampaignName,
               subject: draftSubject,
               segment: c.segment,
-              listIds: payload.recipients.listIds,
-              status: 'draft',
-              operation: 'updated_existing_draft',
+              listIds: resolvedListIds,
+              status: shouldSchedule ? 'queued' : 'draft',
+              scheduledAt: shouldSchedule ? c.rolloutScheduledAt : null,
+              operation: shouldSchedule ? 'scheduled_for_rollout' : 'updated_existing_draft',
             });
           } else {
             const errTxt = putRes ? await putRes.text().catch(() => 'PUT error') : 'Network error';
@@ -909,9 +849,10 @@ export default async function handler(req, res) {
               name: draftCampaignName,
               subject: draftSubject,
               segment: c.segment,
-              listIds: payload.recipients.listIds,
-              status: 'draft',
-              operation: 'created_new_draft',
+              listIds: resolvedListIds,
+              status: shouldSchedule ? 'queued' : 'draft',
+              scheduledAt: shouldSchedule ? c.rolloutScheduledAt : null,
+              operation: shouldSchedule ? 'created_and_scheduled' : 'created_new_draft',
             });
           } else {
             const errTxt = postRes ? await postRes.text().catch(() => 'POST error') : 'Network error';
@@ -923,10 +864,14 @@ export default async function handler(req, res) {
       return res.status(200).json({
         success: stagedDrafts.length > 0,
         senderUsed: { name: draftSenderName, email: draftSenderEmail },
+        medicalListId,
+        legalReListId,
         stagedCount: stagedDrafts.length,
         stagedDrafts,
         draftErrors,
-        message: `Staged ${stagedDrafts.length} Direct Connect Hub campaign(s) as SAFE DRAFTS in Brevo (status: draft — NOT sent).`,
+        message: shouldSchedule
+          ? `Scheduled ${stagedDrafts.length} Direct Connect Hub campaign(s) onto Tue/Thu 10:15 AM EST rollout in Brevo!`
+          : `Staged ${stagedDrafts.length} Direct Connect Hub campaign(s) as SAFE DRAFTS in Brevo (status: draft — NOT sent).`,
       });
     }
 
