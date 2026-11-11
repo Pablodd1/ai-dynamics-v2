@@ -244,7 +244,7 @@ That is why we start every engagement the exact same way: a flat $99 60-minute w
 
 Which single task in your office still eats 2+ hours of manual copy-pasting every day?
 
-P.S. I put a 10-second Direct Connect card in the first comment so you can have me call you, text you, or grab a 15-minute slot without filling out a long form.`,
+P.S. Test our 10-second Direct Connect card (Call Me, Text Me, or Free 15-Min Virtual Consult) at https://www.aidynamic.pro/connect`,
             instagramText: `$3,420/month per department is what most South Florida businesses lose to missed lunch-hour calls and manual copy-pasting.
 
 Instead of pitching bloated software contracts, my team at AI Dynamic Pro comes into your business for a flat $99 60-minute workflow audit and builds a working custom AI prototype in 48 hours.
@@ -293,7 +293,7 @@ For $99, we run a 60-minute practice audit and build a live 48-hour prototype tu
 
 How many new-patient calls hit your clinic's voicemail between noon and 2:00 PM this week?
 
-P.S. Grab our 10-second Direct Connect link in the first comment to request a quick call, text, or 15-minute virtual walkthrough.`,
+P.S. Use our 10-second Direct Connect hub at https://www.aidynamic.pro/connect?mode=virtual&segment=medical_dental to request a quick call, text, or 15-minute virtual walkthrough.`,
             instagramText: `38% of new-patient calls to Miami clinics, dental offices, and MedSpas hit voicemail during lunch or after 5:00 PM—and book somewhere else.
 
 Here is what changes when we install our Clinical & Front-Desk AI inside your practice in 48 hours:
@@ -339,7 +339,7 @@ We build a working 48-hour prototype of this exact workflow for your company dur
 
 What percentage of your in-person site visits actually turn into signed jobs right now?
 
-P.S. Use the Direct Connect link in the first comment if you want me to text you a live demo on your phone.`,
+P.S. Use our Direct Connect hub at https://www.aidynamic.pro/connect?mode=text&segment=contractors_gc if you want me to text you a live demo on your phone.`,
             instagramText: `12.5 hours a week is what South Florida contractors and estimators waste driving in Miami traffic to unqualified site visits.
 
 Instead of hiring another estimator, we build a custom Photo-to-Quote AI & 24/7 Bilingual Job Coordinator for your crew in 48 hours:
@@ -384,7 +384,7 @@ One trained employee reliably produces the output of five, without adding a doll
 
 When was the last time someone trained your team hands-on instead of sending them a 40-minute webinar link?
 
-P.S. Pick Call Me, Text Me, or a 15-Min Virtual slot via the Direct Connect link in the first comment to reserve a bootcamp date for your team.`,
+P.S. Pick Call Me, Text Me, or a 15-Min Virtual slot at https://www.aidynamic.pro/connect?mode=call&segment=staff_bootcamp to reserve a bootcamp date for your team.`,
             instagramText: `83% of businesses that buy AI subscriptions never see a dime of return for one simple reason: nobody trains their staff on their actual daily tasks.
 
 Our $497 Half-Day On-Site Corporate AI Bootcamp (up to 15 staff, in English & Español) fixes that in a single morning:
@@ -427,7 +427,7 @@ We prove it on your own intake flow during our $99 60-minute audit + free 48-hou
 
 What happens right now when a prospect calls or texts your firm at 7:30 PM?
 
-P.S. Test our 10-second Direct Connect hub in the first comment—tap Call Me, Text Me, or book a 15-minute virtual review.`,
+P.S. Test our 10-second Direct Connect hub at https://www.aidynamic.pro/connect?mode=virtual&segment=legal_realestate — tap Call Me, Text Me, or book a 15-minute virtual review.`,
             instagramText: `47 minutes is the average lead response time for law firms and real estate teams—yet 78% of clients hire the first firm that answers.
 
 We engineer two private AI systems for South Florida attorneys, brokers, and title companies in 48 hours:
@@ -472,7 +472,7 @@ Static websites wait for leads to do the work; agentic websites close the appoin
 
 When you open your company's website on your phone right now, how many taps does it take to actually talk to you?
 
-P.S. Experience our live 5-Option Direct Connect Hub in the first comment—and grab a $99 audit + 48-hour prototype for your brand.`,
+P.S. Experience our live 5-Option Direct Connect Hub at https://www.aidynamic.pro/connect and grab a $99 audit + 48-hour prototype for your brand.`,
             instagramText: `8.2 seconds is how long visitors stay on a static brochure website before bouncing.
 
 In 5 to 10 days, we replace static sites with Self-Selling Agentic Websites built for Google Maps, ChatGPT, Gemini & Perplexity:
@@ -500,110 +500,117 @@ Click Learn More to test our Direct Connect Hub live.`,
           ? omnichannelWaves.filter((w) => req.body.waveIds.includes(w.waveId))
           : omnichannelWaves
 
+        const onlyServices = Array.isArray(req.body.onlyServices) && req.body.onlyServices.length > 0
+          ? req.body.onlyServices
+          : ['linkedin', 'instagram', 'googlebusiness']
+
         const results = []
         for (const wave of targetWaves) {
           const isScheduled = wave.mode === 'customScheduled' && Boolean(wave.dueAt)
 
-          // 1. LinkedIn (Jasmel Acosta)
-          const liInput = {
-            channelId: linkedinChannelId,
-            schedulingType: 'automatic',
-            mode: wave.mode,
-            ...(isScheduled ? { dueAt: wave.dueAt } : {}),
-            text: wave.linkedinText,
-            assets: [
-              {
-                image: {
-                  url: wave.image,
-                  metadata: { altText: `AI Dynamic Pro — ${wave.label}` },
-                },
-              },
-            ],
-            metadata: {
-              linkedin: {
-                firstComment: `Connect with me in 10 seconds (Call Me, Dial Now, Text Me, Instant SMS, or Free 15-Min Virtual Consult): ${wave.connectLink}`,
-              },
-            },
-          }
-          const liRes = await bufferGraphQL(createPostMutation, { input: liInput }, token)
-
-          // 2. Instagram (aidynamicspro)
-          const igAssets =
-            Array.isArray(wave.carouselImages) && wave.carouselImages.length > 1
-              ? wave.carouselImages.map((u, idx) => ({
+          let liRes = null
+          if (onlyServices.includes('linkedin')) {
+            const liInput = {
+              channelId: linkedinChannelId,
+              schedulingType: 'automatic',
+              mode: wave.mode,
+              ...(isScheduled ? { dueAt: wave.dueAt } : {}),
+              text: wave.linkedinText,
+              assets: [
+                {
                   image: {
-                    url: u,
-                    metadata: { altText: `AI Dynamic Pro Slide 0${idx + 1}` },
+                    url: wave.image,
+                    metadata: { altText: `AI Dynamic Pro — ${wave.label}` },
                   },
-                }))
-              : [
-                  {
+                },
+              ],
+              metadata: {
+                linkedin: {},
+              },
+            }
+            liRes = await bufferGraphQL(createPostMutation, { input: liInput }, token)
+          }
+
+          let igRes = null
+          if (onlyServices.includes('instagram')) {
+            const igAssets =
+              Array.isArray(wave.carouselImages) && wave.carouselImages.length > 1
+                ? wave.carouselImages.map((u, idx) => ({
                     image: {
-                      url: wave.image,
-                      metadata: { altText: `AI Dynamic Pro — ${wave.label}` },
+                      url: u,
+                      metadata: { altText: `AI Dynamic Pro Slide 0${idx + 1}` },
                     },
+                  }))
+                : [
+                    {
+                      image: {
+                        url: wave.image,
+                        metadata: { altText: `AI Dynamic Pro — ${wave.label}` },
+                      },
+                    },
+                  ]
+
+            const igInput = {
+              channelId: instagramChannelId,
+              schedulingType: 'automatic',
+              mode: wave.mode,
+              ...(isScheduled ? { dueAt: wave.dueAt } : {}),
+              text: wave.instagramText,
+              assets: igAssets,
+              metadata: {
+                instagram: {
+                  type: 'post',
+                  shouldShareToFeed: true,
+                },
+              },
+            }
+            igRes = await bufferGraphQL(createPostMutation, { input: igInput }, token)
+          }
+
+          let gbpRes = null
+          if (onlyServices.includes('googlebusiness')) {
+            const gbpInput = {
+              channelId: gbpChannelId,
+              schedulingType: 'automatic',
+              mode: wave.mode,
+              ...(isScheduled ? { dueAt: wave.dueAt } : {}),
+              text: wave.gbpText,
+              assets: [
+                {
+                  image: {
+                    url: wave.image,
+                    metadata: { altText: `AI Dynamic Pro — ${wave.label}` },
                   },
-                ]
-
-          const igInput = {
-            channelId: instagramChannelId,
-            schedulingType: 'automatic',
-            mode: wave.mode,
-            ...(isScheduled ? { dueAt: wave.dueAt } : {}),
-            text: wave.instagramText,
-            assets: igAssets,
-            metadata: {
-              instagram: {
-                type: 'post',
-                shouldShareToFeed: true,
-                firstComment: `Direct 10-Second Connect Hub ($99 Audit + Free 48-Hr Prototype): ${wave.connectLink}`,
-              },
-            },
-          }
-          const igRes = await bufferGraphQL(createPostMutation, { input: igInput }, token)
-
-          // 3. Google Business Profile (AI Dynamics)
-          const gbpInput = {
-            channelId: gbpChannelId,
-            schedulingType: 'automatic',
-            mode: wave.mode,
-            ...(isScheduled ? { dueAt: wave.dueAt } : {}),
-            text: wave.gbpText,
-            assets: [
-              {
-                image: {
-                  url: wave.image,
-                  metadata: { altText: `AI Dynamic Pro — ${wave.label}` },
+                },
+              ],
+              metadata: {
+                google: {
+                  type: 'whats_new',
+                  detailsWhatsNew: {
+                    button: wave.gbpButton,
+                    link: wave.connectLink,
+                  },
                 },
               },
-            ],
-            metadata: {
-              google: {
-                type: 'whats_new',
-                detailsWhatsNew: {
-                  button: wave.gbpButton,
-                  link: wave.connectLink,
-                },
-              },
-            },
+            }
+            gbpRes = await bufferGraphQL(createPostMutation, { input: gbpInput }, token)
           }
-          const gbpRes = await bufferGraphQL(createPostMutation, { input: gbpInput }, token)
 
           results.push({
             waveId: wave.waveId,
             label: wave.label,
             mode: wave.mode,
             dueAt: wave.dueAt,
-            linkedin: liRes?.data?.createPost || liRes?.errors || liRes,
-            instagram: igRes?.data?.createPost || igRes?.errors || igRes,
-            googleBusiness: gbpRes?.data?.createPost || gbpRes?.errors || gbpRes,
+            linkedin: liRes ? liRes?.data?.createPost || liRes?.errors || liRes : 'skipped',
+            instagram: igRes ? igRes?.data?.createPost || igRes?.errors || igRes : 'skipped',
+            googleBusiness: gbpRes ? gbpRes?.data?.createPost || gbpRes?.errors || gbpRes : 'skipped',
           })
         }
 
         return res.status(200).json({
           success: true,
           wavesProcessed: results.length,
-          totalPostsCreated: results.length * 3,
+          totalPostsCreated: results.length * onlyServices.length,
           results,
         })
       }
