@@ -1,5 +1,5 @@
-import React from 'react'
-import { ExternalLink, Handshake, Eye } from 'lucide-react'
+import React, { useState } from 'react'
+import { ExternalLink, Handshake, Eye, ChevronDown, ChevronUp, Cpu } from 'lucide-react'
 import type { ProjectItem } from '../data/projects'
 import { STATUS_LEGEND } from '../data/projects'
 import { ProjectGraphic } from './ProjectGraphic'
@@ -19,6 +19,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   onOpenPartnerModal,
   showGraphic = true,
 }) => {
+  const [showTechSpecs, setShowTechSpecs] = useState(false)
   const statusMeta = STATUS_LEGEND[project.status] || {
     description: project.status,
     color: 'text-luxury-silver',
@@ -114,20 +115,44 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </p>
         </div>
 
-        {/* Capability Chips (3-5 items) */}
-        <div className="flex flex-wrap gap-1.5 mb-5" aria-label="Core Capabilities">
-          {project.capabilities.slice(0, 4).map((cap, idx) => (
-            <span
-              key={idx}
-              className="text-[10px] font-sans text-luxury-silver/80 bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded border border-white/5 transition-colors"
+        {/* Progressive Disclosure: Collapsible Technical Stack & Capability Chips */}
+        <div className="mb-4">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowTechSpecs(!showTechSpecs)
+            }}
+            className="inline-flex items-center gap-1.5 text-[11px] font-mono text-luxury-silver/80 hover:text-luxury-gold bg-white/[0.04] hover:bg-white/[0.08] px-2.5 py-1.5 rounded-lg border border-white/10 transition-all"
+          >
+            <Cpu className="w-3.5 h-3.5 text-luxury-gold" />
+            <span>
+              {showTechSpecs
+                ? 'Hide Technical Stack'
+                : `Inspect Technical Stack (${project.capabilities.length} specs)`}
+            </span>
+            {showTechSpecs ? (
+              <ChevronUp className="w-3.5 h-3.5 text-luxury-silver/60" />
+            ) : (
+              <ChevronDown className="w-3.5 h-3.5 text-luxury-silver/60" />
+            )}
+          </button>
+
+          {showTechSpecs && (
+            <div
+              className="flex flex-wrap gap-1.5 mt-2.5 pt-2.5 border-t border-white/5"
+              aria-label="Core Capabilities"
+              onClick={(e) => e.stopPropagation()}
             >
-              {cap}
-            </span>
-          ))}
-          {project.capabilities.length > 4 && (
-            <span className="text-[10px] font-mono text-luxury-silver/50 self-center">
-              +{project.capabilities.length - 4} more
-            </span>
+              {project.capabilities.map((cap, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-sans text-luxury-silver/85 bg-white/5 px-2 py-0.5 rounded border border-white/10"
+                >
+                  {cap}
+                </span>
+              ))}
+            </div>
           )}
         </div>
 

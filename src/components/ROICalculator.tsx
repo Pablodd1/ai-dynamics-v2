@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Calculator, DollarSign, Clock, Users, ArrowRight, CheckCircle, TrendingUp } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Calculator, DollarSign, Clock, Users, ArrowRight, CheckCircle, TrendingUp, ShieldCheck, PhoneCall } from 'lucide-react'
 
 export default function ROICalculator() {
   const [employees, setEmployees] = useState<number>(3)
@@ -186,14 +187,14 @@ export default function ROICalculator() {
               <div className="space-y-6">
                 <div className="p-5 rounded-xl bg-black/40 border border-luxury-gold/20">
                   <span className="text-xs text-luxury-silver block">Monthly Value Recovered</span>
-                  <div className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-luxury-gold via-amber-200 to-luxury-gold mt-1">
+                  <div className="text-4xl font-extrabold tabular-nums text-transparent bg-clip-text bg-gradient-to-r from-luxury-gold via-amber-200 to-luxury-gold mt-1">
                     ${monthlySavings.toLocaleString()} <span className="text-base text-luxury-silver font-normal">/ month</span>
                   </div>
                 </div>
 
                 <div className="p-5 rounded-xl bg-emerald-950/20 border border-emerald-500/20">
                   <span className="text-xs text-emerald-400 font-semibold block">12-Month Net Revenue Impact</span>
-                  <div className="text-3xl font-black text-emerald-300 mt-1">
+                  <div className="text-3xl font-black tabular-nums text-emerald-300 mt-1">
                     +${annualSavings.toLocaleString()} <span className="text-sm font-normal text-emerald-400/70">/ year</span>
                   </div>
                 </div>
@@ -201,7 +202,7 @@ export default function ROICalculator() {
                 <div className="space-y-2.5 text-xs text-luxury-silver/90 pt-2">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-luxury-gold shrink-0" />
-                    <span>Replaces {Math.round(hoursPerDay * employees * 22 * 0.8)} hours of manual busywork monthly</span>
+                    <span className="tabular-nums">Replaces {Math.round(hoursPerDay * employees * 22 * 0.8)} hours of manual busywork monthly</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-luxury-gold shrink-0" />
@@ -209,21 +210,33 @@ export default function ROICalculator() {
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-3.5 h-3.5 text-luxury-gold shrink-0" />
-                    <span>Typical AI Dynamic deployment: 14 business days</span>
+                    <span>Typical AI Dynamic deployment: 5–14 business days</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <a
-                href="/booking"
+            <div className="mt-8 pt-5 border-t border-white/10 space-y-2.5">
+              <div className="flex items-center justify-center gap-1.5 text-[11px] font-mono text-emerald-300 bg-emerald-500/10 border border-emerald-500/25 rounded-lg py-1.5 px-3">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span>HIPAA &amp; SOC 2 Ready • $2,500+/Mo Guarantee or $0</span>
+              </div>
+              <Link
+                to="/booking"
                 className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-luxury-gold via-amber-300 to-luxury-gold text-dark flex items-center justify-center gap-2 hover:brightness-110 shadow-lg hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all"
               >
-                Claim Your $99 Workflow Audit <ArrowRight className="w-4 h-4" />
-              </a>
-              <p className="text-[11px] text-center text-luxury-silver/60 mt-2">
-                30-min strategy session with Founder Jasmel Acosta • No commitment
+                <span>Claim Your $99 Workflow Audit</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/connect"
+                className="w-full py-2.5 px-5 rounded-xl font-semibold text-xs border border-white/15 bg-white/[0.04] hover:bg-white/[0.09] text-luxury-champagne flex items-center justify-center gap-2 transition-all"
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-luxury-gold" />
+                <span>Or Use 10-Second Direct Connect (Call / Text / Virtual)</span>
+              </Link>
+              <p className="text-[11px] text-center text-luxury-silver/60 pt-1">
+                15-min triage or 30-min audit with Founder Jasmel Acosta • Zero lock-in
               </p>
             </div>
           </div>

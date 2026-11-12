@@ -6,6 +6,7 @@ import VisionGlassSystemsDeck from './components/VisionGlassSystemsDeck'
 import LiveCallSimulator from './components/LiveCallSimulator'
 import IndustryTabs from './components/IndustryTabs'
 import FeaturedProjects from './components/FeaturedProjects'
+import SystemArchitectureShowcase from './components/SystemArchitectureShowcase'
 import ROICalculator from './components/ROICalculator'
 import CaseStudy from './components/CaseStudy'
 import Founder from './components/Founder'
@@ -35,6 +36,7 @@ function LandingPage() {
         <LiveCallSimulator />
         <IndustryTabs />
         <FeaturedProjects />
+        <SystemArchitectureShowcase />
         <ROICalculator />
         <CaseStudy />
         <Founder />

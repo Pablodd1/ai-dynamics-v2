@@ -15,7 +15,10 @@ import {
   Play,
   X,
   Volume2,
-  CheckCircle2
+  CheckCircle2,
+  ShieldCheck,
+  Lock,
+  PhoneCall
 } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 
@@ -195,9 +198,9 @@ const Hero = () => {
             >
               <span className="w-1 h-12 bg-gradient-to-b from-red-500 via-rose-500 to-red-600 rounded-full shadow-[0_0_12px_rgba(239,68,68,0.8)]" />
               <div className="text-[11px] font-mono tracking-widest uppercase leading-tight text-luxury-silver">
-                <div>EXECUTIVE AI CONSULTING</div>
-                <div>FULL WORKFLOW AUTOMATION</div>
-                <div className="text-red-400 font-bold">5X STAFF EFFICIENCY</div>
+                <div>EXECUTIVE AI CONSULTING • $99 AUDIT + 48-HR PROTOTYPE</div>
+                <div>CUSTOM FULL-STACK WEB & MOBILE APPS • 24/7 VOICE AI</div>
+                <div className="text-red-400 font-bold">5X STAFF WORKFORCE MULTIPLICATION</div>
               </div>
             </motion.div>
 
@@ -220,36 +223,65 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-base sm:text-lg text-luxury-silver/90 max-w-xl mb-8 leading-relaxed drop-shadow"
+              className="text-base sm:text-lg text-luxury-silver/90 max-w-xl mb-6 leading-relaxed drop-shadow"
             >
-              We consult with companies to audit payroll bottlenecks, build custom AI solutions that automate everything possible, cut operating costs by 40–65%, and train your core staff to operate at <strong className="text-white">5x output</strong>.
+              We audit payroll bottlenecks (<strong className="text-white">$99 Department Audit</strong>), ship <strong className="text-white">custom full-stack web &amp; mobile applications</strong> and <strong className="text-white">24/7 bilingual AI voice/CRM agents (JAss)</strong> in 5–10 days, and train your existing team to operate at <strong className="text-white">5x output</strong>.
             </motion.p>
 
-            {/* CTA Group: $99 Audit + 60s Briefing + 21 Systems */}
+            {/* CTA Group: $99 Audit + Direct Connect + 60s Briefing */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mb-8"
+              className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 mb-5"
             >
               <Link
                 to="/booking"
-                className="btn-primary py-4 px-7 rounded-xl flex items-center justify-center gap-2 group text-sm sm:text-base font-bold shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:shadow-[0_0_35px_rgba(212,175,55,0.4)]"
+                className="btn-primary py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 group text-sm sm:text-base font-bold shadow-[0_0_30px_rgba(212,175,55,0.25)] hover:shadow-[0_0_35px_rgba(212,175,55,0.4)]"
               >
                 <span>Book Free 15m Call or $99 Audit</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
 
+              <Link
+                to="/connect"
+                className="px-5 py-3.5 rounded-xl border border-luxury-gold/40 bg-black/80 hover:bg-luxury-gold/15 text-luxury-champagne font-semibold text-sm flex items-center justify-center gap-2 backdrop-blur-md transition-all"
+              >
+                <PhoneCall className="w-4 h-4 text-luxury-gold" />
+                <span>10-Sec Direct Connect</span>
+              </Link>
+
               <button
                 type="button"
                 onClick={handleOpenBriefing}
-                className="px-5 py-4 rounded-xl border border-red-500/40 bg-black/80 hover:bg-red-500/10 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 backdrop-blur-md transition-all shadow-lg hover:border-red-500/70"
+                className="px-4 py-3.5 rounded-xl border border-red-500/40 bg-black/80 hover:bg-red-500/10 text-white font-semibold text-sm flex items-center justify-center gap-2 backdrop-blur-md transition-all shadow-lg hover:border-red-500/70"
               >
-                <span className="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center shadow-[0_0_10px_rgba(239,68,68,0.8)]">
-                  <Play className="w-3 h-3 fill-current ml-0.5" />
+                <span className="w-5 h-5 rounded-full bg-red-600 text-white flex items-center justify-center shadow-[0_0_10px_rgba(239,68,68,0.8)]">
+                  <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                 </span>
                 <span>Watch 60s Briefing</span>
               </button>
+            </motion.div>
+
+            {/* Above-the-Fold Trust & Compliance Strip */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap items-center gap-2.5 mb-5"
+            >
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-300 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-full">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>HIPAA-Ready &amp; SOC 2 Aligned</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-sky-300 bg-sky-500/10 border border-sky-500/30 px-2.5 py-1 rounded-full">
+                <Lock className="w-3.5 h-3.5 text-sky-400" />
+                <span>Private-Cloud Zero-Training RAG</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-luxury-champagne bg-luxury-gold/10 border border-luxury-gold/30 px-2.5 py-1 rounded-full">
+                <CheckCircle2 className="w-3.5 h-3.5 text-luxury-gold" />
+                <span>$2,500+/Mo Savings Guarantee or $0</span>
+              </span>
             </motion.div>
 
             {/* Proof Badges & Quick Links */}
@@ -268,7 +300,13 @@ const Hero = () => {
                 <span>21 Deployed Systems</span>
               </button>
               <span>•</span>
-              <span className="text-emerald-400">Guaranteed $2,500+/mo Savings or $0</span>
+              <button
+                type="button"
+                onClick={() => scrollToSection('#system-architecture')}
+                className="hover:text-luxury-champagne underline flex items-center gap-1 transition-colors text-emerald-400"
+              >
+                <span>Live Webhook Schemas &amp; Production Apps</span>
+              </button>
               <span>•</span>
               <a href="#pricing" className="hover:text-luxury-champagne underline flex items-center gap-1 transition-colors">
                 <span>$497 Team AI Bootcamp</span>
@@ -355,9 +393,9 @@ const Hero = () => {
             },
             {
               icon: Zap,
-              badge: 'PILLAR 02 // $997 TURNKEY OR $297/MO',
-              title: '2. Custom AI Solutions',
-              desc: 'Deploy 24/7 bilingual voice/chat receptionists (JAss), CRM, billing, and computer vision from $997 turnkey (or $297/mo managed).',
+              badge: 'PILLAR 02 // $997 TURNKEY OR FULL-STACK APPS',
+              title: '2. Full-Stack Apps & Autonomous AI',
+              desc: 'Deploy custom web/mobile SaaS apps, 24/7 bilingual voice/chat receptionists (JAss), CRM webhooks, and computer vision in 5–10 days.',
             },
             {
               icon: Network,
