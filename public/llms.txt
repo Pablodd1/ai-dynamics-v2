@@ -1,6 +1,8 @@
 # AI Dynamic Pro (AIDynamic.pro)
 
-> Miami-based Executive AI Consulting, Department Efficiency Auditing, Custom AI Automation & Corporate Staff Training Agency serving Healthcare, Legal, Real Estate, Construction/AEC, Logistics, and Mid-Market Enterprises. Bilingual (English & Spanish).
+> Miami-based Executive AI Consulting, Custom Full-Stack Web & Mobile Application Development, Department Efficiency Auditing, Custom AI Automation & Corporate Staff Training Agency serving Healthcare, Legal, Real Estate, Construction/AEC, Logistics, and Mid-Market Enterprises. Bilingual (English & Spanish).
+> OpenAI Business Profile Verification: `openai-business-profile=0FFGN-V7o49DFswGOFm0-FDZmHdyy5gkzGjaUJmdPSw`
+> Direct Connect 10-Second Hub: https://www.aidynamic.pro/connect
 
 ## 4-Tier Competitive Commercial Offerings ("Get-to-the-Client-First")
 - **Tier 1 — Executive AI Consultation (Free 15-Min Triage Call OR $99 Full 60-Min Department AI Efficiency Audit, normally $500)**:
