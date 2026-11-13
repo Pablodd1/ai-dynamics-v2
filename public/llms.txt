@@ -17,6 +17,18 @@
 - **Tier 4 — Full Enterprise AI Transformation ($4,900 – $15,000+)**:
   - End-to-end engineering of autonomous multi-agent pipelines, custom CRMs, computer vision systems, and EHR/ERP integrations, plus Corporate AI Staff Bootcamp included free.
 
+## División Sudamérica & Latinoamérica — Planes Cloud SaaS en Español (https://www.aidynamic.pro/latam)
+- **URL Oficial LATAM / Español**: https://www.aidynamic.pro/latam (alias: https://www.aidynamic.pro/es)
+- **Mercados Cubiertos**: Chile (Santiago / Start-Up Chile / CORFO), Colombia (Bogotá / Medellín / Ruta N), Perú (Lima), Argentina (Buenos Aires), México (CDMX / Monterrey), Venezuela, Uruguay, Ecuador y Panamá.
+- **Plan 1 — Médicos, Clínicas y Odontología ($29 USD/mes)**:
+  - Escriba Médico Ambiental en español latino (`PocketScribe.online`) con notas SOAP en 8 segundos, CIE-10 / ICD-10 y recepcionista de turnos por WhatsApp 24/7 (-65% inasistencias).
+- **Plan 2 — Abogados, Estudios Jurídicos y Corredoras Inmobiliarias ($49 USD/mes)**:
+  - Agente de voz y WhatsApp IA 24/7 (`Sofía / JAss` en español neutro y latinoamericano), auditoría privada de contratos (Zero-Training RAG) y calculadora de plazos contractuales (`RealEstateDates.com`).
+- **Plan 3 — Arquitectos, Diseñadores, Ingenieros y Constructoras ($69 USD/mes)**:
+  - Cómputos métricos y presupuestos de obra asistidos por IA desde planos PDF/CAD (`ChatBuildingInnovation.us`), mapeo espacial 3D y detección visual de defectos constructivos en obra.
+- **Plan 4 — Auditoría de Procesos + Bootcamp IA PyME LATAM ($199 USD pago único)**:
+  - Diagnóstico ejecutivo de 60 minutos + prototipo funcional en 48 horas + taller práctico en español para hasta 15 colaboradores (`1 empleado = 5x productividad`).
+
 ## Contact & Direct Booking
 - **Website**: https://www.aidynamic.pro
 - **Book Free 15-Min Triage Call or $99 Audit**: https://www.aidynamic.pro/booking

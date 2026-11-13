@@ -312,6 +312,14 @@ const Navigation = () => {
                 Pricing
                 <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-luxury-gold group-hover:w-full transition-all duration-300" />
               </a>
+
+              {/* Direct Quick Link: LATAM Spanish SaaS ($29-$69/mo) */}
+              <Link
+                to="/latam"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-emerald-500/35 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-mono font-semibold transition-all"
+              >
+                <span>🌎 LATAM ($29–$69)</span>
+              </Link>
             </nav>
 
             {/* Right Side (Language + Get Started CTA; "Log In" moved to bottom footer menu) */}
@@ -490,6 +498,13 @@ const Navigation = () => {
 
               {/* Mobile Actions & Login Link at Bottom */}
               <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                <Link
+                  to="/latam"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-center py-2.5 rounded-xl border border-emerald-500/35 bg-emerald-500/10 text-emerald-300 font-mono text-xs font-bold hover:bg-emerald-500/20 transition-all"
+                >
+                  🌎 Planes LATAM en Español ($29–$69 USD/mes)
+                </Link>
                 <Link
                   to="/booking"
                   onClick={() => setIsMobileMenuOpen(false)}

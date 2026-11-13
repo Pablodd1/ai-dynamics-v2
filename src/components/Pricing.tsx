@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Check, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Check, ArrowRight, Globe } from 'lucide-react'
 import { AnalyticsEvents } from '../lib/analytics'
 
 const Pricing = () => {
-  const plans = [
+  const [regionMode, setRegionMode] = useState<'us' | 'latam'>('us')
+
+  const usPlans = [
     {
       id: 'audit_99',
       name: '1. AI Consultation & Efficiency Audit',
@@ -100,6 +104,103 @@ const Pricing = () => {
     },
   ]
 
+  const latamPlans = [
+    {
+      id: 'latam_medicos_29',
+      name: '1. Médicos, Clínicas y Odontología',
+      price: '$29',
+      oldPrice: '$79',
+      priceNote: 'USD / mes (SaaS Autogestionado)',
+      badge: 'Salud & Clínicas',
+      duration: 'PocketScribe + WhatsApp',
+      description:
+        'Escriba médico ambiental en español latino (notas clínicas SOAP en 8 segundos) y recepcionista automática de turnos por WhatsApp 24/7.',
+      accentColor: 'green',
+      isPopular: false,
+      cta: 'Activar Plan Médicos ($29/mes)',
+      ctaAction: '/connect?mode=virtual&segment=latam_medicos_29',
+      subGuarantee: '≈ $28.000 CLP · $125.000 COP • Sin contratos forzosos',
+      features: [
+        'Escriba Médico Ambiental en Español (Notas SOAP + CIE-10 / ICD-10)',
+        'Recepcionista WhatsApp 24/7: agenda y confirma citas (-65% inasistencias)',
+        'Resúmenes post-consulta y órdenes médicas en segundos',
+        'Acceso directo a PocketScribe.online en español e inglés',
+        'Privacidad clínica cifrada para consultorios en Sudamérica',
+      ],
+    },
+    {
+      id: 'latam_abogados_49',
+      name: '2. Abogados e Inmobiliarias',
+      price: '$49',
+      oldPrice: '$119',
+      priceNote: 'USD / mes (Voz + WhatsApp IA)',
+      badge: '★ Más Elegido LATAM',
+      duration: 'JAss Legal & RealEstateDates',
+      description:
+        'Recepcionista IA 24/7 (Sofía / JAss en español latino) que califica clientes en 3 segundos, audita contratos y controla plazos críticos.',
+      accentColor: 'blue',
+      isPopular: true,
+      cta: 'Activar Plan Legal / Inmobiliario ($49)',
+      ctaAction: '/connect?mode=virtual&segment=latam_abogados_49',
+      subGuarantee: '≈ $47.000 CLP · $210.000 COP • Incluye RealEstateDates.com',
+      features: [
+        'Agente de Voz y WhatsApp IA 24/7 en español neutro y latinoamericano',
+        'Calificación de prospectos en 3 segundos y agenda en Google Calendar',
+        'Auditoría de contratos, promesas y escrituras con IA privada (Zero-Training RAG)',
+        'Control automático de plazos legales, arras y cierres inmobiliarios',
+        'Integración inmediata con WhatsApp Business y CRM del estudio',
+      ],
+    },
+    {
+      id: 'latam_arquitectos_69',
+      name: '3. Arquitectos, Diseñadores y Constructoras',
+      price: '$69',
+      oldPrice: '$149',
+      priceNote: 'USD / mes (Visión AEC & Planos)',
+      badge: 'Arquitectura & AEC',
+      duration: 'Cómputos + Visión 3D',
+      description:
+        'Cómputos métricos y presupuestos de obra asistidos por IA desde planos PDF/CAD, mapeo espacial 3D y detección visual de defectos en obra.',
+      accentColor: 'amber',
+      isPopular: false,
+      cta: 'Activar Plan Arquitectos & AEC ($69)',
+      ctaAction: '/connect?mode=virtual&segment=latam_arquitectos_69',
+      subGuarantee: '≈ $66.000 CLP · $295.000 COP • Incluye ChatBuildingInnovation.us',
+      features: [
+        'Asistente IA de Cómputos Métricos y Presupuestos desde planos PDF/CAD',
+        'Mapeo espacial 3D e inspección de fisuras, humedad y defectos por foto/video',
+        'Cotizador rápido de remodelaciones, diseño interior y arquitectura modular',
+        'Atención automática 24/7 a clientes y proveedores por WhatsApp',
+        'Exportación de presupuestos a Excel / CSV con marca de tu estudio',
+      ],
+    },
+    {
+      id: 'latam_bootcamp_199',
+      name: '4. Auditoría + Bootcamp PyME LATAM',
+      price: '$199',
+      oldPrice: '$497',
+      priceNote: 'USD pago único (Equipo completo)',
+      badge: '1 Empleado = 5x',
+      duration: 'Prototipo 48h + Taller',
+      description:
+        'Auditamos tu empresa y capacitamos a tu equipo en 1 tarde en español (hasta 15 personas) con flujos IA para multiplicar su productividad por 5.',
+      accentColor: 'purple',
+      isPopular: false,
+      cta: 'Agendar Auditoría + Bootcamp ($199)',
+      ctaAction: '/connect?mode=virtual&segment=latam_bootcamp_199',
+      subGuarantee: 'Garantía: encontramos $1,500+ USD/mes en ahorro o devolvemos el 100%',
+      features: [
+        'Auditoría de procesos (60 min) + Prototipo IA funcional en 48 horas',
+        'Bootcamp práctico en español en vivo (hasta 15 colaboradores)',
+        'Plantillas y agentes listos para Ventas, Administración y Cobranzas',
+        '100% acreditable a desarrollos llave en mano de software o apps',
+        'Soporte directo con ingeniería bilingüe Miami ↔ Sudamérica',
+      ],
+    },
+  ]
+
+  const plans = regionMode === 'us' ? usPlans : latamPlans
+
   const accentStyles: Record<string, { border: string; bg: string; badgeBg: string; badgeText: string; dot: string }> = {
     green: {
       border: 'border-emerald-400/30',
@@ -151,15 +252,67 @@ const Pricing = () => {
           className="text-center mb-14"
         >
           <span className="inline-block px-4 py-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 text-luxury-gold text-xs uppercase tracking-[0.2em] font-medium mb-5">
-            Transparent ROI-First Pricing • 60% Below Traditional Agencies
+            {regionMode === 'us'
+              ? 'Transparent ROI-First Pricing • 60% Below Traditional Agencies'
+              : 'Tarifas Localizadas para Sudamérica y Latinoamérica • Sin Contratos Forzosos'}
           </span>
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-5 font-serif">
-            <span className="text-white">Cut Costs First. </span>
-            <span className="text-luxury-gold">Scale With Zero Risk.</span>
+            {regionMode === 'us' ? (
+              <>
+                <span className="text-white">Cut Costs First. </span>
+                <span className="text-luxury-gold">Scale With Zero Risk.</span>
+              </>
+            ) : (
+              <>
+                <span className="text-white">Planes Cloud SaaS LATAM </span>
+                <span className="text-luxury-gold">($29 – $69 USD/mes)</span>
+              </>
+            )}
           </h2>
-          <p className="text-base sm:text-xl text-luxury-silver max-w-3xl mx-auto">
-            Start with a <strong className="text-white">Free 15-Minute Triage Call</strong> or our <strong className="text-luxury-gold">$99 Efficiency Audit</strong> (guaranteed to uncover <strong className="text-emerald-400">$2,500+/mo in payroll savings</strong> or you pay $0).
+          <p className="text-base sm:text-xl text-luxury-silver max-w-3xl mx-auto mb-7">
+            {regionMode === 'us' ? (
+              <>
+                Start with a <strong className="text-white">Free 15-Minute Triage Call</strong> or our <strong className="text-luxury-gold">$99 Efficiency Audit</strong> (guaranteed to uncover <strong className="text-emerald-400">$2,500+/mo in payroll savings</strong> or you pay $0).
+              </>
+            ) : (
+              <>
+                Suscripciones SaaS en español para <strong className="text-white">Médicos ($29/mes)</strong>, <strong className="text-luxury-gold">Abogados e Inmobiliarias ($49/mes)</strong> y <strong className="text-emerald-400">Arquitectos / Constructoras ($69/mes)</strong> en Chile, Colombia, Perú, Argentina, México y Venezuela.
+              </>
+            )}
           </p>
+
+          {/* Market / Region Pricing Switcher (US Enterprise vs. LATAM Spanish SaaS) */}
+          <div className="inline-flex flex-wrap items-center justify-center gap-2 p-1.5 rounded-2xl bg-black/70 border border-white/15 backdrop-blur-xl">
+            <button
+              type="button"
+              onClick={() => setRegionMode('us')}
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all ${
+                regionMode === 'us'
+                  ? 'bg-luxury-gold text-dark shadow-lg'
+                  : 'text-luxury-silver hover:text-white'
+              }`}
+            >
+              🇺🇸 US &amp; Global Enterprise ($99 Audit / $497 Bootcamp / $997 Turnkey)
+            </button>
+            <button
+              type="button"
+              onClick={() => setRegionMode('latam')}
+              className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all flex items-center gap-1.5 ${
+                regionMode === 'latam'
+                  ? 'bg-emerald-400 text-dark shadow-lg'
+                  : 'text-emerald-300 hover:text-white bg-emerald-500/10 border border-emerald-500/25'
+              }`}
+            >
+              <Globe className="w-3.5 h-3.5" />
+              <span>🌎 LATAM &amp; Sudamérica SaaS en Español ($29–$69/mes)</span>
+            </button>
+            <Link
+              to="/latam"
+              className="px-3.5 py-2.5 rounded-xl text-xs font-mono text-luxury-champagne hover:text-luxury-gold border border-white/10 hover:border-luxury-gold/40 transition-all"
+            >
+              Abrir Portal /latam ↗
+            </Link>
+          </div>
         </motion.div>
 
         {/* Pricing Cards (4 Tiers) */}

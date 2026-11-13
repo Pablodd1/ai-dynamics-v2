@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext'
 import { initAttributionTracking } from './lib/analytics'
 import LandingPage from './LandingPage'
 import DirectConnect from './pages/DirectConnect'
+import LatamSaaS from './pages/LatamSaaS'
 import TermsOfService from './pages/TermsOfService'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import OurProcess from './pages/OurProcess'
@@ -43,6 +44,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/latam" element={<LatamSaaS />} />
+          <Route path="/es" element={<LatamSaaS />} />
           <Route path="/connect" element={<DirectConnect />} />
           <Route path="/call-me" element={<DirectConnect />} />
           <Route path="/projects" element={<Projects />} />
