@@ -22,6 +22,7 @@
   ],
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
+    { "source": "/hero-lab", "destination": "/index.html" },
     { "source": "/latam", "destination": "/index.html" },
     { "source": "/es", "destination": "/index.html" },
     { "source": "/connect", "destination": "/index.html" },

@@ -5,6 +5,7 @@ import { initAttributionTracking } from './lib/analytics'
 import LandingPage from './LandingPage'
 import DirectConnect from './pages/DirectConnect'
 import LatamSaaS from './pages/LatamSaaS'
+import HeroLab from './pages/HeroLab'
 import TermsOfService from './pages/TermsOfService'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import OurProcess from './pages/OurProcess'
@@ -30,7 +31,7 @@ import EcosystemWidget from './components/EcosystemWidget'
 
 function ConditionalEcosystemWidget() {
   const { pathname } = useLocation()
-  if (pathname === '/connect' || pathname === '/call-me') return null
+  if (pathname === '/connect' || pathname === '/call-me' || pathname === '/hero-lab') return null
   return <EcosystemWidget currentSiteId="ai-dynamics" />
 }
 
@@ -44,6 +45,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/hero-lab" element={<HeroLab />} />
           <Route path="/latam" element={<LatamSaaS />} />
           <Route path="/es" element={<LatamSaaS />} />
           <Route path="/connect" element={<DirectConnect />} />
