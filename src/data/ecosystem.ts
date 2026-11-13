@@ -73,18 +73,6 @@ export const ECOSYSTEM_MEMBERS: EcosystemMember[] = [
     featured: true
   },
   {
-    id: "305business",
-    name: "305business",
-    url: "https://305business-llc.vercel.app/",
-    domains: ["305business-llc.vercel.app"],
-    tagline: "Miami Business Formation, Growth & Operational Scaling",
-    category: "Business Advisory",
-    badge: "Enterprise Services",
-    description: "Strategic advisory, corporate infrastructure, and digital transformation consulting for South Florida businesses.",
-    color: "#6366f1",
-    featured: false
-  },
-  {
     id: "medical-billing-mb",
     name: "Medical Billing Miami Beach",
     url: "https://medicalbillingmb.com/",

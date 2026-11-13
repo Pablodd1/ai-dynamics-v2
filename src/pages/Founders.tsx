@@ -42,11 +42,11 @@ const companies = [
     url: 'https://medicalbillingmb.com',
   },
   {
-    name: '305business.llc',
-    description: 'Business marketplace and acquisition platform for Miami entrepreneurs.',
+    name: 'PocketScribe Clinical AI',
+    description: 'Ambient bilingual AI clinical scribe automating SOAP documentation for medical practices.',
     icon: Briefcase,
-    color: 'from-orange-500 to-red-600',
-    url: 'https://305business-llc.vercel.app',
+    color: 'from-emerald-500 to-teal-600',
+    url: 'https://pocketscribe.online',
   },
 ]
 

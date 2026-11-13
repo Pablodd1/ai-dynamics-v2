@@ -55,28 +55,6 @@
     "featured": true
   },
   {
-    "id": "unitec-usa-design",
-    "name": "Unitec USA Design",
-    "url": "https://www.unitecusadesign.com/",
-    "tagline": "Architectural Millwork, Luxury Commercial Interiors & 3D Engineering",
-    "category": "Design & Architectural Engineering",
-    "badge": "Design & 3D",
-    "description": "High-end commercial architectural millwork, parametric drafting, and custom luxury fabrication across South Florida.",
-    "color": "#d97706",
-    "featured": true
-  },
-  {
-    "id": "305business",
-    "name": "305business",
-    "url": "https://305business-llc.vercel.app/",
-    "tagline": "Miami Business Formation, Growth & Operational Scaling",
-    "category": "Business Advisory",
-    "badge": "Enterprise Services",
-    "description": "Strategic advisory, digital transformation consulting, and corporate infrastructure services for South Florida businesses.",
-    "color": "#6366f1",
-    "featured": false
-  },
-  {
     "id": "medical-billing-mb",
     "name": "Medical Billing Miami Beach",
     "url": "https://medicalbillingmb.com/",

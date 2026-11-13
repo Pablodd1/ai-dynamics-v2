@@ -70,28 +70,6 @@
       color: "#8b5cf6"
     },
     {
-      id: "unitec-usa-design",
-      name: "Unitec USA Design",
-      url: "https://www.unitecusadesign.com/",
-      domains: ["unitecusadesign.com", "www.unitecusadesign.com"],
-      tagline: "Architectural Millwork, Luxury Commercial Interiors & 3D Engineering",
-      category: "Design & Architectural Engineering",
-      badge: "Design & 3D",
-      description: "High-end commercial architectural millwork, parametric drafting, and custom luxury fabrication across South Florida.",
-      color: "#d97706"
-    },
-    {
-      id: "305business",
-      name: "305business",
-      url: "https://305business-llc.vercel.app/",
-      domains: ["305business-llc.vercel.app"],
-      tagline: "Miami Business Formation, Growth & Operational Scaling",
-      category: "Business Advisory",
-      badge: "Enterprise Services",
-      description: "Strategic advisory, corporate infrastructure, and digital transformation consulting for South Florida businesses.",
-      color: "#6366f1"
-    },
-    {
       id: "medical-billing-mb",
       name: "Medical Billing Miami Beach",
       url: "https://medicalbillingmb.com/",

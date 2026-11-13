@@ -106,9 +106,10 @@ export default function VisionGlassSystemsDeck() {
 
   return (
     <section
-      id="ai-systems-deck"
-      className="relative py-24 sm:py-32 overflow-hidden bg-dark border-y border-white/10"
+      id="services"
+      className="relative py-24 sm:py-32 overflow-hidden bg-[#040407] border-y border-white/[0.08]"
     >
+      <div id="ai-systems-deck" className="sr-only" />
       {/* Signature Luxury Gold & Electric Cyan Ambient Lighting */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-36 left-1/2 -translate-x-1/2 w-[820px] h-[420px] rounded-full bg-luxury-gold/[0.07] blur-[150px]" />
@@ -135,14 +136,18 @@ export default function VisionGlassSystemsDeck() {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: Minimalist Obsidian & Champagne-Gold Frosted Glass Stage */}
           <div className="lg:col-span-7 flex flex-col items-center">
-            <div className="relative w-full max-w-[560px] rounded-[32px] overflow-hidden border border-luxury-gold/30 shadow-[0_35px_100px_rgba(0,0,0,0.9)] bg-[#07070c]">
-              {/* Photorealistic Executive Background with Deep Obsidian Vignette */}
-              <img
-                src="/social/week1-consulting.jpg"
-                alt="AI Dynamic Pro Executive Engineering Suite"
-                className="absolute inset-0 w-full h-full object-cover scale-105 filter brightness-[0.34] contrast-115 saturate-90"
+            <div className="relative w-full max-w-[560px] rounded-[32px] overflow-hidden border border-luxury-gold/30 shadow-[0_35px_100px_rgba(0,0,0,0.9)] bg-[#06060b]">
+              {/* Pure Obsidian & 24K Radial Light Field + Subtle Architectural Hairline Grid */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.16),transparent_65%)] pointer-events-none" />
+              <div
+                className="absolute inset-0 opacity-20 pointer-events-none"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(to right, rgba(212,175,55,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(212,175,55,0.12) 1px, transparent 1px)',
+                  backgroundSize: '44px 44px',
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-[#07070c]/80 via-[#07070c]/35 to-[#07070c]/90" />
+              <div className="absolute inset-0 bg-gradient-to-b from-[#040407]/40 via-transparent to-[#040407]/90 pointer-events-none" />
 
               <div className="relative z-10 p-6 sm:p-10 flex flex-col justify-between min-h-[560px] sm:min-h-[610px]">
                 {/* Top Minimalist Editorial Header */}
