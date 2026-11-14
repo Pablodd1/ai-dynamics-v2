@@ -27,6 +27,8 @@
     { "source": "/es", "destination": "/index.html" },
     { "source": "/connect", "destination": "/index.html" },
     { "source": "/call-me", "destination": "/index.html" },
+    { "source": "/offer", "destination": "/index.html" },
+    { "source": "/success", "destination": "/index.html" },
     { "source": "/projects", "destination": "/index.html" },
     { "source": "/projects/jmm-jas-miami-method", "destination": "/index.html" },
     { "source": "/projects/runform-running-biomechanics", "destination": "/index.html" },

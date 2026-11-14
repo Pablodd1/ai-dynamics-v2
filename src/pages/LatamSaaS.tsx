@@ -57,7 +57,7 @@ const LATAM_PLANS: LatamPlan[] = [
     liveAppUrl: 'https://www.pocketscribe.online',
     liveAppLabel: 'Probar PocketScribe.online en Vivo ↗',
     ctaText: 'Activar Plan Médicos ($29/mes)',
-    ctaLink: '/connect?mode=virtual&segment=latam_medicos_29',
+    ctaLink: '/offer?offer=latam_medicos_29&lang=es&utm_source=website&utm_medium=latam_portal',
     features: [
       'Escriba Médico Ambiental en Español (Notas clínicas SOAP en 8 seg)',
       'Sugerencia automática de códigos CIE-10 / ICD-10 y resúmenes de consulta',
@@ -82,7 +82,7 @@ const LATAM_PLANS: LatamPlan[] = [
     liveAppUrl: 'https://www.realestatedates.com',
     liveAppLabel: 'Probar RealEstateDates.com en Vivo ↗',
     ctaText: 'Activar Plan Legal / Inmobiliario ($49/mes)',
-    ctaLink: '/connect?mode=virtual&segment=latam_abogados_49',
+    ctaLink: '/offer?offer=latam_abogados_49&lang=es&utm_source=website&utm_medium=latam_portal',
     features: [
       'Agente de Voz y WhatsApp IA 24/7 (Sofía / JAss en español neutro y latino)',
       'Calificación de clientes en 3 segundos y agenda directa en Google Calendar',
@@ -106,7 +106,7 @@ const LATAM_PLANS: LatamPlan[] = [
     liveAppUrl: 'https://www.chatbuildinginnovation.us',
     liveAppLabel: 'Probar ChatBuildingInnovation.us en Vivo ↗',
     ctaText: 'Activar Plan Arquitectos & AEC ($69/mes)',
-    ctaLink: '/connect?mode=virtual&segment=latam_arquitectos_69',
+    ctaLink: '/offer?offer=latam_arquitectos_69&lang=es&utm_source=website&utm_medium=latam_portal',
     features: [
       'Asistente IA de Cómputos Métricos y Presupuestos desde planos PDF/CAD',
       'Mapeo espacial 3D e inspección visual de fisuras, humedad y defectos en obra',
@@ -130,7 +130,7 @@ const LATAM_PLANS: LatamPlan[] = [
     liveAppUrl: 'https://www.aidynamic.pro/projects',
     liveAppLabel: 'Explorar los 21 Sistemas en Producción ↗',
     ctaText: 'Agendar Auditoría + Bootcamp ($199)',
-    ctaLink: '/connect?mode=virtual&segment=latam_bootcamp_199',
+    ctaLink: '/offer?offer=latam_bootcamp_199&lang=es&utm_source=website&utm_medium=latam_portal',
     features: [
       'Auditoría ejecutiva de 60 min + Prototipo IA personalizado en 48 horas',
       'Taller práctico de medio día en español (hasta 15 integrantes del equipo)',

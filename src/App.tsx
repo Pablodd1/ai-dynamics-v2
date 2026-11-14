@@ -27,11 +27,22 @@ import Dashboard from './pages/auth/Dashboard'
 import Profile from './pages/auth/Profile'
 import Admin from './pages/auth/Admin'
 import NotFound from './pages/NotFound'
+import PaidAdOffer from './pages/PaidAdOffer'
+import CheckoutSuccess from './pages/CheckoutSuccess'
+import './lib/analytics'
 import EcosystemWidget from './components/EcosystemWidget'
 
 function ConditionalEcosystemWidget() {
   const { pathname } = useLocation()
-  if (pathname === '/connect' || pathname === '/call-me' || pathname === '/hero-lab') return null
+  if (
+    pathname === '/connect' ||
+    pathname === '/call-me' ||
+    pathname === '/hero-lab' ||
+    pathname === '/offer' ||
+    pathname === '/success'
+  ) {
+    return null
+  }
   return <EcosystemWidget currentSiteId="ai-dynamics" />
 }
 
@@ -50,6 +61,8 @@ function App() {
           <Route path="/es" element={<LatamSaaS />} />
           <Route path="/connect" element={<DirectConnect />} />
           <Route path="/call-me" element={<DirectConnect />} />
+          <Route path="/offer" element={<PaidAdOffer />} />
+          <Route path="/success" element={<CheckoutSuccess />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<Projects />} />
           <Route path="/booking" element={<Booking />} />

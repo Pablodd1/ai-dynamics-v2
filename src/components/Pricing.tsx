@@ -374,7 +374,11 @@ const Pricing = () => {
 
                   {/* CTA Button */}
                   <a
-                    href={plan.ctaAction}
+                    href={
+                      plan.id === 'enterprise_4900'
+                        ? plan.ctaAction
+                        : `/offer?offer=${encodeURIComponent(plan.id)}&lang=${regionMode === 'latam' ? 'es' : 'en'}&utm_source=website&utm_medium=pricing_card`
+                    }
                     onClick={() => AnalyticsEvents.clickBooking(plan.name, 'pricing_card')}
                     className={`w-full flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm transition-all mb-6 shadow-md ${
                       isPopular

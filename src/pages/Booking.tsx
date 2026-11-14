@@ -3,6 +3,8 @@ import { motion } from 'framer-motion'
 import { Calendar, User, Building2, Check, ArrowLeft, Loader2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
+import { getAttributionSource, trackConversionEvent } from '../lib/analytics'
+import { ViralReferralBox } from '../components/ViralReferralBox'
 
 const API_BASE = import.meta.env.VITE_BOOKING_API || ''
 
@@ -49,6 +51,41 @@ const Booking = () => {
 
   useEffect(() => {
     loadAvailability()
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const savedRaw = localStorage.getItem('aidynamic_checkout_prefill')
+      const saved = savedRaw ? JSON.parse(savedRaw) : {}
+
+      const intentParam = params.get('intent') || ''
+      const serviceParam = params.get('service') || ''
+      let matchedServiceId = ''
+      if (serviceParam.toLowerCase().includes('blueprint') || intentParam.includes('audit') || intentParam === 'paid_verified') {
+        matchedServiceId = 'automation_blueprint'
+      } else if (serviceParam.toLowerCase().includes('strategy') || intentParam.includes('training') || intentParam.includes('enterprise')) {
+        matchedServiceId = 'ai_strategy_session'
+      } else if (serviceParam.toLowerCase().includes('free')) {
+        matchedServiceId = 'free_ai_consultation'
+      }
+
+      const preName = params.get('name') || saved.name || ''
+      const preEmail = params.get('email') || saved.email || ''
+      const prePhone = params.get('phone') || saved.phone || ''
+      const preCompany = params.get('company') || saved.company || ''
+
+      if (matchedServiceId || preName || preEmail || prePhone || preCompany) {
+        setFormData((prev) => ({
+          ...prev,
+          service: matchedServiceId || prev.service,
+          name: preName || prev.name,
+          email: preEmail || prev.email,
+          phone: prePhone || prev.phone,
+          company: preCompany || prev.company,
+        }))
+        if (matchedServiceId) {
+          setStep(2)
+        }
+      }
+    } catch {}
   }, [])
 
   const generateFallbackSlots = (): SlotsData => {
@@ -142,7 +179,7 @@ const Booking = () => {
         budget: formData.budget,
         message: formData.challenge,
         challenge: formData.challenge,
-        source: 'AI Dynamics Pro Website'
+        source: getAttributionSource('AI Dynamics Pro Website')
       }
 
       const res = await fetch(`${API_BASE}/api/booking`, {
@@ -160,6 +197,27 @@ const Booking = () => {
       if (data.meet_link) {
         setMeetLink(data.meet_link)
       }
+
+      const params = new URLSearchParams(window.location.search)
+      const batchId = params.get('batch_id') || sessionStorage.getItem('aidynamic_abandon_batch_id') || ''
+      if (batchId) {
+        fetch(`${API_BASE}/api/checkout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+          body: JSON.stringify({ action: 'cancel_abandon', batch_id: batchId })
+        }).catch(() => {})
+      }
+
+      const nameParts = formData.name.trim().split(/\s+/)
+      trackConversionEvent({
+        eventName: 'Schedule',
+        contentName: formData.service || 'AI Consultation',
+        email: formData.email,
+        phone: formData.phone,
+        firstName: nameParts[0],
+        lastName: nameParts.slice(1).join(' '),
+      })
 
       setSubmitted(true)
     } catch (err: any) {
@@ -196,6 +254,9 @@ const Booking = () => {
           <p className="text-luxury-silver/60 text-sm mb-8">
             A calendar invite has been sent to your email. If you need to reschedule, reply to the confirmation email or call +1 (786) 643-2099.
           </p>
+          <div className="mb-8">
+            <ViralReferralBox referrerName={formData.name} referrerEmail={formData.email} />
+          </div>
           <Link to="/" className="btn-primary inline-flex items-center gap-2">
             <ArrowLeft className="w-5 h-5" />
             Back to Home
