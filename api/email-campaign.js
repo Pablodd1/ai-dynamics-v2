@@ -1,185 +1,298 @@
 // Serverless API Endpoint: /api/email-campaign
 // Minimalistic 5-Option Mid-Email Direct Connect Hub Architecture (Brevo + GA4 UTM + /connect Fast-Action Card)
 
-import { buildDirectConnectHubLetter } from './_directConnectEmail.js';
+import {
+  buildYcPlainColdEmail,
+  buildYcPlainTextEmail,
+  PROJECT_DOMAIN,
+} from './_directConnectEmail.js';
+
+function resolveYcRecipient({
+  name = 'there',
+  company = 'your company',
+  defaultCompany = 'your company',
+  isBrevoCampaignDraft = false,
+}) {
+  const firstName = isBrevoCampaignDraft
+    ? '{{ contact.FIRSTNAME | default: "there" }}'
+    : String(name || 'there').trim().split(/\s+/)[0] || 'there';
+  const comp = isBrevoCampaignDraft
+    ? `{{ contact.COMPANY | default: "${defaultCompany}" }}`
+    : company && company !== 'your company'
+    ? company
+    : defaultCompany;
+  return { firstName, comp };
+}
+
+function createYcCampaign({
+  id,
+  name,
+  brevoLegacyName = null,
+  subject,
+  utmCampaign,
+  segment,
+  targetListIds = [36],
+  dedicatedSegmentListName = null,
+  rolloutScheduledAt = null,
+  defaultCompany = 'your company',
+  signatureUrl = `${PROJECT_DOMAIN}/offer?offer=audit_99&utm_source=brevo&utm_medium=cold_yc`,
+  description,
+  getLines,
+}) {
+  return {
+    id,
+    name,
+    brevoLegacyName,
+    subject,
+    utmCampaign,
+    segment,
+    targetListIds,
+    ...(dedicatedSegmentListName ? { dedicatedSegmentListName } : {}),
+    rolloutScheduledAt,
+    description,
+    buildHtml: ({ name = 'there', company = defaultCompany, isBrevoCampaignDraft = false }) => {
+      const { firstName, comp } = resolveYcRecipient({
+        name,
+        company,
+        defaultCompany,
+        isBrevoCampaignDraft,
+      });
+      const lines = getLines({ firstName, comp });
+      return buildYcPlainColdEmail({
+        firstName,
+        ...lines,
+        signatureUrl,
+        utmCampaign,
+        isBrevoCampaignDraft,
+      });
+    },
+    buildText: ({ name = 'there', company = defaultCompany, isBrevoCampaignDraft = false }) => {
+      const { firstName, comp } = resolveYcRecipient({
+        name,
+        company,
+        defaultCompany,
+        isBrevoCampaignDraft,
+      });
+      const lines = getLines({ firstName, comp });
+      return buildYcPlainTextEmail({
+        firstName,
+        ...lines,
+        signatureUrl,
+        utmCampaign,
+      });
+    },
+  };
+}
 
 const CAMPAIGNS = {
-  email_1_voice_jass: {
+  email_1_voice_jass: createYcCampaign({
     id: 'email_1_voice_jass',
-    name: 'Segment 1 — South Florida Business Owners & CEOs (5-Option Direct Connect Hub)',
-    subject: 'quick question on missed calls & manual admin at {{company}}',
-    utmCampaign: 'hub_seg1_ceo_owners',
+    name: 'YC B2B Seg 1 — Miami Business Owners & CEOs (1:1 Plain Cold Email)',
+    brevoLegacyName: '[Direct Connect Hub] Segment 1 — South Florida Business Owners & CEOs (5-Option Direct Connect Hub)',
+    subject: 'missed calls at {{company}}',
+    utmCampaign: 'yc_seg1_ceo_owners',
     segment: 'ceo_owners',
     targetListIds: [36],
     rolloutScheduledAt: '2026-11-12T10:15:00-05:00',
-    description: 'Plain-spoken founder note to Miami CEOs & owners featuring our Minimalistic 5-Option Direct Connect Hub ($99 Audit + Free 48-Hr Prototype).',
-    buildHtml: ({ name = 'there', email = '', company = 'your business', isBrevoCampaignDraft = false }) => {
-      const firstName = isBrevoCampaignDraft
-        ? '{{ contact.FIRSTNAME | default: "there" }}'
-        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
-      const comp = isBrevoCampaignDraft
-        ? '{{ contact.COMPANY | default: "your business" }}'
-        : company && company !== 'your company'
-        ? company
-        : 'your business';
-      const emailParam = isBrevoCampaignDraft
-        ? '{{ contact.EMAIL }}'
-        : encodeURIComponent(email || '');
+    defaultCompany: 'your business',
+    description: 'YC 5-sentence <80-word 1:1 cold email for South Florida CEOs & owners (pain-point opener + $99 48-hr prototype proof + 1 easy reply ask).',
+    getLines: ({ comp }) => ({
+      hookLine: `Saw ${comp} in Miami and noticed how fast local callers hang up when phones hit voicemail at lunch or after 5:30pm.`,
+      plainPitchAndProof: `I'm an AI engineer in Brickell—we build custom bilingual voice &amp; workflow agents in 48 hours, with 21 live systems cutting $2,500+/mo in manual admin across Miami firms.`,
+      valueLine: `Our $99 60-minute audit comes with a working prototype built around ${comp} (full refund on the spot if it doesn't prove $2,500+/mo saved).`,
+      easyAsk: `Worth sending a 60-second demo customized for ${comp}, or should I pass?`,
+    }),
+  }),
 
-      return buildDirectConnectHubLetter({
-        firstName,
-        emailParam,
-        segment: 'ceo_owners',
-        utmCampaign: 'hub_seg1_ceo_owners',
-        isBrevoCampaignDraft,
-        openingPara1: `Most owners I visit here in Miami aren't short on demand—they're losing roughly <strong>$3,420 a month per department</strong> paying good people to copy-paste intake data, chase follow-ups, and return voicemails from callers who hung up between noon and 2pm or after 5:30pm.`,
-        openingPara2: `I'm Jasmel, a local AI developer in Brickell. Instead of pitching you a bloated software contract, my team comes directly into <strong>${comp}</strong> for a <strong>$99 60-minute workflow audit</strong> and builds a <strong>working custom AI prototype in 48 hours</strong> around your slowest daily bottleneck.`,
-        closingPara1: `Everything we do is flat and transparent: if that 48-hour prototype doesn't show you a clear path to saving at least <strong>$2,500+/month</strong> in payroll and wasted hours, I refund your $99 on the spot. And when you're ready, we stay on-site to train your staff ($497 half-day bootcamp for up to 15 people, English &amp; Español) so 1 employee handles the workload of 5.`,
-      });
-    },
-  },
-
-  email_2_audit_99: {
+  email_2_audit_99: createYcCampaign({
     id: 'email_2_audit_99',
-    name: 'Segment 2 — Medical Clinics, Dental Practices & MedSpas (5-Option Direct Connect Hub)',
-    subject: 'front-desk calls & claim denials at {{company}}',
-    utmCampaign: 'hub_seg2_medical_dental',
+    name: 'YC B2B Seg 2 — Medical, Dental & MedSpas (1:1 Plain Cold Email)',
+    brevoLegacyName: '[Direct Connect Hub] Segment 2 — Medical Clinics, Dental Practices & MedSpas (5-Option Direct Connect Hub)',
+    subject: 'after-hours patients at {{company}}',
+    utmCampaign: 'yc_seg2_medical_dental',
     segment: 'medical_dental',
-    targetListIds: [36],
+    targetListIds: [37],
     dedicatedSegmentListName: 'AI Dynamic Pro — Medical & MedSpa',
     rolloutScheduledAt: '2026-11-19T10:15:00-05:00',
-    description: 'Tailored to Miami doctors, dental practices, and MedSpas (front-desk bilingual scheduling, mobile insurance intake & pre-claim scrubbing).',
-    buildHtml: ({ name = 'there', email = '', company = 'your practice', isBrevoCampaignDraft = false }) => {
-      const firstName = isBrevoCampaignDraft
-        ? '{{ contact.FIRSTNAME | default: "there" }}'
-        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
-      const comp = isBrevoCampaignDraft
-        ? '{{ contact.COMPANY | default: "your practice" }}'
-        : company && company !== 'your company'
-        ? company
-        : 'your practice';
-      const emailParam = isBrevoCampaignDraft
-        ? '{{ contact.EMAIL }}'
-        : encodeURIComponent(email || '');
+    defaultCompany: 'your practice',
+    description: 'YC 5-sentence <80-word 1:1 cold email for Miami clinics, dental practices & MedSpas (Ring-1 EN/ES scheduling + charting/claims proof).',
+    getLines: ({ comp }) => ({
+      hookLine: `Noticed ${comp} serves Miami patients where 38% of lunch and after-5pm new-patient calls book elsewhere if they hit voicemail.`,
+      plainPitchAndProof: `We build Ring-1 English/Spanish AI receptionists and pre-claim scrubbers here in Brickell—already running across clinical workflows to cut evening charting and front-desk hold times.`,
+      valueLine: `For a flat $99 audit, I build a working 48-hour prototype for ${comp}—or refund the $99 immediately if it doesn't map $2,500+/mo in recovered bookings.`,
+      easyAsk: `Open to a 60-second audio sample of how it answers for ${comp}?`,
+    }),
+  }),
 
-      return buildDirectConnectHubLetter({
-        firstName,
-        emailParam,
-        segment: 'medical_dental',
-        utmCampaign: 'hub_seg2_medical_dental',
-        isBrevoCampaignDraft,
-        openingPara1: `Across Miami clinics, dental offices, and MedSpas, two leaks eat margin every single week: <strong>38% of new-patient calls during lunch or after 5pm hit voicemail and book elsewhere</strong>, while doctors and billers lose evenings to manual charting and preventable claim denials.`,
-        openingPara2: `I build custom clinical &amp; front-desk AI right here in Miami. For a flat <strong>$99 60-minute practice audit</strong>, I'll map your front desk and build a <strong>working 48-hour prototype</strong> for <strong>${comp}</strong>—covering Ring-1 English/Spanish phone &amp; WhatsApp scheduling, mobile insurance card capture, or pre-submission claim checks.`,
-        closingPara1: `No long-term retainers and zero guesswork: if our 48-hour prototype doesn't uncover at least <strong>$2,500+/month</strong> in recovered appointments and admin time, you pay <strong>$0</strong>. Our turnkey bilingual receptionist starts at $997 ($297/mo managed), and our $497 on-site staff bootcamp gets your receptionists and billers comfortable on day one.`,
-      });
-    },
-  },
-
-  email_3_staff_training: {
+  email_3_staff_training: createYcCampaign({
     id: 'email_3_staff_training',
-    name: 'Segment 3 — Contractors, Construction & Property Services (5-Option Direct Connect Hub)',
-    subject: 'faster job quotes & missed field calls at {{company}}',
-    utmCampaign: 'hub_seg3_contractors_gc',
+    name: 'YC B2B Seg 3 — Contractors & Property Services (1:1 Plain Cold Email)',
+    brevoLegacyName: '[Direct Connect Hub] Segment 3 — Contractors, Construction & Property Services (5-Option Direct Connect Hub)',
+    subject: 'job quotes at {{company}}',
+    utmCampaign: 'yc_seg3_contractors_gc',
     segment: 'contractors_gc',
     targetListIds: [31],
     rolloutScheduledAt: '2026-11-17T10:15:00-05:00',
-    description: 'Tailored to General Contractors, trades, and property firms (smartphone photo-to-quote AI + 24/7 bilingual job intake & estimate follow-up).',
-    buildHtml: ({ name = 'there', email = '', company = 'your crew', isBrevoCampaignDraft = false }) => {
-      const firstName = isBrevoCampaignDraft
-        ? '{{ contact.FIRSTNAME | default: "there" }}'
-        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
-      const comp = isBrevoCampaignDraft
-        ? '{{ contact.COMPANY | default: "your company" }}'
-        : company && company !== 'your company'
-        ? company
-        : 'your company';
-      const emailParam = isBrevoCampaignDraft
-        ? '{{ contact.EMAIL }}'
-        : encodeURIComponent(email || '');
+    defaultCompany: 'your company',
+    description: 'YC 5-sentence <80-word 1:1 cold email for South Florida contractors & trades (field call pickup + smartphone photo-to-quote proof).',
+    getLines: ({ comp }) => ({
+      hookLine: `Saw ${comp}'s work in South Florida—most crews I meet lose good bids when jobsite calls go unanswered for an hour or estimates take days.`,
+      plainPitchAndProof: `I'm a Brickell AI developer building 24/7 English/Spanish call &amp; WhatsApp coordinators plus smartphone photo-to-quote tools for local trades.`,
+      valueLine: `For $99, I'll build a working 48-hour prototype around ${comp}'s exact intake and quote flow ($0 if it doesn't save $2,500+/mo in estimator hours).`,
+      easyAsk: `Want me to reply with a 60-second sample built for ${comp}?`,
+    }),
+  }),
 
-      return buildDirectConnectHubLetter({
-        firstName,
-        emailParam,
-        segment: 'contractors_gc',
-        utmCampaign: 'hub_seg3_contractors_gc',
-        isBrevoCampaignDraft,
-        openingPara1: `When you're on a jobsite in South Florida, two things quietly kill good bids: estimators burning 12+ hours a week driving out to tire-kickers, and inbound calls or WhatsApp leads going unanswered for an hour while the homeowner hires whoever picked up first.`,
-        openingPara2: `I'm a Miami AI developer who builds practical field tools for contractors and property operators. For a flat <strong>$99 60-minute audit</strong>, we'll build a <strong>working 48-hour custom prototype</strong> for <strong>${comp}</strong>—from instant smartphone photo-to-quote estimating to a 24/7 English/Spanish voice &amp; WhatsApp coordinator that answers on Ring 1 and chases every open estimate.`,
-        closingPara1: `If the 48-hour prototype doesn't show you at least <strong>$2,500+/month</strong> in saved estimator hours and captured jobs, I hand your $99 right back. Plus, we run a <strong>$497 on-site bootcamp</strong> (English &amp; Español) so your office and field coordinators actually use the tools every day.`,
-      });
-    },
-  },
-
-  email_4_before_after: {
+  email_4_before_after: createYcCampaign({
     id: 'email_4_before_after',
-    name: 'Segment 4 — Law Firms, Real Estate Brokerages & Title (5-Option Direct Connect Hub)',
-    subject: '3-second client intake & contract screening at {{company}}',
-    utmCampaign: 'hub_seg4_legal_realestate',
+    name: 'YC B2B Seg 4 — Law Firms, Real Estate & Title (1:1 Plain Cold Email)',
+    brevoLegacyName: '[Direct Connect Hub] Segment 4 — Law Firms, Real Estate Brokerages & Title (5-Option Direct Connect Hub)',
+    subject: '7pm leads at {{company}}',
+    utmCampaign: 'yc_seg4_legal_realestate',
     segment: 'legal_realestate',
-    targetListIds: [36],
+    targetListIds: [38],
     dedicatedSegmentListName: 'AI Dynamic Pro — Legal & Real Estate',
     rolloutScheduledAt: '2026-11-24T10:15:00-05:00',
-    description: 'Tailored to attorneys, brokers, and title teams (3-second bilingual intake + private cloud contract & escrow deadline review).',
-    buildHtml: ({ name = 'there', email = '', company = 'your firm', isBrevoCampaignDraft = false }) => {
-      const firstName = isBrevoCampaignDraft
-        ? '{{ contact.FIRSTNAME | default: "there" }}'
-        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
-      const comp = isBrevoCampaignDraft
-        ? '{{ contact.COMPANY | default: "your firm" }}'
-        : company && company !== 'your company'
-        ? company
-        : 'your firm';
-      const emailParam = isBrevoCampaignDraft
-        ? '{{ contact.EMAIL }}'
-        : encodeURIComponent(email || '');
+    defaultCompany: 'your firm',
+    description: 'YC 5-sentence <80-word 1:1 cold email for attorneys, brokerages & title teams (3-second EN/ES intake + private contract screening).',
+    getLines: ({ comp }) => ({
+      hookLine: `78% of South Florida legal inquiries and property buyers sign with whoever answers first, especially after 6pm.`,
+      plainPitchAndProof: `At AI Dynamic Pro in Brickell, we build 3-second bilingual intake agents (phone, WhatsApp, IG) and private-cloud contract screeners that save paralegals 15+ hours a week.`,
+      valueLine: `We start with a $99 60-minute audit and hand you a live 48-hour prototype for ${comp}—100% refunded if it doesn't prove $2,500+/mo in value.`,
+      easyAsk: `Worth a quick "yes" so I can send a 60-second intake demo for ${comp}?`,
+    }),
+  }),
 
-      return buildDirectConnectHubLetter({
-        firstName,
-        emailParam,
-        segment: 'legal_realestate',
-        utmCampaign: 'hub_seg4_legal_realestate',
-        isBrevoCampaignDraft,
-        openingPara1: `78% of legal inquiries and property buyers sign with the first firm that responds. When daytime follow-ups take 47 minutes—or a 7:00pm call goes to voicemail—high-value retainers and listings quietly walk across the street, while paralegals and coordinators spend 15+ hours a week reviewing routine agreements by hand.`,
-        openingPara2: `My team at AI Dynamic Pro in Brickell builds private AI systems for South Florida law firms, brokerages, and title teams. Starting with a <strong>$99 60-minute intake &amp; workflow audit</strong>, we build a <strong>working 48-hour prototype</strong> for <strong>${comp}</strong>—handling 3-second 24/7 English/Spanish intake across phone/WhatsApp/IG and instant private-cloud contract or escrow deadline screening.`,
-        closingPara1: `Simple guarantee: if that 48-hour prototype doesn't uncover at least <strong>$2,500+/month</strong> in saved admin time and captured retainers, you pay <strong>$0</strong>. No bloated consulting decks—just working software and hands-on training ($497 team bootcamp) for your staff.`,
-      });
-    },
-  },
-
-  email_5_founder_checkin: {
+  email_5_founder_checkin: createYcCampaign({
     id: 'email_5_founder_checkin',
-    name: 'Segment 5 — On-Site Staff AI Bootcamp ($497 Workforce Multiplier · Direct Connect Hub)',
-    subject: 'training your existing team at {{company}} (1 employee = 5)',
-    utmCampaign: 'hub_seg5_staff_bootcamp',
+    name: 'YC B2B Seg 5 — On-Site Staff AI Bootcamp ($497 Team Multiplier)',
+    brevoLegacyName: '[Direct Connect Hub] Segment 5 — On-Site Staff AI Bootcamp ($497 Workforce Multiplier · Direct Connect Hub)',
+    subject: 'ai workflows at {{company}}',
+    utmCampaign: 'yc_seg5_staff_bootcamp',
     segment: 'staff_bootcamp',
     targetListIds: [36, 31],
     rolloutScheduledAt: '2026-12-01T10:15:00-05:00',
-    description: 'Focused on our $497 Half-Day On-Site Corporate AI Bootcamp (up to 15 staff, English & Español) with the 5-Option Direct Connect Hub.',
-    buildHtml: ({ name = 'there', email = '', company = 'your company', isBrevoCampaignDraft = false }) => {
-      const firstName = isBrevoCampaignDraft
-        ? '{{ contact.FIRSTNAME | default: "there" }}'
-        : String(name || 'there').trim().split(/\s+/)[0] || 'there';
-      const comp = isBrevoCampaignDraft
-        ? '{{ contact.COMPANY | default: "your company" }}'
-        : company && company !== 'your company'
-        ? company
-        : 'your company';
-      const emailParam = isBrevoCampaignDraft
-        ? '{{ contact.EMAIL }}'
-        : encodeURIComponent(email || '');
+    defaultCompany: 'your company',
+    signatureUrl: `${PROJECT_DOMAIN}/offer?offer=bootcamp_497&utm_source=brevo&utm_medium=cold_yc`,
+    description: 'YC 5-sentence <80-word 1:1 cold email for our $497 Half-Day On-Site Staff AI Bootcamp (up to 15 employees, EN/ES).',
+    getLines: ({ comp }) => ({
+      hookLine: `Most Miami teams pay for AI logins nobody uses because nobody sat next to their staff to wire it into their actual daily tasks.`,
+      plainPitchAndProof: `My engineering team comes on-site in South Florida for a flat $497 half-day bootcamp (up to 15 staff, English &amp; Español), turning 4 hours of daily admin into 22 minutes.`,
+      valueLine: `Every coordinator and manager at ${comp} leaves with custom role playbooks so 1 trained employee handles the workload of 5.`,
+      easyAsk: `Should I send over the 1-page half-day agenda for ${comp}?`,
+    }),
+  }),
 
-      return buildDirectConnectHubLetter({
-        firstName,
-        emailParam,
-        segment: 'staff_bootcamp',
-        utmCampaign: 'hub_seg5_staff_bootcamp',
-        isBrevoCampaignDraft,
-        openingPara1: `83% of businesses that buy AI subscriptions never see a dime of return for one simple reason: nobody sits down next to their staff to show them how to cut their actual daily busywork with it, so by Monday morning everyone goes back to doing things the slow way.`,
-        openingPara2: `Instead of selling you another login that collects dust, my team comes on-site to <strong>${comp}</strong> (or live virtual) for a <strong>$497 Half-Day Practical AI Staff Bootcamp</strong> for up to 15 employees—or starts with a <strong>$99 60-minute audit + free 48-hour custom AI prototype</strong>.`,
-        closingPara1: `We build role-specific daily playbooks in plain English and Spanish for your receptionists, coordinators, estimators, and managers—turning 4 hours of repetitive admin into 22 minutes so <strong>1 trained employee reliably produces the output of 5</strong>.`,
-      });
-    },
-  },
+  yc_investor_grant_pitch: createYcCampaign({
+    id: 'yc_investor_grant_pitch',
+    name: 'YC Template 01 — Investor & Grant Outreach (Traction-First Pitch)',
+    subject: 'ai dynamic pro — 21 live systems',
+    utmCampaign: 'yc_01_investor_grant',
+    segment: 'investors_grants',
+    targetListIds: [36],
+    rolloutScheduledAt: null,
+    defaultCompany: 'your fund',
+    signatureUrl: `${PROJECT_DOMAIN}/latam?utm_source=brevo&utm_medium=cold_yc`,
+    description: 'YC Slide 4 Card 01 (Traction-First Pitch) tailored for Miami / LATAM angels, accelerators (eMerge, Start-Up Chile), and seed partners.',
+    getLines: ({ comp }) => ({
+      hookLine: `Reaching out because ${comp} backs applied AI founders building revenue-generating vertical software across the Americas.`,
+      plainPitchAndProof: `AI Dynamic Pro builds bilingual (EN/ES) voice receptionists and workflow automation for healthcare, legal, and spatial design—21 production systems live today, expanding from Miami into LATAM SaaS ($29–$69/mo).`,
+      valueLine: `Customers recover $2,500+/mo in missed calls and manual admin within 48 hours of onboarding.`,
+      easyAsk: `Open to a 3-slide brief or a 10-minute intro next week?`,
+    }),
+  }),
+
+  yc_partnership_mutual_win: createYcCampaign({
+    id: 'yc_partnership_mutual_win',
+    name: 'YC Template 03 — Strategic Partnership (Mutual-Win Hook)',
+    subject: 'ai dynamic pro x {{company}}',
+    utmCampaign: 'yc_03_partnership',
+    segment: 'partnerships',
+    targetListIds: [36],
+    rolloutScheduledAt: null,
+    defaultCompany: 'your agency',
+    signatureUrl: `${PROJECT_DOMAIN}/offer?offer=audit_99&utm_source=brevo&utm_medium=cold_yc`,
+    description: 'YC Slide 4 Card 03 (Mutual-Win Hook) for Miami CPAs, IT MSPs, marketing agencies, and commercial brokers.',
+    getLines: ({ comp }) => ({
+      hookLine: `Saw how ${comp} helps South Florida businesses grow—and noticed your clients likely ask how to stop losing leads after hours.`,
+      plainPitchAndProof: `We build turnkey 48-hour bilingual AI voice &amp; WhatsApp receptionists in Brickell without competing with any of ${comp}'s core services.`,
+      valueLine: `Partners earn a 20% recurring referral share (or gift clients a $99 custom prototype audit) while boosting client retention.`,
+      easyAsk: `Worth a quick 10-minute chat Thursday to see if a referral swap fits?`,
+    }),
+  }),
+
+  yc_press_data_story: createYcCampaign({
+    id: 'yc_press_data_story',
+    name: 'YC Template 04 — Press & Podcast Pitch (Miami AI Data Story)',
+    subject: 'data on miami ai adoption',
+    utmCampaign: 'yc_04_press_media',
+    segment: 'press_media',
+    targetListIds: [36],
+    rolloutScheduledAt: null,
+    defaultCompany: 'your newsroom',
+    signatureUrl: `${PROJECT_DOMAIN}/?utm_source=brevo&utm_medium=cold_yc`,
+    description: 'YC Slide 4 Card 04 (Data-Story Angle) for South Florida tech/business journalists, newsletters, and podcasts.',
+    getLines: ({ comp }) => ({
+      hookLine: `Read your recent coverage at ${comp} on South Florida small businesses and workforce shifts.`,
+      plainPitchAndProof: `Auditing dozens of Miami clinics, law firms, and contractors this quarter, we found 38% of inbound calls during lunch or after 5pm go unanswered—costing ~$3,420/mo per department.`,
+      valueLine: `Happy to share our anonymized Miami vertical breakdown (and how bilingual AI + half-day staff bootcamps are replacing 4-hour admin blocks in 22 minutes).`,
+      easyAsk: `Want me to send the 5-bullet data summary for an upcoming piece?`,
+    }),
+  }),
+
+  yc_followup_day4_bump1: createYcCampaign({
+    id: 'yc_followup_day4_bump1',
+    name: 'YC Follow-Up Day 4 (+3d) — Short Context Bump #1',
+    subject: 'quick note re: {{company}}',
+    utmCampaign: 'yc_seq_day4_bump1',
+    segment: 'followup_day4',
+    targetListIds: [36],
+    rolloutScheduledAt: null,
+    defaultCompany: 'your business',
+    description: 'YC Slide 5 Cadence — Day 4 (+3 days): 2-sentence context bump adding 1 concrete angle, zero guilt.',
+    getLines: ({ comp }) => ({
+      hookLine: `Floating this back up in case my note got buried—one quick detail relevant to ${comp}:`,
+      plainPitchAndProof: `We build the live English/Spanish voice or intake prototype around your exact phone &amp; WhatsApp workflow in 48 hours before you ever commit to software.`,
+      valueLine: ``,
+      easyAsk: `Reply "demo" and I'll send a 60-second custom link for ${comp} (no call needed).`,
+    }),
+  }),
+
+  yc_followup_day9_proof2: createYcCampaign({
+    id: 'yc_followup_day9_proof2',
+    name: 'YC Follow-Up Day 9 (+5d) — New Proof Point Bump #2',
+    subject: '60-sec voice demo for {{company}}',
+    utmCampaign: 'yc_seq_day9_proof2',
+    segment: 'followup_day9',
+    targetListIds: [36],
+    rolloutScheduledAt: null,
+    defaultCompany: 'your business',
+    description: 'YC Slide 5 Cadence — Day 9 (+5 days): New concrete proof point (never "just circling back").',
+    getLines: ({ comp }) => ({
+      hookLine: `Quick proof point instead of "circling back": our bilingual Sofía voice engine answers on Ring 1 in natural Latin Spanish &amp; English and books straight onto your calendar.`,
+      plainPitchAndProof: `Across 21 deployed systems in healthcare, legal, and trades, teams cut manual intake from hours to seconds while keeping their existing phone number.`,
+      valueLine: ``,
+      easyAsk: `Want the 60-second live test number so you can call and try breaking it yourself?`,
+    }),
+  }),
+
+  yc_followup_day16_breakup: createYcCampaign({
+    id: 'yc_followup_day16_breakup',
+    name: 'YC Follow-Up Day 16 (+7d) — Polite Breakup Note',
+    subject: 'closing the loop — {{company}}',
+    utmCampaign: 'yc_seq_day16_breakup',
+    segment: 'followup_day16',
+    targetListIds: [36],
+    rolloutScheduledAt: null,
+    defaultCompany: 'your business',
+    description: 'YC Slide 5 Cadence — Day 16 (+7 days): Respectful final breakup note leaving the door open—then stop.',
+    getLines: ({ comp }) => ({
+      hookLine: `I haven't heard back, so I won't keep crowding your inbox—this is my last note.`,
+      plainPitchAndProof: `If automating missed calls, bilingual intake, or training staff on AI becomes a priority at ${comp} later this quarter, our $99 48-hour prototype offer stays open.`,
+      valueLine: ``,
+      easyAsk: `Wishing you and the ${comp} team a strong finish to the year—just reply here anytime if timing changes.`,
+    }),
+  }),
 };
 
 // Ready-to-publish Google Business Profile ("Google Buz") Local Posts adapted for Miami & South Florida CEOs & Business Owners (EN/ES, Zero Phone Numbers in Body per Google Policy)
@@ -415,7 +528,7 @@ export default async function handler(req, res) {
       customSubject = '',
       scheduledAt = '', // Optional ISO-8601 future timestamp e.g. '2026-11-03T10:15:00-05:00'
       senderEmail = 'jasmel@aidynamic.pro', // Verified Brevo sender email
-      senderName = 'Jasmel Acosta — AI Dynamic Pro',
+      senderName = 'Jasmel Acosta',
       replyToEmail = 'jasmel@aidynamic.pro',
       leadsToSave = [],
       batchOffset = 0,
@@ -462,7 +575,9 @@ export default async function handler(req, res) {
             }
           }
         }
-      } catch {}
+      } catch {
+        // Fallback to default targetListId if list lookup fails
+      }
 
       let brevoSavedCount = 0;
       for (const item of sourceLeads) {
@@ -564,7 +679,9 @@ export default async function handler(req, res) {
         if (domRes && domRes.ok) {
           domainDns = await domRes.json().catch(() => null);
         }
-      } catch {}
+      } catch {
+        // Non-blocking domain DNS inspection
+      }
 
       // If sender already exists and is inactive, delete it first so Brevo sends a brand-new verification email
       try {
@@ -581,7 +698,9 @@ export default async function handler(req, res) {
             }).catch(() => null);
           }
         }
-      } catch {}
+      } catch {
+        // Fallback to default targetListId if list lookup fails
+      }
 
       const createRes = await fetch('https://api.brevo.com/v3/senders', {
         method: 'POST',
@@ -675,9 +794,9 @@ export default async function handler(req, res) {
         'api-key': BREVO_API_KEY,
       };
 
-      // Resolve active verified Brevo sender
+      // Resolve active verified Brevo sender (use 1:1 founder name "Jasmel Acosta" per YC cold-email standard)
       let draftSenderEmail = (senderEmail || 'jasmel@aidynamic.pro').trim().toLowerCase();
-      let draftSenderName = 'Jasmel Acosta - AI Dynamic Pro';
+      const draftSenderName = 'Jasmel Acosta';
       try {
         const sdrRes = await fetch('https://api.brevo.com/v3/senders', { headers }).catch(() => null);
         if (sdrRes && sdrRes.ok) {
@@ -688,10 +807,11 @@ export default async function handler(req, res) {
           const chosen = exact || domainMatch || activeSenders[0];
           if (chosen) {
             draftSenderEmail = chosen.email.trim().toLowerCase();
-            if (chosen.name) draftSenderName = chosen.name;
           }
         }
-      } catch {}
+      } catch {
+        // Fallback to default verified sender email
+      }
 
       // Ensure dedicated AI Dynamic Pro vertical Brevo lists exist & are populated cleanly (strictly separate from MBMB)
       const listByName = new Map();
@@ -705,7 +825,9 @@ export default async function handler(req, res) {
             if (l.folderId) defaultFolderId = l.folderId;
           }
         }
-      } catch {}
+      } catch {
+        // Fallback to default folder ID
+      }
 
       const ensureSegmentList = async (listName, categoryMatcher) => {
         let lid = listByName.get(listName);
@@ -754,7 +876,7 @@ export default async function handler(req, res) {
         (cat) => /real estate|legal|law|broker/i.test(cat)
       );
 
-      // Inspect existing Brevo campaigns (draft or suspended) so we update in-place instead of creating duplicates
+      // Inspect existing Brevo campaigns (including 'sent' so we never duplicate an already-sent wave, and update queued/draft in-place)
       const existingHubMap = new Map();
       try {
         const listRes = await fetch('https://api.brevo.com/v3/emailCampaigns?type=classic&limit=50', {
@@ -763,16 +885,19 @@ export default async function handler(req, res) {
         if (listRes && listRes.ok) {
           const listData = await listRes.json();
           for (const dc of listData.campaigns || []) {
-            if (dc.name && ['draft', 'suspended', 'queued'].includes(dc.status)) {
+            if (dc.name && ['draft', 'suspended', 'queued', 'sent', 'inProcess'].includes(dc.status)) {
               if (!existingHubMap.has(dc.name.trim())) {
                 existingHubMap.set(dc.name.trim(), { id: dc.id, status: dc.status });
               }
             }
           }
         }
-      } catch {}
+      } catch {
+        // Non-blocking campaign inspection
+      }
 
       const stagedDrafts = [];
+      const skippedSent = [];
       const draftErrors = [];
 
       for (const c of Object.values(CAMPAIGNS)) {
@@ -792,6 +917,24 @@ export default async function handler(req, res) {
           resolvedListIds = [legalReListId];
         }
 
+        const isFutureRollout =
+          Boolean(shouldSchedule && c.rolloutScheduledAt) &&
+          new Date(c.rolloutScheduledAt).getTime() > Date.now() + 60 * 1000;
+
+        const existingEntry =
+          existingHubMap.get(draftCampaignName) ||
+          (c.brevoLegacyName ? existingHubMap.get(c.brevoLegacyName) : null);
+
+        if (existingEntry && ['sent', 'inProcess'].includes(existingEntry.status)) {
+          skippedSent.push({
+            brevoCampaignId: existingEntry.id,
+            campaignKey: c.id,
+            status: existingEntry.status,
+            reason: 'Already sent — preserved untouched',
+          });
+          continue;
+        }
+
         const payload = {
           name: draftCampaignName,
           subject: draftSubject,
@@ -800,10 +943,9 @@ export default async function handler(req, res) {
           type: 'classic',
           htmlContent,
           recipients: { listIds: resolvedListIds },
-          ...(shouldSchedule && c.rolloutScheduledAt ? { scheduledAt: c.rolloutScheduledAt } : {}),
+          ...(isFutureRollout ? { scheduledAt: c.rolloutScheduledAt } : {}),
         };
 
-        const existingEntry = existingHubMap.get(draftCampaignName);
         if (existingEntry && existingEntry.id) {
           if (existingEntry.status === 'queued') {
             await fetch(`https://api.brevo.com/v3/emailCampaigns/${existingEntry.id}/status`, {
@@ -820,6 +962,13 @@ export default async function handler(req, res) {
           }).catch(() => null);
 
           if (putRes && (putRes.ok || putRes.status === 204)) {
+            if (isFutureRollout) {
+              await fetch(`https://api.brevo.com/v3/emailCampaigns/${existingEntry.id}/status`, {
+                method: 'PUT',
+                headers,
+                body: JSON.stringify({ status: 'queued' }),
+              }).catch(() => null);
+            }
             stagedDrafts.push({
               brevoCampaignId: existingEntry.id,
               campaignKey: c.id,
@@ -827,9 +976,9 @@ export default async function handler(req, res) {
               subject: draftSubject,
               segment: c.segment,
               listIds: resolvedListIds,
-              status: shouldSchedule ? 'queued' : 'draft',
-              scheduledAt: shouldSchedule ? c.rolloutScheduledAt : null,
-              operation: shouldSchedule ? 'scheduled_for_rollout' : 'updated_existing_draft',
+              status: isFutureRollout ? 'queued' : 'draft',
+              scheduledAt: isFutureRollout ? c.rolloutScheduledAt : null,
+              operation: isFutureRollout ? 'updated_and_queued_in_place' : 'updated_existing_draft',
             });
           } else {
             const errTxt = putRes ? await putRes.text().catch(() => 'PUT error') : 'Network error';
@@ -850,9 +999,9 @@ export default async function handler(req, res) {
               subject: draftSubject,
               segment: c.segment,
               listIds: resolvedListIds,
-              status: shouldSchedule ? 'queued' : 'draft',
-              scheduledAt: shouldSchedule ? c.rolloutScheduledAt : null,
-              operation: shouldSchedule ? 'created_and_scheduled' : 'created_new_draft',
+              status: isFutureRollout ? 'queued' : 'draft',
+              scheduledAt: isFutureRollout ? c.rolloutScheduledAt : null,
+              operation: isFutureRollout ? 'created_and_scheduled' : 'created_new_draft',
             });
           } else {
             const errTxt = postRes ? await postRes.text().catch(() => 'POST error') : 'Network error';
@@ -862,16 +1011,17 @@ export default async function handler(req, res) {
       }
 
       return res.status(200).json({
-        success: stagedDrafts.length > 0,
+        success: stagedDrafts.length > 0 || skippedSent.length > 0,
         senderUsed: { name: draftSenderName, email: draftSenderEmail },
         medicalListId,
         legalReListId,
         stagedCount: stagedDrafts.length,
         stagedDrafts,
+        skippedSent,
         draftErrors,
         message: shouldSchedule
-          ? `Scheduled ${stagedDrafts.length} Direct Connect Hub campaign(s) onto Tue/Thu 10:15 AM EST rollout in Brevo!`
-          : `Staged ${stagedDrafts.length} Direct Connect Hub campaign(s) as SAFE DRAFTS in Brevo (status: draft — NOT sent).`,
+          ? `Synced ${stagedDrafts.length} YC 1:1 Cold Email campaign(s) in Brevo (queued upcoming waves + staged on-demand templates as safe drafts)!`
+          : `Staged ${stagedDrafts.length} YC 1:1 Cold Email campaign(s) as SAFE DRAFTS in Brevo (status: draft — NOT sent).`,
       });
     }
 
@@ -1126,7 +1276,7 @@ export default async function handler(req, res) {
 
     // Resolve verified active sender from Brevo so campaigns never fail due to an unverified sender address
     let resolvedSenderEmail = (senderEmail || '').trim().toLowerCase();
-    const resolvedSenderName = (senderName || 'Jasmel Acosta — AI Dynamic Pro').trim();
+    const resolvedSenderName = (senderName || 'Jasmel Acosta').trim();
     const resolvedReplyTo = (replyToEmail || 'jasmel@aidynamic.pro').trim().toLowerCase();
 
     try {
@@ -1192,18 +1342,28 @@ export default async function handler(req, res) {
             phoneUrl,
           });
 
+          const textContent =
+            typeof campaign.buildText === 'function'
+              ? campaign.buildText({
+                  name: recipient.name,
+                  email: recipient.email,
+                  company: recipient.company,
+                })
+              : undefined;
+
           const brevoPayload = {
             sender: { name: resolvedSenderName, email: resolvedSenderEmail },
             to: [{ email: recipient.email, name: recipient.name }],
             replyTo: { email: resolvedReplyTo, name: resolvedSenderName },
             subject: personalizedSubject,
             htmlContent,
+            ...(textContent ? { textContent } : {}),
             ...(scheduledAt ? { scheduledAt } : {}),
             headers: {
               'List-Unsubscribe': `<mailto:${resolvedReplyTo}?subject=Unsubscribe>`,
               'X-Entity-Ref-ID': `aidynamic-${campaign.utmCampaign}-${Date.now()}`,
             },
-            tags: [campaign.utmCampaign, 'aidynamic_sequence'],
+            tags: [campaign.utmCampaign, 'aidynamic_yc_cold'],
           };
 
           if (renderedPayloads.length < 50) {

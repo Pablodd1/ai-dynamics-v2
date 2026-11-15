@@ -29,8 +29,94 @@ export async function resolveVerifiedBrevoSender(brevoApiKey, preferredEmail = '
       else if (aiDyn) resolved = aiDyn.email.trim().toLowerCase();
       else if (active.length > 0) resolved = active[0].email.trim().toLowerCase();
     }
-  } catch {}
+  } catch {
+    // Fallback to preferredEmail on transient API error
+  }
   return resolved || 'jasmel@aidynamic.pro';
+}
+
+/**
+ * Y Combinator 5-Sentence 1:1 Plain-Style Cold Email Builder (< 90 words, Primary Inbox friendly).
+ * Zero heavy banners, zero button tables, 1 subtle signature link + mandatory opt-out.
+ */
+export function buildYcPlainColdEmail({
+  firstName = 'there',
+  hookLine = '',
+  plainPitchAndProof = '',
+  valueLine = '',
+  easyAsk = '',
+  signatureUrl = `${PROJECT_DOMAIN}/offer?offer=audit_99&utm_source=brevo&utm_medium=cold_yc`,
+  utmCampaign = 'yc_cold_outreach',
+  isBrevoCampaignDraft = false,
+}) {
+  const trackedUrl = signatureUrl.includes('utm_campaign=')
+    ? signatureUrl
+    : `${signatureUrl}${signatureUrl.includes('?') ? '&' : '?'}utm_campaign=${encodeURIComponent(utmCampaign)}`;
+
+  const unsubLinkHtml = isBrevoCampaignDraft
+    ? `<a href="{{ unsubscribe }}" style="color: #9ca3af; text-decoration: underline;">unsubscribe</a>`
+    : `<a href="mailto:jasmel@aidynamic.pro?subject=Unsubscribe" style="color: #9ca3af; text-decoration: underline;">unsubscribe</a>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note from Jasmel</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #ffffff; color: #111827;">
+  <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 560px; padding: 14px 12px 20px; color: #111827; font-size: 15px; line-height: 1.58;">
+    <p style="margin: 0 0 14px;">Hi ${firstName},</p>
+    ${hookLine ? `<p style="margin: 0 0 14px;">${hookLine}</p>` : ''}
+    ${plainPitchAndProof ? `<p style="margin: 0 0 14px;">${plainPitchAndProof}</p>` : ''}
+    ${valueLine ? `<p style="margin: 0 0 14px;">${valueLine}</p>` : ''}
+    ${easyAsk ? `<p style="margin: 0 0 16px;">${easyAsk}</p>` : ''}
+    <p style="margin: 0; color: #111827; line-height: 1.5;">
+      &mdash; Jasmel<br/>
+      <span style="font-size: 13px; color: #6b7280;">Jasmel Acosta &middot; AI Engineer, <a href="${trackedUrl}" style="color: #4b5563; text-decoration: underline;">AI Dynamic Pro</a> (Brickell) &middot; ${PROJECT_PHONE_DISPLAY}</span>
+    </p>
+    <p style="margin: 22px 0 0; font-size: 11px; color: #9ca3af; line-height: 1.45;">
+      AI Dynamic Pro &middot; Brickell, Miami, FL 33131 &middot; Reply &ldquo;stop&rdquo; or ${unsubLinkHtml} anytime.
+    </p>
+  </div>
+</body>
+</html>`;
+}
+
+export function buildYcPlainTextEmail({
+  firstName = 'there',
+  hookLine = '',
+  plainPitchAndProof = '',
+  valueLine = '',
+  easyAsk = '',
+  signatureUrl = `${PROJECT_DOMAIN}/offer?offer=audit_99&utm_source=brevo&utm_medium=cold_yc`,
+  utmCampaign = 'yc_cold_outreach',
+}) {
+  const stripHtml = (s = '') =>
+    String(s)
+      .replace(/<[^>]+>/g, '')
+      .replace(/&mdash;/g, '—')
+      .replace(/&middot;/g, '·')
+      .replace(/&amp;/g, '&')
+      .replace(/&ldquo;|&rdquo;/g, '"')
+      .replace(/&rsquo;/g, "'")
+      .trim();
+
+  const trackedUrl = signatureUrl.includes('utm_campaign=')
+    ? signatureUrl
+    : `${signatureUrl}${signatureUrl.includes('?') ? '&' : '?'}utm_campaign=${encodeURIComponent(utmCampaign)}`;
+
+  return [
+    `Hi ${stripHtml(firstName)},`,
+    stripHtml(hookLine),
+    stripHtml(plainPitchAndProof),
+    stripHtml(valueLine),
+    stripHtml(easyAsk),
+    `— Jasmel\nJasmel Acosta · AI Engineer, AI Dynamic Pro (Brickell) · ${PROJECT_PHONE_DISPLAY}\n${trackedUrl}`,
+    `---\nAI Dynamic Pro · Brickell, Miami, FL 33131 · Reply "stop" anytime to opt out.`,
+  ]
+    .filter(Boolean)
+    .join('\n\n');
 }
 
 export function buildDirectConnectHubLetter({
