@@ -42,13 +42,19 @@ const BOOKING_SERVICES = [
 
 export default function AIAssistantWidget() {
   const [isOpen, setIsOpen] = useState(false)
+  const isSpanishRoute =
+    typeof window !== 'undefined' &&
+    (window.location.pathname.startsWith('/latam') || window.location.pathname.startsWith('/es'))
+
   const [activeTab, setActiveTab] = useState<'chat' | 'call' | 'schedule'>('chat')
-  const [callLang, setCallLang] = useState<'es' | 'en'>('es')
+  const [callLang, setCallLang] = useState<'es' | 'en'>(isSpanishRoute ? 'es' : 'en')
   const [isCallActive, setIsCallActive] = useState(false)
   const [callStatus, setCallStatus] = useState<'idle' | 'ringing' | 'speaking' | 'listening' | 'thinking'>('idle')
   const [callSeconds, setCallSeconds] = useState(0)
   const [lastCallTranscript, setLastCallTranscript] = useState(
-    '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami. Te atiende JAss, tu asistente ejecutivo con inteligencia artificial.'
+    isSpanishRoute
+      ? '¡Hola, buenas! Gracias por llamar a AI Dynamic Pro en Miami. Te atiende JAss, tu asistente ejecutivo con inteligencia artificial.'
+      : 'Hello! Thank you for calling AI Dynamic Pro in Miami. This is JAss, your executive AI assistant. How can I help you today?'
   )
   const [showAttentionGrabber, setShowAttentionGrabber] = useState(false)
   const [grabberDismissed, setGrabberDismissed] = useState(false)
@@ -56,8 +62,10 @@ export default function AIAssistantWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'ai',
-      text: '👋 ¡Hola! Soy tu Asistente Ejecutivo en AI Dynamic Pro. Puedo responder tus dudas al instante o agendar tu llamada o cita ahora mismo. ¿En qué te puedo ayudar hoy?',
-      audioUrl: '/audio/sofia_call_answer_es.mp3',
+      text: isSpanishRoute
+        ? '👋 ¡Hola! Soy tu Asistente Ejecutivo en AI Dynamic Pro. Puedo responder tus dudas al instante o agendar tu llamada o cita ahora mismo. ¿En qué te puedo ayudar hoy?'
+        : '👋 Hi! I am your AI Executive Assistant at AI Dynamic Pro. I can answer questions instantly or schedule your call right now. How can I help you today?',
+      audioUrl: isSpanishRoute ? '/audio/sofia_call_answer_es.mp3' : '/audio/sofia_hero_en.mp3',
       showSchedulePrompt: true,
     },
   ])
@@ -561,13 +569,21 @@ export default function AIAssistantWidget() {
     }
   }
 
-  const suggestions = [
-    '📅 Agendar Llamada / Cita',
-    '⚡ Auditoría de $99 (Workflow Audit)',
-    '💻 Desarrollo de Apps & Sistemas IA',
-    '🎓 Entrenamiento de IA para Personal',
-    '👤 Hablar con Jasmel',
-  ]
+  const suggestions = isSpanishRoute
+    ? [
+        '📅 Agendar Llamada / Cita',
+        '⚡ Auditoría de $99 (Workflow Audit)',
+        '💻 Desarrollo de Apps & Sistemas IA',
+        '🎓 Entrenamiento de IA para Personal',
+        '👤 Hablar con Jasmel',
+      ]
+    : [
+        '📅 Schedule Call / Appointment',
+        '⚡ $99 Workflow Audit',
+        '💻 Custom Apps & AI Systems',
+        '🎓 Staff AI Training Workshops',
+        '👤 Speak with Jasmel',
+      ]
 
   const callQuickPrompts =
     callLang === 'es'
@@ -795,12 +811,15 @@ export default function AIAssistantWidget() {
                       ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                       : 'bg-white/5 text-white/40 hover:text-white/70'
                   }`}
+                  aria-label={isVoiceEnabled ? 'Disable voice audio' : 'Enable voice audio'}
                   title={isVoiceEnabled ? 'Voice Audio Enabled' : 'Enable Voice Audio'}
                 >
                   {isVoiceEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                 </button>
 
                 <button
+                  type="button"
+                  aria-label="Close AI assistant"
                   onClick={() => {
                     endLiveCall()
                     setIsOpen(false)
@@ -1171,13 +1190,13 @@ export default function AIAssistantWidget() {
                               className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
                             >
                               <Volume2 className="w-3.5 h-3.5" />
-                              🔊 Escuchar
+                              {isSpanishRoute ? '🔊 Escuchar' : '🔊 Listen'}
                             </button>
                             <button
                               onClick={() => setActiveTab('schedule')}
                               className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-luxury-gold/20 text-[11px] font-bold text-luxury-gold hover:bg-luxury-gold/30 transition-all"
                             >
-                              <Calendar className="w-3 h-3" /> Agendar Cita / Llamada
+                              <Calendar className="w-3 h-3" /> {isSpanishRoute ? 'Agendar Cita / Llamada' : 'Schedule Call'}
                             </button>
                           </div>
                         )}
@@ -1189,7 +1208,7 @@ export default function AIAssistantWidget() {
                       <div className="bg-white/5 border border-white/5 rounded-2xl rounded-bl-md p-2.5">
                         <div className="flex items-center gap-2">
                           <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
-                          <span className="text-xs text-luxury-silver">Respondiendo...</span>
+                          <span className="text-xs text-luxury-silver">{isSpanishRoute ? 'Respondiendo...' : 'Thinking...'}</span>
                         </div>
                       </div>
                     </div>
@@ -1203,7 +1222,7 @@ export default function AIAssistantWidget() {
                     <button
                       key={suggestion}
                       onClick={() => {
-                        if (suggestion.includes('Agendar')) {
+                        if (suggestion.includes('Agendar') || suggestion.includes('Schedule Call')) {
                           setActiveTab('schedule')
                           return
                         }
@@ -1220,7 +1239,7 @@ export default function AIAssistantWidget() {
                 <div className="px-3.5 py-1.5 border-t border-white/5 bg-black/30 flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-[11px] text-luxury-silver">
                     <Phone className="w-3 h-3 text-emerald-400" />
-                    <span>Línea directa en Miami:</span>
+                    <span>{isSpanishRoute ? 'Línea directa en Miami:' : 'Miami Direct Line:'}</span>
                   </div>
                   <a
                     href="tel:+17866432099"
@@ -1234,26 +1253,35 @@ export default function AIAssistantWidget() {
                 {/* Input Bar */}
                 <div className="p-2.5 border-t border-white/10 flex gap-2">
                   <button
+                    type="button"
+                    aria-label={isListening ? 'Stop voice microphone' : 'Speak using microphone'}
                     onClick={isListening ? stopListening : startListening}
                     className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all shrink-0 ${
                       isListening
                         ? 'bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse'
                         : 'bg-white/5 text-white/60 hover:text-white hover:bg-white/10'
                     }`}
-                    title={isListening ? 'Detener micrófono' : 'Hablar por micrófono'}
+                    title={isListening ? (isSpanishRoute ? 'Detener micrófono' : 'Stop microphone') : (isSpanishRoute ? 'Hablar por micrófono' : 'Speak with microphone')}
                   >
                     <Mic className="w-4 h-4" />
                   </button>
                   <input
                     ref={inputRef}
                     type="text"
+                    aria-label={isSpanishRoute ? 'Escribe tu pregunta o agenda una cita' : 'Type your question or schedule a call'}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                    placeholder={isListening ? 'Escuchando tu voz...' : 'Escribe tu pregunta o agenda una cita...'}
+                    placeholder={
+                      isListening
+                        ? (isSpanishRoute ? 'Escuchando tu voz...' : 'Listening...')
+                        : (isSpanishRoute ? 'Escribe tu pregunta o agenda una cita...' : 'Ask a question or schedule a call...')
+                    }
                     className="flex-1 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-primary-500/50 transition-all text-sm"
                   />
                   <button
+                    type="button"
+                    aria-label="Send message"
                     onClick={() => handleSend()}
                     disabled={isLoading || !input.trim()}
                     className="px-4 py-2 rounded-xl bg-gradient-to-r from-primary-600 to-accent-500 text-white font-semibold hover:opacity-90 transition-all flex items-center justify-center disabled:opacity-50"

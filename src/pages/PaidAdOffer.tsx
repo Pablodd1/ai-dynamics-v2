@@ -23,7 +23,8 @@ import {
   trackConversionEvent,
 } from '../lib/analytics'
 
-const API_BASE = ((import.meta as any).env?.VITE_API_BASE || '') as string
+const envMeta = (import.meta as unknown as { env?: Record<string, string | undefined> }).env
+const API_BASE = envMeta?.VITE_API_BASE || ''
 
 interface OfferTier {
   id: string
@@ -376,7 +377,9 @@ export default function PaidAdOffer() {
         setAbandonBatchId(data.batch_id)
         try {
           sessionStorage.setItem('aidynamic_abandon_batch_id', data.batch_id)
-        } catch {}
+        } catch {
+          // Ignore storage quota / privacy mode errors
+        }
       }
 
       try {
@@ -384,7 +387,9 @@ export default function PaidAdOffer() {
           'aidynamic_checkout_prefill',
           JSON.stringify({ ...formData, offer_id: activeOffer.id, ref_code: refCode })
         )
-      } catch {}
+      } catch {
+        // Ignore storage quota / privacy mode errors
+      }
 
       const nameParts = formData.name.trim().split(/\s+/)
       trackConversionEvent({
@@ -456,9 +461,10 @@ export default function PaidAdOffer() {
         window.location.href = data.fallback_url
         return
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : ''
       setErrorMsg(
-        err?.message ||
+        msg ||
           (isEs ? 'No pudimos abrir el pago. Intenta agendar directamente.' : 'Unable to launch checkout.')
       )
     } finally {
@@ -489,7 +495,18 @@ export default function PaidAdOffer() {
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
-              onClick={() => setLang(isEs ? 'en' : 'es')}
+              onClick={() => {
+                const nextLang = isEs ? 'en' : 'es'
+                setLang(nextLang)
+                const isVisibleNext = OFFERS.some(
+                  (o) =>
+                    o.id === selectedOfferId &&
+                    (o.region === (nextLang === 'es' ? 'latam' : 'us') || o.id === 'audit_99')
+                )
+                if (!isVisibleNext) {
+                  setSelectedOfferId(nextLang === 'es' ? 'latam_medicos_29' : 'audit_99')
+                }
+              }}
               className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:border-luxury-gold/40 text-xs font-mono font-bold flex items-center gap-1.5"
             >
               <Globe className="w-3.5 h-3.5 text-luxury-gold" />
@@ -587,7 +604,7 @@ export default function PaidAdOffer() {
                   </h2>
                 </div>
                 <span className="text-xs font-mono text-emerald-400 bg-emerald-500/15 px-2.5 py-1 rounded-full border border-emerald-500/30">
-                  {roiMultiple}x ROI Estimate
+                  {isEs ? `ROI estimado ${roiMultiple}x` : `${roiMultiple}x ROI Estimate`}
                 </span>
               </div>
 
@@ -602,7 +619,7 @@ export default function PaidAdOffer() {
                   max={40}
                   value={teamSize}
                   onChange={(e) => setTeamSize(Number(e.target.value))}
-                  aria-label="Operational team size"
+                  aria-label={isEs ? 'Tamaño del equipo operativo' : 'Operational team size'}
                   className="w-full accent-luxury-gold cursor-pointer"
                 />
               </div>
@@ -613,7 +630,7 @@ export default function PaidAdOffer() {
                     {isEs ? 'Ahorro Mensual Estimado' : 'Est. Monthly Recovery'}
                   </span>
                   <span className="text-xl sm:text-2xl font-extrabold text-emerald-400 tabular-nums">
-                    ${estimatedMonthlySavings.toLocaleString()}/mo
+                    ${estimatedMonthlySavings.toLocaleString()}/{isEs ? 'mes' : 'mo'}
                   </span>
                 </div>
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10">
@@ -621,7 +638,7 @@ export default function PaidAdOffer() {
                     {isEs ? 'Impacto Anualizado' : 'Projected 12-Mo Gain'}
                   </span>
                   <span className="text-xl sm:text-2xl font-extrabold text-luxury-gold tabular-nums">
-                    ${(estimatedMonthlySavings * 12).toLocaleString()}/yr
+                    ${(estimatedMonthlySavings * 12).toLocaleString()}/{isEs ? 'año' : 'yr'}
                   </span>
                 </div>
               </div>
@@ -722,7 +739,7 @@ export default function PaidAdOffer() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="ceo@company.com"
+                    placeholder={isEs ? 'director@clinica.com' : 'ceo@company.com'}
                     className="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/15 focus:border-luxury-gold text-white text-sm outline-none"
                   />
                 </div>

@@ -1,15 +1,26 @@
 // Google Analytics (GA4) Event Tracking Utility
 // Safely tracks conversion events for Google Analytics (gtag.js)
 
+type AnalyticsFn = (...args: unknown[]) => void
+type FbqFn = AnalyticsFn & {
+  callMethod?: AnalyticsFn
+  queue?: unknown[]
+  loaded?: boolean
+  version?: string
+  push?: AnalyticsFn
+}
+type ClarityFn = AnalyticsFn & { q?: unknown[] }
+type LintrkFn = AnalyticsFn & { q?: unknown[] }
+
 declare global {
   interface Window {
-    dataLayer?: any[]
-    gtag?: (...args: any[]) => void
-    fbq?: ((...args: any[]) => void) & { callMethod?: (...args: any[]) => void; queue?: any[]; loaded?: boolean; version?: string; push?: (...args: any[]) => void }
-    _fbq?: any
-    clarity?: (...args: any[]) => void
+    dataLayer?: unknown[]
+    gtag?: AnalyticsFn
+    fbq?: FbqFn
+    _fbq?: FbqFn
+    clarity?: ClarityFn
     _linkedin_data_partner_ids?: string[]
-    lintrk?: ((...args: any[]) => void) & { q?: any[] }
+    lintrk?: LintrkFn
     __aidynamicBooted?: boolean
   }
 }
@@ -233,7 +244,8 @@ export interface ConversionTrackingOptions {
 const ATTRIBUTION_FIRST_KEY = 'aidynamic_first_touch_v1'
 const ATTRIBUTION_LAST_KEY = 'aidynamic_last_touch_v1'
 const ATTRIBUTION_TTL_MS = 30 * 24 * 60 * 60 * 1000
-const ANALYTICS_API_BASE = ((import.meta as any).env?.VITE_API_BASE || '') as string
+const metaEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {}
+const ANALYTICS_API_BASE = metaEnv.VITE_API_BASE || ''
 
 function readStoredTouch(key: string): AttributionTouch | null {
   if (typeof window === 'undefined') return null
@@ -295,7 +307,7 @@ export function initPaidAttributionAndPixels() {
     for (const k of keys) {
       const val = params.get(k)
       if (val) {
-        ;(touch as any)[k] = val
+        ;(touch as unknown as Record<string, unknown>)[k] = val
         hasPaidSignal = true
       }
     }
@@ -324,22 +336,21 @@ export function initPaidAttributionAndPixels() {
   window.__aidynamicBooted = true
 
   try {
-    const env = (import.meta as any).env || {}
-    const metaPixelId = env.VITE_META_PIXEL_ID as string | undefined
-    const googleAdsId = env.VITE_GOOGLE_ADS_ID as string | undefined
-    const clarityId = env.VITE_CLARITY_PROJECT_ID as string | undefined
-    const linkedInPartnerId = env.VITE_LINKEDIN_PARTNER_ID as string | undefined
+    const metaPixelId = metaEnv.VITE_META_PIXEL_ID
+    const googleAdsId = metaEnv.VITE_GOOGLE_ADS_ID
+    const clarityId = metaEnv.VITE_CLARITY_PROJECT_ID
+    const linkedInPartnerId = metaEnv.VITE_LINKEDIN_PARTNER_ID
 
     if (googleAdsId && typeof window.gtag === 'function') {
       window.gtag('config', googleAdsId)
     }
 
     if (metaPixelId && !window.fbq) {
-      const n: any = function (...args: any[]) {
+      const n: FbqFn = function (...args: unknown[]) {
         if (n.callMethod) {
-          n.callMethod.apply(n, args)
+          n.callMethod(...args)
         } else {
-          n.queue.push(args)
+          n.queue?.push(args)
         }
       }
       n.push = n
@@ -357,7 +368,7 @@ export function initPaidAttributionAndPixels() {
     }
 
     if (clarityId && !window.clarity) {
-      const c: any = function (...args: any[]) {
+      const c: ClarityFn = function (...args: unknown[]) {
         ;(c.q = c.q || []).push(args)
       }
       window.clarity = c
@@ -370,8 +381,8 @@ export function initPaidAttributionAndPixels() {
     if (linkedInPartnerId && !window._linkedin_data_partner_ids) {
       window._linkedin_data_partner_ids = [linkedInPartnerId]
       if (!window.lintrk) {
-        const l: any = function (...args: any[]) {
-          l.q.push(args)
+        const l: LintrkFn = function (...args: unknown[]) {
+          l.q?.push(args)
         }
         l.q = []
         window.lintrk = l
@@ -408,7 +419,7 @@ export function trackConversionEvent(options: ConversionTrackingOptions): { even
   const eventId = options.eventId || generateEventId(options.eventName.toLowerCase())
   if (typeof window === 'undefined') return { eventId }
 
-  const env = (import.meta as any).env || {}
+  const env = metaEnv
   const value = typeof options.value === 'number' ? options.value : undefined
   const currency = options.currency || 'USD'
   const gaName =
@@ -515,6 +526,8 @@ export function getAttributionSource(defaultSource: string): string {
     if (parsed.utm_source || parsed.utm_campaign) {
       return `${defaultSource} [${parsed.utm_source}/${parsed.utm_medium}/${parsed.utm_campaign}]`
     }
-  } catch {}
+  } catch {
+    // Ignore storage read errors
+  }
   return defaultSource
 }

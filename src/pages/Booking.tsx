@@ -27,15 +27,85 @@ interface SlotsData {
   [date: string]: Slot[]
 }
 
+const generateFallbackSlots = (): SlotsData => {
+  const fallback: SlotsData = {}
+  const timeOptions = [
+    { start: '10:00', end: '10:30', display: '10:00 AM' },
+    { start: '11:00', end: '11:30', display: '11:00 AM' },
+    { start: '13:00', end: '13:30', display: '1:00 PM' },
+    { start: '14:00', end: '14:30', display: '2:00 PM' },
+    { start: '15:00', end: '15:30', display: '3:00 PM' },
+    { start: '16:00', end: '16:30', display: '4:00 PM' },
+  ]
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const curr = new Date()
+  curr.setDate(curr.getDate() + 1)
+  let count = 0
+  while (count < 5) {
+    const d = curr.getDay()
+    if (d !== 0 && d !== 6) {
+      const yyyy = curr.getFullYear()
+      const mm = String(curr.getMonth() + 1).padStart(2, '0')
+      const dd = String(curr.getDate()).padStart(2, '0')
+      const key = `${yyyy}-${mm}-${dd}`
+      const label = `${days[d]}, ${months[curr.getMonth()]} ${curr.getDate()}`
+      fallback[key] = timeOptions.map(t => ({
+        start: `${key}T${t.start}:00-04:00`,
+        end: `${key}T${t.end}:00-04:00`,
+        display: t.display,
+        day: label,
+        value: `${key} ${t.display}`
+      }))
+      count++
+    }
+    curr.setDate(curr.getDate() + 1)
+  }
+  return fallback
+}
+
+function getInitialBookingPrefill() {
+  if (typeof window === 'undefined') {
+    return { matchedServiceId: '', name: '', email: '', phone: '', company: '' }
+  }
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const savedRaw = localStorage.getItem('aidynamic_checkout_prefill')
+    const saved = savedRaw ? (JSON.parse(savedRaw) as Record<string, string>) : {}
+
+    const intentParam = params.get('intent') || ''
+    const serviceParam = params.get('service') || ''
+    let matchedServiceId = ''
+    if (serviceParam.toLowerCase().includes('blueprint') || intentParam.includes('audit') || intentParam === 'paid_verified') {
+      matchedServiceId = 'automation_blueprint'
+    } else if (serviceParam.toLowerCase().includes('strategy') || intentParam.includes('training') || intentParam.includes('enterprise')) {
+      matchedServiceId = 'ai_strategy_session'
+    } else if (serviceParam.toLowerCase().includes('free')) {
+      matchedServiceId = 'free_ai_consultation'
+    }
+
+    return {
+      matchedServiceId,
+      name: params.get('name') || saved.name || '',
+      email: params.get('email') || saved.email || '',
+      phone: params.get('phone') || saved.phone || '',
+      company: params.get('company') || saved.company || '',
+    }
+  } catch {
+    return { matchedServiceId: '', name: '', email: '', phone: '', company: '' }
+  }
+}
+
 const Booking = () => {
-  const [step, setStep] = useState(1)
+  const [prefill] = useState(getInitialBookingPrefill)
+  const [step, setStep] = useState(prefill.matchedServiceId ? 2 : 1)
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [formData, setFormData] = useState({
-    service: '',
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
+    service: prefill.matchedServiceId,
+    name: prefill.name,
+    email: prefill.email,
+    company: prefill.company,
+    phone: prefill.phone,
     interest: '',
     budget: '',
     challenge: '',
@@ -50,108 +120,41 @@ const Booking = () => {
   const [selectedDay, setSelectedDay] = useState('')
 
   useEffect(() => {
+    let active = true
+    const loadAvailability = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/availability`).catch(() => null)
+        if (!active) return
+        if (res && res.ok) {
+          const data = await res.json()
+          if (!active) return
+          if (data.slots && Object.keys(data.slots).length > 0) {
+            setSlots(data.slots)
+            const firstDay = Object.keys(data.slots)[0]
+            if (firstDay) setSelectedDay(firstDay)
+            return
+          }
+        }
+        const fallback = generateFallbackSlots()
+        setSlots(fallback)
+        const first = Object.keys(fallback)[0]
+        if (first) setSelectedDay(first)
+      } catch (err) {
+        console.error('Failed to load slots:', err)
+        if (!active) return
+        const fallback = generateFallbackSlots()
+        setSlots(fallback)
+        const first = Object.keys(fallback)[0]
+        if (first) setSelectedDay(first)
+      } finally {
+        if (active) setSlotsLoading(false)
+      }
+    }
     loadAvailability()
-    try {
-      const params = new URLSearchParams(window.location.search)
-      const savedRaw = localStorage.getItem('aidynamic_checkout_prefill')
-      const saved = savedRaw ? JSON.parse(savedRaw) : {}
-
-      const intentParam = params.get('intent') || ''
-      const serviceParam = params.get('service') || ''
-      let matchedServiceId = ''
-      if (serviceParam.toLowerCase().includes('blueprint') || intentParam.includes('audit') || intentParam === 'paid_verified') {
-        matchedServiceId = 'automation_blueprint'
-      } else if (serviceParam.toLowerCase().includes('strategy') || intentParam.includes('training') || intentParam.includes('enterprise')) {
-        matchedServiceId = 'ai_strategy_session'
-      } else if (serviceParam.toLowerCase().includes('free')) {
-        matchedServiceId = 'free_ai_consultation'
-      }
-
-      const preName = params.get('name') || saved.name || ''
-      const preEmail = params.get('email') || saved.email || ''
-      const prePhone = params.get('phone') || saved.phone || ''
-      const preCompany = params.get('company') || saved.company || ''
-
-      if (matchedServiceId || preName || preEmail || prePhone || preCompany) {
-        setFormData((prev) => ({
-          ...prev,
-          service: matchedServiceId || prev.service,
-          name: preName || prev.name,
-          email: preEmail || prev.email,
-          phone: prePhone || prev.phone,
-          company: preCompany || prev.company,
-        }))
-        if (matchedServiceId) {
-          setStep(2)
-        }
-      }
-    } catch {}
+    return () => {
+      active = false
+    }
   }, [])
-
-  const generateFallbackSlots = (): SlotsData => {
-    const fallback: SlotsData = {}
-    const timeOptions = [
-      { start: '10:00', end: '10:30', display: '10:00 AM' },
-      { start: '11:00', end: '11:30', display: '11:00 AM' },
-      { start: '13:00', end: '13:30', display: '1:00 PM' },
-      { start: '14:00', end: '14:30', display: '2:00 PM' },
-      { start: '15:00', end: '15:30', display: '3:00 PM' },
-      { start: '16:00', end: '16:30', display: '4:00 PM' },
-    ]
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    let curr = new Date()
-    curr.setDate(curr.getDate() + 1)
-    let count = 0
-    while (count < 5) {
-      const d = curr.getDay()
-      if (d !== 0 && d !== 6) {
-        const yyyy = curr.getFullYear()
-        const mm = String(curr.getMonth() + 1).padStart(2, '0')
-        const dd = String(curr.getDate()).padStart(2, '0')
-        const key = `${yyyy}-${mm}-${dd}`
-        const label = `${days[d]}, ${months[curr.getMonth()]} ${curr.getDate()}`
-        fallback[key] = timeOptions.map(t => ({
-          start: `${key}T${t.start}:00-04:00`,
-          end: `${key}T${t.end}:00-04:00`,
-          display: t.display,
-          day: label,
-          value: `${key} ${t.display}`
-        }))
-        count++
-      }
-      curr.setDate(curr.getDate() + 1)
-    }
-    return fallback
-  }
-
-  const loadAvailability = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/api/availability`).catch(() => null)
-      if (res && res.ok) {
-        const data = await res.json()
-        if (data.slots && Object.keys(data.slots).length > 0) {
-          setSlots(data.slots)
-          const firstDay = Object.keys(data.slots)[0]
-          if (firstDay) setSelectedDay(firstDay)
-          return
-        }
-      }
-      // If API fails or is not found, use reliable local fallback
-      const fallback = generateFallbackSlots()
-      setSlots(fallback)
-      const first = Object.keys(fallback)[0]
-      if (first) setSelectedDay(first)
-    } catch (err) {
-      console.error('Failed to load slots:', err)
-      const fallback = generateFallbackSlots()
-      setSlots(fallback)
-      const first = Object.keys(fallback)[0]
-      if (first) setSelectedDay(first)
-    } finally {
-      setSlotsLoading(false)
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -220,8 +223,9 @@ const Booking = () => {
       })
 
       setSubmitted(true)
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong. Please try again or call +1 (786) 643-2099.')
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : ''
+      setError(message || 'Something went wrong. Please try again or call +1 (786) 643-2099.')
     } finally {
       setSubmitting(false)
     }
@@ -284,13 +288,13 @@ const Booking = () => {
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-4 py-12">
+      <main className="max-w-2xl mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <h1 className="text-4xl font-bold text-white mb-2 font-serif text-center">Book Your AI Consultation</h1>
-          <p className="text-luxury-silver text-center mb-6">Available Monday–Saturday, 10:00 AM – 5:00 PM EST</p>
+          <p className="text-luxury-silver text-center mb-6">Available Monday–Friday, 10:00 AM – 5:00 PM EST</p>
 
           {/* Direct Miami Line & WhatsApp Callout */}
           <div className="mb-10 p-4 rounded-xl border border-luxury-gold/30 bg-gradient-to-r from-luxury-gold/15 via-luxury-gold/5 to-transparent flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left shadow-lg">
@@ -613,7 +617,7 @@ const Booking = () => {
             </div>
           )}
         </motion.div>
-      </div>
+      </main>
     </div>
   )
 }

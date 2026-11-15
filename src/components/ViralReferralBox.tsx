@@ -45,11 +45,11 @@ export function ViralReferralBox({ referrerName = '', referrerEmail = '', isEs =
           <span className="text-[11px] font-mono uppercase tracking-wider text-luxury-gold font-bold block">
             {isEs ? 'Programa Viral de Fundadores' : 'Executive Viral Referral Loop'}
           </span>
-          <h3 className="text-lg font-bold text-white font-serif leading-snug">
+          <h2 className="text-lg font-bold text-white font-serif leading-snug">
             {isEs
               ? 'Regala Auditoría IA ($99) -> Recibe $297/mes de Crédito Gratis'
               : 'Give Priority $99 AI Audit -> Get $297/mo Credit Free'}
-          </h3>
+          </h2>
           <p className="text-xs sm:text-sm text-luxury-silver mt-1">
             {isEs
               ? 'Cuando otro médico, abogado, arquitecto o CEO activa su auditoría o plan con tu enlace, acreditamos $297 USD a tu cuenta o desarrollo.'

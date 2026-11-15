@@ -44,7 +44,7 @@ export default function ROICalculator() {
             {/* Slider 1: Staff count */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-semibold text-white flex items-center gap-2">
+                <label htmlFor="roi-employees" className="text-sm font-semibold text-white flex items-center gap-2">
                   <Users className="w-4 h-4 text-luxury-gold" />
                   Staff Handling Calls & Repetitive Tasks
                 </label>
@@ -53,6 +53,8 @@ export default function ROICalculator() {
                 </span>
               </div>
               <input
+                id="roi-employees"
+                aria-label="Staff Handling Calls and Repetitive Tasks"
                 type="range"
                 min={1}
                 max={20}
@@ -70,7 +72,7 @@ export default function ROICalculator() {
             {/* Slider 2: Daily Hours Spent on Repetitive Work */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-semibold text-white flex items-center gap-2">
+                <label htmlFor="roi-hours" className="text-sm font-semibold text-white flex items-center gap-2">
                   <Clock className="w-4 h-4 text-luxury-gold" />
                   Hours per Person Spent on Admin & Scheduling Daily
                 </label>
@@ -79,6 +81,8 @@ export default function ROICalculator() {
                 </span>
               </div>
               <input
+                id="roi-hours"
+                aria-label="Hours per Person Spent on Admin and Scheduling Daily"
                 type="range"
                 min={1}
                 max={8}
@@ -96,7 +100,7 @@ export default function ROICalculator() {
             {/* Slider 3: Hourly Wage */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-semibold text-white flex items-center gap-2">
+                <label htmlFor="roi-wage" className="text-sm font-semibold text-white flex items-center gap-2">
                   <DollarSign className="w-4 h-4 text-luxury-gold" />
                   Average Hourly Wage (Including Taxes/Benefits)
                 </label>
@@ -105,6 +109,8 @@ export default function ROICalculator() {
                 </span>
               </div>
               <input
+                id="roi-wage"
+                aria-label="Average Hourly Wage Including Taxes and Benefits"
                 type="range"
                 min={15}
                 max={60}
@@ -123,7 +129,7 @@ export default function ROICalculator() {
             {/* Slider 4: Missed calls per week */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-semibold text-white flex items-center gap-2">
+                <label htmlFor="roi-missed-calls" className="text-sm font-semibold text-white flex items-center gap-2">
                   <Clock className="w-4 h-4 text-luxury-gold" />
                   Missed / After-Hours Inquiries per Week
                 </label>
@@ -132,6 +138,8 @@ export default function ROICalculator() {
                 </span>
               </div>
               <input
+                id="roi-missed-calls"
+                aria-label="Missed or After-Hours Inquiries per Week"
                 type="range"
                 min={0}
                 max={50}
@@ -149,7 +157,7 @@ export default function ROICalculator() {
             {/* Slider 5: Average customer value */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-semibold text-white flex items-center gap-2">
+                <label htmlFor="roi-lead-value" className="text-sm font-semibold text-white flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 text-luxury-gold" />
                   Average Value of a New Client / Job
                 </label>
@@ -158,6 +166,8 @@ export default function ROICalculator() {
                 </span>
               </div>
               <input
+                id="roi-lead-value"
+                aria-label="Average Value of a New Client or Job"
                 type="range"
                 min={100}
                 max={2500}

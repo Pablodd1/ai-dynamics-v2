@@ -13,7 +13,7 @@ export interface VisionArchitectureCard {
   ctaKeyword: string
 }
 
-export const EXECUTIVE_ARCHITECTURE_DECK: VisionArchitectureCard[] = [
+const EXECUTIVE_ARCHITECTURE_DECK: VisionArchitectureCard[] = [
   {
     index: '01',
     stepNumber: 1,
@@ -135,7 +135,7 @@ export default function VisionGlassSystemsDeck() {
 
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: Minimalist Obsidian & Champagne-Gold Frosted Glass Stage */}
-          <div className="lg:col-span-7 flex flex-col items-center">
+          <div className="lg:col-span-7 min-w-0 flex flex-col items-center">
             <div className="relative w-full max-w-[560px] rounded-[32px] overflow-hidden border border-luxury-gold/30 shadow-[0_35px_100px_rgba(0,0,0,0.9)] bg-[#06060b]">
               {/* Pure Obsidian & 24K Radial Light Field + Subtle Architectural Hairline Grid */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(212,175,55,0.16),transparent_65%)] pointer-events-none" />
@@ -290,7 +290,7 @@ export default function VisionGlassSystemsDeck() {
           </div>
 
           {/* Right Column: Minimalist Architectural Index Selector */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-5 min-w-0 space-y-4">
             <div className="p-6 rounded-2xl bg-[#0d0d14] border border-luxury-gold/30 mb-4">
               <div className="text-[11px] font-mono uppercase tracking-[0.22em] text-luxury-gold mb-2">
                 THE CEO MANDATE — THREE NON-NEGOTIABLE PILLARS
@@ -328,12 +328,12 @@ export default function VisionGlassSystemsDeck() {
                     <div className="flex items-center gap-4 min-w-0">
                       <span
                         className={`font-serif text-lg font-bold shrink-0 ${
-                          selected ? 'text-luxury-gold' : 'text-luxury-silver/60'
+                          selected ? 'text-luxury-gold' : 'text-luxury-silver'
                         }`}
                       >
                         {sys.index}
                       </span>
-                      <div className="truncate">
+                      <div className="min-w-0 truncate">
                         <div className="text-sm font-serif font-bold text-white truncate">
                           {sys.title}
                         </div>
@@ -343,10 +343,10 @@ export default function VisionGlassSystemsDeck() {
                       </div>
                     </div>
                     <span
-                      className={`text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded border ${
+                      className={`shrink-0 text-[10px] font-mono uppercase tracking-widest px-2.5 py-1 rounded border ${
                         selected
                           ? 'border-luxury-gold text-luxury-gold bg-luxury-gold/10'
-                          : 'border-white/10 text-white/30'
+                          : 'border-white/20 text-white/75'
                       }`}
                     >
                       {sys.ctaKeyword}

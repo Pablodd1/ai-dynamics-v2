@@ -6,7 +6,8 @@ import { SEO } from '../components/SEO'
 import { ViralReferralBox } from '../components/ViralReferralBox'
 import { trackConversionEvent } from '../lib/analytics'
 
-const API_BASE = ((import.meta as any).env?.VITE_API_BASE || '') as string
+const API_BASE =
+  ((import.meta as unknown as { env?: Record<string, string | undefined> }).env?.VITE_API_BASE || '')
 
 interface VerifiedSession {
   id: string
@@ -36,7 +37,9 @@ export default function CheckoutSuccess() {
     if (!storedBatch) {
       try {
         storedBatch = sessionStorage.getItem('aidynamic_abandon_batch_id') || ''
-      } catch {}
+      } catch {
+        // Ignore sessionStorage restrictions
+      }
     }
 
     if (!sessionId) {
@@ -66,7 +69,9 @@ export default function CheckoutSuccess() {
           try {
             alreadyTracked = Boolean(sessionStorage.getItem(dedupeKey))
             if (!alreadyTracked) sessionStorage.setItem(dedupeKey, '1')
-          } catch {}
+          } catch {
+            // Ignore sessionStorage restrictions
+          }
 
           if (!alreadyTracked) {
             const parts = String(data.session.customer_name || '').trim().split(/\s+/)
@@ -107,7 +112,7 @@ export default function CheckoutSuccess() {
   )}`
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-dark via-dark-50 to-dark text-white px-4 py-12">
+    <main className="min-h-screen bg-gradient-to-b from-dark via-dark-50 to-dark text-white px-4 py-12">
       <SEO
         title={isEs ? 'Activación Confirmada | AI Dynamic Pro' : 'Activation Confirmed | AI Dynamic Pro'}
         description="Verified AI Dynamic Pro onboarding, kickoff scheduler, and referral rewards."
@@ -191,6 +196,6 @@ export default function CheckoutSuccess() {
           </Link>
         </div>
       </motion.div>
-    </div>
+    </main>
   )
 }

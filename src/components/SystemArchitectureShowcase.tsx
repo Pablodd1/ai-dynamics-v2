@@ -428,7 +428,7 @@ export default function SystemArchitectureShowcase() {
                 </div>
 
                 <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2 text-[11px] font-mono">
-                  <span className="text-luxury-silver/70 truncate">{app.stack}</span>
+                  <span className="text-luxury-silver truncate">{app.stack}</span>
                   <span className="text-luxury-gold font-bold shrink-0 group-hover:translate-x-0.5 transition-transform">
                     Launch Live ↗
                   </span>

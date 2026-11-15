@@ -353,7 +353,7 @@ export default function LatamSaaS() {
                   key={plan.id}
                   className={`relative rounded-2xl p-6 flex flex-col justify-between transition-all ${
                     plan.popular
-                      ? 'border-2 border-luxury-gold bg-gradient-to-b from-luxury-gold/15 via-[#0c0e18] to-[#080910] shadow-[0_0_40px_rgba(212,175,55,0.18)] xl:-translate-y-2'
+                      ? 'border-2 border-luxury-gold bg-gradient-to-b from-luxury-gold/15 via-[#0c0e18] to-[#080910] shadow-[0_0_40px_rgba(212,175,55,0.18)]'
                       : 'border border-white/15 bg-[#0b0d16]/85 hover:border-luxury-gold/40'
                   }`}
                 >

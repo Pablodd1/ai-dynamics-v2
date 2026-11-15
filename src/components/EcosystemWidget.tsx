@@ -40,7 +40,7 @@ export function EcosystemWidget({
         type="button"
         onClick={() => setIsOpen(true)}
         className={`fixed ${positionClasses} z-50 inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#0a0a0f]/90 border border-luxury-gold/40 text-white shadow-xl hover:border-luxury-gold hover:shadow-luxury-gold/20 hover:-translate-y-0.5 transition-all duration-300 backdrop-blur-md group`}
-        aria-label="Open Ecosystem Network"
+        aria-label="Innovation Ecosystem 8 Platforms"
       >
         <span className="w-2 h-2 rounded-full bg-luxury-gold shadow-[0_0_8px_#c5a059] animate-pulse" />
         <span className="flex flex-col text-left">
@@ -92,6 +92,7 @@ export function EcosystemWidget({
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
+                  aria-label="Close ecosystem modal"
                   className="p-2 rounded-full bg-white/5 border border-white/10 text-luxury-silver hover:text-white hover:bg-white/10 transition-colors"
                 >
                   <X className="w-5 h-5" />

@@ -12,7 +12,6 @@ export default async function handler(req, res) {
   try {
     const slots = {}
     const timeOptions = [
-      { start: '09:00', end: '09:30', display: '9:00 AM' },
       { start: '10:00', end: '10:30', display: '10:00 AM' },
       { start: '11:00', end: '11:30', display: '11:00 AM' },
       { start: '13:00', end: '13:30', display: '1:00 PM' },

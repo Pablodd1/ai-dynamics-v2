@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { Check, Copy, PhoneCall, MessageSquare, Calendar, ArrowRight, CheckCircle2 } from 'lucide-react'
+import { SEO } from '../components/SEO'
 
 type ConnectTab = 'call' | 'text' | 'virtual'
 
@@ -91,13 +92,10 @@ export default function DirectConnect() {
 
   const businessDays = useMemo(() => getNextFourBusinessDays(), [])
 
-  const [activeTab, setActiveTab] = useState<ConnectTab>(() => {
-    if (rawMode === 'text') return 'text'
-    if (rawMode === 'virtual') return 'virtual'
-    return 'call'
-  })
+  const activeTab: ConnectTab =
+    rawMode === 'text' ? 'text' : rawMode === 'virtual' ? 'virtual' : 'call'
+  const isOpenSmsBanner = rawMode === 'open-sms'
 
-  const [isOpenSmsBanner, setIsOpenSmsBanner] = useState<boolean>(rawMode === 'open-sms')
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState(initialCleanEmail)
@@ -135,19 +133,13 @@ export default function DirectConnect() {
     [adminSmsTarget, founderIntroDraft]
   )
 
-  // Sync URL mode changes
+  // Auto-launch SMS app on mobile when ?mode=open-sms
   useEffect(() => {
-    if (rawMode === 'open-sms') {
-      setIsOpenSmsBanner(true)
-      if (isMobileDevice()) {
-        const t = setTimeout(() => {
-          window.location.href = prospectSmsHref
-        }, 120)
-        return () => clearTimeout(t)
-      }
-    } else if (rawMode === 'text' || rawMode === 'virtual' || rawMode === 'call') {
-      setIsOpenSmsBanner(false)
-      setActiveTab(rawMode)
+    if (rawMode === 'open-sms' && isMobileDevice()) {
+      const t = setTimeout(() => {
+        window.location.href = prospectSmsHref
+      }, 120)
+      return () => clearTimeout(t)
     }
   }, [rawMode, prospectSmsHref])
 
@@ -162,8 +154,6 @@ export default function DirectConnect() {
   }, [adminSmsTarget, founderSmsHref])
 
   const handleTabSelect = (tab: ConnectTab) => {
-    setActiveTab(tab)
-    setIsOpenSmsBanner(false)
     setErrorMsg('')
     setSubmittedMsg('')
     const next = new URLSearchParams(searchParams)
@@ -311,6 +301,11 @@ export default function DirectConnect() {
   // ─── PROSPECT DIRECT CONNECT CARD (/connect & /call-me) ───
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col justify-between px-4 py-8 relative overflow-hidden">
+      <SEO
+        title="Direct Connect (Call / Text / Virtual Chat) | AI Dynamic Pro"
+        description="Connect directly with Jasmel Acosta in Brickell, Miami by phone, instant text, or 15-minute virtual AI consultation."
+        canonical="https://www.aidynamic.pro/connect"
+      />
       {/* Subtle ambient champagne glow */}
       <div
         aria-hidden="true"
@@ -610,7 +605,7 @@ export default function DirectConnect() {
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-zinc-300 mb-1.5">
-                        Cell / Direct <span className="text-zinc-500">(Optional)</span>
+                        Cell / Direct <span className="text-zinc-400">(Optional)</span>
                       </label>
                       <input
                         type="tel"
@@ -707,7 +702,7 @@ export default function DirectConnect() {
                 )}
               </button>
 
-              <p className="text-[11px] text-center text-zinc-500 leading-relaxed">
+              <p className="text-[11px] text-center text-zinc-400 leading-relaxed">
                 Goes directly to Jasmel Acosta in Brickell, Miami · Zero spam · Hablamos Español
               </p>
             </form>
@@ -716,7 +711,7 @@ export default function DirectConnect() {
       </main>
 
       {/* Minimal Footer */}
-      <footer className="relative z-10 w-full max-w-md mx-auto mt-6 text-center text-[11px] text-zinc-500">
+      <footer className="relative z-10 w-full max-w-md mx-auto mt-6 text-center text-[11px] text-zinc-400">
         AI Dynamic Pro · Brickell Financial District, Miami, FL ·{' '}
         <Link to="/" className="text-zinc-400 hover:text-[#f7e7ce] transition">
           aidynamic.pro

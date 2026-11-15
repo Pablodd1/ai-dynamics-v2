@@ -103,7 +103,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         </p>
 
         {/* 2-3 Line Summary */}
-        <p className="text-xs text-luxury-silver/70 line-clamp-3 leading-relaxed mb-4">
+        <p className="text-xs text-luxury-silver line-clamp-3 leading-relaxed mb-4">
           {project.summary}
         </p>
 
