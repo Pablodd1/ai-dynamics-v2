@@ -18,8 +18,8 @@ function LandingPage() {
   return (
     <div className="min-h-screen bg-[#040407] text-white overflow-x-clip">
       <SEO
-        title="Executive AI Consulting, Full-Scale Automation & Corporate AI Training | AI Dynamic Pro"
-        description="We consult with companies to cut operating costs, build custom AI solutions that automate everything possible, reduce staff overhead, and train teams to operate at 5x efficiency."
+        title="Embedded AI Developers & Consultants · Built & Staff-Trained Until Gold | AI Dynamic Pro"
+        description="Aggressive on-site & embedded AI developers and consultants. We go to you, analyze your workflows, serve your target population better, build custom apps, cut waste, and train your staff until everyone masters it and you are Gold."
         canonical="https://www.aidynamic.pro/"
       />
       <Navigation />

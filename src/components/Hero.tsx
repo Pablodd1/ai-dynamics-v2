@@ -11,39 +11,92 @@ interface ScrollStageCopy {
 
 const SCROLL_STAGES: [ScrollStageCopy, ScrollStageCopy, ScrollStageCopy] = [
   {
-    stageLabel: 'AI DYNAMIC PRO  ·  SOVEREIGN AI ENGINEERING',
-    headlineTop: 'Bespoke AI.',
-    headlineAccent: 'Sculpted in Code.',
+    stageLabel: 'EMBEDDED AI DEVELOPERS & CONSULTANTS · WE COME TO YOU',
+    headlineTop: 'We Analyze & Build.',
+    headlineAccent: 'Until You Are Gold.',
     subtitle:
-      'Custom full-stack applications, sub-second bilingual voice agents, and computer vision—architected by real AI engineers in days.',
+      'Aggressive hands-on AI developers and consultants: we come to you, understand your operation & target population, build custom apps, cut waste, and train your staff—and we never leave until your team masters every tool.',
   },
   {
-    stageLabel: 'STAGE 02  ·  AUTONOMOUS VOICE, VISION & RAG',
-    headlineTop: 'Full-Stack Software.',
-    headlineAccent: 'Sub-Second Voice & Vision.',
+    stageLabel: 'STAGE 02 · CUSTOM APPS, VOICE AI & POPULATION REACH',
+    headlineTop: 'Custom Apps & AI.',
+    headlineAccent: 'Built For Your Crowd.',
     subtitle:
-      'Full-duplex EN/ES voice webhooks (<0.38s latency), private zero-training RAG, and YOLOv8 spatial vision wired directly into your stack.',
+      'Full-stack software, bilingual 0.34s voice receptionists, private RAG, and computer vision engineered around how your business actually serves its target market—eliminating missed leads and manual busywork.',
   },
   {
-    stageLabel: 'STAGE 03  ·  5–10 DAY ENTERPRISE DEPLOYMENT',
-    headlineTop: 'Built in Days.',
-    headlineAccent: 'Owned Forever.',
+    stageLabel: 'STAGE 03 · HANDS-ON ADOPTION & ZERO-RISK GUARANTEE',
+    headlineTop: 'Staff Trained 1-on-1.',
+    headlineAccent: 'Then You Are Gold.',
     subtitle:
-      'Eliminate 60% of repetitive admin overhead and multiply team output 5x—backed by our $2,500+/mo savings guarantee.',
+      'Most consultants hand you logins and vanish. We stay shoulder-to-shoulder until you and your staff run it cold—backed by our $2,500+/mo documented savings guarantee or you pay $0.',
   },
 ]
 
-const PROOF_METRICS = [
-  '21 Live Systems',
-  '0.34s EN·ES Voice',
-  '48h Custom Prototype',
-  'HIPAA & SOC 2 Aligned',
+interface HeroServiceOption {
+  id: string
+  num: string
+  shortTitle: string
+  price: string
+  detail: string
+  ctaLabel: string
+  ctaHref: string
+}
+
+const SERVICE_OPTIONS: HeroServiceOption[] = [
+  {
+    id: 'audit_99',
+    num: '01',
+    shortTitle: 'On-Site / Workflow Audit + 48h App Prototype',
+    price: '$99',
+    detail:
+      'We analyze your workflow bottleneck, map your target market reach, and ship a working AI prototype in 48 hours. Guaranteed $2,500+/mo in savings or pay $0.',
+    ctaLabel: 'Lock $99 Audit + 48h Prototype',
+    ctaHref: '/offer?offer=audit_99',
+  },
+  {
+    id: 'training_497',
+    num: '02',
+    shortTitle: 'We Train Your Staff Until Everyone Knows It',
+    price: '$497',
+    detail:
+      'On-site in South Florida or live interactive bootcamp (up to 15 staff): role-by-role SOPs so 1 employee produces the output of 5—we stay until it clicks.',
+    ctaLabel: 'Book $497 Staff AI Bootcamp',
+    ctaHref: '/offer?offer=training_497',
+  },
+  {
+    id: 'turnkey_997',
+    num: '03',
+    shortTitle: 'Custom App & 24/7 Bilingual AI Implementation',
+    price: '$997',
+    detail:
+      'Custom-built app, workflow automation, or 24/7 EN/ES voice & WhatsApp AI wired into your CRM/EHR—deployed in 7–14 days with full team handoff.',
+    ctaLabel: 'Deploy $997 Turnkey System',
+    ctaHref: '/offer?offer=turnkey_997',
+  },
+  {
+    id: 'enterprise_4900',
+    num: '04',
+    shortTitle: 'Full Company AI Takeover & App Suite',
+    price: '$4,900+',
+    detail:
+      'End-to-end engineering partner: multi-department custom apps, vision/RAG pipelines, target-audience optimization & full workforce certification until you are gold.',
+    ctaLabel: 'Commission Enterprise Build',
+    ctaHref: '/offer?offer=enterprise_4900',
+  },
+]
+
+const EMBEDDED_PILLARS = [
+  '1. Go To You',
+  '2. Analyze & Understand',
+  '3. Build App & Cut Waste',
+  '4. Train Staff Until Gold',
 ]
 
 const STAGE_PILLS = [
-  { label: '01 Genesis', pct: 0 },
-  { label: '02 Telemetry', pct: 0.5 },
-  { label: '03 Monolith', pct: 0.95 },
+  { label: '01 Analyze', pct: 0 },
+  { label: '02 Build App', pct: 0.5 },
+  { label: '03 Train & Gold', pct: 0.95 },
 ]
 
 const VERT_SHADER = `
@@ -57,6 +110,7 @@ void main() {
 const FRAG_SHADER_07 = `
 precision highp float;
 uniform vec2 uResolution;
+uniform vec2 uCenter;
 uniform float uTime;
 uniform float uScroll;
 uniform float uVelocity;
@@ -131,7 +185,8 @@ vec3 calcNormal(vec3 p) {
 
 void main() {
   float minDim = min(uResolution.x, uResolution.y);
-  vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution.xy) / minDim;
+  vec2 centerPx = uCenter * uResolution.xy;
+  vec2 uv = (gl_FragCoord.xy - centerPx) / minDim;
 
   float camZ = mix(3.35, 2.72, sin(clamp(uScroll, 0.0, 1.0) * 3.14159) * 0.7) - clamp(uVelocity * 0.35, 0.0, 0.25);
   vec3 ro = vec3(uMouse.x * 0.12, uMouse.y * 0.08, camZ);
@@ -204,6 +259,7 @@ function compileShader(gl: WebGLRenderingContext, type: number, source: string):
 
 export default function Hero() {
   const [scrollUiPct, setScrollUiPct] = useState(0)
+  const [selectedOptionIdx, setSelectedOptionIdx] = useState(0)
   const [voiceLang, setVoiceLang] = useState<'en' | 'es'>('en')
   const [isPlayingAudio, setIsPlayingAudio] = useState(false)
 
@@ -352,6 +408,7 @@ export default function Hero() {
 
     const aPos = gl.getAttribLocation(program, 'aPos')
     const uRes = gl.getUniformLocation(program, 'uResolution')
+    const uCenter = gl.getUniformLocation(program, 'uCenter')
     const uTime = gl.getUniformLocation(program, 'uTime')
     const uScroll = gl.getUniformLocation(program, 'uScroll')
     const uVelocity = gl.getUniformLocation(program, 'uVelocity')
@@ -373,12 +430,14 @@ export default function Hero() {
     const drawGl = () => {
       if (isHeroVisibleRef.current) {
         const elapsed = (performance.now() - startTime) * 0.001
+        const isDesktop = window.innerWidth >= 1024
         gl.useProgram(program)
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
         gl.enableVertexAttribArray(aPos)
         gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
 
         gl.uniform2f(uRes, glCanvas.width, glCanvas.height)
+        gl.uniform2f(uCenter, isDesktop ? 0.74 : 0.5, 0.5)
         gl.uniform1f(uTime, elapsed)
         gl.uniform1f(uScroll, smoothScrollRef.current)
         gl.uniform1f(uVelocity, velocityRef.current)
@@ -488,11 +547,20 @@ export default function Hero() {
 
         const w = window.innerWidth
         const h = window.innerHeight
+        const isDesktop = w >= 1024
+        const centerFactorX = isDesktop ? 0.74 : 0.5
         const mx = (mouseRef.current.x - 0.5) * 2
         const my = (mouseRef.current.y - 0.5) * 2
 
         if (!webglSupportedRef.current) {
-          const fallback = ctx.createRadialGradient(w * 0.5, h * 0.5, 20, w * 0.5, h * 0.5, Math.max(w, h) * 0.55)
+          const fallback = ctx.createRadialGradient(
+            w * centerFactorX,
+            h * 0.5,
+            20,
+            w * centerFactorX,
+            h * 0.5,
+            Math.max(w, h) * 0.5
+          )
           fallback.addColorStop(0, 'rgba(212, 175, 55, 0.22)')
           fallback.addColorStop(0.45, 'rgba(130, 95, 28, 0.08)')
           fallback.addColorStop(1, '#040407')
@@ -503,9 +571,9 @@ export default function Hero() {
         }
 
         const minDim = Math.min(w, h)
-        const cx = w * 0.5 + mx * 18
+        const cx = w * centerFactorX + mx * 18
         const cy = h * 0.5 + my * 14
-        const orbitR = minDim * (0.37 - Math.sin(sp * Math.PI) * 0.04)
+        const orbitR = minDim * (isDesktop ? 0.34 - Math.sin(sp * Math.PI) * 0.03 : 0.37 - Math.sin(sp * Math.PI) * 0.04)
 
         drawGyroRing(cx, cy, orbitR, 1.05 + sp * 0.9, t * 0.25 + mx * 0.3, sp * 2.0, 0.24, true)
         drawGyroRing(cx, cy, orbitR * 1.16, -0.65 + sp * 0.5, -t * 0.2 + my * 0.2, -sp * 1.5, 0.14, false)
@@ -552,123 +620,177 @@ export default function Hero() {
 
   const stageIdx: 0 | 1 | 2 = scrollUiPct < 34 ? 0 : scrollUiPct < 68 ? 1 : 2
   const currentStage = SCROLL_STAGES[stageIdx]
+  const activeOption = SERVICE_OPTIONS[selectedOptionIdx]
 
   return (
     <section
       id="hero"
       ref={sectionRef}
-      className="relative w-full h-[250vh] bg-[#040407] text-white select-none"
+      className="relative w-full lg:h-[250vh] bg-[#040407] text-white select-none"
     >
-      {/* Sticky 100vh Viewport Stage */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Layer 1: GPU WebGL 3D SDF Fragment Shader */}
+      {/* Sticky 100vh Viewport Stage on Desktop; Natural Flow on Mobile */}
+      <div className="relative lg:sticky lg:top-0 min-h-screen lg:h-screen w-full overflow-hidden flex flex-col justify-between">
+        {/* Layer 1: GPU WebGL 3D SDF Fragment Shader (Positioned Right on Desktop) */}
         <canvas
           ref={webglCanvasRef}
           className="absolute inset-0 w-full h-full z-0 pointer-events-none"
         />
 
-        {/* Layer 2: High-DPI 3D Gyroscopic Rings & Telemetry HUD */}
+        {/* Layer 2: High-DPI 3D Gyroscopic Rings & Telemetry HUD (Aligned Right on Desktop) */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full z-[1] pointer-events-none"
         />
 
-        {/* Radial Obsidian Scrim for High-Contrast Editorial Legibility */}
+        {/* Left-Heavy Obsidian Directional Scrim so Left Copy & Options Stay Crisp While Right 3D Sculpture Shines */}
         <div
-          className="absolute inset-0 z-[2] pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(4,4,7,0.52)_0%,rgba(4,4,7,0.18)_55%,rgba(4,4,7,0.72)_100%)]"
+          className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-[#040407]/85 via-[#040407]/70 to-[#040407]/90 lg:bg-gradient-to-r lg:from-[#040407]/95 lg:via-[#040407]/75 lg:to-transparent"
         />
 
-        {/* Centered Minimalist Luxury Editorial Content */}
-        <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 h-full pt-20 pb-24 flex flex-col items-center justify-center text-center">
-          <div className="max-w-3xl">
-            {/* Whisper Eyebrow */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full border border-[#d4af37]/30 bg-black/55 backdrop-blur-md mb-6 mx-auto">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37] animate-pulse" />
-              <span className="text-[11px] sm:text-xs font-mono tracking-[0.22em] uppercase text-[#e5d5b7]">
-                {currentStage.stageLabel}
-              </span>
-            </div>
-
-            {/* Monumental Luxury Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-[78px] font-light tracking-[-0.03em] leading-[1.03] text-white mb-6 drop-shadow-[0_12px_40px_rgba(0,0,0,0.9)] transition-all duration-300">
-              <span className="block font-sans font-extralight text-white/95">
-                {currentStage.headlineTop}
-              </span>
-              <span className="block font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#f7e7ce] via-[#d4af37] to-[#fff6e5] pb-1">
-                {currentStage.headlineAccent}
-              </span>
-            </h1>
-
-            {/* Single-Sentence Architectural Subtitle */}
-            <p className="text-base sm:text-lg text-white/75 font-light leading-relaxed mb-8 max-w-2xl mx-auto drop-shadow">
-              {currentStage.subtitle}
-            </p>
-
-            {/* Jewel-Like CTA Bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8">
-              <Link
-                to="/booking"
-                className="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-[#f7e7ce] via-[#d4af37] to-[#e6c675] text-[#050507] font-semibold text-sm tracking-wide flex items-center justify-center gap-2.5 shadow-[0_0_40px_rgba(212,175,55,0.28)] hover:brightness-110 transition-all"
-              >
-                <span>Begin With $99 Audit</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-
-              {/* Bilingual Sofía Voice Demo Control */}
-              <div className="w-full sm:w-auto inline-flex items-center rounded-full border border-white/20 bg-black/60 backdrop-blur-xl p-1">
-                <button
-                  type="button"
-                  onClick={toggleVoiceDemo}
-                  className="flex-1 sm:flex-initial px-5 py-3 rounded-full hover:bg-white/[0.08] text-white text-sm font-light tracking-wide flex items-center justify-center gap-2.5 transition-all"
-                >
-                  {isPlayingAudio ? (
-                    <Volume2 className="w-4 h-4 text-[#d4af37] animate-pulse" />
-                  ) : (
-                    <Play className="w-3.5 h-3.5 text-[#d4af37] fill-current" />
-                  )}
-                  <span>{isPlayingAudio ? 'Playing Sofía AI' : 'Hear Live Voice AI'}</span>
-                </button>
-                <div className="flex items-center gap-0.5 pr-1.5 pl-1 border-l border-white/15">
-                  {(['en', 'es'] as const).map((lang) => (
-                    <button
-                      key={lang}
-                      type="button"
-                      onClick={() => switchVoiceLang(lang)}
-                      className={`px-2.5 py-1 rounded-full text-[11px] font-mono uppercase transition-all ${
-                        voiceLang === lang
-                          ? 'bg-[#d4af37] text-[#050507] font-bold'
-                          : 'text-white/60 hover:text-white'
-                      }`}
-                    >
-                      {lang}
-                    </button>
-                  ))}
-                </div>
+        {/* Asymmetric Luxury Split: Left Service Title + 4 Options | Right Live 3D Chronos Liquid SDF */}
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 w-full lg:h-full pt-24 pb-6 lg:pt-20 lg:pb-20 flex items-center flex-1">
+          <div className="grid lg:grid-cols-12 gap-8 items-center w-full">
+            <div className="lg:col-span-7 text-left">
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#d4af37]/35 bg-black/65 backdrop-blur-md mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37] animate-pulse" />
+                <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase text-[#f7e7ce]">
+                  {currentStage.stageLabel}
+                </span>
               </div>
 
-              <Link
-                to="/connect"
-                className="w-full sm:w-auto px-5 py-3.5 rounded-full border border-[#d4af37]/30 bg-black/45 hover:bg-[#d4af37]/15 text-[#f7e7ce] text-xs font-mono uppercase tracking-[0.16em] flex items-center justify-center gap-2 backdrop-blur-md transition-all"
-              >
-                <PhoneCall className="w-3.5 h-3.5 text-[#d4af37]" />
-                <span>10-Sec Direct Connect</span>
-              </Link>
+              {/* Service Title */}
+              <h1 className="text-3xl sm:text-5xl xl:text-[64px] font-light tracking-[-0.03em] leading-[1.04] text-white mb-4 drop-shadow-[0_12px_40px_rgba(0,0,0,0.9)] transition-all duration-300">
+                <span className="block font-sans font-extralight text-white/95">
+                  {currentStage.headlineTop}
+                </span>
+                <span className="block font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#f7e7ce] via-[#d4af37] to-[#fff6e5] pb-1">
+                  {currentStage.headlineAccent}
+                </span>
+              </h1>
+
+              {/* Embedded Developer & Consultant Narrative */}
+              <p className="text-sm sm:text-base text-white/80 font-light leading-relaxed mb-5 max-w-2xl">
+                {currentStage.subtitle}
+              </p>
+
+              {/* What Are Your Options? Interactive 4-Option Selector */}
+              <div className="mb-5">
+                <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#d4af37] mb-2">
+                  Choose Your Engagement Option · We Come To You &amp; Train Until You Are Gold
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {SERVICE_OPTIONS.map((opt, idx) => {
+                    const selected = idx === selectedOptionIdx
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setSelectedOptionIdx(idx)}
+                        className={`text-left px-3.5 py-2.5 rounded-xl border transition-all backdrop-blur-md cursor-pointer ${
+                          selected
+                            ? 'border-[#d4af37] bg-[#d4af37]/15 shadow-[0_0_24px_rgba(212,175,55,0.2)]'
+                            : 'border-white/15 bg-black/55 hover:border-[#d4af37]/45 hover:bg-black/75'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-0.5">
+                          <span className="text-[11px] font-mono font-bold text-[#d4af37]">
+                            OPTION {opt.num}
+                          </span>
+                          <span className="text-xs font-mono font-bold text-white tabular-nums">
+                            {opt.price}
+                          </span>
+                        </div>
+                        <div className="text-xs font-semibold text-white leading-snug">
+                          {opt.shortTitle}
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+                <p className="mt-2.5 text-xs text-[#f7e7ce]/85 bg-black/55 border border-white/10 rounded-lg px-3 py-2 leading-relaxed max-w-2xl">
+                  <strong className="text-[#d4af37]">Option {activeOption.num}:</strong> {activeOption.detail}
+                </p>
+              </div>
+
+              {/* Action Bar */}
+              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 mb-5">
+                <Link
+                  to={activeOption.ctaHref}
+                  className="px-6 py-3.5 rounded-full bg-gradient-to-r from-[#f7e7ce] via-[#d4af37] to-[#e6c675] text-[#050507] font-semibold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(212,175,55,0.28)] hover:brightness-110 transition-all"
+                >
+                  <span>{activeOption.ctaLabel}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                {/* Bilingual Sofía Voice Demo Control */}
+                <div className="inline-flex items-center rounded-full border border-white/20 bg-black/65 backdrop-blur-xl p-1">
+                  <button
+                    type="button"
+                    onClick={toggleVoiceDemo}
+                    className="flex-1 sm:flex-initial px-4 py-2.5 rounded-full hover:bg-white/[0.08] text-white text-xs sm:text-sm font-light tracking-wide flex items-center justify-center gap-2 transition-all"
+                  >
+                    {isPlayingAudio ? (
+                      <Volume2 className="w-4 h-4 text-[#d4af37] animate-pulse" />
+                    ) : (
+                      <Play className="w-3.5 h-3.5 text-[#d4af37] fill-current" />
+                    )}
+                    <span>{isPlayingAudio ? 'Playing Sofía AI' : 'Hear Live Voice AI'}</span>
+                  </button>
+                  <div className="flex items-center gap-0.5 pr-1.5 pl-1 border-l border-white/15">
+                    {(['en', 'es'] as const).map((lang) => (
+                      <button
+                        key={lang}
+                        type="button"
+                        onClick={() => switchVoiceLang(lang)}
+                        className={`px-2 py-1 rounded-full text-[11px] font-mono uppercase transition-all ${
+                          voiceLang === lang
+                            ? 'bg-[#d4af37] text-[#050507] font-bold'
+                            : 'text-white/60 hover:text-white'
+                        }`}
+                      >
+                        {lang}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <Link
+                  to="/connect"
+                  className="px-4 py-3 rounded-full border border-[#d4af37]/35 bg-black/55 hover:bg-[#d4af37]/15 text-[#f7e7ce] text-xs font-mono uppercase tracking-[0.14em] flex items-center justify-center gap-2 backdrop-blur-md transition-all"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-[#d4af37]" />
+                  <span>10-Sec Connect</span>
+                </Link>
+              </div>
+
+              {/* Embedded Guarantee Cadence */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] font-mono uppercase tracking-[0.14em] text-white/70">
+                {EMBEDDED_PILLARS.map((pillar, idx) => (
+                  <div key={pillar} className="flex items-center gap-4">
+                    {idx > 0 && <span className="text-[#d4af37]/50 hidden sm:inline">→</span>}
+                    <span>{pillar}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Whisper-Quiet 4-Metric Proof Line */}
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-white/55">
-              {PROOF_METRICS.map((metric, idx) => (
-                <div key={metric} className="flex items-center gap-5">
-                  {idx > 0 && <span className="text-[#d4af37]/40 hidden sm:inline">/</span>}
-                  <span>{metric}</span>
+            {/* Right Column Spacer: Keeps Desktop Right Half Clear for Real-Time 3D Chronos Liquid SDF */}
+            <div className="hidden lg:flex lg:col-span-5 flex-col items-end justify-end h-full pointer-events-none">
+              <div className="px-3.5 py-2 rounded-xl border border-[#d4af37]/25 bg-black/50 backdrop-blur-md text-right">
+                <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#d4af37]">
+                  CHRONOS LIQUID SDF · REAL-TIME 3D
                 </div>
-              ))}
+                <div className="text-[11px] font-mono text-white/75">
+                  Scroll to morph workflow intelligence into Gold
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Stage HUD Pill */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 w-max max-w-[94vw]">
+        <div className="relative mx-auto mb-6 lg:mb-0 lg:absolute lg:bottom-6 lg:left-1/2 lg:-translate-x-1/2 z-20 w-max max-w-[94vw]">
           <div className="flex items-center gap-1 sm:gap-2 px-2.5 py-1.5 rounded-full border border-[#d4af37]/30 bg-[#06060b]/85 backdrop-blur-2xl shadow-[0_15px_45px_rgba(0,0,0,0.9)]">
             {STAGE_PILLS.map((stage, idx) => {
               const active = stageIdx === idx

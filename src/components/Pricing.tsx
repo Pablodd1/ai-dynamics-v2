@@ -253,14 +253,14 @@ const Pricing = () => {
         >
           <span className="inline-block px-4 py-2 rounded-full border border-luxury-gold/30 bg-luxury-gold/5 text-luxury-gold text-xs uppercase tracking-[0.2em] font-medium mb-5">
             {regionMode === 'us'
-              ? 'Transparent ROI-First Pricing • 60% Below Traditional Agencies'
+              ? 'We Come To You • Build Custom Apps • Never Leave Until Your Staff Masters It'
               : 'Tarifas Localizadas para Sudamérica y Latinoamérica • Sin Contratos Forzosos'}
           </span>
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-5 font-serif">
             {regionMode === 'us' ? (
               <>
-                <span className="text-white">Cut Costs First. </span>
-                <span className="text-luxury-gold">Scale With Zero Risk.</span>
+                <span className="text-white">Four Ways We Turn </span>
+                <span className="text-luxury-gold">Your Operation To Gold.</span>
               </>
             ) : (
               <>
@@ -272,7 +272,7 @@ const Pricing = () => {
           <p className="text-base sm:text-xl text-luxury-silver max-w-3xl mx-auto mb-7">
             {regionMode === 'us' ? (
               <>
-                Start with a <strong className="text-white">Free 15-Minute Triage Call</strong> or our <strong className="text-luxury-gold">$99 Efficiency Audit</strong> (guaranteed to uncover <strong className="text-emerald-400">$2,500+/mo in payroll savings</strong> or you pay $0).
+                Start with a <strong className="text-white">$99 On-Site / Workflow Audit + 48-Hour App Prototype</strong> (guaranteed to uncover <strong className="text-emerald-400">$2,500+/mo in payroll savings</strong> or pay $0) — we analyze, build, implement, and train your staff until you are Gold.
               </>
             ) : (
               <>

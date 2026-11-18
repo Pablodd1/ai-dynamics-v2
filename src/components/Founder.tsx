@@ -49,10 +49,10 @@ const Founder = () => {
               I'm <span className="text-luxury-gold">Jasmel</span>
             </h2>
             <p className="text-lg text-luxury-silver leading-relaxed">
-              After 15+ years building tech solutions for healthcare and small businesses, I founded AI Dynamics to bridge the gap between cutting-edge AI and real-world business results.
+              After 15+ years engineering mission-critical healthcare and business software, I built AI Dynamic Pro with one relentless rule: <strong className="text-white">we go directly to you, analyze your real workflow, understand your target population, and build custom apps that actually save money and win more clients.</strong>
             </p>
             <p className="text-luxury-silver leading-relaxed">
-              We don't sell buzzwords — we deploy working systems that cut costs, save time, and scale your operations without adding headcount. Every automation we build is designed around one question: <strong className="text-white">"Does this make you money or save you time?"</strong> If the answer isn't yes, we don't build it.
+              We are aggressive builders, not slide-deck consultants. We implement your apps, wire your AI voice and automations, and <strong className="text-luxury-gold">stay training you and your staff until everyone knows how to run it cold—then you are Gold.</strong>
             </p>
 
             {/* Stats */}

@@ -7,16 +7,20 @@ const FAQ = () => {
 
   const faqs = [
     {
-      question: 'How much does AI automation cost?',
-      answer: 'We start with our $99 AI Workflow & Feasibility Audit ($0 risk guarantee: if we don’t uncover at least 15+ hours/month in savings, you pay $0, and 100% is credited toward your build). Turnkey single-workflow automations start at $1,000, and full enterprise AI transformations & corporate staff training range from $5,000 to $15,000+.',
+      question: 'How does your "We Don\'t Leave Until You Are Gold" model work?',
+      answer: 'We come straight to your operation (on-site in South Florida or embedded live), dissect every workflow bottleneck, understand how you serve your target population, build your custom apps & AI agents, and train you and your staff hands-on. We do not sign off until your entire team confidently runs the system and turns it into Gold.',
     },
     {
-      question: 'How long does it take to implement?',
-      answer: 'Most single-workflow automations are live within 2-3 weeks. Full AI transformations typically take 30 days from discovery to deployment. We work fast because we use proven frameworks — not templates, but battle-tested approaches we have refined across 50+ deployments.',
+      question: 'How much does it cost to start, and what are the options?',
+      answer: 'Option 1 ($99 Workflow Audit + Free 48h Prototype): zero-risk guarantee to uncover $2,500+/mo in savings or pay $0, credited 100% toward your build. Option 2 ($497 Staff AI Bootcamp): we train up to 15 staff shoulder-to-shoulder until everyone knows it. Option 3 ($997 Turnkey Custom App & 24/7 AI Agent or $297/mo). Option 4 ($4,900–$15,000 Full Enterprise AI Takeover).',
     },
     {
-      question: 'Do I need technical knowledge to use the automation?',
-      answer: 'Not at all. We design every solution so your team can use it without writing a single line of code. If you can use email and basic software, you can use our automations. We also include team training with every deployment.',
+      question: 'How fast do you analyze, build, and launch custom apps?',
+      answer: 'You get a working live custom prototype within 48 hours of your audit. Single turnkey apps and 24/7 bilingual AI voice/WhatsApp deployments launch in production in 7–14 days, and multi-department enterprise builds roll out within 30 days.',
+    },
+    {
+      question: 'Do I need technical knowledge, or will my staff struggle?',
+      answer: 'Zero technical background is required. We design intuitive apps around your exact team habits, run bilingual English/Spanish training workshops with your staff, and stay right beside you until every employee uses it effortlessly.',
     },
     {
       question: 'Is my data secure?',
@@ -28,15 +32,15 @@ const FAQ = () => {
     },
     {
       question: 'What if I only want one workflow automated?',
-      answer: 'That is exactly how most clients start. Our Single High-Impact Workflow package ($1,000 turnkey) is designed for businesses that want to deploy one critical automation or 24/7 bilingual AI receptionist before scaling across departments.',
+      answer: 'That is how many clients start. Option 3 ($997 Turnkey Custom App & 24/7 AI Agent, or $297/mo managed) deploys one mission-critical automation or bilingual voice/WhatsApp receptionist inside your company—and includes full hands-on staff training.',
     },
     {
       question: 'What industries do you work with?',
-      answer: 'We specialize in healthcare, legal, real estate, retail, construction, and professional services. Our team has deep experience in medical billing, patient intake, contract review, lead management, and appointment scheduling. If your industry has repetitive tasks, we can automate them.',
+      answer: 'We embed inside healthcare, legal, real estate, construction, contractors, retail, and B2B service firms—analyzing your workflow, serving your target population better, and cutting manual payroll waste.',
     },
     {
-      question: 'What happens after the automation is built?',
-      answer: 'Every project includes 30 days of post-launch support. For ongoing optimization, our Full AI Transformation package includes monthly performance reviews, continuous tuning, and quarterly strategy sessions. We do not build and disappear — we are your long-term automation partner.',
+      question: 'What happens after the automation or app is built?',
+      answer: 'We do not drop software and disappear. We stay side-by-side training you and your staff until everyone knows how to use and operate every system cold, plus 30 days of included engineering support and ongoing optimization until you are Gold.',
     },
     {
       question: 'Can you integrate with my existing tools?',

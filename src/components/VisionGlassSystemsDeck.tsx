@@ -120,16 +120,16 @@ export default function VisionGlassSystemsDeck() {
         {/* Minimalist Executive Header (Zero Icons, Pure Editorial Typography) */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
           <div className="inline-block px-4 py-1.5 rounded-full border border-luxury-gold/35 bg-luxury-gold/[0.06] text-[11px] font-mono uppercase tracking-[0.24em] text-luxury-gold mb-5">
-            AI DYNAMIC PRO • PROPRIETARY ENGINEERING &amp; WORKFORCE MULTIPLICATION
+            AI DYNAMIC PRO • EMBEDDED DEVELOPERS · BUILT &amp; TRAINED UNTIL GOLD
           </div>
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-white tracking-tight leading-[1.1]">
-            Six Production AI Architectures{' '}
+            We Come To You. Analyze. Build Apps.{' '}
             <span className="text-luxury-gold font-normal italic">
-              Engineered Inside Your Company
+              Train Until You Are Gold.
             </span>
           </h2>
           <p className="mt-5 text-base sm:text-lg text-luxury-silver leading-relaxed">
-            We do not sell generic templates. As hands-on <strong className="text-white">AI Developers &amp; Creators</strong>, we walk into your industry, engineer custom production systems in 48 hours, and stay side-by-side training your staff until one employee produces the output of five.
+            We do not hand over generic logins and disappear. As aggressive <strong className="text-white">AI Developers &amp; Consultants</strong>, we embed inside your company, understand how to serve your target population faster, engineer custom apps &amp; automations to cut waste, and stay side-by-side training your staff until every person runs it cleanly.
           </p>
         </div>
 
