@@ -186,7 +186,7 @@ vec3 calcNormal(vec3 p) {
 void main() {
   float minDim = min(uResolution.x, uResolution.y);
   vec2 centerPx = uCenter * uResolution.xy;
-  vec2 uv = (gl_FragCoord.xy - centerPx) / minDim;
+  vec2 uv = ((gl_FragCoord.xy - centerPx) / minDim) * 1.25;
 
   float camZ = mix(3.75, 3.05, sin(clamp(uScroll, 0.0, 1.0) * 3.14159) * 0.7) - clamp(uVelocity * 0.35, 0.0, 0.25);
   vec3 ro = vec3(uMouse.x * 0.12, uMouse.y * 0.08, camZ);
@@ -573,7 +573,7 @@ export default function Hero() {
         const minDim = Math.min(w, h)
         const cx = w * centerFactorX + mx * 18
         const cy = h * 0.5 + my * 14
-        const orbitR = minDim * (isDesktop ? 0.34 - Math.sin(sp * Math.PI) * 0.03 : 0.37 - Math.sin(sp * Math.PI) * 0.04)
+        const orbitR = minDim * (isDesktop ? 0.272 - Math.sin(sp * Math.PI) * 0.024 : 0.296 - Math.sin(sp * Math.PI) * 0.032)
 
         drawGyroRing(cx, cy, orbitR, 1.05 + sp * 0.9, t * 0.25 + mx * 0.3, sp * 2.0, 0.24, true)
         drawGyroRing(cx, cy, orbitR * 1.16, -0.65 + sp * 0.5, -t * 0.2 + my * 0.2, -sp * 1.5, 0.14, false)
@@ -587,7 +587,7 @@ export default function Hero() {
           const ang = t * 0.38 + sp * 3.14 + (i * Math.PI * 2) / 3
           const ox = Math.cos(ang) * orbitR * 1.08
           const oz = Math.sin(ang) * orbitR * 1.08
-          const oy = Math.sin(ang * 2.0 + t * 0.5) * minDim * 0.11
+          const oy = Math.sin(ang * 2.0 + t * 0.5) * minDim * 0.088
 
           const persp = 900 / (900 - oz)
           const px = cx + ox * persp
