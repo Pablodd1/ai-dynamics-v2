@@ -1,36 +1,36 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { initAttributionTracking } from './lib/analytics'
 import LandingPage from './LandingPage'
-import DirectConnect from './pages/DirectConnect'
-import LatamSaaS from './pages/LatamSaaS'
-import HeroLab from './pages/HeroLab'
-import TermsOfService from './pages/TermsOfService'
-import PrivacyPolicy from './pages/PrivacyPolicy'
-import OurProcess from './pages/OurProcess'
-import Booking from './pages/Booking'
-import Founders from './pages/Founders'
-import Blog from './pages/Blog'
-import AgenticWebsite from './pages/AgenticWebsite'
-import AISeo from './pages/AISeo'
-import ZeroG from './pages/ZeroG'
-import Simulation from './pages/Simulation'
-import Research from './pages/Research'
-import Projects from './pages/Projects'
-import AIPhoneReceptionistMiami from './pages/blog/AIPhoneReceptionistMiami'
-import MedicalClinicAutomation from './pages/blog/MedicalClinicAutomation'
-import LegalIntakeAutomation from './pages/blog/LegalIntakeAutomation'
-import Login from './pages/auth/Login'
-import Signup from './pages/auth/Signup'
-import Dashboard from './pages/auth/Dashboard'
-import Profile from './pages/auth/Profile'
-import Admin from './pages/auth/Admin'
-import NotFound from './pages/NotFound'
-import PaidAdOffer from './pages/PaidAdOffer'
-import CheckoutSuccess from './pages/CheckoutSuccess'
-import './lib/analytics'
 import EcosystemWidget from './components/EcosystemWidget'
+
+const DirectConnect = lazy(() => import('./pages/DirectConnect'))
+const LatamSaaS = lazy(() => import('./pages/LatamSaaS'))
+const HeroLab = lazy(() => import('./pages/HeroLab'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const OurProcess = lazy(() => import('./pages/OurProcess'))
+const Booking = lazy(() => import('./pages/Booking'))
+const Founders = lazy(() => import('./pages/Founders'))
+const Blog = lazy(() => import('./pages/Blog'))
+const AgenticWebsite = lazy(() => import('./pages/AgenticWebsite'))
+const AISeo = lazy(() => import('./pages/AISeo'))
+const ZeroG = lazy(() => import('./pages/ZeroG'))
+const Simulation = lazy(() => import('./pages/Simulation'))
+const Research = lazy(() => import('./pages/Research'))
+const Projects = lazy(() => import('./pages/Projects'))
+const AIPhoneReceptionistMiami = lazy(() => import('./pages/blog/AIPhoneReceptionistMiami'))
+const MedicalClinicAutomation = lazy(() => import('./pages/blog/MedicalClinicAutomation'))
+const LegalIntakeAutomation = lazy(() => import('./pages/blog/LegalIntakeAutomation'))
+const Login = lazy(() => import('./pages/auth/Login'))
+const Signup = lazy(() => import('./pages/auth/Signup'))
+const Dashboard = lazy(() => import('./pages/auth/Dashboard'))
+const Profile = lazy(() => import('./pages/auth/Profile'))
+const Admin = lazy(() => import('./pages/auth/Admin'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+const PaidAdOffer = lazy(() => import('./pages/PaidAdOffer'))
+const CheckoutSuccess = lazy(() => import('./pages/CheckoutSuccess'))
 
 function ConditionalEcosystemWidget() {
   const { pathname } = useLocation()
@@ -54,7 +54,8 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
+        <Suspense fallback={<div className="min-h-screen bg-[#0a0a0f]" aria-hidden="true" />}>
+          <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/hero-lab" element={<HeroLab />} />
           <Route path="/latam" element={<LatamSaaS />} />
@@ -88,6 +89,7 @@ function App() {
           {/* Catch-all 404 Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
         <ConditionalEcosystemWidget />
       </BrowserRouter>
     </AuthProvider>

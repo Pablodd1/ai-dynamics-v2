@@ -3,19 +3,25 @@
   <!-- Core Pages -->
   <url>
     <loc>https://www.aidynamic.pro/</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://www.aidynamic.pro/offer</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.99</priority>
+  </url>
+  <url>
     <loc>https://www.aidynamic.pro/latam</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.99</priority>
   </url>
   <url>
     <loc>https://www.aidynamic.pro/connect</loc>
-    <lastmod>2026-11-13</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.98</priority>
   </url>

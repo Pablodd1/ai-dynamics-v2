@@ -6,6 +6,7 @@ import {
   buildFounderFastActionAlertHtml,
   resolveVerifiedBrevoSender,
 } from './_directConnectEmail.js';
+import { detectBotSubmission } from './_botShield.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,10 +22,26 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, name, phone = '', source = 'AI Dynamics - Lead Magnet', interest = 'Workflow Automation Guide' } = req.body || {};
+    const { email, name, phone = '', source = 'AI Dynamics - Lead Magnet', interest = 'Workflow Automation Guide', website_url, _hp, _ts } = req.body || {};
 
     if (!email || !email.includes('@')) {
       return res.status(400).json({ error: 'Valid email address is required' });
+    }
+
+    const botReason = detectBotSubmission({
+      name: name || '',
+      email,
+      message: '',
+      honeypot: website_url || _hp || '',
+      submittedAtMs: _ts,
+    });
+    if (botReason) {
+      console.warn(`[Lead API] Blocked spam download (${botReason}) for ${email}`);
+      return res.status(200).json({
+        success: true,
+        message: 'Lead registered successfully',
+        guideUrl: '/AI-Automation-Playbook-2026.pdf',
+      });
     }
 
     const cleanEmail = email.trim().toLowerCase();

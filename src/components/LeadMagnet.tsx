@@ -5,6 +5,8 @@ import { AnalyticsEvents, getAttributionSource } from '../lib/analytics'
 
 const LeadMagnet = () => {
   const [email, setEmail] = useState('')
+  const [websiteUrl, setWebsiteUrl] = useState('')
+  const [formLoadedAt] = useState(() => Date.now())
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -12,6 +14,12 @@ const LeadMagnet = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    if (websiteUrl.trim()) {
+      setIsSubmitted(true)
+      setEmail('')
+      return
+    }
 
     if (!email || !email.includes('@')) {
       setError('Please enter a valid email address')
@@ -31,6 +39,8 @@ const LeadMagnet = () => {
           email: email,
           source: getAttributionSource('AI Dynamics - Lead Magnet'),
           interest: 'Workflow Automation Guide',
+          website_url: websiteUrl,
+          _ts: formLoadedAt,
         }),
       }).catch(() => null)
 
@@ -112,6 +122,18 @@ const LeadMagnet = () => {
               </p>
 
               <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <div className="sr-only" aria-hidden="true">
+                  <label htmlFor="lead-website-url">Website</label>
+                  <input
+                    id="lead-website-url"
+                    type="text"
+                    name="website_url"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={websiteUrl}
+                    onChange={(e) => setWebsiteUrl(e.target.value)}
+                  />
+                </div>
                 <div className="flex-1 relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-luxury-silver/50" />
                   <input

@@ -270,6 +270,36 @@ export default function PaidAdOffer() {
 
   const refCode = searchParams.get('ref') || getAttributionData().lastTouch?.ref || ''
   const canceled = searchParams.get('canceled') === '1'
+  const industryKey = (
+    searchParams.get('industry') ||
+    searchParams.get('segment') ||
+    searchParams.get('utm_term') ||
+    ''
+  ).toLowerCase()
+
+  const industryCallout = useMemo(() => {
+    if (industryKey.includes('med') || industryKey.includes('clinic') || industryKey.includes('dental')) {
+      return isEs
+        ? 'Especial Clínicas y Consultorios · Recupera citas perdidas y notas SOAP en 48h'
+        : 'Medical & Dental Track · HIPAA-ready AI intake, 837 scrubbing & SOAP scribing in 48h'
+    }
+    if (industryKey.includes('legal') || industryKey.includes('law') || industryKey.includes('attorney')) {
+      return isEs
+        ? 'Especial Estudios Jurídicos · Calificación 24/7 y auditoría privada de expedientes'
+        : 'Law Firm Track · Zero-retention contract review & 24/7 after-hours intake'
+    }
+    if (industryKey.includes('real') || industryKey.includes('inmob')) {
+      return isEs
+        ? 'Especial Inmobiliarias · Captura 100% de leads por WhatsApp e IG en 3 segundos'
+        : 'Real Estate & Title Track · Instant 3-second lead qualification & escrow deadline alerts'
+    }
+    if (industryKey.includes('build') || industryKey.includes('construct') || industryKey.includes('aec') || industryKey.includes('contract')) {
+      return isEs
+        ? 'Especial Arquitectura y Construcción · Presupuestos y visión computacional 3D'
+        : 'Contractors & AEC Track · Automated job quoting, dispatch & after-hours call capture'
+    }
+    return ''
+  }, [industryKey, isEs])
 
   const [step, setStep] = useState<1 | 2>(1)
   const [stripeReady, setStripeReady] = useState<boolean>(false)
@@ -545,6 +575,13 @@ export default function PaidAdOffer() {
                 ? `Invitación VIP activada (${refCode}) — prioridad de ingeniería de 48 horas incluida.`
                 : `VIP Executive Referral Activated (${refCode}) — includes priority 48-hour build queue access.`}
             </span>
+          </div>
+        )}
+
+        {industryCallout && (
+          <div className="mb-6 px-4 py-2.5 rounded-xl border border-luxury-gold/35 bg-luxury-gold/10 text-luxury-champagne text-xs sm:text-sm font-mono flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-luxury-gold shrink-0" />
+            <span>{industryCallout}</span>
           </div>
         )}
 
@@ -860,6 +897,49 @@ export default function PaidAdOffer() {
             )}
           </motion.div>
         </div>
+
+        {/* Paid-Ad Objection Buster & Zero-Risk Guarantee FAQ */}
+        <section className="mt-12 pt-10 border-t border-white/10">
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-white mb-6 text-center">
+            {isEs ? 'Garantía y Respuestas Rápidas Antes de Activar' : 'Common Questions Before Locking Your Slot'}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                q: isEs ? '¿Cómo funciona el prototipo de 48h?' : 'What happens in 48 hours?',
+                a: isEs
+                  ? 'Auditamos tus cuellos de botella en una sesión de 60 min y te entregamos un prototipo real operando con tus propios datos en 48h.'
+                  : 'We audit your bottlenecks in a 60-min session and build a working live AI prototype around your real workflow in 48 hours.',
+              },
+              {
+                q: isEs ? '¿Qué cubre la garantía?' : 'How does the guarantee work?',
+                a: isEs
+                  ? 'Si no documentamos al menos $2,500 USD/mes ($1,500+ en LATAM) en ahorros reales de nómina o tiempo, devolvemos el 100%.'
+                  : 'If our audit fails to map at least $2,500+/mo in documented payroll or recovered-lead ROI, we refund 100% on the spot.',
+              },
+              {
+                q: isEs ? '¿Mis datos entrenan modelos públicos?' : 'Is our data kept private?',
+                a: isEs
+                  ? 'Nunca. Desplegamos arquitectura privada Zero-Data-Retention compatible con HIPAA y confidencialidad legal.'
+                  : 'Never. Every deployment runs on isolated Zero-Data-Retention infrastructure suitable for medical & legal confidentiality.',
+              },
+              {
+                q: isEs ? '¿Necesito equipo técnico interno?' : 'Do we need an internal tech team?',
+                a: isEs
+                  ? 'No. Nuestro equipo entrega la integración llave en mano y capacita a tu personal para que rinda 5x desde el día 1.'
+                  : 'No. We handle the complete build, CRM wiring, and hands-on staff training so 1 employee produces the output of 5.',
+              },
+            ].map((item) => (
+              <div
+                key={item.q}
+                className="p-4 rounded-2xl border border-white/10 bg-black/40"
+              >
+                <h3 className="text-sm font-bold text-luxury-gold mb-1.5">{item.q}</h3>
+                <p className="text-xs text-luxury-silver leading-relaxed">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   )

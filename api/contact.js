@@ -6,6 +6,7 @@ import {
   buildFounderFastActionAlertHtml,
   resolveVerifiedBrevoSender,
 } from './_directConnectEmail.js';
+import { detectBotSubmission } from './_botShield.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,10 +22,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, email, phone, company, message } = req.body || {};
+    const { name, email, phone, company, message, website_url, _hp, _ts } = req.body || {};
 
     if (!email || !email.includes('@')) {
       return res.status(400).json({ error: 'Valid email is required' });
+    }
+
+    const botReason = detectBotSubmission({
+      name,
+      email,
+      message,
+      honeypot: website_url || _hp || '',
+      submittedAtMs: _ts,
+    });
+    if (botReason) {
+      console.warn(`[Contact API] Blocked spam submission (${botReason}) for ${email}`);
+      return res.status(200).json({
+        success: true,
+        message: 'Inquiry received successfully. Our team will contact you within 24 hours.',
+      });
     }
 
     const cleanEmail = email.trim().toLowerCase();

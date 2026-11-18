@@ -23,6 +23,8 @@ const Contact = () => {
     company: '',
     message: '',
   })
+  const [websiteUrl, setWebsiteUrl] = useState('')
+  const [formLoadedAt] = useState(() => Date.now())
   const [agreedToTerms, setAgreedToTerms] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -31,18 +33,35 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitError('')
+
+    if (websiteUrl.trim()) {
+      setIsSubmitted(true)
+      setFormData({ name: '', email: '', phone: '', company: '', message: '' })
+      return
+    }
+
     setIsSubmitting(true)
     
     try {
-      // 1. Send via serverless API
-      const apiPromise = fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      }).catch(err => console.warn('API contact error:', err))
+      // 1. Send via serverless API (handles Supabase CRM + Brevo List #36 + alerts)
+      let apiSucceeded = false
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...formData,
+            website_url: websiteUrl,
+            _ts: formLoadedAt,
+          }),
+        })
+        apiSucceeded = res.ok
+      } catch (err) {
+        console.warn('API contact error:', err)
+      }
 
-      // 2. Also try Supabase leads table
-      const supabasePromise = (async () => {
+      // 2. Fallback to direct Supabase insert only if /api/contact failed (avoids duplicate CRM rows)
+      if (!apiSucceeded) {
         try {
           const { error } = await supabase
             .from('aidynamic_leads')
@@ -60,9 +79,7 @@ const Contact = () => {
         } catch (err) {
           console.warn('Supabase lead catch notice:', err)
         }
-      })()
-
-      await Promise.allSettled([apiPromise, supabasePromise])
+      }
 
       AnalyticsEvents.submitContactForm(formData.company)
       setIsSubmitted(true)
@@ -224,6 +241,18 @@ const Contact = () => {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="sr-only" aria-hidden="true">
+                    <label htmlFor="contact-website-url">Website</label>
+                    <input
+                      id="contact-website-url"
+                      type="text"
+                      name="website_url"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={websiteUrl}
+                      onChange={(e) => setWebsiteUrl(e.target.value)}
+                    />
+                  </div>
                   {submitError && (
                     <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                       {submitError}
