@@ -188,7 +188,7 @@ void main() {
   vec2 centerPx = uCenter * uResolution.xy;
   vec2 uv = (gl_FragCoord.xy - centerPx) / minDim;
 
-  float camZ = mix(3.35, 2.72, sin(clamp(uScroll, 0.0, 1.0) * 3.14159) * 0.7) - clamp(uVelocity * 0.35, 0.0, 0.25);
+  float camZ = mix(3.75, 3.05, sin(clamp(uScroll, 0.0, 1.0) * 3.14159) * 0.7) - clamp(uVelocity * 0.35, 0.0, 0.25);
   vec3 ro = vec3(uMouse.x * 0.12, uMouse.y * 0.08, camZ);
   vec3 rd = normalize(vec3(uv, -1.55));
 
@@ -437,7 +437,7 @@ export default function Hero() {
         gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
 
         gl.uniform2f(uRes, glCanvas.width, glCanvas.height)
-        gl.uniform2f(uCenter, isDesktop ? 0.74 : 0.5, 0.5)
+        gl.uniform2f(uCenter, isDesktop ? 0.72 : 0.5, 0.5)
         gl.uniform1f(uTime, elapsed)
         gl.uniform1f(uScroll, smoothScrollRef.current)
         gl.uniform1f(uVelocity, velocityRef.current)
@@ -548,7 +548,7 @@ export default function Hero() {
         const w = window.innerWidth
         const h = window.innerHeight
         const isDesktop = w >= 1024
-        const centerFactorX = isDesktop ? 0.74 : 0.5
+        const centerFactorX = isDesktop ? 0.72 : 0.5
         const mx = (mouseRef.current.x - 0.5) * 2
         const my = (mouseRef.current.y - 0.5) * 2
 
@@ -679,7 +679,7 @@ export default function Hero() {
                 <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#d4af37] mb-2">
                   Choose Your Engagement Option · We Come To You &amp; Train Until You Are Gold
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2">
                   {SERVICE_OPTIONS.map((opt, idx) => {
                     const selected = idx === selectedOptionIdx
                     return (
@@ -687,14 +687,14 @@ export default function Hero() {
                         key={opt.id}
                         type="button"
                         onClick={() => setSelectedOptionIdx(idx)}
-                        className={`text-left px-3.5 py-2.5 rounded-xl border transition-all backdrop-blur-md cursor-pointer ${
+                        className={`text-left px-3 py-2 rounded-xl border transition-all backdrop-blur-md cursor-pointer ${
                           selected
                             ? 'border-[#d4af37] bg-[#d4af37]/15 shadow-[0_0_24px_rgba(212,175,55,0.2)]'
                             : 'border-white/15 bg-black/55 hover:border-[#d4af37]/45 hover:bg-black/75'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2 mb-0.5">
-                          <span className="text-[11px] font-mono font-bold text-[#d4af37]">
+                          <span className="text-[10px] font-mono font-bold text-[#d4af37]">
                             OPTION {opt.num}
                           </span>
                           <span className="text-xs font-mono font-bold text-white tabular-nums">
@@ -708,19 +708,19 @@ export default function Hero() {
                     )
                   })}
                 </div>
-                <p className="mt-2.5 text-xs text-[#f7e7ce]/85 bg-black/55 border border-white/10 rounded-lg px-3 py-2 leading-relaxed max-w-2xl">
+                <p className="mt-2 text-xs text-[#f7e7ce]/85 bg-black/55 border border-white/10 rounded-lg px-3 py-1.5 leading-relaxed max-w-2xl">
                   <strong className="text-[#d4af37]">Option {activeOption.num}:</strong> {activeOption.detail}
                 </p>
               </div>
 
-              {/* Action Bar */}
-              <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 mb-5">
+              {/* Action Bar — Compact Single Row on Desktop, Above Mobile Floating Dock */}
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 mb-5">
                 <Link
                   to={activeOption.ctaHref}
-                  className="px-6 py-3.5 rounded-full bg-gradient-to-r from-[#f7e7ce] via-[#d4af37] to-[#e6c675] text-[#050507] font-semibold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(212,175,55,0.28)] hover:brightness-110 transition-all"
+                  className="px-5 py-3 rounded-full bg-gradient-to-r from-[#f7e7ce] via-[#d4af37] to-[#e6c675] text-[#050507] font-semibold text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(212,175,55,0.28)] hover:brightness-110 transition-all whitespace-nowrap"
                 >
                   <span>{activeOption.ctaLabel}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </Link>
 
                 {/* Bilingual Sofía Voice Demo Control */}
@@ -728,16 +728,16 @@ export default function Hero() {
                   <button
                     type="button"
                     onClick={toggleVoiceDemo}
-                    className="flex-1 sm:flex-initial px-4 py-2.5 rounded-full hover:bg-white/[0.08] text-white text-xs sm:text-sm font-light tracking-wide flex items-center justify-center gap-2 transition-all"
+                    className="flex-1 sm:flex-initial px-3.5 py-2 rounded-full hover:bg-white/[0.08] text-white text-xs font-light tracking-wide flex items-center justify-center gap-2 transition-all whitespace-nowrap"
                   >
                     {isPlayingAudio ? (
-                      <Volume2 className="w-4 h-4 text-[#d4af37] animate-pulse" />
+                      <Volume2 className="w-3.5 h-3.5 text-[#d4af37] animate-pulse" />
                     ) : (
                       <Play className="w-3.5 h-3.5 text-[#d4af37] fill-current" />
                     )}
                     <span>{isPlayingAudio ? 'Playing Sofía AI' : 'Hear Live Voice AI'}</span>
                   </button>
-                  <div className="flex items-center gap-0.5 pr-1.5 pl-1 border-l border-white/15">
+                  <div className="flex items-center gap-0.5 pr-1 pl-1 border-l border-white/15">
                     {(['en', 'es'] as const).map((lang) => (
                       <button
                         key={lang}
@@ -757,7 +757,7 @@ export default function Hero() {
 
                 <Link
                   to="/connect"
-                  className="px-4 py-3 rounded-full border border-[#d4af37]/35 bg-black/55 hover:bg-[#d4af37]/15 text-[#f7e7ce] text-xs font-mono uppercase tracking-[0.14em] flex items-center justify-center gap-2 backdrop-blur-md transition-all"
+                  className="px-4 py-2.5 rounded-full border border-[#d4af37]/35 bg-black/55 hover:bg-[#d4af37]/15 text-[#f7e7ce] text-xs font-mono uppercase tracking-[0.12em] flex items-center justify-center gap-1.5 backdrop-blur-md transition-all whitespace-nowrap"
                 >
                   <PhoneCall className="w-3.5 h-3.5 text-[#d4af37]" />
                   <span>10-Sec Connect</span>
