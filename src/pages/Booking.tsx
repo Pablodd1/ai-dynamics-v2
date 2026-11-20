@@ -9,8 +9,8 @@ import { ViralReferralBox } from '../components/ViralReferralBox'
 const API_BASE = import.meta.env.VITE_BOOKING_API || ''
 
 const services = [
-  { id: 'free_ai_consultation', name: 'Free AI Consultation', duration: '30 min', price: 'FREE', desc: 'Strategy call to map your automation opportunities' },
-  { id: 'automation_blueprint', name: 'Automation Blueprint', duration: '60 min', price: '$99', desc: 'Deep-dive audit + roadmap deliverable' },
+  { id: 'free_ai_consultation', name: 'Free 15-Min Triage Call', duration: '15 min', price: 'FREE', desc: 'Strategy call to map your top automation workflows' },
+  { id: 'automation_blueprint', name: 'Automation Blueprint & 48h Prototype', duration: '60 min', price: '$99', desc: 'Deep-dive audit + live working prototype' },
   { id: 'ai_strategy_session', name: 'AI Strategy Session', duration: '45 min', price: 'FREE', desc: 'For teams ready to build — architecture + ROI' },
   { id: 'existing_client_checkin', name: 'Existing Client Check-in', duration: '30 min', price: 'FREE', desc: 'Progress review and next-phase planning' },
 ]

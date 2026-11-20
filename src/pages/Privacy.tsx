@@ -47,7 +47,7 @@ const Privacy = () => {
           <section>
             <h2 className="text-xl font-bold text-white mb-4">Data Deletion Requests</h2>
             <p>
-              You may request deletion of your data at any time by emailing jasmelacosta@gmail.com with the subject line "Data Deletion Request." Please include your registered name, email address, or account details so that we can locate and delete your data securely.
+              You may request deletion of your data at any time by emailing jasmel@aidynamic.pro with the subject line "Data Deletion Request." Please include your registered name, email address, or account details so that we can locate and delete your data securely.
             </p>
           </section>
 
@@ -91,7 +91,7 @@ const Privacy = () => {
           <section>
             <h2 className="text-xl font-bold text-white mb-4">Opting Out</h2>
             <p>
-              You can unsubscribe from AI Dynamic Pro marketing emails or messages at any time by following the "unsubscribe" link provided in each communication or contacting jasmelacosta@gmail.com directly. Even after opting out, you may still receive important account or operational messages.
+              You can unsubscribe from AI Dynamic Pro marketing emails or messages at any time by following the "unsubscribe" link provided in each communication or contacting jasmel@aidynamic.pro directly. Even after opting out, you may still receive important account or operational messages.
             </p>
           </section>
 
@@ -101,8 +101,8 @@ const Privacy = () => {
             <p>Miami, Florida, USA</p>
             <p>
               Email:{" "}
-              <a href="mailto:jasmelacosta@gmail.com" className="text-luxury-gold hover:underline">
-                jasmelacosta@gmail.com
+              <a href="mailto:jasmel@aidynamic.pro" className="text-luxury-gold hover:underline">
+                jasmel@aidynamic.pro
               </a>
             </p>
             <p>

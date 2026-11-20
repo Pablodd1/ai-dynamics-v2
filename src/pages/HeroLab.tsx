@@ -150,7 +150,7 @@ const HERO_CONCEPTS: HeroConceptMeta[] = [
       'We replace manual departments with sovereign AI software, 24/7 voice pipelines, and precision computer vision.',
     primaryCta: 'Schedule Executive Briefing',
     secondaryCta: 'Hear Live Voice AI',
-    metrics: ['Zero Templates', 'HIPAA & SOC 2 Aligned', '5x Staff Output'],
+    metrics: ['Zero Templates', 'HIPAA-Ready & AES-256', '5x Staff Output'],
   },
   {
     id: 3,

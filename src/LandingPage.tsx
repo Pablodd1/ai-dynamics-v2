@@ -11,15 +11,14 @@ import Founder from './components/Founder'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import SocialSidebar from './components/SocialSidebar'
 import AIAssistantWidget from './components/AIAssistantWidget'
 
 function LandingPage() {
   return (
     <div className="min-h-screen bg-[#040407] text-white overflow-x-clip">
       <SEO
-        title="Embedded AI Developers & Consultants · Built & Staff-Trained Until Gold | AI Dynamic Pro"
-        description="Aggressive on-site & embedded AI developers and consultants. We go to you, analyze your workflows, serve your target population better, build custom apps, cut waste, and train your staff until everyone masters it and you are Gold."
+        title="Custom AI Apps & 24/7 Bilingual Voice Receptionists | AI Dynamic Pro | Miami"
+        description="Embedded AI engineers building custom apps and 24/7 bilingual voice receptionists for Miami healthcare, legal, and service teams. Start with a free 15-minute workflow triage call."
         canonical="https://www.aidynamic.pro/"
       />
       <Navigation />
@@ -36,7 +35,6 @@ function LandingPage() {
         <Contact />
       </main>
       <Footer />
-      <SocialSidebar />
       <AIAssistantWidget />
     </div>
   )

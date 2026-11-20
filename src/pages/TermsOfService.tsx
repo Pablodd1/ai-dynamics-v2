@@ -132,7 +132,7 @@ const TermsOfService = () => {
               <p className="font-bold">AI Dynamic Pro</p>
               <p>Attn: Jasmel Acosta, Founder</p>
               <p>Brickell Financial District, Miami, FL 33131</p>
-              <p>Email: jasmelacosta@gmail.com</p>
+              <p>Email: jasmel@aidynamic.pro</p>
               <p>Phone: +1 (786) 643-2099</p>
             </div>
           </section>

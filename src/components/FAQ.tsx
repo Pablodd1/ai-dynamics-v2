@@ -24,7 +24,7 @@ const FAQ = () => {
     },
     {
       question: 'Is my data secure?',
-      answer: 'Absolutely. We are HIPAA compliant, SOC 2 Type II aligned, and use AES-256 encryption for all data. We never store patient or client data on our servers — everything integrates directly with your existing secure systems. We can sign BAAs for healthcare clients.',
+      answer: 'Yes. We engineer HIPAA-ready workflows with AES-256 and TLS 1.3 encryption, strict role-based access controls, and zero-training LLM APIs. Everything integrates directly into your own secure systems, and we sign BAAs for healthcare clients.',
     },
     {
       question: 'Do you offer Spanish-language solutions?',

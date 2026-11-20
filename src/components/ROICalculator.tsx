@@ -229,7 +229,7 @@ export default function ROICalculator() {
             <div className="mt-8 pt-5 border-t border-white/10 space-y-2.5">
               <div className="flex items-center justify-center gap-1.5 text-[11px] font-mono text-emerald-300 bg-emerald-500/10 border border-emerald-500/25 rounded-lg py-1.5 px-3">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>HIPAA &amp; SOC 2 Ready • $2,500+/Mo Guarantee or $0</span>
+                <span>HIPAA-Ready · AES-256 • $2,500+/Mo Guarantee or $0</span>
               </div>
               <Link
                 to="/booking"

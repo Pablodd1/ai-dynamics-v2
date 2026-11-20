@@ -24,11 +24,13 @@ const Footer = () => {
       { label: 'Client Portal / Log In', href: '/login', isLogin: true },
     ],
     ecosystem: [
+      { label: '305business Venture Portfolio', href: 'https://305business.llc/', external: true },
+      { label: 'Medical Billing Miami Beach', href: 'https://medicalbillingmb.com', external: true },
+      { label: 'PocketScribe', href: 'https://aiscribers.com/', external: true },
+      { label: 'Hotel Rate Intelligence', href: 'https://hotelrateintel.com/', external: true },
       { label: 'Chat Building Innovation', href: 'https://www.chatbuildinginnovation.us/', external: true },
-      { label: 'PocketScribe', href: 'https://pocketscribe.online/', external: true },
       { label: 'Real Estate Dates', href: 'https://realestatedates.com/', external: true },
       { label: 'Jas Miami Method', href: 'https://jasmiamimethod.fit/login', external: true },
-      { label: 'Medical Billing Miami Beach', href: 'https://medicalbillingmb.com', external: true },
     ],
     legal: [
       { label: 'Privacy Policy', href: '/privacy', external: false },
@@ -90,9 +92,9 @@ const Footer = () => {
             
             {/* Contact Info */}
             <div className="space-y-3">
-              <a href="mailto:jasmelacosta@gmail.com" className="flex items-center gap-3 text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
+              <a href="mailto:jasmel@aidynamic.pro" className="flex items-center gap-3 text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
                 <Mail className="w-4 h-4 text-luxury-gold/60" />
-                jasmelacosta@gmail.com
+                jasmel@aidynamic.pro
               </a>
               <a href="tel:+17866432099" className="flex items-center gap-3 text-luxury-silver hover:text-luxury-champagne transition-colors text-sm">
                 <Phone className="w-4 h-4 text-luxury-gold/60" />
@@ -100,7 +102,7 @@ const Footer = () => {
               </a>
               <div className="flex items-center gap-3 text-luxury-silver text-sm">
                 <MapPin className="w-4 h-4 text-luxury-gold/60" />
-                Miami, FL
+                Brickell Financial District · Miami, FL 33131
               </div>
             </div>
           </div>
@@ -206,13 +208,13 @@ const Footer = () => {
             </Link>
           </div>
 
-          {/* Certifications */}
-          <div className="flex items-center gap-4 text-xs text-luxury-silver/40">
-            <span>HIPAA Compliant</span>
+          {/* Security & Engineering Standards */}
+          <div className="flex items-center gap-4 text-xs text-luxury-silver/50">
+            <span>HIPAA-Ready Workflows</span>
             <span className="w-1 h-1 rounded-full bg-luxury-gold/30" />
-            <span>SOC 2 Type II</span>
+            <span>AES-256 &amp; TLS 1.3</span>
             <span className="w-1 h-1 rounded-full bg-luxury-gold/30" />
-            <span>GDPR Ready</span>
+            <span>Zero Public Training</span>
           </div>
 
           {/* Social Links */}

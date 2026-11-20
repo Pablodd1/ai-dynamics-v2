@@ -54,8 +54,8 @@ const LATAM_PLANS: LatamPlan[] = [
       'Elimina el tipeo clínico y las inasistencias de pacientes. Escriba médico ambiental en español latino + recepcionista automática por WhatsApp 24/7.',
     icon: Stethoscope,
     accent: 'emerald',
-    liveAppUrl: 'https://www.pocketscribe.online',
-    liveAppLabel: 'Probar PocketScribe.online en Vivo ↗',
+    liveAppUrl: 'https://aiscribers.com',
+    liveAppLabel: 'Probar PocketScribe (aiscribers.com) en Vivo ↗',
     ctaText: 'Activar Plan Médicos ($29/mes)',
     ctaLink: '/offer?offer=latam_medicos_29&lang=es&utm_source=website&utm_medium=latam_portal',
     features: [

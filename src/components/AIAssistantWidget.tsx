@@ -17,6 +17,7 @@ import {
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { sendGeminiMessage, getFallbackResponse, getStudioAudioForResponse, type ChatMessage } from '../lib/gemini'
 import { AnalyticsEvents } from '../lib/analytics'
+import { useI18n } from '../i18n/I18nContext'
 
 interface Message {
   type: 'user' | 'ai'
@@ -41,10 +42,12 @@ const BOOKING_SERVICES = [
 ]
 
 export default function AIAssistantWidget() {
+  const { language } = useI18n()
   const [isOpen, setIsOpen] = useState(false)
   const isSpanishRoute =
-    typeof window !== 'undefined' &&
-    (window.location.pathname.startsWith('/latam') || window.location.pathname.startsWith('/es'))
+    language === 'es' ||
+    (typeof window !== 'undefined' &&
+      (window.location.pathname.startsWith('/latam') || window.location.pathname.startsWith('/es')))
 
   const [activeTab, setActiveTab] = useState<'chat' | 'call' | 'schedule'>('chat')
   const [callLang, setCallLang] = useState<'es' | 'en'>(isSpanishRoute ? 'es' : 'en')
@@ -166,10 +169,10 @@ export default function AIAssistantWidget() {
       if (!isOpen && !grabberDismissed) {
         setShowAttentionGrabber(true)
       }
-    }, 2800)
+    }, 14000)
 
     const handleScroll = () => {
-      if (window.scrollY > 120 && !isOpen && !grabberDismissed) {
+      if (window.scrollY > 750 && !isOpen && !grabberDismissed) {
         setShowAttentionGrabber(true)
       }
     }
@@ -641,20 +644,26 @@ export default function AIAssistantWidget() {
               <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-xs font-bold text-white">Asistente en Línea • Agenda o Consulta</span>
+                  <span className="text-xs font-bold text-white">
+                    {isSpanishRoute ? 'Asistente en Línea • Agenda o Consulta' : 'AI Assistant Online • Free Triage Call'}
+                  </span>
                 </div>
 
                 <button
                   onClick={dismissAttentionGrabber}
                   className="w-6 h-6 rounded-full bg-white/5 hover:bg-white/15 flex items-center justify-center text-white/50 hover:text-white transition-all"
-                  aria-label="Cerrar notificación"
+                  aria-label={isSpanishRoute ? 'Cerrar notificación' : 'Close notification'}
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
 
               <p className="text-xs text-luxury-champagne leading-relaxed mb-3">
-                👋 <strong>¡Hola!</strong> ¿Quieres agendar una llamada rápida, reservar tu Auditoría de $99 o resolver dudas al instante?
+                {isSpanishRoute ? (
+                  <>👋 <strong>¡Hola!</strong> ¿Quieres agendar una llamada rápida, reservar tu Auditoría de $99 o resolver dudas al instante?</>
+                ) : (
+                  <>👋 <strong>Questions?</strong> Book a free 15-minute triage call or ask about custom AI apps and our 24/7 voice receptionist.</>
+                )}
               </p>
 
               <div className="flex items-center gap-2">
@@ -667,7 +676,7 @@ export default function AIAssistantWidget() {
                   className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-luxury-gold to-amber-500 text-dark font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg transition-all hover:scale-[1.02]"
                 >
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>Agendar Cita</span>
+                  <span>{isSpanishRoute ? 'Agendar Cita' : 'Book Free Call'}</span>
                 </button>
 
                 <button
@@ -679,7 +688,7 @@ export default function AIAssistantWidget() {
                   className="py-2 px-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold text-xs flex items-center gap-1.5 transition-all hover:scale-[1.02]"
                 >
                   <MessageSquare className="w-3.5 h-3.5 text-accent-400" />
-                  <span>Chatear</span>
+                  <span>{isSpanishRoute ? 'Chatear' : 'Chat'}</span>
                 </button>
               </div>
             </motion.div>
@@ -1155,13 +1164,13 @@ export default function AIAssistantWidget() {
                     onClick={() => setActiveTab('schedule')}
                     className="px-2.5 py-1 rounded-lg bg-luxury-gold/20 hover:bg-luxury-gold/30 text-luxury-gold border border-luxury-gold/40 text-[11px] font-bold flex items-center gap-1 transition-all"
                   >
-                    <Calendar className="w-3 h-3" /> Agendar Llamada / Cita
+                    <Calendar className="w-3 h-3" /> {isSpanishRoute ? 'Agendar Llamada / Cita' : 'Schedule Free Call'}
                   </button>
                   <button
-                    onClick={() => startLiveCall('es')}
+                    onClick={() => startLiveCall(callLang)}
                     className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold flex items-center gap-1 transition-all"
                   >
-                    <PhoneCall className="w-3 h-3" /> Llamar Ahora
+                    <PhoneCall className="w-3 h-3" /> {isSpanishRoute ? 'Llamar Ahora' : 'Live Voice Demo'}
                   </button>
                 </div>
 
@@ -1294,15 +1303,31 @@ export default function AIAssistantWidget() {
 
             {/* Legal AI & Florida Recording Consent Disclosure Footer */}
             <div className="px-3 py-1.5 bg-black/50 border-t border-white/5 text-[10px] text-luxury-silver/60 text-center leading-tight">
-              Al chatear o agendar, aceptas nuestros{' '}
-              <a href="/terms" className="text-luxury-gold/80 hover:underline">
-                Términos
-              </a>{' '}
-              y{' '}
-              <a href="/privacy" className="text-luxury-gold/80 hover:underline">
-                Privacidad
-              </a>
-              .
+              {isSpanishRoute ? (
+                <>
+                  Al chatear o agendar, aceptas nuestros{' '}
+                  <a href="/terms" className="text-luxury-gold/80 hover:underline">
+                    Términos
+                  </a>{' '}
+                  y{' '}
+                  <a href="/privacy" className="text-luxury-gold/80 hover:underline">
+                    Privacidad
+                  </a>
+                  .
+                </>
+              ) : (
+                <>
+                  By chatting or scheduling, you agree to our{' '}
+                  <a href="/terms" className="text-luxury-gold/80 hover:underline">
+                    Terms
+                  </a>{' '}
+                  and{' '}
+                  <a href="/privacy" className="text-luxury-gold/80 hover:underline">
+                    Privacy Policy
+                  </a>
+                  .
+                </>
+              )}
             </div>
           </motion.div>
         )}

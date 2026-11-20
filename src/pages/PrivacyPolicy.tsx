@@ -112,7 +112,7 @@ const PrivacyPolicy = () => {
                   </p>
                   <ul className="list-disc pl-6 space-y-1.5">
                     <li><strong className="text-white">No Condition of Purchase:</strong> Consent to receive marketing calls or texts is not required as a condition of purchasing any goods or services.</li>
-                    <li><strong className="text-white">Instant Opt-Out:</strong> You may opt out of SMS/text messages at any time by replying <strong className="text-white">STOP</strong>, and you may opt out of email communications at any time by clicking the <strong className="text-white">Unsubscribe</strong> link in the footer of any email or replying <strong className="text-white">"Unsubscribe"</strong> to <code className="text-luxury-gold">jasmelacosta@gmail.com</code>. Standard message and data rates may apply.</li>
+                    <li><strong className="text-white">Instant Opt-Out:</strong> You may opt out of SMS/text messages at any time by replying <strong className="text-white">STOP</strong>, and you may opt out of email communications at any time by clicking the <strong className="text-white">Unsubscribe</strong> link in the footer of any email or replying <strong className="text-white">"Unsubscribe"</strong> to <code className="text-luxury-gold">jasmel@aidynamic.pro</code>. Standard message and data rates may apply.</li>
                     <li><strong className="text-white">No Sharing of Mobile Opt-In Data:</strong> Mobile phone numbers and SMS opt-in consent data will never be sold, rented, or shared with unaffiliated third parties for their own marketing purposes.</li>
                   </ul>
                 </div>
@@ -203,7 +203,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-xl font-semibold text-white mb-3">7. Your Privacy Rights &amp; Data Deletion Requests</h2>
                 <div className="text-luxury-silver leading-relaxed">
                   <p>Regardless of your state or country of residence (including Florida, California CCPA/CPRA, or EEA/UK GDPR), you have the right to request access to, correction of, or permanent deletion of your personal data and chat transcripts at any time.</p>
-                  <p className="mt-3">To exercise your rights or request data deletion, email <strong className="text-white">jasmelacosta@gmail.com</strong> with the subject line <strong className="text-white">"Data Deletion Request"</strong> and include the email address or phone number associated with your inquiry. We respond to all verified requests within 15 business days.</p>
+                  <p className="mt-3">To exercise your rights or request data deletion, email <strong className="text-white">jasmel@aidynamic.pro</strong> with the subject line <strong className="text-white">"Data Deletion Request"</strong> and include the email address or phone number associated with your inquiry. We respond to all verified requests within 15 business days.</p>
                 </div>
               </div>
             </div>
@@ -221,7 +221,7 @@ const PrivacyPolicy = () => {
           <div className="space-y-2 text-luxury-champagne">
             <p className="font-medium">AI Dynamic Pro</p>
             <p>Brickell Financial District • Miami, Florida 33131, USA</p>
-            <p>Email: jasmelacosta@gmail.com</p>
+            <p>Email: jasmel@aidynamic.pro</p>
             <p>Phone: +1 (786) 643-2099</p>
             <p>Website: www.aidynamic.pro</p>
           </div>

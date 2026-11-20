@@ -185,8 +185,8 @@ Content-Type: application/json
 const LIVE_PROPRIETARY_PLATFORMS = [
   {
     name: 'PocketScribe Clinical AI',
-    domain: 'pocketscribe.online',
-    url: 'https://pocketscribe.online/?utm_source=aidynamic_pro&utm_medium=homepage_showcase',
+    domain: 'aiscribers.com',
+    url: 'https://aiscribers.com/?utm_source=aidynamic_pro&utm_medium=homepage_showcase',
     category: 'Healthcare & Clinical SaaS',
     stack: 'React · Whisper Medical ASR · SOAP Structuring · HIPAA Flow',
     metric: '-45% Charting Time',
@@ -276,7 +276,7 @@ export default function SystemArchitectureShowcase() {
             {/* Security & Compliance Assurance Strip */}
             <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-emerald-300 bg-emerald-950/30 border border-emerald-500/30 px-4 py-2.5 rounded-xl shrink-0">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>HIPAA-Ready · SOC 2 Aligned · Zero Public Model Training</span>
+              <span>HIPAA-Ready Workflows · AES-256 Encrypted · Zero Public Model Training</span>
             </div>
           </div>
 

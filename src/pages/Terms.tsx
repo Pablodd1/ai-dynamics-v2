@@ -79,8 +79,8 @@ const Terms = () => {
             <h2 className="text-xl font-bold text-white mb-4">9. Contact</h2>
             <p>
               For questions about these Terms, contact us at{' '}
-              <a href="mailto:jasmelacosta@gmail.com" className="text-luxury-gold hover:underline">
-                jasmelacosta@gmail.com
+              <a href="mailto:jasmel@aidynamic.pro" className="text-luxury-gold hover:underline">
+                jasmel@aidynamic.pro
               </a>{' '}
               or call +1 (786) 643-2099.
             </p>

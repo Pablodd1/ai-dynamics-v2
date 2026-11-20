@@ -91,12 +91,12 @@ const DetailedServices = () => {
     {
       icon: Shield,
       title: 'Compliance & Security',
-      description: 'Enterprise-grade security with HIPAA, SOC 2, and GDPR compliance built in. Your data is encrypted, audited, and protected at every layer.',
+      description: 'Security-first architecture with HIPAA-aligned workflows, role-based access controls, and strict data isolation built in. Your data stays encrypted and never trains public models.',
       features: [
-        'HIPAA-compliant AI solutions',
-        'End-to-end AES-256 encryption',
-        'Audit logging & access controls',
-        'SOC 2 Type II certified',
+        'HIPAA-ready workflows + BAA support',
+        'End-to-end AES-256 & TLS 1.3 encryption',
+        'Audit logging & role-based access controls',
+        'Zero public LLM training retention',
       ],
       benefit: 'Enterprise security from day one',
       color: 'border-luxury-gold/30',

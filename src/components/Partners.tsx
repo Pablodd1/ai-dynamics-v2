@@ -48,11 +48,11 @@ const Partners = () => {
   ]
 
   const integrations = [
-    'Google Cloud Partner',
-    'HIPAA Compliant Infrastructure',
-    'SOC 2 Type II Certified',
-    'AES-256 Encryption',
-    'GDPR Ready',
+    'Google Cloud Infrastructure',
+    'HIPAA-Ready Architecture + BAA',
+    'Zero Public Model Training',
+    'AES-256 & TLS 1.3 Encryption',
+    'Role-Based Access Control',
     'Real-time Monitoring',
   ]
 

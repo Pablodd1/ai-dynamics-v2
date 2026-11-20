@@ -7,28 +7,49 @@ import { ProjectCard } from './ProjectCard'
 import { PartnerInquiryModal } from './PartnerInquiryModal'
 
 type CarouselFilter =
-  | 'featured'
+  | 'production'
+  | 'pilot_rd'
   | 'all'
-  | 'vision'
   | 'healthcare'
   | 'voice_crm'
+  | 'vision'
   | 'sports'
-  | 'web_data'
 
 export const FeaturedProjects: React.FC = () => {
   const navigate = useNavigate()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [activeFilter, setActiveFilter] = useState<CarouselFilter>('all')
+  const [activeFilter, setActiveFilter] = useState<CarouselFilter>('production')
   const [isAutoScrolling, setIsAutoScrolling] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
   const [partnerProject, setPartnerProject] = useState<ProjectItem | null>(null)
 
   const featured = useMemo(() => getFeaturedProjects(), [])
+  const productionSystems = useMemo(
+    () =>
+      PROJECTS.filter(
+        (p) => p.status === 'PRODUCTION' || p.status === 'LIVE' || p.status === 'COMMERCIALIZATION'
+      ),
+    []
+  )
+  const pilotAndRdSystems = useMemo(
+    () =>
+      PROJECTS.filter(
+        (p) =>
+          p.status === 'PILOT' ||
+          p.status === 'ACTIVE DEVELOPMENT' ||
+          p.status === 'PROTOTYPE' ||
+          p.status === 'R&D' ||
+          p.status === 'VALIDATION REQUIRED'
+      ),
+    []
+  )
 
   const displayedProjects = useMemo(() => {
     switch (activeFilter) {
-      case 'featured':
-        return featured
+      case 'production':
+        return productionSystems
+      case 'pilot_rd':
+        return pilotAndRdSystems
       case 'vision':
         return PROJECTS.filter(
           (p) =>
@@ -46,19 +67,13 @@ export const FeaturedProjects: React.FC = () => {
         )
       case 'sports':
         return PROJECTS.filter((p) => p.industryFilter === 'Sports & Human Performance')
-      case 'web_data':
-        return PROJECTS.filter(
-          (p) =>
-            p.industryFilter === 'Intelligent Websites & Growth' ||
-            p.industryFilter === 'Data & Analytics'
-        )
       case 'all':
-      default:
-        // Put featured first, then the remaining systems so the carousel starts with the strongest visual impact
+      default: {
         const featuredSet = new Set(featured.map((f) => f.id))
         return [...featured, ...PROJECTS.filter((p) => !featuredSet.has(p.id))]
+      }
     }
-  }, [activeFilter, featured])
+  }, [activeFilter, featured, productionSystems, pilotAndRdSystems])
 
   const handleViewDetails = (project: ProjectItem) => {
     navigate(`/projects/${project.slug}`)
@@ -89,13 +104,13 @@ export const FeaturedProjects: React.FC = () => {
   }, [isAutoScrolling, isHovered, activeFilter])
 
   const filterTabs: { id: CarouselFilter; label: string; count: number }[] = [
-    { id: 'all', label: `All ${PROJECTS.length} Deployed Systems`, count: PROJECTS.length },
-    { id: 'featured', label: 'Flagship Systems', count: featured.length },
-    { id: 'vision', label: 'Computer Vision & Luxury ID', count: 5 },
-    { id: 'healthcare', label: 'Healthcare & Clinical AI', count: 5 },
-    { id: 'voice_crm', label: '24/7 Voice & CRM Automation', count: 3 },
-    { id: 'sports', label: 'Sports Biomechanics', count: 3 },
-    { id: 'web_data', label: 'Agentic Web & Intelligence', count: 5 },
+    { id: 'production', label: 'Live & Production Systems', count: productionSystems.length },
+    { id: 'pilot_rd', label: 'Pilots, Prototypes & R&D', count: pilotAndRdSystems.length },
+    { id: 'healthcare', label: 'Healthcare AI', count: 5 },
+    { id: 'voice_crm', label: '24/7 Voice & CRM', count: 3 },
+    { id: 'vision', label: 'Computer Vision & PropTech', count: 5 },
+    { id: 'sports', label: 'Sports Biomechanics (Pilot/R&D)', count: 3 },
+    { id: 'all', label: `All ${PROJECTS.length} Systems`, count: PROJECTS.length },
   ]
 
   return (
@@ -109,15 +124,15 @@ export const FeaturedProjects: React.FC = () => {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-luxury-gold/30 bg-luxury-gold/10 text-luxury-gold font-mono text-xs tracking-wider uppercase mb-4">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Proven Engineering Portfolio · {PROJECTS.length} Production Architectures</span>
+              <span>{productionSystems.length} Production Systems · {pilotAndRdSystems.length} Active Pilots &amp; R&amp;D Labs</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-white mb-3">
-              Projects Done & Deployed AI Systems
+              Production Systems &amp; R&amp;D Portfolio
             </h2>
 
             <p className="text-base text-luxury-silver/80 leading-relaxed">
-              Swipe or scroll horizontally through real AI platforms engineered by AI Dynamic Pro to cut operating costs, automate complex workflows, and multiply team output.
+              Every system is transparently labeled by stage: inspect live production deployments first, or filter to review active Pilot, Prototype, and R&amp;D lab builds.
             </p>
           </div>
 

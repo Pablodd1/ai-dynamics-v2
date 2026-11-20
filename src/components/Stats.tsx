@@ -60,9 +60,9 @@ const Stats = () => {
           className="mt-20 flex flex-wrap justify-center items-center gap-8"
         >
           {[
-            { icon: Shield, label: 'HIPAA Compliant' },
-            { icon: Award, label: 'SOC 2 Type II' },
-            { icon: Shield, label: 'GDPR Ready' },
+            { icon: Shield, label: 'HIPAA-Ready Workflows' },
+            { icon: Award, label: 'Zero Public Training' },
+            { icon: Shield, label: 'Role-Based Access' },
             { icon: Award, label: 'AES-256 Encrypted' },
           ].map((cert) => (
             <div key={cert.label} className="flex items-center gap-2 text-luxury-silver/60">

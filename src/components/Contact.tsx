@@ -100,8 +100,8 @@ const Contact = () => {
     {
       icon: Mail,
       label: t('contact.email') as string,
-      value: 'jasmelacosta@gmail.com',
-      href: 'mailto:jasmelacosta@gmail.com',
+      value: 'jasmel@aidynamic.pro',
+      href: 'mailto:jasmel@aidynamic.pro',
     },
     {
       icon: Phone,
@@ -118,7 +118,7 @@ const Contact = () => {
     {
       icon: MapPin,
       label: t('contact.location') as string,
-      value: 'Miami, FL',
+      value: 'Brickell Financial District · Miami, FL 33131',
       href: '#',
     },
     {

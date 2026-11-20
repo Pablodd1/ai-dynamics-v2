@@ -35,6 +35,7 @@ const CheckoutSuccess = lazy(() => import('./pages/CheckoutSuccess'))
 function ConditionalEcosystemWidget() {
   const { pathname } = useLocation()
   if (
+    pathname === '/' ||
     pathname === '/connect' ||
     pathname === '/call-me' ||
     pathname === '/hero-lab' ||

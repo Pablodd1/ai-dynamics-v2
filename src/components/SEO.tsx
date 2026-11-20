@@ -13,7 +13,7 @@ interface SEOProps {
 
 const defaultDescription = "Miami-based AI Consulting, $99 Workflow Audits, Custom Automation & Corporate Staff Training across Healthcare, Legal, Real Estate, Construction & Logistics. Backed by 21 production AI platforms."
 
-const defaultOgImage = "https://www.aidynamic.pro/og-image.png"
+const defaultOgImage = "https://www.aidynamic.pro/og-image.jpg"
 
 export function SEO({
   title = "AI Consulting, Workflow Automation & Staff Training | AI Dynamic Pro | Miami",
@@ -160,7 +160,7 @@ export const organizationSchema = {
     "@type": "ContactPoint",
     "telephone": "+1-786-643-2099",
     "contactType": "customer service",
-    "email": "jasmelacosta@gmail.com",
+    "email": "jasmel@aidynamic.pro",
     "areaServed": "US-FL",
     "availableLanguage": ["English", "Spanish"]
   },
@@ -218,7 +218,7 @@ export const localBusinessSchema = {
   "image": "https://www.aidynamic.pro/og-image.jpg",
   "url": "https://www.aidynamic.pro",
   "telephone": "+1-786-643-2099",
-  "email": "jasmelacosta@gmail.com",
+  "email": "jasmel@aidynamic.pro",
   "priceRange": "$$$",
   "address": {
     "@type": "PostalAddress",

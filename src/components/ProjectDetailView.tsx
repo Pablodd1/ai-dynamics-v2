@@ -507,8 +507,8 @@ export const ProjectDetailView: React.FC<ProjectDetailViewProps> = ({
             Telegram: @aidynamicpro
           </a>
           <span className="text-white/20">·</span>
-          <a href="mailto:jasmelacosta@gmail.com" className="text-luxury-gold hover:underline">
-            Email: jasmelacosta@gmail.com
+          <a href="mailto:jasmel@aidynamic.pro" className="text-luxury-gold hover:underline">
+            Email: jasmel@aidynamic.pro
           </a>
         </div>
       </footer>

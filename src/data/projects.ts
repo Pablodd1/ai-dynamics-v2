@@ -601,7 +601,7 @@ export const PROJECTS: ProjectItem[] = [
       { label: 'Documentation Time', value: '- 65% Target', verified: false }
     ],
     links: {
-      website: 'https://pocketscribe.online/',
+      website: 'https://aiscribers.com/',
       contact: '/#contact'
     },
     sponsorOpportunity: {
